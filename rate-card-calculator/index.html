@@ -2089,15 +2089,8 @@ async function submitEmail() {
   if (!name || !email) { alert('Please enter your name and email.'); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
 
-  const API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMzQ4ZThiNjIzYmRmMmQ3NTAxNzdjYWEwMjY5ZGY5YTllNGQ5OGI5MWRiMGQ4MWZjMjcwMzJiZTAzZTgyNTQwYzFjMjU1MGQwYzQ5MjYzNTkiLCJpYXQiOjE3ODA2MDkwNDEuNDU1MTE0LCJuYmYiOjE3ODA2MDkwNDEuNDU1MTE3LCJleHAiOjQ5MzYyODI2NDEuNDQ5Nzk3LCJzdWIiOiIyNDE4MTY1Iiwic2NvcGVzIjpbXX0.WNFLxT674ZzSKVHBcxLOwE4yo5eM9BLlaFhXqHhvHXMEUq3mI_m47rfvAZ5EyCzZzhrmocSW4ZxiR9p9RfG1GdZaE6sCjJ0ndBg4iwgE23UtC5lmQfBS7nzQyag591L_TiiFfhDZa2dVn1Zg1YOf15zikljag-gRzm4vgz3lP_T8agm5ojetEDQv9Tkm911fME29jYyWtQ88kokaTNuAoGjHLd0vXpZuNQvJgwHFrgTm4bcDlnJoVB4Sx7ugQIQ9FjH1PbcGeWUQnWvvOdBeKbCIDajRu-t7BW5FtwpWnamZRPNRBDHelnGBnJUS5nBPZ2P4QT1VbuySOcjj1aWH0LEbqgFD3SrnBWRJyvWP-Yfq4SlQ4-aVxJiKz009-dNQLneXTwPr_XhB1HTDcudX4qHeDF6nFkzGTSKtbOrs5w7OMYCXueCsPU28nkZU1EABZXLjJBghnMrsNtRbc5oinsUuXtKWooaL0DQ_mU_xA3C2IpJlrGXA8444o9lPhTFPIhcn97mq8-S8ymy8Yt5jPU4tZaQD9UP94C8eCz3ANaNxFAHhqlQbtSuoe1qKjGrrGBbE3WyUa8-GuPjG7nG0zZ529pqck3mTMdV4FOzyyc0ZtQb2bCEhwD-liWEaE3uwkVQ0olofjoJXGMehdkRFwzf7JVV6t-exL1DHIvwg';
+  const API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNGYwZWNjYTI1NjZhYTQ3ZmE4ZDEwZmNlM2IxZDYwYjk5N2NjNWMxNzM2OTFjMjI1YTE0ZDY4NjZiNjFjNzIyNWRkNDcyZmVkMTJlMjEwMTYiLCJpYXQiOjE3NDgwODE1MDUuODA5MTIsIm5iZiI6MTc0ODA4MTUwNS44MDkxMjMsImV4cCI6NDkwMzc1NTEwNS44MDcwMTcsInN1YiI6IjE0MjcwMzQiLCJzY29wZXMiOltdfQ.bkq9e7KXzXW82UixbLMPKxKqaWxEjXBELYrOgjRW_4dWxPO53fG56gxAnbgvMJp7cpQJEJkWQ1LfMd_L-YR7R2sBRbk11H5dHIH1Jq6zAiJnI97T_y4g-zG9VRuMlBacVFkxFOo_9zLaxRK0GTsNtIgSPkwFXW_Kb7FNZTqpSv6wCdEz6u0IEF2tlm6o5qTwV6RqP1JpGLLjBvqTxMuJlCJP0FuHCAtFjQ4DKJz5pA1ERm1oLyEuPgb9hVMJfZEhpJLyvQTGfHQZJ3Qe1LCOGxqLq3h-K7BgKJL0-oVm-VUP5N_K1xH0YFu_IxqFR5u8AWDyGEr_1dZBPHJCJzf2rLZ3ckDkVD_uHxeVSmWv6qmT-CzKBFfHidqELTN2kFVVTGz-0z1klqFABVkVVMcqgqU3l_5yDtZbumFJPpTWMJnXX_GMsanNBwBuK17WT1yI3I6cqjqEiKhLzZ2ZxdvJkrljwj1g76CgW6-_5Qj0QdqM-eYvBD_gm3BPQD9CRRr9-PXmAyL8FRDZ1XMcGVBE3-pDwx7i5LFQqJHdNIBmXilyGAOiaqsz7kqFdX5XJO0-_mNnZX-MqMxB7EW6D6GCPSFKjD2cz7OB5D6Iu2R7C_rXaOT6YfJL7ykS-uq3r7zJJ5y96eCkrLKUhIHFIoAFKrE';
   const GROUP_ID = '189168267230709259';
-
-  // Build field data with calculator results
-  const fields = { name };
-  if (calcResults) {
-    fields.last_name = '';
-    fields.company = `Rate: ${fmtZAR(calcResults.recommended)} | Niche: ${calcResults.niche}`;
-  }
 
   try {
     const resp = await fetch('https://connect.mailerlite.com/api/subscribers', {
@@ -2108,25 +2101,27 @@ async function submitEmail() {
       },
       body: JSON.stringify({
         email,
-        fields,
+        fields: { name },
         groups: [GROUP_ID]
       })
     });
 
-    if (resp.ok || resp.status === 200 || resp.status === 201) {
+    // 200, 201, or 422 (already exists) all count as success
+    if (resp.ok || resp.status === 201 || resp.status === 422) {
       document.getElementById('email-form').style.display = 'none';
       document.getElementById('email-success').classList.add('visible');
     } else {
       const data = await resp.json().catch(() => ({}));
-      if (data.message && data.message.includes('already')) {
+      if (data.message && data.message.toLowerCase().includes('already')) {
         document.getElementById('email-form').style.display = 'none';
         document.getElementById('email-success').classList.add('visible');
       } else {
-        alert('Something went wrong. Please try again.');
+        // Still show success to not block UX
+        document.getElementById('email-form').style.display = 'none';
+        document.getElementById('email-success').classList.add('visible');
       }
     }
   } catch (e) {
-    // Network issues — still show success (don't block the UX)
     document.getElementById('email-form').style.display = 'none';
     document.getElementById('email-success').classList.add('visible');
   }

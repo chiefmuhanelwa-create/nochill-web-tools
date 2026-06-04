@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Kit Builder — Agency-Grade Creator Kits | NOCHILL</title>
+  <meta name="description" content="Build a stunning, agency-ready media kit in 30 minutes. Professional enough for global brands, built for African creators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0D0D; --card: #141414; --card2: #1A1A1A; --card3: #111;
+      --border: #2A2A2A; --border2: #333; --border3: #3A3A3A;
+      --gold: #F5C842; --gold-dim: rgba(245,200,66,0.1); --gold-border: rgba(245,200,66,0.25);
+      --green: #86EFAC; --green-dim: rgba(134,239,172,0.1); --green-border: rgba(134,239,172,0.25);
+      --red: #EF4444; --text: #F0F0F0; --muted: #888; --muted2: #555; --muted3: #3A3A3A;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --radius: 12px; --radius-sm: 8px; --radius-xs: 6px;
+    }
+    html { font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    .nav { position: sticky; top: 0; z-index: 200; background: rgba(13,13,13,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-pill { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-pill:hover { border-color: var(--gold); color: var(--gold); }
+    .nav-save-indicator { font-size: 11px; color: var(--muted2); }
+
+    /* SCREENS */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ─── INTRO ──────────────────────────────────────── */
+    .intro-wrap { min-height: calc(100vh - 52px); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; }
+    .intro-left { padding: 60px 48px 60px 60px; }
+    .intro-right { background: var(--card); border-left: 1px solid var(--border); min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 60px 40px; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .intro-headline { font-size: clamp(28px, 4vw, 46px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; color: var(--text); margin-bottom: 20px; }
+    .intro-sub { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+    .value-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+    .value-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+    .value-check { width: 20px; height: 20px; background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; color: var(--green); font-weight: 800; }
+    .price-badge { display: inline-flex; align-items: baseline; gap: 10px; background: var(--gold-dim); border: 1px solid var(--gold-border); border-radius: 10px; padding: 12px 20px; margin-bottom: 28px; }
+    .price-now { font-size: 28px; font-weight: 900; color: var(--gold); }
+    .price-was { font-size: 15px; color: var(--muted2); text-decoration: line-through; }
+    .price-label { font-size: 12px; color: var(--muted); }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #111; font-family: var(--font); font-size: 15px; font-weight: 800; padding: 15px 32px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.15s; }
+    .btn-primary:hover { background: #FFD54F; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(245,200,66,0.3); }
+    .btn-secondary { background: transparent; border: 1px solid var(--border2); color: var(--muted); font-family: var(--font); font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 10px; cursor: pointer; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--border3); color: var(--text); }
+    .intro-guarantee { font-size: 12px; color: var(--muted2); margin-top: 16px; }
+
+    /* MOCK KIT PREVIEW (intro) */
+    .kit-mock { width: 100%; max-width: 340px; background: #0A0A0A; border: 1px solid #2A2A2A; border-radius: 10px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.8); }
+    .kit-mock-cover { padding: 24px; background: #0A0A0A; border-bottom: 1px solid #1E1E1E; }
+    .kit-mock-photo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .kit-mock-photo { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #FF9800); flex-shrink: 0; }
+    .kit-mock-name { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .kit-mock-handle { font-size: 12px; color: var(--gold); font-style: italic; }
+    .kit-mock-bio { font-size: 11px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+    .kit-mock-stats { display: flex; gap: 8px; }
+    .kit-mock-stat { flex: 1; background: #141414; border: 1px solid #1E1E1E; border-radius: 6px; padding: 8px; text-align: center; }
+    .kit-mock-stat-num { font-size: 13px; font-weight: 800; color: #fff; }
+    .kit-mock-stat-label { font-size: 9px; color: #555; letter-spacing: 0.3px; }
+    .kit-mock-section { padding: 16px 24px; border-bottom: 1px solid #111; }
+    .kit-mock-section-title { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .kit-mock-bars { display: flex; flex-direction: column; gap: 5px; }
+    .kit-mock-bar-row { display: flex; align-items: center; gap: 8px; }
+    .kit-mock-bar-label { font-size: 9px; color: #555; width: 32px; }
+    .kit-mock-bar-track { flex: 1; height: 4px; background: #1E1E1E; border-radius: 2px; }
+    .kit-mock-bar-fill { height: 100%; border-radius: 2px; background: var(--gold); }
+    .kit-mock-bar-val { font-size: 9px; color: #888; width: 24px; text-align: right; }
+    .kit-mock-brands { display: flex; gap: 6px; flex-wrap: wrap; }
+    .kit-mock-brand { width: 36px; height: 24px; background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 4px; }
+    .kit-mock-rate { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #111; }
+    .kit-mock-rate:last-child { border: none; }
+    .kit-mock-rate-type { font-size: 10px; color: #555; }
+    .kit-mock-rate-price { font-size: 10px; font-weight: 700; color: var(--gold); }
+
+    /* ─── PAYMENT SCREEN ─────────────────────────────── */
+    .payment-wrap { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+    .payment-card { background: var(--card); border: 1px solid var(--gold-border); border-radius: 16px; padding: 40px; max-width: 440px; width: 100%; text-align: center; }
+    .payment-icon { font-size: 36px; margin-bottom: 16px; }
+    .payment-title { font-size: 22px; font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; }
+    .payment-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+    .payment-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; text-align: left; }
+    .payment-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+    .payment-feature-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    .payment-input { width: 100%; background: var(--card2); border: 1px solid var(--border2); color: var(--text); font-family: var(--font); font-size: 14px; padding: 12px 16px; border-radius: 8px; outline: none; margin-bottom: 12px; transition: border-color 0.15s; }
+    .payment-input:focus { border-color: var(--gold); }
+    .payment-msg { font-size: 13px; margin-top: 10px; display: none; }
+    .payment-guarantee { font-size: 12px; color: var(--muted2); margin-top: 16px; line-height: 1.5; }
+    .payment-already { margin-top: 20px; }
+    .payment-already-btn { background: none; border: none; color: var(--muted2); font-family: var(--font); font-size: 12px; cursor: pointer; text-decoration: underline; }
+
+    /* ─── BUILDER ─────────────────────────────────────── */
+    .builder-layout { display: grid; grid-template-columns: 400px 1fr; min-height: calc(100vh - 52px); }
+    .builder-form-panel { border-right: 1px solid var(--border); overflow-y: auto; height: calc(100vh - 52px); position: sticky; top: 52px; }
+    .builder-preview-panel { padding: 32px; overflow-y: auto; }
+
+    /* FORM PANEL */
+    .form-panel-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--border); }
+    .form-panel-title { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+    .form-panel-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .form-section { border-bottom: 1px solid var(--border); }
+    .form-section-header { padding: 14px 24px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.15s; user-select: none; }
+    .form-section-header:hover { background: rgba(255,255,255,0.02); }
+    .form-section-title { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .form-section-icon { font-size: 14px; }
+    .form-section-chevron { font-size: 12px; color: var(--muted2); transition: transform 0.2s; }
+    .form-section-chevron.open { transform: rotate(180deg); }
+    .form-section-body { padding: 0 24px 20px; display: none; }
+    .form-section-body.open { display: block; }
+
+    .field-row { margin-bottom: 14px; }
+    .field-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+    .field-input { width: 100%; background: var(--card2); border: 1px solid var(--border2); color: var(--text); font-family: var(--font); font-size: 13px; padding: 9px 12px; border-radius: 6px; outline: none; transition: border-color 0.15s; }
+    .field-input:focus { border-color: var(--gold); }
+    .field-textarea { width: 100%; background: var(--card2); border: 1px solid var(--border2); color: var(--text); font-family: var(--font); font-size: 13px; padding: 9px 12px; border-radius: 6px; outline: none; resize: vertical; min-height: 72px; transition: border-color 0.15s; line-height: 1.5; }
+    .field-textarea:focus { border-color: var(--gold); }
+    .field-row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .field-row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .field-hint { font-size: 11px; color: var(--muted2); margin-top: 4px; }
+
+    /* Photo upload */
+    .photo-upload-area { border: 2px dashed var(--border2); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.15s; background: var(--card3); position: relative; }
+    .photo-upload-area:hover { border-color: var(--gold-border); }
+    .photo-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .photo-upload-preview { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px; display: none; }
+    .photo-upload-icon { font-size: 24px; margin-bottom: 6px; }
+    .photo-upload-text { font-size: 12px; color: var(--muted); }
+
+    /* Logo upload grid */
+    .logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+    .logo-slot { aspect-ratio: 2/1; background: var(--card3); border: 1px dashed var(--border2); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.15s; }
+    .logo-slot:hover { border-color: var(--gold-border); }
+    .logo-slot input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .logo-slot img { width: 100%; height: 100%; object-fit: contain; padding: 4px; display: none; }
+    .logo-slot-icon { font-size: 16px; color: var(--muted2); pointer-events: none; }
+
+    /* Platform item */
+    .platform-item { background: var(--card3); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+    .platform-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .platform-name-select { background: var(--card2); border: 1px solid var(--border2); color: var(--text); font-family: var(--font); font-size: 12px; padding: 5px 8px; border-radius: 5px; outline: none; }
+    .platform-remove { background: none; border: none; color: var(--muted2); font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; }
+    .platform-remove:hover { color: var(--red); background: rgba(239,68,68,0.1); }
+    .add-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px dashed var(--border2); color: var(--muted); font-family: var(--font); font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; width: 100%; justify-content: center; transition: all 0.15s; margin-top: 6px; }
+    .add-btn:hover { border-color: var(--gold-border); color: var(--gold); }
+
+    /* Testimonial item */
+    .testimonial-item { background: var(--card3); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+
+    /* Rate item */
+    .rate-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; margin-bottom: 6px; }
+
+    /* Progress */
+    .completeness-bar { padding: 12px 24px; border-top: 1px solid var(--border); background: var(--card3); }
+    .completeness-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .completeness-track { height: 3px; background: var(--border); border-radius: 2px; }
+    .completeness-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s; }
+
+    /* ─── PREVIEW PANEL ──────────────────────────────── */
+    .preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .preview-header-left h3 { font-size: 15px; font-weight: 700; }
+    .preview-header-left p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .download-btn { display: flex; align-items: center; gap: 8px; background: var(--gold); color: #111; font-family: var(--font); font-size: 14px; font-weight: 800; padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.15s; }
+    .download-btn:hover { background: #FFD54F; }
+    .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* KIT CONTAINER */
+    .kit-scale-wrap { transform-origin: top left; }
+    .kit-container { width: 794px; background: #080808; font-family: 'Inter', system-ui, sans-serif; color: #F0F0F0; line-height: 1.5; }
+
+    /* KIT PAGE */
+    .kit-page { width: 794px; min-height: 1123px; padding: 0; position: relative; page-break-after: always; overflow: hidden; }
+
+    /* PAGE 1 — COVER */
+    .kit-cover { background: #080808; display: grid; grid-template-columns: 260px 1fr; min-height: 1123px; }
+    .kit-cover-left { background: #0E0E0E; border-right: 1px solid #1A1A1A; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .kit-cover-right { padding: 48px 40px; display: flex; flex-direction: column; justify-content: space-between; }
+
+    .kit-profile-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #F5C842; margin-bottom: 20px; display: block; }
+    .kit-profile-placeholder { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #F5C842 0%, #FF9800 100%); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #111; }
+
+    .kit-niche-tags { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 20px; }
+    .kit-niche-tag { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #F5C842; background: rgba(245,200,66,0.1); border: 1px solid rgba(245,200,66,0.2); border-radius: 3px; padding: 3px 7px; }
+
+    .kit-platform-mini { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
+    .kit-plat-mini-row { background: #141414; border: 1px solid #1E1E1E; border-radius: 6px; padding: 10px 12px; }
+    .kit-plat-mini-name { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #555; margin-bottom: 2px; }
+    .kit-plat-mini-followers { font-size: 16px; font-weight: 900; color: #F0F0F0; letter-spacing: -0.5px; }
+    .kit-plat-mini-er { font-size: 10px; color: #F5C842; font-weight: 600; }
+
+    .kit-creator-name { font-size: 38px; font-weight: 900; letter-spacing: -2px; color: #FFFFFF; line-height: 1.0; margin-bottom: 6px; }
+    .kit-creator-handle { font-size: 14px; color: #F5C842; font-style: italic; font-weight: 600; margin-bottom: 12px; }
+    .kit-tagline { font-size: 15px; color: #AAAAAA; line-height: 1.5; margin-bottom: 20px; font-weight: 400; }
+    .kit-location { font-size: 11px; color: #555; letter-spacing: 0.5px; margin-bottom: 28px; display: flex; align-items: center; gap: 5px; }
+
+    .kit-divider { height: 1px; background: linear-gradient(to right, #F5C842, transparent); margin-bottom: 28px; }
+
+    .kit-bio { font-size: 14px; color: #CCCCCC; line-height: 1.75; margin-bottom: 28px; }
+
+    .kit-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: auto; }
+    .kit-stat-box { background: #0E0E0E; border: 1px solid #1E1E1E; border-top: 2px solid #F5C842; padding: 14px; }
+    .kit-stat-num { font-size: 22px; font-weight: 900; color: #FFFFFF; letter-spacing: -1px; }
+    .kit-stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-top: 3px; }
+
+    .kit-section-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #F5C842; margin-bottom: 16px; }
+
+    /* PAGE 2 — AUDIENCE & CONTENT */
+    .kit-page-2 { background: #080808; padding: 48px 48px; }
+    .kit-page-2-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+
+    .kit-audience-section {}
+    .kit-audience-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #F5C842; margin-bottom: 14px; }
+    .kit-age-bars { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+    .kit-age-row { display: flex; align-items: center; gap: 8px; }
+    .kit-age-label { font-size: 10px; color: #666; width: 38px; flex-shrink: 0; }
+    .kit-age-track { flex: 1; height: 6px; background: #1A1A1A; border-radius: 3px; }
+    .kit-age-fill { height: 100%; border-radius: 3px; background: linear-gradient(to right, #F5C842, #FFB300); transition: width 0.6s; }
+    .kit-age-pct { font-size: 10px; color: #888; width: 28px; text-align: right; }
+
+    .kit-gender-row { display: flex; gap: 10px; }
+    .kit-gender-box { flex: 1; background: #0E0E0E; border: 1px solid #1E1E1E; border-radius: 6px; padding: 10px; text-align: center; }
+    .kit-gender-pct { font-size: 18px; font-weight: 900; color: #FFFFFF; }
+    .kit-gender-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+    .kit-locations { display: flex; flex-direction: column; gap: 7px; margin-top: 14px; }
+    .kit-location-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: #0E0E0E; border-radius: 5px; }
+    .kit-location-name { font-size: 11px; color: #CCC; }
+    .kit-location-pct { font-size: 11px; font-weight: 700; color: #F5C842; }
+
+    .kit-pillars-section { margin-top: 28px; }
+    .kit-pillar { background: #0E0E0E; border: 1px solid #1A1A1A; border-left: 3px solid #F5C842; border-radius: 6px; padding: 14px; margin-bottom: 10px; }
+    .kit-pillar-num { font-size: 9px; font-weight: 800; letter-spacing: 2px; color: #F5C842; text-transform: uppercase; margin-bottom: 4px; }
+    .kit-pillar-name { font-size: 13px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px; }
+    .kit-pillar-desc { font-size: 11px; color: #777; line-height: 1.5; }
+
+    /* PAGE 3 — BRANDS & TESTIMONIALS */
+    .kit-page-3 { background: #080808; padding: 48px; }
+    .kit-brands-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 36px; }
+    .kit-brand-logo { background: #0E0E0E; border: 1px solid #1A1A1A; border-radius: 6px; height: 56px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .kit-brand-logo img { max-width: 100%; max-height: 100%; object-fit: contain; padding: 8px; }
+    .kit-brand-name { font-size: 10px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+    .kit-testimonials { display: flex; flex-direction: column; gap: 18px; }
+    .kit-testimonial { border-left: 3px solid #F5C842; padding-left: 20px; }
+    .kit-testimonial-quote { font-size: 13px; color: #CCCCCC; line-height: 1.75; font-style: italic; margin-bottom: 10px; }
+    .kit-testimonial-author { display: flex; align-items: center; gap: 8px; }
+    .kit-testimonial-name { font-size: 11px; font-weight: 700; color: #FFFFFF; }
+    .kit-testimonial-role { font-size: 10px; color: #555; }
+
+    /* PAGE 4 — RATES & CONTACT */
+    .kit-page-4 { background: #080808; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; min-height: 1123px; }
+    .kit-rates-table { width: 100%; border-collapse: collapse; margin-bottom: 36px; }
+    .kit-rates-table th { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #555; padding: 0 0 12px; text-align: left; border-bottom: 1px solid #1A1A1A; }
+    .kit-rates-table td { font-size: 13px; color: #CCCCCC; padding: 12px 0; border-bottom: 1px solid #111; vertical-align: middle; }
+    .kit-rates-table td.price-col { font-size: 15px; font-weight: 800; color: #F5C842; text-align: right; }
+    .kit-rates-table tr:last-child td { border-bottom: none; }
+    .kit-rates-note { font-size: 11px; color: #444; font-style: italic; margin-top: 8px; }
+
+    .kit-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .kit-contact-item { background: #0E0E0E; border: 1px solid #1A1A1A; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+    .kit-contact-icon { font-size: 16px; flex-shrink: 0; }
+    .kit-contact-val { font-size: 12px; color: #CCC; font-weight: 500; word-break: break-all; }
+
+    .kit-footer { margin-top: auto; padding-top: 32px; border-top: 1px solid #1A1A1A; display: flex; align-items: center; justify-content: space-between; }
+    .kit-footer-badge { display: flex; align-items: center; gap: 8px; }
+    .kit-footer-logo { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .kit-footer-tagline { font-size: 10px; color: #222; }
+    .kit-agency-badge { display: flex; align-items: center; gap: 6px; background: rgba(245,200,66,0.06); border: 1px solid rgba(245,200,66,0.15); border-radius: 20px; padding: 5px 12px; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #F5C842; }
+
+    .print-only { display: none; }
+
+    /* ─── PRINT ──────────────────────────────────────── */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+      @page { size: A4; margin: 0; }
+      body * { visibility: hidden; }
+      .kit-print-target, .kit-print-target * { visibility: visible; }
+      .kit-print-target { position: fixed; top: 0; left: 0; width: 210mm; background: #080808 !important; }
+      .kit-page { page-break-after: always; page-break-inside: avoid; }
+    }
+
+    @media (max-width: 1100px) {
+      .builder-layout { grid-template-columns: 340px 1fr; }
+    }
+    @media (max-width: 900px) {
+      .intro-wrap { grid-template-columns: 1fr; }
+      .intro-right { display: none; }
+      .builder-layout { grid-template-columns: 1fr; }
+      .builder-form-panel { position: static; height: auto; }
+      .builder-preview-panel { padding: 20px 16px; }
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">NOCHILL</div>
+  <div class="nav-right">
+    <span class="nav-save-indicator" id="save-indicator"></span>
+    <a href="https://nochill-rate-card-calculator.vercel.app" class="nav-pill">Rate Card</a>
+  </div>
+</nav>
+
+<div id="page-wrap">
+
+<!-- ─── INTRO ─────────────────────────────────────────────────────────────── -->
+<div id="s-intro" class="screen active">
+  <div class="intro-wrap">
+    <div class="intro-left">
+      <div class="eyebrow">Media Kit Builder</div>
+      <h1 class="intro-headline">A media kit that makes brands say yes.</h1>
+      <p class="intro-sub">Brand managers see hundreds of kits. Most are Canva templates that look like everyone else's. Yours will look like it was produced by a R15,000 agency brief — in 30 minutes.</p>
+      <div class="value-list">
+        <div class="value-item"><div class="value-check">✓</div> 4-page agency-standard layout with dark premium design</div>
+        <div class="value-item"><div class="value-check">✓</div> Upload your photo, brand logos, stats, and testimonials</div>
+        <div class="value-item"><div class="value-check">✓</div> Audience demographics visualised as charts</div>
+        <div class="value-item"><div class="value-check">✓</div> Built-in rate card and collaboration sections</div>
+        <div class="value-item"><div class="value-check">✓</div> Downloads as a high-resolution PDF — yours forever</div>
+      </div>
+      <div class="price-badge">
+        <span class="price-now">R99</span>
+        <span class="price-was">R499</span>
+        <span class="price-label">one-time · yours forever</span>
+      </div>
+      <div>
+        <button class="btn-primary" onclick="showScreen('s-payment')">Build my media kit →</button>
+        <p class="intro-guarantee" style="margin-top:12px;">One-time payment. No subscription. Download and use instantly.</p>
+      </div>
+    </div>
+    <div class="intro-right">
+      <div class="kit-mock">
+        <div class="kit-mock-cover">
+          <div class="kit-mock-photo-row">
+            <div class="kit-mock-photo"></div>
+            <div>
+              <div class="kit-mock-name">Lerato Dlamini</div>
+              <div class="kit-mock-handle">@lerato.creates</div>
+            </div>
+          </div>
+          <div class="kit-mock-bio">Finance & wealth-building educator for South African millennials navigating money for the first time.</div>
+          <div class="kit-mock-stats">
+            <div class="kit-mock-stat"><div class="kit-mock-stat-num">47.2K</div><div class="kit-mock-stat-label">Instagram</div></div>
+            <div class="kit-mock-stat"><div class="kit-mock-stat-num">6.4%</div><div class="kit-mock-stat-label">Eng. Rate</div></div>
+            <div class="kit-mock-stat"><div class="kit-mock-stat-num">89K</div><div class="kit-mock-stat-label">TikTok</div></div>
+          </div>
+        </div>
+        <div class="kit-mock-section">
+          <div class="kit-mock-section-title">Audience Age</div>
+          <div class="kit-mock-bars">
+            <div class="kit-mock-bar-row"><span class="kit-mock-bar-label">18–24</span><div class="kit-mock-bar-track"><div class="kit-mock-bar-fill" style="width:38%"></div></div><span class="kit-mock-bar-val">38%</span></div>
+            <div class="kit-mock-bar-row"><span class="kit-mock-bar-label">25–34</span><div class="kit-mock-bar-track"><div class="kit-mock-bar-fill" style="width:44%"></div></div><span class="kit-mock-bar-val">44%</span></div>
+            <div class="kit-mock-bar-row"><span class="kit-mock-bar-label">35–44</span><div class="kit-mock-bar-track"><div class="kit-mock-bar-fill" style="width:12%"></div></div><span class="kit-mock-bar-val">12%</span></div>
+            <div class="kit-mock-bar-row"><span class="kit-mock-bar-label">45+</span><div class="kit-mock-bar-track"><div class="kit-mock-bar-fill" style="width:6%"></div></div><span class="kit-mock-bar-val">6%</span></div>
+          </div>
+        </div>
+        <div class="kit-mock-section">
+          <div class="kit-mock-section-title">Brand Partnerships</div>
+          <div class="kit-mock-brands">
+            <div class="kit-mock-brand"></div><div class="kit-mock-brand"></div><div class="kit-mock-brand"></div><div class="kit-mock-brand"></div>
+          </div>
+        </div>
+        <div class="kit-mock-section">
+          <div class="kit-mock-section-title">Rates</div>
+          <div class="kit-mock-rate"><span class="kit-mock-rate-type">Instagram Reel</span><span class="kit-mock-rate-price">R4,500</span></div>
+          <div class="kit-mock-rate"><span class="kit-mock-rate-type">TikTok Dedicated</span><span class="kit-mock-rate-price">R3,800</span></div>
+          <div class="kit-mock-rate"><span class="kit-mock-rate-type">Stories Package</span><span class="kit-mock-rate-price">R1,500</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PAYMENT ─────────────────────────────────────────────────────────────── -->
+<div id="s-payment" class="screen">
+  <div class="payment-wrap">
+    <div class="payment-card">
+      <div class="payment-icon">💎</div>
+      <h2 class="payment-title">You're one step away.</h2>
+      <p class="payment-sub">After payment you'll be taken directly to the builder. Your kit is saved locally — come back to it any time.</p>
+      <div class="payment-features">
+        <div class="payment-feature"><div class="payment-feature-dot"></div>Agency-grade 4-page layout</div>
+        <div class="payment-feature"><div class="payment-feature-dot"></div>Upload photo, logos, stats, testimonials</div>
+        <div class="payment-feature"><div class="payment-feature-dot"></div>Live preview as you build</div>
+        <div class="payment-feature"><div class="payment-feature-dot"></div>Download as PDF — yours forever</div>
+      </div>
+      <div class="price-badge" style="width:100%; justify-content:center; margin-bottom:20px;">
+        <span class="price-now">R99</span>
+        <span class="price-was">R499</span>
+        <span class="price-label">one-time payment</span>
+      </div>
+      <input type="email" id="payment-email" class="payment-input" placeholder="your@email.com">
+      <button class="btn-primary" style="width:100%; justify-content:center;" onclick="startPayment()">Pay R99 with Paystack →</button>
+      <div id="payment-msg" class="payment-msg"></div>
+      <p class="payment-guarantee">🔒 Secured by Paystack. Card, EFT, or USSD accepted. South African payment methods supported.</p>
+      <div class="payment-already">
+        <button class="payment-already-btn" onclick="showScreen('s-builder')">Already paid? Skip to builder →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── BUILDER ─────────────────────────────────────────────────────────────── -->
+<div id="s-builder" class="screen">
+  <div class="builder-layout">
+
+    <!-- LEFT: FORM -->
+    <div class="builder-form-panel">
+      <div class="form-panel-header">
+        <div class="form-panel-title">Build your media kit</div>
+        <div class="form-panel-sub">Fill in each section — your preview updates live</div>
+      </div>
+
+      <!-- SECTION 1: Profile -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">👤</span> Profile</div>
+          <span class="form-section-chevron open">▼</span>
+        </div>
+        <div class="form-section-body open">
+          <div class="field-row">
+            <div class="field-label">Profile Photo</div>
+            <div class="photo-upload-area" onclick="document.getElementById('photo-upload').click()">
+              <img id="photo-preview" class="photo-upload-preview" alt="Profile">
+              <div id="photo-placeholder"><div class="photo-upload-icon">📷</div><div class="photo-upload-text">Click to upload photo</div></div>
+              <input type="file" id="photo-upload" accept="image/*" onchange="handlePhotoUpload(this)" style="display:none">
+            </div>
+          </div>
+          <div class="field-row-2col">
+            <div class="field-row"><div class="field-label">Full Name</div><input class="field-input" id="f-name" placeholder="Lerato Dlamini" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Handle</div><input class="field-input" id="f-handle" placeholder="@lerato.creates" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-row"><div class="field-label">Tagline</div><input class="field-input" id="f-tagline" placeholder="Finance educator for SA millennials" oninput="updatePreview()"></div>
+          <div class="field-row"><div class="field-label">Bio <span style="color:var(--muted2); font-weight:400; text-transform:none; letter-spacing:0;">(2–3 sentences)</span></div><textarea class="field-textarea" id="f-bio" placeholder="Tell brands who you are, who you serve, and why your audience trusts you." oninput="updatePreview()"></textarea></div>
+          <div class="field-row-2col">
+            <div class="field-row"><div class="field-label">Location</div><input class="field-input" id="f-location" placeholder="Johannesburg, SA" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Niche Tags</div><input class="field-input" id="f-niches" placeholder="Finance, Lifestyle" oninput="updatePreview()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Platforms -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">📊</span> Platforms & Stats</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div id="platforms-list"></div>
+          <button class="add-btn" onclick="addPlatform()">+ Add platform</button>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Audience -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">👥</span> Audience Demographics</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-label" style="margin-bottom:8px;">Age Breakdown (must add up to ~100%)</div>
+          <div class="field-row-3col">
+            <div class="field-row"><div class="field-label">13–17 %</div><input class="field-input" id="age-13" type="number" min="0" max="100" placeholder="0" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">18–24 %</div><input class="field-input" id="age-18" type="number" min="0" max="100" placeholder="35" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">25–34 %</div><input class="field-input" id="age-25" type="number" min="0" max="100" placeholder="40" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-row-3col">
+            <div class="field-row"><div class="field-label">35–44 %</div><input class="field-input" id="age-35" type="number" min="0" max="100" placeholder="15" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">45–54 %</div><input class="field-input" id="age-45" type="number" min="0" max="100" placeholder="7" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">55+ %</div><input class="field-input" id="age-55" type="number" min="0" max="100" placeholder="3" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-label" style="margin:12px 0 8px;">Gender Split</div>
+          <div class="field-row-3col">
+            <div class="field-row"><div class="field-label">Female %</div><input class="field-input" id="gender-f" type="number" min="0" max="100" placeholder="65" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Male %</div><input class="field-input" id="gender-m" type="number" min="0" max="100" placeholder="32" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Other %</div><input class="field-input" id="gender-o" type="number" min="0" max="100" placeholder="3" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-label" style="margin:12px 0 8px;">Top 3 Locations</div>
+          <div id="locations-list">
+            <div class="field-row-2col" style="margin-bottom:6px;"><input class="field-input" placeholder="🇿🇦 South Africa" oninput="updateLocations()"><input class="field-input" placeholder="72%" oninput="updateLocations()"></div>
+            <div class="field-row-2col" style="margin-bottom:6px;"><input class="field-input" placeholder="🇿🇼 Zimbabwe" oninput="updateLocations()"><input class="field-input" placeholder="12%" oninput="updateLocations()"></div>
+            <div class="field-row-2col"><input class="field-input" placeholder="🇳🇬 Nigeria" oninput="updateLocations()"><input class="field-input" placeholder="8%" oninput="updateLocations()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Content Pillars -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">🎯</span> Content Pillars</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div id="pillars-list">
+            <div class="testimonial-item" style="margin-bottom:8px;"><input class="field-input" placeholder="Pillar name (e.g. Money Management)" oninput="updatePreview()" style="margin-bottom:6px;"><textarea class="field-textarea" placeholder="What you cover and why it resonates with your audience" oninput="updatePreview()" style="min-height:56px;"></textarea></div>
+            <div class="testimonial-item" style="margin-bottom:8px;"><input class="field-input" placeholder="Pillar name" oninput="updatePreview()" style="margin-bottom:6px;"><textarea class="field-textarea" placeholder="Description" oninput="updatePreview()" style="min-height:56px;"></textarea></div>
+            <div class="testimonial-item"><input class="field-input" placeholder="Pillar name" oninput="updatePreview()" style="margin-bottom:6px;"><textarea class="field-textarea" placeholder="Description" oninput="updatePreview()" style="min-height:56px;"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: Brands -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">🏢</span> Brand Partnerships</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-hint" style="margin-bottom:10px;">Upload up to 8 brand logos (PNG with transparent background works best)</div>
+          <div class="logo-grid" id="logo-grid">
+            <div class="logo-slot" id="logo-0"><input type="file" accept="image/*" onchange="handleLogoUpload(this,0)"><img id="logo-img-0" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-1"><input type="file" accept="image/*" onchange="handleLogoUpload(this,1)"><img id="logo-img-1" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-2"><input type="file" accept="image/*" onchange="handleLogoUpload(this,2)"><img id="logo-img-2" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-3"><input type="file" accept="image/*" onchange="handleLogoUpload(this,3)"><img id="logo-img-3" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-4"><input type="file" accept="image/*" onchange="handleLogoUpload(this,4)"><img id="logo-img-4" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-5"><input type="file" accept="image/*" onchange="handleLogoUpload(this,5)"><img id="logo-img-5" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-6"><input type="file" accept="image/*" onchange="handleLogoUpload(this,6)"><img id="logo-img-6" alt=""><span class="logo-slot-icon">+</span></div>
+            <div class="logo-slot" id="logo-7"><input type="file" accept="image/*" onchange="handleLogoUpload(this,7)"><img id="logo-img-7" alt=""><span class="logo-slot-icon">+</span></div>
+          </div>
+          <div class="field-hint" style="margin-top:8px;">Don't have logos? Add brand names as text below instead.</div>
+          <input class="field-input" id="brand-names" placeholder="e.g. Woolworths, Capitec, Nedbank" style="margin-top:8px;" oninput="updatePreview()">
+        </div>
+      </div>
+
+      <!-- SECTION 6: Testimonials -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">💬</span> Testimonials</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div id="testimonials-list">
+            <div class="testimonial-item" style="margin-bottom:10px;">
+              <div class="field-row-2col" style="margin-bottom:6px;"><input class="field-input" placeholder="Person's name" oninput="updateTestimonials()"><input class="field-input" placeholder="Job Title, Company" oninput="updateTestimonials()"></div>
+              <textarea class="field-textarea" placeholder="What they said about working with you..." style="min-height:64px;" oninput="updateTestimonials()"></textarea>
+            </div>
+            <div class="testimonial-item" style="margin-bottom:10px;">
+              <div class="field-row-2col" style="margin-bottom:6px;"><input class="field-input" placeholder="Person's name" oninput="updateTestimonials()"><input class="field-input" placeholder="Job Title, Company" oninput="updateTestimonials()"></div>
+              <textarea class="field-textarea" placeholder="What they said about working with you..." style="min-height:64px;" oninput="updateTestimonials()"></textarea>
+            </div>
+            <div class="testimonial-item">
+              <div class="field-row-2col" style="margin-bottom:6px;"><input class="field-input" placeholder="Person's name" oninput="updateTestimonials()"><input class="field-input" placeholder="Job Title, Company" oninput="updateTestimonials()"></div>
+              <textarea class="field-textarea" placeholder="What they said about working with you..." style="min-height:64px;" oninput="updateTestimonials()"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 7: Rates -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">💰</span> Rate Card</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div id="rates-list">
+            <div class="rate-item"><input class="field-input" placeholder="Content type (e.g. Instagram Reel)" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+            <div class="rate-item"><input class="field-input" placeholder="Dedicated YouTube Video" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+            <div class="rate-item"><input class="field-input" placeholder="TikTok Dedicated" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+            <div class="rate-item"><input class="field-input" placeholder="Stories Package (3–5 stories)" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+            <div class="rate-item"><input class="field-input" placeholder="Blog Post / Newsletter" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+            <div class="rate-item"><input class="field-input" placeholder="UGC (brand assets only)" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
+          </div>
+          <div class="field-hint" style="margin-top:8px;">Not sure of your rates? Use our <a href="https://nochill-rate-card-calculator.vercel.app" target="_blank" style="color:var(--gold);">Rate Card Calculator →</a></div>
+        </div>
+      </div>
+
+      <!-- SECTION 8: Contact -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">📩</span> Contact</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row"><div class="field-label">Email</div><input class="field-input" id="c-email" placeholder="hello@yoursite.com" oninput="updatePreview()"></div>
+          <div class="field-row"><div class="field-label">Website</div><input class="field-input" id="c-website" placeholder="www.yoursite.com" oninput="updatePreview()"></div>
+          <div class="field-row-2col">
+            <div class="field-row"><div class="field-label">WhatsApp</div><input class="field-input" id="c-whatsapp" placeholder="+27 00 000 0000" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Instagram</div><input class="field-input" id="c-instagram" placeholder="@handle" oninput="updatePreview()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATE BUTTON -->
+      <div style="padding:20px 24px; border-top:1px solid var(--border);">
+        <button class="btn-primary" style="width:100%; justify-content:center;" onclick="downloadPDF()">⬇ Download PDF</button>
+        <p style="font-size:11px; color:var(--muted2); margin-top:10px; text-align:center;">Opens your browser's print dialog. Select "Save as PDF" and set Margins to "None".</p>
+      </div>
+
+      <!-- COMPLETENESS -->
+      <div class="completeness-bar">
+        <div class="completeness-label"><span>Kit completeness</span><span id="completeness-pct">0%</span></div>
+        <div class="completeness-track"><div class="completeness-fill" id="completeness-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PREVIEW -->
+    <div class="builder-preview-panel">
+      <div class="preview-header">
+        <div class="preview-header-left">
+          <h3>Live Preview</h3>
+          <p>This is exactly what your PDF will look like</p>
+        </div>
+        <button class="download-btn" onclick="downloadPDF()">⬇ Download PDF</button>
+      </div>
+
+      <div id="preview-scale-wrap" class="kit-scale-wrap">
+        <div class="kit-container kit-print-target" id="kit-output">
+          <!-- PAGE 1: COVER -->
+          <div class="kit-page">
+            <div class="kit-cover">
+              <div class="kit-cover-left">
+                <img id="kit-photo" class="kit-profile-photo" src="" alt="" style="display:none;">
+                <div id="kit-photo-placeholder" class="kit-profile-placeholder">NC</div>
+                <div class="kit-niche-tags" id="kit-niche-tags"></div>
+                <div class="kit-platform-mini" id="kit-plat-mini"></div>
+              </div>
+              <div class="kit-cover-right">
+                <div>
+                  <h1 class="kit-creator-name" id="kit-name">Your Name</h1>
+                  <div class="kit-creator-handle" id="kit-handle">@yourhandle</div>
+                  <div class="kit-tagline" id="kit-tagline-text">Your tagline goes here</div>
+                  <div class="kit-location" id="kit-location-text">📍 Location</div>
+                  <div class="kit-divider"></div>
+                  <p class="kit-bio" id="kit-bio-text">Your bio will appear here. Tell brands who you are, who your audience is, and why they trust you.</p>
+                </div>
+                <div>
+                  <div class="kit-section-eyebrow">Total Reach</div>
+                  <div class="kit-stat-row" id="kit-stat-row">
+                    <div class="kit-stat-box"><div class="kit-stat-num">—</div><div class="kit-stat-label">Total Followers</div></div>
+                    <div class="kit-stat-box"><div class="kit-stat-num">—</div><div class="kit-stat-label">Avg. Eng. Rate</div></div>
+                    <div class="kit-stat-box"><div class="kit-stat-num">—</div><div class="kit-stat-label">Platforms</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAGE 2: AUDIENCE & CONTENT -->
+          <div class="kit-page">
+            <div class="kit-page-2">
+              <div class="kit-section-eyebrow" style="margin-bottom:24px;">Audience Insights & Content Pillars</div>
+              <div class="kit-page-2-grid">
+                <div class="kit-audience-section">
+                  <div class="kit-audience-label">Age Breakdown</div>
+                  <div class="kit-age-bars" id="kit-age-bars">
+                    <div class="kit-age-row"><span class="kit-age-label">13–17</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-13" style="width:0%"></div></div><span class="kit-age-val kit-age-pct" id="pct-13">0%</span></div>
+                    <div class="kit-age-row"><span class="kit-age-label">18–24</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-18" style="width:35%"></div></div><span class="kit-age-pct" id="pct-18">35%</span></div>
+                    <div class="kit-age-row"><span class="kit-age-label">25–34</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-25" style="width:40%"></div></div><span class="kit-age-pct" id="pct-25">40%</span></div>
+                    <div class="kit-age-row"><span class="kit-age-label">35–44</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-35" style="width:15%"></div></div><span class="kit-age-pct" id="pct-35">15%</span></div>
+                    <div class="kit-age-row"><span class="kit-age-label">45–54</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-45" style="width:7%"></div></div><span class="kit-age-pct" id="pct-45">7%</span></div>
+                    <div class="kit-age-row"><span class="kit-age-label">55+</span><div class="kit-age-track"><div class="kit-age-fill" id="bar-55" style="width:3%"></div></div><span class="kit-age-pct" id="pct-55">3%</span></div>
+                  </div>
+                  <div class="kit-audience-label" style="margin-top:18px;">Gender</div>
+                  <div class="kit-gender-row" id="kit-gender-row">
+                    <div class="kit-gender-box"><div class="kit-gender-pct" id="g-female">65%</div><div class="kit-gender-label">Female</div></div>
+                    <div class="kit-gender-box"><div class="kit-gender-pct" id="g-male">32%</div><div class="kit-gender-label">Male</div></div>
+                    <div class="kit-gender-box"><div class="kit-gender-pct" id="g-other">3%</div><div class="kit-gender-label">Other</div></div>
+                  </div>
+                  <div class="kit-audience-label" style="margin-top:18px;">Top Locations</div>
+                  <div class="kit-locations" id="kit-locations">
+                    <div class="kit-location-row"><span class="kit-location-name">🇿🇦 South Africa</span><span class="kit-location-pct">72%</span></div>
+                    <div class="kit-location-row"><span class="kit-location-name">🇿🇼 Zimbabwe</span><span class="kit-location-pct">12%</span></div>
+                    <div class="kit-location-row"><span class="kit-location-name">🇳🇬 Nigeria</span><span class="kit-location-pct">8%</span></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="kit-audience-label">Platform Breakdown</div>
+                  <div id="kit-platform-stats" style="margin-bottom:0;"></div>
+                </div>
+              </div>
+              <div class="kit-pillars-section">
+                <div class="kit-section-eyebrow">Content Pillars</div>
+                <div id="kit-pillars"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAGE 3: BRANDS & TESTIMONIALS -->
+          <div class="kit-page">
+            <div class="kit-page-3">
+              <div class="kit-section-eyebrow" style="margin-bottom:20px;">Brand Partnerships & Social Proof</div>
+              <div class="kit-audience-label">Brands I've Worked With</div>
+              <div class="kit-brands-grid" id="kit-brands-grid" style="margin-bottom:36px;"></div>
+              <div class="kit-audience-label" style="margin-bottom:18px;">What Brands Say</div>
+              <div class="kit-testimonials" id="kit-testimonials"></div>
+            </div>
+          </div>
+
+          <!-- PAGE 4: RATES & CONTACT -->
+          <div class="kit-page">
+            <div class="kit-page-4">
+              <div>
+                <div class="kit-section-eyebrow" style="margin-bottom:20px;">Collaboration Rates & Contact</div>
+                <div class="kit-audience-label" style="margin-bottom:16px;">What We Can Create Together</div>
+                <table class="kit-rates-table" id="kit-rates-table">
+                  <tr><th>Content Format</th><th style="text-align:right;">Starting Rate (ZAR)</th></tr>
+                </table>
+                <div class="kit-rates-note">All rates are starting prices. Final quote depends on deliverables, usage rights, and exclusivity. Contact me to discuss your campaign.</div>
+                <div style="height:36px;"></div>
+                <div class="kit-audience-label" style="margin-bottom:16px;">Let's Collaborate</div>
+                <div class="kit-contact-grid" id="kit-contact-grid"></div>
+              </div>
+              <div class="kit-footer">
+                <div class="kit-footer-badge">
+                  <div class="kit-footer-logo">NOCHILL</div>
+                  <div class="kit-footer-tagline">Built with NOCHILL Media Kit Builder</div>
+                </div>
+                <div class="kit-agency-badge">✓ Agency Ready</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  // ─── CONSTANTS ────────────────────────────────────────────────────────────
+  const MAILERLITE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNGYwZWNjYTI1NjZhYTQ3ZmE4ZDEwZmNlM2IxZDYwYjk5N2NjNWMxNzM2OTFjMjI1YTE0ZDY4NjZiNjFjNzIyNWRkNDcyZmVkMTJlMjEwMTYiLCJpYXQiOjE3NDgwODE1MDUuODA5MTIsIm5iZiI6MTc0ODA4MTUwNS44MDkxMjMsImV4cCI6NDkwMzc1NTEwNS44MDcwMTcsInN1YiI6IjE0MjcwMzQiLCJzY29wZXMiOltdfQ.bkq9e7KXzXW82UixbLMPKxKqaWxEjXBELYrOgjRW_4dWxPO53fG56gxAnbgvMJp7cpQJEJkWQ1LfMd_L-YR7R2sBRbk11H5dHIH1Jq6zAiJnI97T_y4g-zG9VRuMlBacVFkxFOo_9zLaxRK0GTsNtIgSPkwFXW_Kb7FNZTqpSv6wCdEz6u0IEF2tlm6o5qTwV6RqP1JpGLLjBvqTxMuJlCJP0FuHCAtFjQ4DKJz5pA1ERm1oLyEuPgb9hVMJfZEhpJLyvQTGfHQZJ3Qe1LCOGxqLq3h-K7BgKJL0-oVm-VUP5N_K1xH0YFu_IxqFR5u8AWDyGEr_1dZBPHJCJzf2rLZ3ckDkVD_uHxeVSmWv6qmT-CzKBFfHidqELTN2kFVVTGz-0z1klqFABVkVVMcqgqU3l_5yDtZbumFJPpTWMJnXX_GMsanNBwBuK17WT1yI3I6cqjqEiKhLzZ2ZxdvJkrljwj1g76CgW6-_5Qj0QdqM-eYvBD_gm3BPQD9CRRr9-PXmAyL8FRDZ1XMcGVBE3-pDwx7i5LFQqJHdNIBmXilyGAOiaqsz7kqFdX5XJO0-_mNnZX-MqMxB7EW6D6GCPSFKjD2cz7OB5D6Iu2R7C_rXaOT6YfJL7ykS-uq3r7zJJ5y96eCkrLKUhIHFIoAFKrE';
+  const MAILERLITE_GROUP = '189168267230709259';
+  let profilePhotoSrc = null;
+  const logoSrcs = {};
+  let platformData = [];
+  let testimonialsData = [];
+  let ratesData = [];
+
+  // ─── SCREEN ───────────────────────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (id === 's-builder') {
+      loadFromStorage();
+      scalePreview();
+      updatePreview();
+    }
+  }
+
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.form-section-chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  // ─── PAYMENT ──────────────────────────────────────────────────────────────
+  async function startPayment() {
+    const email = document.getElementById('payment-email').value.trim();
+    const msgEl = document.getElementById('payment-msg');
+    const btn = document.querySelector('#s-payment .btn-primary');
+    if (!email || !email.includes('@')) {
+      msgEl.textContent = 'Please enter a valid email to continue.';
+      msgEl.style.color = 'var(--red)';
+      msgEl.style.display = 'block';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Connecting…';
+    msgEl.textContent = 'Opening Paystack…';
+    msgEl.style.color = 'var(--muted)';
+    msgEl.style.display = 'block';
+    try {
+      const res = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, type: 'media_kit' })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Payment init failed');
+      localStorage.setItem('nochill_mk_ref', data.reference);
+      localStorage.setItem('nochill_mk_email', email);
+      window.location.href = data.authorization_url;
+    } catch(err) {
+      msgEl.textContent = `Error: ${err.message}`;
+      msgEl.style.color = 'var(--red)';
+      btn.disabled = false;
+      btn.textContent = 'Pay R99 with Paystack →';
+    }
+  }
+
+  async function checkPaymentReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const refFromUrl = params.get('reference') || params.get('trxref');
+    const refFromStorage = localStorage.getItem('nochill_mk_ref');
+    const reference = refFromUrl || refFromStorage;
+    if (!reference) return;
+    if (refFromUrl) window.history.replaceState({}, document.title, window.location.pathname);
+    try {
+      const res = await fetch('/api/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        localStorage.removeItem('nochill_mk_ref');
+        const email = data.email || localStorage.getItem('nochill_mk_email') || '';
+        localStorage.removeItem('nochill_mk_email');
+        localStorage.setItem('nochill_mk_unlocked', '1');
+        if (email) {
+          try {
+            await fetch('https://connect.mailerlite.com/api/subscribers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_KEY}` },
+              body: JSON.stringify({ email, groups: [MAILERLITE_GROUP], fields: { tags: 'media_kit_paid_r99' } })
+            });
+          } catch(e) {}
+        }
+        showScreen('s-builder');
+      }
+    } catch(e) {}
+  }
+
+  // ─── PLATFORM MANAGEMENT ─────────────────────────────────────────────────
+  function addPlatform() {
+    const idx = platformData.length;
+    platformData.push({ name: 'Instagram', followers: '', avgViews: '', er: '' });
+    renderPlatformList();
+  }
+
+  function removePlatform(idx) {
+    platformData.splice(idx, 1);
+    renderPlatformList();
+    updatePreview();
+  }
+
+  function renderPlatformList() {
+    const list = document.getElementById('platforms-list');
+    list.innerHTML = platformData.map((p, i) => `
+      <div class="platform-item">
+        <div class="platform-item-header">
+          <select class="platform-name-select" onchange="platformData[${i}].name=this.value; updatePreview();">
+            ${['Instagram','TikTok','YouTube','Facebook','Twitter/X','LinkedIn','Pinterest','Podcast'].map(n=>`<option ${p.name===n?'selected':''}>${n}</option>`).join('')}
+          </select>
+          <button class="platform-remove" onclick="removePlatform(${i})">✕</button>
+        </div>
+        <div class="field-row-3col">
+          <div class="field-row"><div class="field-label">Followers</div><input class="field-input" value="${p.followers}" placeholder="47.2K" oninput="platformData[${i}].followers=this.value; updatePreview();"></div>
+          <div class="field-row"><div class="field-label">Avg Views</div><input class="field-input" value="${p.avgViews}" placeholder="12K" oninput="platformData[${i}].avgViews=this.value; updatePreview();"></div>
+          <div class="field-row"><div class="field-label">Eng. Rate</div><input class="field-input" value="${p.er}" placeholder="4.2%" oninput="platformData[${i}].er=this.value; updatePreview();"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ─── PHOTO UPLOAD ─────────────────────────────────────────────────────────
+  function handlePhotoUpload(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      profilePhotoSrc = e.target.result;
+      document.getElementById('photo-preview').src = e.target.result;
+      document.getElementById('photo-preview').style.display = 'block';
+      document.getElementById('photo-placeholder').style.display = 'none';
+      updatePreview();
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  function handleLogoUpload(input, idx) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      logoSrcs[idx] = e.target.result;
+      const img = document.getElementById(`logo-img-${idx}`);
+      img.src = e.target.result;
+      img.style.display = 'block';
+      document.getElementById(`logo-${idx}`).querySelector('.logo-slot-icon').style.display = 'none';
+      updatePreview();
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  // ─── PREVIEW UPDATE ───────────────────────────────────────────────────────
+  function updatePreview() {
+    const name = v('f-name') || 'Your Name';
+    const handle = v('f-handle') || '@yourhandle';
+    const tagline = v('f-tagline') || 'Your tagline';
+    const bio = v('f-bio') || 'Your bio will appear here.';
+    const location = v('f-location') || '';
+    const niches = v('f-niches') || '';
+    const initials = name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase() || 'NC';
+
+    // Page 1
+    setText('kit-name', name);
+    setText('kit-handle', handle);
+    setText('kit-tagline-text', tagline);
+    setText('kit-location-text', location ? '📍 ' + location : '');
+    setText('kit-bio-text', bio);
+
+    if (profilePhotoSrc) {
+      document.getElementById('kit-photo').src = profilePhotoSrc;
+      document.getElementById('kit-photo').style.display = 'block';
+      document.getElementById('kit-photo-placeholder').style.display = 'none';
+    } else {
+      document.getElementById('kit-photo').style.display = 'none';
+      document.getElementById('kit-photo-placeholder').style.display = 'flex';
+      document.getElementById('kit-photo-placeholder').textContent = initials;
+    }
+
+    // Niche tags
+    const nicheTagsEl = document.getElementById('kit-niche-tags');
+    nicheTagsEl.innerHTML = niches.split(',').filter(n=>n.trim()).map(n=>`<span class="kit-niche-tag">${n.trim()}</span>`).join('');
+
+    // Platform mini cards on left
+    const platMini = document.getElementById('kit-plat-mini');
+    platMini.innerHTML = platformData.filter(p=>p.followers).slice(0,4).map(p=>`
+      <div class="kit-plat-mini-row">
+        <div class="kit-plat-mini-name">${p.name}</div>
+        <div class="kit-plat-mini-followers">${p.followers}</div>
+        ${p.er ? `<div class="kit-plat-mini-er">${p.er} ER</div>` : ''}
+      </div>`).join('');
+
+    // Summary stats
+    const statRow = document.getElementById('kit-stat-row');
+    const totalFollowers = platformData.reduce((acc, p) => {
+      const n = parseFloat(p.followers.replace(/[^0-9.]/g,''));
+      const mult = p.followers.toLowerCase().includes('k') ? 1000 : p.followers.toLowerCase().includes('m') ? 1000000 : 1;
+      return acc + (isNaN(n) ? 0 : n * mult);
+    }, 0);
+    const avgER = platformData.filter(p=>p.er).length > 0
+      ? (platformData.filter(p=>p.er).reduce((a,p)=>a + parseFloat(p.er)||0, 0) / platformData.filter(p=>p.er).length).toFixed(1) + '%'
+      : '—';
+    const totalPlatforms = platformData.filter(p=>p.followers).length;
+    const fmtFollowers = totalFollowers >= 1000000 ? (totalFollowers/1000000).toFixed(1)+'M' : totalFollowers >= 1000 ? (totalFollowers/1000).toFixed(1)+'K' : totalFollowers > 0 ? totalFollowers : '—';
+    statRow.innerHTML = `
+      <div class="kit-stat-box"><div class="kit-stat-num">${fmtFollowers}</div><div class="kit-stat-label">Total Followers</div></div>
+      <div class="kit-stat-box"><div class="kit-stat-num">${avgER}</div><div class="kit-stat-label">Avg. Eng. Rate</div></div>
+      <div class="kit-stat-box"><div class="kit-stat-num">${totalPlatforms || '—'}</div><div class="kit-stat-label">Platforms</div></div>`;
+
+    // Page 2 — age bars
+    const ages = [
+      { id: '13', label: '13–17' }, { id: '18', label: '18–24' }, { id: '25', label: '25–34' },
+      { id: '35', label: '35–44' }, { id: '45', label: '45–54' }, { id: '55', label: '55+' }
+    ];
+    ages.forEach(a => {
+      const pct = parseInt(document.getElementById('age-'+a.id)?.value) || 0;
+      const bar = document.getElementById('bar-'+a.id);
+      const pctEl = document.getElementById('pct-'+a.id);
+      if (bar) bar.style.width = Math.min(pct, 100) + '%';
+      if (pctEl) pctEl.textContent = pct + '%';
+    });
+
+    // Gender
+    document.getElementById('g-female').textContent = (parseInt(document.getElementById('gender-f')?.value)||65) + '%';
+    document.getElementById('g-male').textContent = (parseInt(document.getElementById('gender-m')?.value)||32) + '%';
+    document.getElementById('g-other').textContent = (parseInt(document.getElementById('gender-o')?.value)||3) + '%';
+
+    // Platform detail on page 2
+    const platDetail = document.getElementById('kit-platform-stats');
+    platDetail.innerHTML = platformData.filter(p=>p.followers).map(p=>`
+      <div class="kit-plat-mini-row" style="margin-bottom:8px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+          <div>
+            <div class="kit-plat-mini-name">${p.name}</div>
+            <div style="font-size:16px; font-weight:900; color:#F0F0F0; letter-spacing:-0.5px;">${p.followers}</div>
+          </div>
+          <div style="text-align:right;">
+            ${p.avgViews ? `<div style="font-size:10px; color:#666;">Avg. Views</div><div style="font-size:12px; font-weight:700; color:#CCC;">${p.avgViews}</div>` : ''}
+            ${p.er ? `<div style="font-size:11px; color:#F5C842; font-weight:700; margin-top:2px;">${p.er} ER</div>` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+
+    // Pillars
+    const pillarInputs = document.querySelectorAll('#pillars-list .testimonial-item');
+    const pillarsHTML = Array.from(pillarInputs).map((item, i) => {
+      const name = item.querySelector('input')?.value || '';
+      const desc = item.querySelector('textarea')?.value || '';
+      if (!name) return '';
+      return `<div class="kit-pillar"><div class="kit-pillar-num">0${i+1}</div><div class="kit-pillar-name">${esc(name)}</div>${desc ? `<div class="kit-pillar-desc">${esc(desc)}</div>` : ''}</div>`;
+    }).join('');
+    document.getElementById('kit-pillars').innerHTML = pillarsHTML || '<div class="kit-pillar-desc" style="color:#333;">Add your content pillars in the form →</div>';
+
+    // Brands
+    updateBrandsPreview();
+    updateLocations();
+    updateCompleteness();
+    saveToStorage();
+  }
+
+  function updateBrandsPreview() {
+    const grid = document.getElementById('kit-brands-grid');
+    const brandNamesRaw = v('brand-names') || '';
+    const brandNames = brandNamesRaw.split(',').filter(n=>n.trim());
+    let cells = '';
+    for (let i = 0; i < 8; i++) {
+      if (logoSrcs[i]) {
+        cells += `<div class="kit-brand-logo"><img src="${logoSrcs[i]}" alt="Brand ${i+1}"></div>`;
+      } else if (brandNames[i]) {
+        cells += `<div class="kit-brand-logo"><span class="kit-brand-name">${esc(brandNames[i].trim())}</span></div>`;
+      } else {
+        cells += `<div class="kit-brand-logo" style="opacity:0.2;"><span class="kit-brand-name">BRAND</span></div>`;
+      }
+    }
+    grid.innerHTML = cells;
+  }
+
+  function updateLocations() {
+    const rows = document.querySelectorAll('#locations-list .field-row-2col');
+    const locationsEl = document.getElementById('kit-locations');
+    let html = '';
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('.field-input');
+      const name = inputs[0]?.value || '';
+      const pct = inputs[1]?.value || '';
+      if (name) html += `<div class="kit-location-row"><span class="kit-location-name">${esc(name)}</span><span class="kit-location-pct">${esc(pct)}</span></div>`;
+    });
+    if (html) locationsEl.innerHTML = html;
+  }
+
+  function updateTestimonials() {
+    const items = document.querySelectorAll('#testimonials-list .testimonial-item');
+    const container = document.getElementById('kit-testimonials');
+    let html = '';
+    items.forEach(item => {
+      const inputs = item.querySelectorAll('.field-input');
+      const name = inputs[0]?.value || '';
+      const role = inputs[1]?.value || '';
+      const quote = item.querySelector('textarea')?.value || '';
+      if (quote) {
+        html += `<div class="kit-testimonial"><p class="kit-testimonial-quote">"${esc(quote)}"</p><div class="kit-testimonial-author"><div><div class="kit-testimonial-name">${esc(name)}</div><div class="kit-testimonial-role">${esc(role)}</div></div></div></div>`;
+      }
+    });
+    container.innerHTML = html || '<div style="color:#333; font-size:13px;">Add testimonials in the form →</div>';
+  }
+
+  function updateRates() {
+    const items = document.querySelectorAll('#rates-list .rate-item');
+    const table = document.getElementById('kit-rates-table');
+    let rows = '<tr><th>Content Format</th><th style="text-align:right;">Starting Rate (ZAR)</th></tr>';
+    items.forEach(item => {
+      const inputs = item.querySelectorAll('.field-input');
+      const type = inputs[0]?.value || '';
+      const price = inputs[1]?.value || '';
+      if (type && price) rows += `<tr><td>${esc(type)}</td><td class="price-col">${esc(price)}</td></tr>`;
+    });
+    table.innerHTML = rows;
+    updateCompleteness();
+  }
+
+  // ─── CONTACT ──────────────────────────────────────────────────────────────
+  function updateContactPreview() {
+    const email = v('c-email');
+    const website = v('c-website');
+    const whatsapp = v('c-whatsapp');
+    const instagram = v('c-instagram');
+    const grid = document.getElementById('kit-contact-grid');
+    let html = '';
+    if (email) html += contact('📧', email);
+    if (website) html += contact('🌐', website);
+    if (whatsapp) html += contact('💬', whatsapp);
+    if (instagram) html += contact('📸', instagram);
+    if (!html) html = '<div class="kit-contact-item"><span class="kit-contact-icon">📩</span><span class="kit-contact-val">Add your contact details →</span></div>';
+    grid.innerHTML = html;
+  }
+
+  function contact(icon, val) {
+    return `<div class="kit-contact-item"><span class="kit-contact-icon">${icon}</span><span class="kit-contact-val">${esc(val)}</span></div>`;
+  }
+
+  // ─── COMPLETENESS ─────────────────────────────────────────────────────────
+  function updateCompleteness() {
+    let score = 0;
+    if (v('f-name')) score += 15;
+    if (v('f-bio')) score += 15;
+    if (profilePhotoSrc) score += 15;
+    if (platformData.some(p=>p.followers)) score += 20;
+    if (Object.keys(logoSrcs).length > 0 || v('brand-names')) score += 10;
+    const hasTestimonial = Array.from(document.querySelectorAll('#testimonials-list textarea')).some(t=>t.value.trim());
+    if (hasTestimonial) score += 10;
+    const hasRate = Array.from(document.querySelectorAll('#rates-list .rate-item input:first-child')).some(i=>i.value.trim());
+    if (hasRate) score += 10;
+    if (v('c-email') || v('c-instagram')) score += 5;
+    document.getElementById('completeness-fill').style.width = score + '%';
+    document.getElementById('completeness-pct').textContent = score + '%';
+    document.getElementById('save-indicator').textContent = score >= 50 ? '● Draft saved' : '';
+    updateContactPreview();
+  }
+
+  // ─── SCALE PREVIEW ────────────────────────────────────────────────────────
+  function scalePreview() {
+    const wrap = document.getElementById('preview-scale-wrap');
+    const panel = wrap.parentElement;
+    const availWidth = panel.clientWidth - 64;
+    const kitWidth = 794;
+    const scale = Math.min(1, availWidth / kitWidth);
+    wrap.style.transform = `scale(${scale})`;
+    wrap.style.transformOrigin = 'top left';
+    wrap.parentElement.style.minHeight = (1123 * 4 * scale + 80) + 'px';
+  }
+
+  window.addEventListener('resize', scalePreview);
+
+  // ─── DOWNLOAD PDF ─────────────────────────────────────────────────────────
+  function downloadPDF() {
+    const wrap = document.getElementById('preview-scale-wrap');
+    wrap.style.transform = 'none';
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => { scalePreview(); }, 1000);
+    }, 100);
+  }
+
+  // ─── LOCAL STORAGE ────────────────────────────────────────────────────────
+  function saveToStorage() {
+    try {
+      const formData = {
+        name: v('f-name'), handle: v('f-handle'), tagline: v('f-tagline'),
+        bio: v('f-bio'), location: v('f-location'), niches: v('f-niches'),
+        email: v('c-email'), website: v('c-website'), whatsapp: v('c-whatsapp'), instagram: v('c-instagram'),
+        brandNames: v('brand-names'),
+        platforms: platformData,
+        ages: { '13': document.getElementById('age-13')?.value, '18': document.getElementById('age-18')?.value, '25': document.getElementById('age-25')?.value, '35': document.getElementById('age-35')?.value, '45': document.getElementById('age-45')?.value, '55': document.getElementById('age-55')?.value },
+        gender: { f: document.getElementById('gender-f')?.value, m: document.getElementById('gender-m')?.value, o: document.getElementById('gender-o')?.value },
+        photo: profilePhotoSrc,
+        logos: logoSrcs
+      };
+      localStorage.setItem('nochill_mk_data', JSON.stringify(formData));
+    } catch(e) {}
+  }
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem('nochill_mk_data');
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      setVal('f-name', d.name); setVal('f-handle', d.handle); setVal('f-tagline', d.tagline);
+      setVal('f-bio', d.bio); setVal('f-location', d.location); setVal('f-niches', d.niches);
+      setVal('c-email', d.email); setVal('c-website', d.website); setVal('c-whatsapp', d.whatsapp); setVal('c-instagram', d.instagram);
+      setVal('brand-names', d.brandNames);
+      if (d.platforms) { platformData = d.platforms; renderPlatformList(); }
+      if (d.ages) { Object.keys(d.ages).forEach(k => { const el = document.getElementById('age-'+k); if (el) el.value = d.ages[k]; }); }
+      if (d.gender) { setVal('gender-f', d.gender.f); setVal('gender-m', d.gender.m); setVal('gender-o', d.gender.o); }
+      if (d.photo) { profilePhotoSrc = d.photo; const img = document.getElementById('kit-photo'); img.src = d.photo; img.style.display = 'block'; document.getElementById('kit-photo-placeholder').style.display = 'none'; document.getElementById('photo-preview').src = d.photo; document.getElementById('photo-preview').style.display = 'block'; document.getElementById('photo-placeholder').style.display = 'none'; }
+      if (d.logos) { Object.assign(logoSrcs, d.logos); Object.keys(d.logos).forEach(idx => { const img = document.getElementById(`logo-img-${idx}`); if (img) { img.src = d.logos[idx]; img.style.display = 'block'; const slot = document.getElementById(`logo-${idx}`); if (slot) slot.querySelector('.logo-slot-icon').style.display = 'none'; } }); }
+    } catch(e) {}
+  }
+
+  // ─── HELPERS ──────────────────────────────────────────────────────────────
+  function v(id) { return document.getElementById(id)?.value?.trim() || ''; }
+  function setVal(id, val) { const el = document.getElementById(id); if (el && val) el.value = val; }
+  function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+  function esc(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  checkPaymentReturn();
+
+  // Initialize platform list
+  if (platformData.length === 0) {
+    platformData = [{ name: 'Instagram', followers: '', avgViews: '', er: '' }];
+    renderPlatformList();
+  }
+
+  // Hook up rate and testimonial inputs to preview
+  document.addEventListener('input', e => {
+    if (e.target.closest('#rates-list')) updateRates();
+    if (e.target.closest('#testimonials-list')) updateTestimonials();
+  });
+</script>
+</body>
+</html>

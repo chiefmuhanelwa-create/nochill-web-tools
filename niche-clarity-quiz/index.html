@@ -540,7 +540,7 @@ function renderCat(i){
     });
 }
 
-function esc(s){ return s.replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+function esc(s){ return s.replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 
 function pickRadio(qId, el, val){
     el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));

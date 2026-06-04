@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Income Stream Matcher — Find Your Money | NOCHILL</title>
+  <meta name="description" content="Discover every income stream you qualify for right now. Built specifically for African content creators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0D0D; --card: #141414; --card2: #1A1A1A;
+      --border: #2A2A2A; --border2: #333;
+      --gold: #F5C842; --gold-dim: rgba(245,200,66,0.1); --gold-border: rgba(245,200,66,0.25);
+      --green: #86EFAC; --green-dim: rgba(134,239,172,0.1); --green-border: rgba(134,239,172,0.25);
+      --blue: #93C5FD; --blue-dim: rgba(147,197,253,0.1);
+      --red: #EF4444; --text: #F0F0F0; --muted: #888; --muted2: #555;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --radius: 12px; --radius-sm: 8px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(13,13,13,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .nav-tools { display: flex; gap: 6px; }
+    .nav-pill { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-pill:hover { border-color: var(--gold); color: var(--gold); text-decoration: none; }
+
+    /* SCREENS */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* INTRO */
+    .intro-wrap { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 60px 24px; }
+    .intro-inner { max-width: 600px; width: 100%; text-align: center; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .intro-headline { font-size: clamp(32px, 6vw, 52px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; color: var(--text); margin-bottom: 20px; }
+    .intro-sub { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .intro-stats { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .intro-stat { text-align: center; }
+    .intro-stat-num { font-size: 22px; font-weight: 900; color: var(--gold); }
+    .intro-stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #111; font-family: var(--font); font-size: 15px; font-weight: 800; padding: 15px 32px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.15s; letter-spacing: -0.3px; }
+    .btn-primary:hover { background: #FFD54F; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(245,200,66,0.25); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--muted); font-family: var(--font); font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* FORM */
+    .form-wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+    .form-header { margin-bottom: 36px; }
+    .form-title { font-size: 24px; font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; }
+    .form-sub { font-size: 14px; color: var(--muted); }
+    .q-block { margin-bottom: 28px; }
+    .q-label { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    .q-sublabel { font-size: 12px; color: var(--muted); margin-top: -8px; margin-bottom: 12px; }
+
+    /* PILL SELECTS (multi) */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill-opt { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border2); color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; background: var(--card); user-select: none; }
+    .pill-opt:hover { border-color: var(--gold); color: var(--gold); }
+    .pill-opt.sel { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+    .pill-opt .pill-icon { font-size: 14px; }
+
+    /* RADIO CARDS */
+    .radio-grid { display: flex; flex-direction: column; gap: 8px; }
+    .radio-opt { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); cursor: pointer; transition: all 0.15s; }
+    .radio-opt:hover { border-color: var(--gold-border); background: var(--gold-dim); }
+    .radio-opt.sel { border-color: var(--gold); background: var(--gold-dim); }
+    .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border2); flex-shrink: 0; transition: all 0.15s; }
+    .radio-opt.sel .radio-dot { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 0 3px rgba(245,200,66,0.2); }
+    .radio-text { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .radio-opt.sel .radio-text { color: var(--text); }
+
+    .calc-btn-wrap { text-align: center; padding-top: 12px; }
+    .calc-note { font-size: 12px; color: var(--muted2); margin-top: 12px; }
+
+    /* CALCULATING */
+    .calc-wrap { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+    .calc-inner { max-width: 380px; width: 100%; text-align: center; }
+    .calc-spinner { width: 56px; height: 56px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 28px; }
+    .calc-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .calc-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .calc-steps { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+    .calc-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted2); transition: all 0.3s; }
+    .calc-step.active { color: var(--gold); }
+    .calc-step.done { color: var(--green); }
+    .cs-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: all 0.3s; }
+    .calc-step.active .cs-dot { background: var(--gold); box-shadow: 0 0 8px rgba(245,200,66,0.5); }
+    .calc-step.done .cs-dot { background: var(--green); }
+
+    /* RESULTS */
+    .results-wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    .results-header { margin-bottom: 36px; }
+    .results-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 0.5px; margin-bottom: 16px; }
+    .results-headline { font-size: clamp(22px, 5vw, 36px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 12px; }
+    .results-sub { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .results-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+    .meta-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; }
+
+    /* STREAM CARDS */
+    .streams-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+    .stream-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+    .stream-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+    .stream-card.ready::before { background: var(--green); }
+    .stream-card.close::before { background: var(--gold); }
+    .stream-card.unlock-at::before { background: #444; }
+    .stream-card:hover { border-color: var(--border2); }
+    .stream-card.locked { filter: blur(5px); pointer-events: none; user-select: none; }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .card-name-row { display: flex; align-items: center; gap: 10px; }
+    .card-icon { font-size: 20px; flex-shrink: 0; }
+    .card-name { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+    .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
+    .status-badge.ready { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+    .status-badge.close { background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold); }
+    .status-badge.unlock-at { background: rgba(255,255,255,0.04); border: 1px solid #333; color: #666; }
+
+    .card-range { font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; margin-bottom: 6px; }
+    .card-range span { font-size: 12px; font-weight: 500; color: var(--muted); }
+    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .card-action { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+    .card-action-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 5px; }
+    .card-action-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+    .card-africa { font-size: 12px; color: var(--muted2); line-height: 1.5; padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border-left: 2px solid #333; }
+    .card-africa strong { color: var(--muted); }
+
+    .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .card-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: var(--card2); border: 1px solid var(--border); color: var(--muted2); letter-spacing: 0.3px; }
+    .card-tag.time-low { color: var(--green); border-color: var(--green-border); background: var(--green-dim); }
+    .card-tag.time-med { color: var(--gold); border-color: var(--gold-border); background: var(--gold-dim); }
+    .card-tag.time-high { color: #F87171; border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.08); }
+
+    /* EMAIL GATE */
+    .gate-wrap { position: relative; margin-bottom: 32px; }
+    .gate-overlay { background: linear-gradient(to bottom, transparent 0%, var(--bg) 55%); position: absolute; top: -60px; left: 0; right: 0; bottom: 0; z-index: 10; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px; pointer-events: none; }
+    .gate-card { background: var(--card); border: 1px solid var(--gold-border); border-radius: var(--radius); padding: 28px; text-align: center; pointer-events: all; max-width: 480px; width: 100%; }
+    .gate-icon { font-size: 28px; margin-bottom: 12px; }
+    .gate-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .gate-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+    .gate-form { display: flex; gap: 8px; flex-wrap: wrap; }
+    .gate-input { flex: 1; min-width: 180px; background: var(--card2); border: 1px solid var(--border2); color: var(--text); font-family: var(--font); font-size: 14px; padding: 10px 14px; border-radius: 8px; outline: none; transition: border-color 0.15s; }
+    .gate-input:focus { border-color: var(--gold); }
+    .gate-btn { background: var(--gold); color: #111; font-family: var(--font); font-size: 14px; font-weight: 800; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+    .gate-btn:hover { background: #FFD54F; }
+    .gate-msg { font-size: 12px; margin-top: 10px; color: var(--green); display: none; }
+
+    /* UPSELL */
+    .upsell-card { background: linear-gradient(135deg, #1A1500 0%, #111 100%); border: 1px solid var(--gold-border); border-radius: var(--radius); padding: 28px; margin-top: 32px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+    .upsell-icon { font-size: 32px; flex-shrink: 0; }
+    .upsell-body { flex: 1; min-width: 200px; }
+    .upsell-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .upsell-title { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .upsell-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .upsell-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px; }
+    .upsell-price-now { font-size: 22px; font-weight: 900; color: var(--gold); }
+    .upsell-price-was { font-size: 14px; color: var(--muted2); text-decoration: line-through; }
+    .upsell-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #111; font-family: var(--font); font-size: 13px; font-weight: 800; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+    .upsell-cta:hover { background: #FFD54F; text-decoration: none; }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* FADE IN CARDS */
+    .stream-card { animation: fadeIn 0.4s ease forwards; }
+    .stream-card:nth-child(1) { animation-delay: 0.0s; }
+    .stream-card:nth-child(2) { animation-delay: 0.08s; }
+    .stream-card:nth-child(3) { animation-delay: 0.16s; }
+    .stream-card:nth-child(4) { animation-delay: 0.24s; }
+    .stream-card:nth-child(5) { animation-delay: 0.32s; }
+    .stream-card:nth-child(6) { animation-delay: 0.40s; }
+    .stream-card:nth-child(7) { animation-delay: 0.48s; }
+    .stream-card:nth-child(8) { animation-delay: 0.56s; }
+
+    @media (max-width: 600px) {
+      .nav-tools { display: none; }
+      .card-top { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">NOCHILL</div>
+  <div class="nav-tools">
+    <a href="https://nochill-niche-clarity-quiz.vercel.app" class="nav-pill">Niche Quiz</a>
+    <a href="https://nochill-hooks-generator.vercel.app" class="nav-pill">Hook Generator</a>
+    <a href="https://nochill-rate-card-calculator.vercel.app" class="nav-pill">Rate Card</a>
+  </div>
+</nav>
+
+<div id="page-wrap">
+
+  <!-- ─── INTRO ─────────────────────────────────────────────────────────────── -->
+  <div id="s-intro" class="screen active">
+    <div class="intro-wrap">
+      <div class="intro-inner">
+        <div class="eyebrow">Income Stream Matcher</div>
+        <h1 class="intro-headline">Your audience is<br>already worth money.</h1>
+        <p class="intro-sub">Most African creators are sitting on 5–8 income streams they've never activated. Two minutes. We'll find every one that fits your exact situation — including ones you've probably never heard of.</p>
+        <div class="intro-stats">
+          <div class="intro-stat">
+            <div class="intro-stat-num">12</div>
+            <div class="intro-stat-label">Income streams mapped</div>
+          </div>
+          <div class="intro-stat">
+            <div class="intro-stat-num">100%</div>
+            <div class="intro-stat-label">Africa-specific</div>
+          </div>
+          <div class="intro-stat">
+            <div class="intro-stat-num">2 min</div>
+            <div class="intro-stat-label">To your results</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="showScreen('s-form')">Show me what I'm missing →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FORM ──────────────────────────────────────────────────────────────── -->
+  <div id="s-form" class="screen">
+    <div class="form-wrap">
+      <div class="form-header">
+        <div class="eyebrow" style="text-align:left;">6 quick questions</div>
+        <h2 class="form-title">Let's find your income streams</h2>
+        <p class="form-sub">Answer honestly — the more accurate, the more useful your results.</p>
+      </div>
+
+      <!-- Q1: Platforms -->
+      <div class="q-block">
+        <div class="q-label">1. Which platforms do you create on? <span style="color:var(--muted);font-weight:500">(select all)</span></div>
+        <div class="pill-grid" id="q-platforms">
+          <div class="pill-opt" data-val="youtube" onclick="togglePill(this,'platforms')"><span class="pill-icon">▶️</span> YouTube</div>
+          <div class="pill-opt" data-val="instagram" onclick="togglePill(this,'platforms')"><span class="pill-icon">📸</span> Instagram</div>
+          <div class="pill-opt" data-val="tiktok" onclick="togglePill(this,'platforms')"><span class="pill-icon">🎵</span> TikTok</div>
+          <div class="pill-opt" data-val="facebook" onclick="togglePill(this,'platforms')"><span class="pill-icon">👥</span> Facebook</div>
+          <div class="pill-opt" data-val="twitter" onclick="togglePill(this,'platforms')"><span class="pill-icon">𝕏</span> X / Twitter</div>
+          <div class="pill-opt" data-val="linkedin" onclick="togglePill(this,'platforms')"><span class="pill-icon">💼</span> LinkedIn</div>
+          <div class="pill-opt" data-val="podcast" onclick="togglePill(this,'platforms')"><span class="pill-icon">🎙️</span> Podcast</div>
+          <div class="pill-opt" data-val="blog" onclick="togglePill(this,'platforms')"><span class="pill-icon">✍️</span> Blog / Newsletter</div>
+        </div>
+      </div>
+
+      <!-- Q2: Audience size -->
+      <div class="q-block">
+        <div class="q-label">2. What's your largest single audience on one platform?</div>
+        <div class="radio-grid" id="q-size">
+          <div class="radio-opt" data-val="under500" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">Under 500 — I'm just getting started</span></div>
+          <div class="radio-opt" data-val="500-2k" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">500 – 2,000</span></div>
+          <div class="radio-opt" data-val="2k-10k" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">2,000 – 10,000</span></div>
+          <div class="radio-opt" data-val="10k-50k" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">10,000 – 50,000</span></div>
+          <div class="radio-opt" data-val="50k-100k" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">50,000 – 100,000</span></div>
+          <div class="radio-opt" data-val="100k+" onclick="selectRadio(this,'size')"><div class="radio-dot"></div><span class="radio-text">100,000+</span></div>
+        </div>
+      </div>
+
+      <!-- Q3: Engagement -->
+      <div class="q-block">
+        <div class="q-label">3. How would you describe your audience engagement?</div>
+        <div class="q-sublabel">Comments, DMs, saves, shares — do people actually respond?</div>
+        <div class="radio-grid" id="q-engagement">
+          <div class="radio-opt" data-val="low" onclick="selectRadio(this,'engagement')"><div class="radio-dot"></div><span class="radio-text">Low — mostly silent, rarely comments</span></div>
+          <div class="radio-opt" data-val="medium" onclick="selectRadio(this,'engagement')"><div class="radio-dot"></div><span class="radio-text">Medium — some comments and saves</span></div>
+          <div class="radio-opt" data-val="high" onclick="selectRadio(this,'engagement')"><div class="radio-dot"></div><span class="radio-text">High — regular DMs, saves, comments</span></div>
+          <div class="radio-opt" data-val="very-high" onclick="selectRadio(this,'engagement')"><div class="radio-dot"></div><span class="radio-text">Very high — community feel, people wait for my content</span></div>
+        </div>
+      </div>
+
+      <!-- Q4: Niche -->
+      <div class="q-block">
+        <div class="q-label">4. What's your content niche?</div>
+        <div class="radio-grid" id="q-niche">
+          <div class="radio-opt" data-val="finance" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Finance, Money & Investing</span></div>
+          <div class="radio-opt" data-val="business" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Business, Entrepreneurship & Side Hustles</span></div>
+          <div class="radio-opt" data-val="education" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Education, Skills & Career</span></div>
+          <div class="radio-opt" data-val="lifestyle" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Lifestyle, Vlogs & Personal Brand</span></div>
+          <div class="radio-opt" data-val="beauty" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Beauty, Fashion & Style</span></div>
+          <div class="radio-opt" data-val="fitness" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Fitness, Health & Wellness</span></div>
+          <div class="radio-opt" data-val="food" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Food, Cooking & Recipes</span></div>
+          <div class="radio-opt" data-val="faith" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Faith, Motivation & Spiritual Content</span></div>
+          <div class="radio-opt" data-val="tech" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Tech, Gaming & Digital Tools</span></div>
+          <div class="radio-opt" data-val="other" onclick="selectRadio(this,'niche')"><div class="radio-dot"></div><span class="radio-text">Other / Mixed</span></div>
+        </div>
+      </div>
+
+      <!-- Q5: Time -->
+      <div class="q-block">
+        <div class="q-label">5. How many hours per week can you realistically invest in building income?</div>
+        <div class="radio-grid" id="q-time">
+          <div class="radio-opt" data-val="low" onclick="selectRadio(this,'time')"><div class="radio-dot"></div><span class="radio-text">Less than 5 hours — I have a full-time job or family commitments</span></div>
+          <div class="radio-opt" data-val="medium" onclick="selectRadio(this,'time')"><div class="radio-dot"></div><span class="radio-text">5–15 hours — part-time creator</span></div>
+          <div class="radio-opt" data-val="high" onclick="selectRadio(this,'time')"><div class="radio-dot"></div><span class="radio-text">15–30 hours — serious side hustle mode</span></div>
+          <div class="radio-opt" data-val="full" onclick="selectRadio(this,'time')"><div class="radio-dot"></div><span class="radio-text">30+ hours — content is my main thing or I'm going all in</span></div>
+        </div>
+      </div>
+
+      <!-- Q6: Goals -->
+      <div class="q-block">
+        <div class="q-label">6. What's your income goal? <span style="color:var(--muted);font-weight:500">(select all that apply)</span></div>
+        <div class="pill-grid" id="q-goals">
+          <div class="pill-opt" data-val="passive" onclick="togglePill(this,'goals')">💤 Passive income while I sleep</div>
+          <div class="pill-opt" data-val="active" onclick="togglePill(this,'goals')">💪 Active services I can start now</div>
+          <div class="pill-opt" data-val="deals" onclick="togglePill(this,'goals')">🤝 Brand deals and sponsorships</div>
+          <div class="pill-opt" data-val="products" onclick="togglePill(this,'goals')">📦 Sell my own digital products</div>
+          <div class="pill-opt" data-val="community" onclick="togglePill(this,'goals')">👥 Build a paid community</div>
+        </div>
+      </div>
+
+      <div class="calc-btn-wrap">
+        <button class="btn-primary" onclick="calculate()">Calculate my income streams →</button>
+        <p class="calc-note">Free. No credit card. Just your results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CALCULATING ───────────────────────────────────────────────────────── -->
+  <div id="s-calculating" class="screen">
+    <div class="calc-wrap">
+      <div class="calc-inner">
+        <div class="calc-spinner"></div>
+        <h2 class="calc-title">Finding your streams...</h2>
+        <p class="calc-sub">Scanning 12 income streams against your profile</p>
+        <div class="calc-steps">
+          <div class="calc-step" id="cs1"><div class="cs-dot"></div> Checking platform compatibility</div>
+          <div class="calc-step" id="cs2"><div class="cs-dot"></div> Matching to your audience size</div>
+          <div class="calc-step" id="cs3"><div class="cs-dot"></div> Calculating earnings potential</div>
+          <div class="calc-step" id="cs4"><div class="cs-dot"></div> Ranking by your goals</div>
+          <div class="calc-step" id="cs5"><div class="cs-dot"></div> Adding Africa-specific context</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RESULTS ───────────────────────────────────────────────────────────── -->
+  <div id="s-results" class="screen">
+    <div class="results-wrap">
+      <div class="results-header">
+        <div class="results-badge">✓ <span id="result-count">0</span> income streams found</div>
+        <h2 class="results-headline" id="results-headline">Your income streams</h2>
+        <p class="results-sub" id="results-sub">Based on your profile</p>
+        <div class="results-meta" id="results-meta"></div>
+      </div>
+
+      <div class="streams-grid" id="streams-grid"></div>
+
+      <div class="gate-wrap" id="gate-wrap" style="display:none;">
+        <div style="filter:blur(5px); pointer-events:none; user-select:none;" id="locked-streams"></div>
+        <div class="gate-overlay">
+          <div class="gate-card">
+            <div class="gate-icon">🔓</div>
+            <h3 class="gate-title">Unlock your full income roadmap</h3>
+            <p class="gate-sub">You have <strong id="locked-count">0</strong> more income streams waiting — including action steps, SA-specific platforms, and personalised income estimates. Free, always.</p>
+            <div class="gate-form">
+              <input type="email" id="gate-email" class="gate-input" placeholder="your@email.com">
+              <button class="gate-btn" onclick="unlockStreams()">Unlock free →</button>
+            </div>
+            <div id="gate-msg" class="gate-msg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="upsell-card" id="upsell-card" style="display:none;">
+        <div class="upsell-icon">📘</div>
+        <div class="upsell-body">
+          <div class="upsell-label">Next step</div>
+          <h3 class="upsell-title">You know the streams. Now learn exactly how to activate each one.</h3>
+          <p class="upsell-desc">The Influencer's Code is NOCHILL's flagship guide for African creators — covering brand deals, digital products, community building, and how to turn every income stream above into real, consistent money. Thousands sold.</p>
+          <div class="upsell-price">
+            <span class="upsell-price-now">R299</span>
+            <span class="upsell-price-was">R599</span>
+          </div>
+          <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-cta">Get The Influencer's Code →</a>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:32px;">
+        <button class="btn-ghost" onclick="showScreen('s-form')">← Recalculate with different answers</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ─── STATE ────────────────────────────────────────────────────────────────
+  const inputs = { platforms: [], size: '', engagement: '', niche: '', time: '', goals: [] };
+  const MAILERLITE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNGYwZWNjYTI1NjZhYTQ3ZmE4ZDEwZmNlM2IxZDYwYjk5N2NjNWMxNzM2OTFjMjI1YTE0ZDY4NjZiNjFjNzIyNWRkNDcyZmVkMTJlMjEwMTYiLCJpYXQiOjE3NDgwODE1MDUuODA5MTIsIm5iZiI6MTc0ODA4MTUwNS44MDkxMjMsImV4cCI6NDkwMzc1NTEwNS44MDcwMTcsInN1YiI6IjE0MjcwMzQiLCJzY29wZXMiOltdfQ.bkq9e7KXzXW82UixbLMPKxKqaWxEjXBELYrOgjRW_4dWxPO53fG56gxAnbgvMJp7cpQJEJkWQ1LfMd_L-YR7R2sBRbk11H5dHIH1Jq6zAiJnI97T_y4g-zG9VRuMlBacVFkxFOo_9zLaxRK0GTsNtIgSPkwFXW_Kb7FNZTqpSv6wCdEz6u0IEF2tlm6o5qTwV6RqP1JpGLLjBvqTxMuJlCJP0FuHCAtFjQ4DKJz5pA1ERm1oLyEuPgb9hVMJfZEhpJLyvQTGfHQZJ3Qe1LCOGxqLq3h-K7BgKJL0-oVm-VUP5N_K1xH0YFu_IxqFR5u8AWDyGEr_1dZBPHJCJzf2rLZ3ckDkVD_uHxeVSmWv6qmT-CzKBFfHidqELTN2kFVVTGz-0z1klqFABVkVVMcqgqU3l_5yDtZbumFJPpTWMJnXX_GMsanNBwBuK17WT1yI3I6cqjqEiKhLzZ2ZxdvJkrljwj1g76CgW6-_5Qj0QdqM-eYvBD_gm3BPQD9CRRr9-PXmAyL8FRDZ1XMcGVBE3-pDwx7i5LFQqJHdNIBmXilyGAOiaqsz7kqFdX5XJO0-_mNnZX-MqMxB7EW6D6GCPSFKjD2cz7OB5D6Iu2R7C_rXaOT6YfJL7ykS-uq3r7zJJ5y96eCkrLKUhIHFIoAFKrE';
+  const MAILERLITE_GROUP = '189168267230709259';
+  let gateUnlocked = false;
+  let allStreams = [];
+
+  // ─── STREAM DATA ──────────────────────────────────────────────────────────
+  const STREAMS = [
+    {
+      id: 'ugc', name: 'UGC (User-Generated Content)', icon: '📸',
+      desc: 'Brands pay for content you create and they repurpose in ads — no followers required. Just skill.',
+      minFollowers: 0, minEngagement: 'any', platformReq: 'all', timeLevel: 'medium',
+      tags: ['no-audience-needed', 'start-today'],
+      ranges: { any: [500, 5000] },
+      action: 'Build 3–5 mock UGC videos using products you already own. DM 5 SA brands on Instagram offering R500–R1,500 per piece. No prior UGC experience needed.',
+      africa: '<strong>SA opportunity:</strong> Woolworths, Vodacom, Discovery, Nedbank, Pick n Pay are all buying UGC from creators. Check UGC briefs on LinkedIn and Instagram (#ugccreatorsa).',
+      niches: 'all', goals: ['active', 'products']
+    },
+    {
+      id: 'affiliate', name: 'Affiliate Marketing', icon: '🔗',
+      desc: 'Earn commission when your audience buys through your links. Low effort, builds over time.',
+      minFollowers: 0, minEngagement: 'any', platformReq: 'all', timeLevel: 'low',
+      tags: ['passive', 'start-today'],
+      ranges: { 'under500': [100, 600], '500-2k': [300, 1500], '2k-10k': [800, 4000], '10k-50k': [2500, 12000], '50k-100k': [8000, 35000], '100k+': [20000, 100000] },
+      action: 'Sign up for Takealot Associates today (free, instant approval). Add your link to your bio, stories, and content captions. Start promoting 2–3 products your audience already asks about.',
+      africa: '<strong>SA affiliate programs:</strong> Takealot (up to 8%), Superbalist (7%), Bash.com (10%), Booking.com, Loot.co.za. All pay in rands. Avoid US programs with $100 payout minimums.',
+      niches: 'all', goals: ['passive', 'products']
+    },
+    {
+      id: 'digital-products', name: 'Digital Products', icon: '📦',
+      desc: 'Create once, sell forever. eBooks, presets, guides, templates, Canva kits, planners.',
+      minFollowers: 300, minEngagement: 'medium', platformReq: 'all', timeLevel: 'medium',
+      tags: ['passive', 'high-margin'],
+      ranges: { 'under500': [200, 1200], '500-2k': [600, 4000], '2k-10k': [2000, 12000], '10k-50k': [6000, 35000], '50k-100k': [15000, 80000], '100k+': [40000, 250000] },
+      action: 'Find the #1 question your audience DMs you most. Answer it thoroughly in a Canva PDF. Sell it for R99–R199 on Paystack Storefront — you can go live in one afternoon.',
+      africa: '<strong>Paystack Storefront</strong> lets you sell digital products without a website. Your audience pays via card, EFT, or USSD. Instant setup, rand payments.',
+      niches: 'all', goals: ['passive', 'products']
+    },
+    {
+      id: 'brand-deals', name: 'Brand Sponsorships', icon: '🤝',
+      desc: 'Brands pay you to feature their products or services to your trusted audience.',
+      minFollowers: 1000, minEngagement: 'medium', platformReq: 'all', timeLevel: 'medium',
+      tags: ['deals', 'high-income'],
+      ranges: { 'under500': [0, 0], '500-2k': [400, 1500], '2k-10k': [1200, 5000], '10k-50k': [4000, 15000], '50k-100k': [12000, 40000], '100k+': [40000, 150000] },
+      action: 'Build your media kit first (see Media Kit Builder below). Then pitch 5 brands in your niche per week. Start with smaller local brands — they\'re more accessible and respond faster.',
+      africa: '<strong>Start with SA brands:</strong> Capitec, FNB, Bash.com, Woolworths Food, Dischem, Sorbet, Nando\'s. All have creator budgets and are reachable via LinkedIn or Instagram.',
+      niches: 'all', goals: ['deals']
+    },
+    {
+      id: 'whatsapp-community', name: 'WhatsApp Paid Community', icon: '💬',
+      desc: 'Build a private, paid WhatsApp group with exclusive tips, coaching, and resources.',
+      minFollowers: 500, minEngagement: 'high', platformReq: ['instagram','facebook','tiktok','twitter','youtube'],
+      timeLevel: 'medium',
+      tags: ['recurring', 'africa-specific'],
+      ranges: { 'under500': [0, 0], '500-2k': [500, 3000], '2k-10k': [2000, 10000], '10k-50k': [6000, 30000], '50k-100k': [15000, 80000], '100k+': [40000, 200000] },
+      action: 'Test with a free WhatsApp group for 30 days. When engagement is high and members are active, announce a paid version at R49–R99/month with exclusive content or weekly Q&As.',
+      africa: '<strong>The most uniquely African stream.</strong> WhatsApp has ~96% penetration in SA. Paid communities at R49–R99/month have higher retention than any other platform because your audience lives there.',
+      niches: 'all', goals: ['passive', 'community']
+    },
+    {
+      id: 'coaching', name: 'Coaching & Consulting', icon: '🎯',
+      desc: 'Get paid 1-on-1 or in groups for your knowledge, guidance, and accountability.',
+      minFollowers: 200, minEngagement: 'high', platformReq: 'all', timeLevel: 'high',
+      tags: ['active', 'high-income'],
+      ranges: { 'under500': [1000, 4000], '500-2k': [2000, 8000], '2k-10k': [5000, 20000], '10k-50k': [15000, 60000], '50k-100k': [40000, 150000], '100k+': [80000, 500000] },
+      action: 'Offer 3 free 30-minute coaching sessions to gather testimonials and proof. Then launch a paid offer at R1,500–R3,000/month. WhatsApp coaching retainers are normal in SA.',
+      africa: '<strong>WhatsApp coaching retainers</strong> (R1,500–R4,000/month) are SA\'s fastest-growing consulting format. No Zoom required. Clients get voice notes, check-ins, and accountability from their phone.',
+      niches: 'all', goals: ['active', 'deals']
+    },
+    {
+      id: 'youtube-adsense', name: 'YouTube AdSense', icon: '▶️',
+      desc: 'YouTube pays you directly for ads shown before and during your videos.',
+      minFollowers: 1000, minEngagement: 'any', platformReq: ['youtube'], timeLevel: 'low',
+      tags: ['passive', 'platform-dependent'],
+      ranges: { 'under500': [0, 0], '500-2k': [150, 800], '2k-10k': [400, 2000], '10k-50k': [1200, 6000], '50k-100k': [3500, 18000], '100k+': [10000, 70000] },
+      action: 'You need 1,000 subscribers AND 4,000 watch hours. If you\'re under, post 2× per week with videos 8+ minutes long. Add playlists to increase watch time. Turn on all ad formats.',
+      africa: '<strong>SA YouTube CPM</strong> ranges R4–R14 per 1,000 views. Finance, business, and education content earns 3× more than lifestyle. Longer videos earn significantly more than Shorts.',
+      niches: ['finance', 'business', 'education', 'tech', 'fitness', 'lifestyle'], goals: ['passive']
+    },
+    {
+      id: 'tiktok-creator', name: 'TikTok Creator Rewards', icon: '🎵',
+      desc: 'TikTok pays you directly based on views on qualifying videos.',
+      minFollowers: 10000, minEngagement: 'any', platformReq: ['tiktok'], timeLevel: 'low',
+      tags: ['passive', 'platform-dependent'],
+      ranges: { 'under500': [0,0], '500-2k': [0,0], '2k-10k': [100,500], '10k-50k': [300,1500], '50k-100k': [800,4000], '100k+': [2500,12000] },
+      action: 'Requires 10K followers + 100K views in last 30 days. Post 3× per day for 30 days using trending audio. Enable Creator Rewards in TikTok app under Creator Tools > Monetisation.',
+      africa: '<strong>Available in South Africa from 2024.</strong> Rates are R0.015–R0.04 per view. Educational, finance, and motivational TikToks earn more. Combine with affiliate links for real income.',
+      niches: 'all', goals: ['passive']
+    },
+    {
+      id: 'online-course', name: 'Online Course', icon: '🎓',
+      desc: 'Package your knowledge into a structured course. The highest-margin digital product.',
+      minFollowers: 1000, minEngagement: 'high', platformReq: 'all', timeLevel: 'high',
+      tags: ['passive', 'high-income', 'expertise'],
+      ranges: { 'under500': [0,0], '500-2k': [1000,5000], '2k-10k': [3000,15000], '10k-50k': [10000,50000], '50k-100k': [30000,150000], '100k+': [80000, 1000000] },
+      action: 'Pre-sell before building. Post: "I\'m building a course on [your topic]. First 10 people who DM me get it for half price." If 10 people DM — build it. This de-risks everything.',
+      africa: '<strong>WhatsApp course delivery</strong> (voice notes + PDFs + assignments in a group) has 80%+ completion rates in Africa. No fancy LMS needed. Price R197–R997. Paystack handles payments.',
+      niches: ['finance', 'business', 'education', 'fitness', 'beauty', 'faith', 'food'], goals: ['passive', 'products']
+    },
+    {
+      id: 'speaking', name: 'Speaking & Events', icon: '🎤',
+      desc: 'Get paid to speak at corporates, schools, churches, and conferences.',
+      minFollowers: 3000, minEngagement: 'medium', platformReq: 'all', timeLevel: 'medium',
+      tags: ['active', 'high-income'],
+      ranges: { 'under500': [0,0], '500-2k': [0,0], '2k-10k': [1500,5000], '10k-50k': [4000,15000], '50k-100k': [12000,50000], '100k+': [25000, 150000] },
+      action: 'Speak at 3 events free (schools, churches, community groups) to build a speaker reel and testimonials. Then set your minimum at R3,000. Register on Speakers Inc SA.',
+      africa: '<strong>SA corporates</strong> with DEI and social impact mandates actively seek credible diverse speakers. School circuit pays R1,500–R5,000 per talk. Church keynotes: R2,000–R8,000.',
+      niches: ['business', 'finance', 'education', 'faith', 'fitness', 'lifestyle'], goals: ['active', 'deals']
+    },
+    {
+      id: 'freelance', name: 'Freelance Content Services', icon: '💼',
+      desc: 'Brands and businesses pay for your content skills: editing, strategy, copywriting, management.',
+      minFollowers: 0, minEngagement: 'any', platformReq: 'all', timeLevel: 'high',
+      tags: ['active', 'immediate-income', 'start-today'],
+      ranges: { any: [3000, 30000] },
+      action: 'List your top 3 skills (video editing, copywriting, social media management). Create a 1-page Canva portfolio. Apply for 3 roles per week on LinkedIn or Facebook Groups (SA Freelancers).',
+      africa: '<strong>SA businesses need creators:</strong> social media managers (R5K–R15K/month retainer), video editors (R500–R2K per video), and content writers (R1K–R4K per article) are in high demand.',
+      niches: 'all', goals: ['active']
+    },
+    {
+      id: 'podcast-sponsorship', name: 'Podcast Sponsorships', icon: '🎙️',
+      desc: 'Brands pay for mid-roll or pre-roll mentions in your podcast episodes.',
+      minFollowers: 500, minEngagement: 'any', platformReq: ['podcast'], timeLevel: 'low',
+      tags: ['passive', 'deals'],
+      ranges: { any: [500, 20000] },
+      action: 'Reach 100 consistent listeners before pitching. Then approach 5 brands in your niche offering a 3-episode trial at R1,000–R2,500. Use your download stats from Spotify for Podcasters as proof.',
+      africa: '<strong>SA podcast CPM:</strong> R80–R250 per 1,000 downloads (local brands). The SA podcast market is growing 40% YoY. 500 loyal listeners is enough to start monetising.',
+      niches: 'all', goals: ['passive', 'deals']
+    }
+  ];
+
+  // ─── UI HELPERS ───────────────────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function togglePill(el, key) {
+    const val = el.dataset.val;
+    el.classList.toggle('sel');
+    if (el.classList.contains('sel')) {
+      if (!inputs[key].includes(val)) inputs[key].push(val);
+    } else {
+      inputs[key] = inputs[key].filter(v => v !== val);
+    }
+  }
+
+  function selectRadio(el, key) {
+    document.querySelectorAll(`#q-${key} .radio-opt`).forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    inputs[key] = el.dataset.val;
+  }
+
+  // ─── CALCULATE ────────────────────────────────────────────────────────────
+  function calculate() {
+    if (!inputs.size || !inputs.engagement || !inputs.niche || !inputs.time) {
+      alert('Please answer all questions (2–6) to get your results.');
+      return;
+    }
+    if (inputs.platforms.length === 0) {
+      alert('Please select at least one platform.');
+      return;
+    }
+    showScreen('s-calculating');
+    const steps = ['cs1','cs2','cs3','cs4','cs5'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        if (i > 0) document.getElementById(steps[i-1]).className = 'calc-step done';
+        document.getElementById(id).className = 'calc-step active';
+      }, i * 340);
+    });
+    setTimeout(() => {
+      document.getElementById(steps[steps.length-1]).className = 'calc-step done';
+      renderResults();
+    }, steps.length * 340 + 300);
+  }
+
+  function getFollowerNum(size) {
+    const map = { 'under500': 250, '500-2k': 1250, '2k-10k': 6000, '10k-50k': 30000, '50k-100k': 75000, '100k+': 250000 };
+    return map[size] || 250;
+  }
+
+  function getEngagementNum(eng) {
+    const map = { 'low': 0.8, 'medium': 2.5, 'high': 5, 'very-high': 8 };
+    return map[eng] || 1;
+  }
+
+  function getRange(stream, sizeBucket) {
+    if (stream.ranges.any) return stream.ranges.any;
+    return stream.ranges[sizeBucket] || [0, 0];
+  }
+
+  function getStatus(stream, followers, engagement, platforms) {
+    const platformReq = stream.platformReq;
+    if (platformReq !== 'all') {
+      const compatible = Array.isArray(platformReq) ? platformReq.some(p => platforms.includes(p)) : true;
+      if (!compatible) return 'hidden';
+    }
+    if (stream.minFollowers > followers) {
+      return 'unlock-at';
+    }
+    const minEng = stream.minEngagement;
+    if (minEng === 'high' && engagement < 5) return 'close';
+    if (minEng === 'medium' && engagement < 1.5) return 'close';
+    return 'ready';
+  }
+
+  function getPriority(stream, status, sizeBucket) {
+    let score = 0;
+    if (status === 'ready') score += 100;
+    else if (status === 'close') score += 50;
+    else if (status === 'unlock-at') score += 20;
+    const range = getRange(stream, sizeBucket);
+    score += Math.min(range[1] / 500, 40);
+    if (stream.timeLevel === 'low' && (inputs.time === 'low')) score += 15;
+    if (stream.timeLevel === 'high' && inputs.time === 'full') score += 10;
+    const goalMatch = inputs.goals.some(g => stream.goals.includes(g));
+    if (goalMatch) score += 25;
+    return score;
+  }
+
+  function formatRange(range) {
+    if (!range || range[1] === 0) return null;
+    const fmt = n => n >= 1000 ? `R${(n/1000).toFixed(0)}K` : `R${n}`;
+    return `${fmt(range[0])} – ${fmt(range[1])}`;
+  }
+
+  function renderResults() {
+    const followers = getFollowerNum(inputs.size);
+    const engagement = getEngagementNum(inputs.engagement);
+
+    allStreams = STREAMS
+      .map(s => ({ ...s, status: getStatus(s, followers, engagement, inputs.platforms), range: getRange(s, inputs.size) }))
+      .filter(s => s.status !== 'hidden')
+      .map(s => ({ ...s, priority: getPriority(s, s.status, inputs.size) }))
+      .sort((a, b) => b.priority - a.priority);
+
+    const ready = allStreams.filter(s => s.status === 'ready').length;
+    const close = allStreams.filter(s => s.status === 'close').length;
+
+    document.getElementById('result-count').textContent = allStreams.length;
+    document.getElementById('results-headline').textContent = `${ready} income streams ready for you${close > 0 ? `, ${close} almost there` : ''}.`;
+    document.getElementById('results-sub').textContent = `Based on your ${inputs.size.replace('under500','small')} audience on ${inputs.platforms.join(', ')} in ${inputs.niche} — sorted by what to activate first.`;
+
+    const metaEl = document.getElementById('results-meta');
+    metaEl.innerHTML = `
+      <div class="meta-chip">📍 ${inputs.platforms.map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(', ')}</div>
+      <div class="meta-chip">👥 ${inputs.size.replace('under500','<500')}</div>
+      <div class="meta-chip">🎯 ${inputs.niche.charAt(0).toUpperCase()+inputs.niche.slice(1)}</div>
+    `;
+
+    const FREE_VISIBLE = 4;
+    const visibleStreams = allStreams.slice(0, FREE_VISIBLE);
+    const lockedStreams = allStreams.slice(FREE_VISIBLE);
+
+    const grid = document.getElementById('streams-grid');
+    grid.innerHTML = visibleStreams.map(s => renderCard(s)).join('');
+
+    if (lockedStreams.length > 0) {
+      document.getElementById('locked-count').textContent = lockedStreams.length;
+      document.getElementById('locked-streams').innerHTML = lockedStreams.map(s => renderCard(s)).join('');
+      document.getElementById('gate-wrap').style.display = 'block';
+    } else {
+      document.getElementById('gate-wrap').style.display = 'none';
+    }
+
+    document.getElementById('upsell-card').style.display = 'flex';
+    showScreen('s-results');
+  }
+
+  function renderCard(s) {
+    const range = formatRange(s.range);
+    const statusLabel = s.status === 'ready' ? '✓ Ready Now' : s.status === 'close' ? '◎ Almost There' : `Unlock at ${s.minFollowers >= 1000 ? (s.minFollowers/1000)+'K' : s.minFollowers} followers`;
+    const timeLabel = s.timeLevel === 'low' ? 'Low effort' : s.timeLevel === 'medium' ? 'Medium effort' : 'High effort';
+    const timeClass = s.timeLevel === 'low' ? 'time-low' : s.timeLevel === 'medium' ? 'time-med' : 'time-high';
+    return `
+      <div class="stream-card ${s.status}">
+        <div class="card-top">
+          <div class="card-name-row">
+            <span class="card-icon">${s.icon}</span>
+            <span class="card-name">${s.name}</span>
+          </div>
+          <div class="status-badge ${s.status}">${statusLabel}</div>
+        </div>
+        ${range ? `<div class="card-range">Est. ${range}<span>/month</span></div>` : ''}
+        <p class="card-desc">${s.desc}</p>
+        <div class="card-action">
+          <div class="card-action-label">First step →</div>
+          <div class="card-action-text">${s.action}</div>
+        </div>
+        <div class="card-africa">${s.africa}</div>
+        <div class="card-meta">
+          <span class="card-tag ${timeClass}">🕐 ${timeLabel}</span>
+          ${s.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  // ─── EMAIL UNLOCK ─────────────────────────────────────────────────────────
+  async function unlockStreams() {
+    const email = document.getElementById('gate-email').value.trim();
+    const msg = document.getElementById('gate-msg');
+    if (!email || !email.includes('@')) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Please enter a valid email.';
+      msg.style.display = 'block';
+      return;
+    }
+
+    msg.style.color = 'var(--muted)';
+    msg.textContent = 'Unlocking...';
+    msg.style.display = 'block';
+
+    try {
+      await fetch('https://connect.mailerlite.com/api/subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_KEY}` },
+        body: JSON.stringify({ email, groups: [MAILERLITE_GROUP], fields: { tags: 'tool_income_stream' } })
+      });
+    } catch(e) { /* non-blocking */ }
+
+    const lockedStreams = allStreams.slice(4);
+    const grid = document.getElementById('streams-grid');
+    grid.innerHTML += lockedStreams.map(s => renderCard(s)).join('');
+    document.getElementById('gate-wrap').style.display = 'none';
+
+    msg.style.color = 'var(--green)';
+    msg.textContent = '✓ All streams unlocked!';
+    gateUnlocked = true;
+  }
+</script>
+
+</body>
+</html>
