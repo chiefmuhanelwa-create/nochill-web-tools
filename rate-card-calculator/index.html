@@ -1006,6 +1006,31 @@
       <span class="section-step">1 of 3</span>
     </div>
 
+    <!-- CURRENCY SELECTOR + LIVE RATE -->
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Your Currency</label>
+        <select id="currency-select" onchange="onCurrencyChange(this.value)" style="width:100%; background:var(--card); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:14px; font-weight:500; padding:10px 12px; border-radius:8px; cursor:pointer; appearance:none; -webkit-appearance:none;">
+          <option value="ZAR">🇿🇦 ZAR — South Africa</option>
+          <option value="NGN">🇳🇬 NGN — Nigeria</option>
+          <option value="KES">🇰🇪 KES — Kenya</option>
+          <option value="GHS">🇬🇭 GHS — Ghana</option>
+          <option value="UGX">🇺🇬 UGX — Uganda</option>
+          <option value="TZS">🇹🇿 TZS — Tanzania</option>
+          <option value="EGP">🇪🇬 EGP — Egypt</option>
+          <option value="MAD">🇲🇦 MAD — Morocco</option>
+          <option value="ETB">🇪🇹 ETB — Ethiopia</option>
+          <option value="BWP">🇧🇼 BWP — Botswana</option>
+          <option value="NAD">🇳🇦 NAD — Namibia</option>
+          <option value="ZMW">🇿🇲 ZMW — Zambia</option>
+          <option value="XOF">🌍 XOF — West Africa (CFA)</option>
+        </select>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; min-width:200px;" id="rate-badge">
+        🔄 Fetching live rate...
+      </div>
+    </div>
+
     <div class="edu-banner">
       <span class="edu-banner-icon">💡</span>
       <span>Enter your <strong>real stats</strong>. The more accurate your inputs, the more accurate your rate. Brands will verify — do not inflate your numbers. Honest data = credible rates.</span>
@@ -1277,7 +1302,54 @@ const ADDONS = {
   unlimited_revisions:{ mult: 1.15, label: 'Unlimited Revisions',  desc: 'Standard is 2 rounds of revisions — this covers unlimited' }
 };
 
-const USD_RATE = 18.15; // ZAR per USD (approximate 2024 rate)
+/* ── LIVE EXCHANGE RATES ─────────────────────────────────── */
+const AFRICAN_CURRENCIES = {
+  ZAR: { name: 'South Africa', symbol: 'R',    flag: '🇿🇦' },
+  NGN: { name: 'Nigeria',      symbol: '₦',    flag: '🇳🇬' },
+  KES: { name: 'Kenya',        symbol: 'KSh',  flag: '🇰🇪' },
+  GHS: { name: 'Ghana',        symbol: '₵',    flag: '🇬🇭' },
+  UGX: { name: 'Uganda',       symbol: 'USh',  flag: '🇺🇬' },
+  TZS: { name: 'Tanzania',     symbol: 'TSh',  flag: '🇹🇿' },
+  EGP: { name: 'Egypt',        symbol: 'E£',   flag: '🇪🇬' },
+  MAD: { name: 'Morocco',      symbol: 'MAD',  flag: '🇲🇦' },
+  ETB: { name: 'Ethiopia',     symbol: 'Br',   flag: '🇪🇹' },
+  BWP: { name: 'Botswana',     symbol: 'P',    flag: '🇧🇼' },
+  NAD: { name: 'Namibia',      symbol: 'N$',   flag: '🇳🇦' },
+  ZMW: { name: 'Zambia',       symbol: 'ZK',   flag: '🇿🇲' },
+  XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍' },
+};
+
+let liveRates      = { ZAR: 16.33, USD: 1 }; // fallback until API loads
+let selectedCurrency = 'ZAR';
+let rateLastUpdated  = null;
+
+async function fetchLiveRates() {
+  try {
+    const res  = await fetch('https://open.er-api.com/v6/latest/USD');
+    const data = await res.json();
+    if (data && data.rates) {
+      liveRates      = data.rates;
+      rateLastUpdated = new Date(data.time_last_update_utc);
+      updateRateBadge();
+    }
+  } catch(e) { /* use fallback */ }
+}
+
+function updateRateBadge() {
+  const el = document.getElementById('rate-badge');
+  if (!el) return;
+  const cur  = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
+  const rate = (liveRates[selectedCurrency] || liveRates.ZAR || 16.33);
+  const zarRate = liveRates.ZAR || 16.33;
+  const ts   = rateLastUpdated ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' }) : 'loading...';
+  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-muted); font-size:0.85em">Updated ${ts}</span>`;
+}
+
+function zarToSelected(zarAmount) {
+  const zarPerUSD = liveRates.ZAR || 16.33;
+  const selPerUSD = liveRates[selectedCurrency] || zarPerUSD;
+  return zarAmount * (selPerUSD / zarPerUSD);
+}
 
 /* ── STATE ──────────────────────────────────────────────── */
 let platformCards = [];
@@ -1285,13 +1357,18 @@ let cardCounter   = 0;
 let calcResults   = null;
 
 /* ── HELPERS ────────────────────────────────────────────── */
+function fmtLocal(n) {
+  if (isNaN(n) || n === null) return '0';
+  const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
+  const converted = zarToSelected(n);
+  return cur.symbol + ' ' + Math.round(converted).toLocaleString('en-ZA');
+}
 function fmtZAR(n) {
-  if (isNaN(n) || n === null) return 'R 0';
-  return 'R ' + Math.round(n).toLocaleString('en-ZA');
+  return fmtLocal(n);
 }
 function fmtUSD(n) {
-  const usd = n / USD_RATE;
-  return '≈ $' + Math.round(usd).toLocaleString('en-US');
+  const zarPerUSD = liveRates.ZAR || 16.33;
+  return '≈ $' + Math.round(n / zarPerUSD).toLocaleString('en-US');
 }
 function fmtNum(n) {
   return Math.round(n).toLocaleString('en-ZA');
@@ -1969,19 +2046,18 @@ function renderResults() {
 }
 
 /* ── ANIMATIONS ──────────────────────────────────────────── */
-function countUpZAR(el, target, duration) {
+function countUpZAR(el, zarTarget, duration) {
   if (!el) return;
+  const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
+  const localTarget = zarToSelected(zarTarget);
   const start = Date.now();
-  const end = start + duration;
   function tick() {
-    const now = Date.now();
-    const progress = Math.min((now - start) / duration, 1);
-    // Ease out cubic
+    const progress = Math.min((Date.now() - start) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
-    const current = Math.round(target * eased);
-    el.textContent = 'R ' + current.toLocaleString('en-ZA');
+    const current = Math.round(localTarget * eased);
+    el.textContent = cur.symbol + ' ' + current.toLocaleString('en-ZA');
     if (progress < 1) requestAnimationFrame(tick);
-    else el.textContent = fmtZAR(target);
+    else el.textContent = fmtZAR(zarTarget);
   }
   requestAnimationFrame(tick);
 }
@@ -2057,12 +2133,21 @@ function recalculate() {
   // Data is still in the form — no need to reset. Just go back.
 }
 
+/* ── CURRENCY CHANGE ─────────────────────────────────────── */
+function onCurrencyChange(code) {
+  selectedCurrency = code;
+  updateRateBadge();
+  // If results are showing, re-render them in new currency
+  if (calcResults) renderResults();
+}
+
 /* ── INIT ────────────────────────────────────────────────── */
 function init() {
   buildNicheSelect();
   buildContentTypeCards();
   buildAddonCards();
-  addPlatformCard(); // Add first card by default
+  addPlatformCard();
+  fetchLiveRates(); // Pull live exchange rates on load
 }
 
 document.addEventListener('DOMContentLoaded', init);
