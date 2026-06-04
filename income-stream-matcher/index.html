@@ -391,8 +391,6 @@
 <script>
   // ─── STATE ────────────────────────────────────────────────────────────────
   const inputs = { platforms: [], size: '', engagement: '', niche: '', time: '', goals: [] };
-  const MAILERLITE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNGYwZWNjYTI1NjZhYTQ3ZmE4ZDEwZmNlM2IxZDYwYjk5N2NjNWMxNzM2OTFjMjI1YTE0ZDY4NjZiNjFjNzIyNWRkNDcyZmVkMTJlMjEwMTYiLCJpYXQiOjE3NDgwODE1MDUuODA5MTIsIm5iZiI6MTc0ODA4MTUwNS44MDkxMjMsImV4cCI6NDkwMzc1NTEwNS44MDcwMTcsInN1YiI6IjE0MjcwMzQiLCJzY29wZXMiOltdfQ.bkq9e7KXzXW82UixbLMPKxKqaWxEjXBELYrOgjRW_4dWxPO53fG56gxAnbgvMJp7cpQJEJkWQ1LfMd_L-YR7R2sBRbk11H5dHIH1Jq6zAiJnI97T_y4g-zG9VRuMlBacVFkxFOo_9zLaxRK0GTsNtIgSPkwFXW_Kb7FNZTqpSv6wCdEz6u0IEF2tlm6o5qTwV6RqP1JpGLLjBvqTxMuJlCJP0FuHCAtFjQ4DKJz5pA1ERm1oLyEuPgb9hVMJfZEhpJLyvQTGfHQZJ3Qe1LCOGxqLq3h-K7BgKJL0-oVm-VUP5N_K1xH0YFu_IxqFR5u8AWDyGEr_1dZBPHJCJzf2rLZ3ckDkVD_uHxeVSmWv6qmT-CzKBFfHidqELTN2kFVVTGz-0z1klqFABVkVVMcqgqU3l_5yDtZbumFJPpTWMJnXX_GMsanNBwBuK17WT1yI3I6cqjqEiKhLzZ2ZxdvJkrljwj1g76CgW6-_5Qj0QdqM-eYvBD_gm3BPQD9CRRr9-PXmAyL8FRDZ1XMcGVBE3-pDwx7i5LFQqJHdNIBmXilyGAOiaqsz7kqFdX5XJO0-_mNnZX-MqMxB7EW6D6GCPSFKjD2cz7OB5D6Iu2R7C_rXaOT6YfJL7ykS-uq3r7zJJ5y96eCkrLKUhIHFIoAFKrE';
-  const MAILERLITE_GROUP = '189168267230709259';
   let gateUnlocked = false;
   let allStreams = [];
 
@@ -705,10 +703,10 @@
     msg.style.display = 'block';
 
     try {
-      await fetch('https://connect.mailerlite.com/api/subscribers', {
+      await fetch('/api/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_KEY}` },
-        body: JSON.stringify({ email, groups: [MAILERLITE_GROUP], fields: { tags: 'tool_income_stream' } })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tags: ['tool_income_stream'] })
       });
     } catch(e) { /* non-blocking */ }
 
