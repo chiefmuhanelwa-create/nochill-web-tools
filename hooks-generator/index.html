@@ -1434,16 +1434,20 @@
         <h2 style="font-size:28px; font-weight:900; letter-spacing:-1px; color:var(--text); margin-bottom:12px; line-height:1.2;">Your hooks are working.<br>Now go unlimited.</h2>
         <p style="font-size:15px; color:#888; margin-bottom:36px; line-height:1.7;">You've seen what the R×A×C×U^B framework can do. Upgrade to generate as many hooks as you need — every topic, every platform, every day.</p>
 
-        <!-- Upgrade CTA -->
-        <a href="https://contentcreatorhub.online/subscribe" target="_blank" style="display:flex; align-items:center; justify-content:space-between; background:var(--gold); color:#111; font-weight:800; font-size:15px; padding:18px 24px; border-radius:12px; text-decoration:none; margin-bottom:12px; transition:transform 0.15s, box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(245,200,66,0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-          <div style="text-align:left;">
-            <div>Hooks Generator — Unlimited</div>
-            <div style="font-size:12px; font-weight:600; opacity:0.7; margin-top:2px;">Every topic. Every platform. Every day.</div>
+        <!-- Upgrade via Paystack -->
+        <div style="background:var(--card); border:1px solid rgba(245,200,66,0.3); border-radius:12px; padding:24px; text-align:left; margin-bottom:12px;">
+          <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Subscribe with Paystack — R49/month</p>
+          <p style="font-size:12px; color:#666; margin-bottom:16px;">Card, bank transfer, USSD — all African payment methods supported. Cancel any time.</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;" id="paystack-form">
+            <input type="email" id="paystack-email" placeholder="your@email.com" style="flex:1; min-width:200px; background:#1A1A1A; border:1px solid #444; color:var(--text); font-family:inherit; font-size:14px; padding:11px 14px; border-radius:8px; outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#444'">
+            <button onclick="startPaystackPayment()" id="paystack-btn" style="display:flex; align-items:center; gap:8px; background:var(--gold); color:#111; font-family:inherit; font-size:14px; font-weight:800; padding:11px 20px; border-radius:8px; cursor:pointer; white-space:nowrap; border:none; transition:all 0.15s;">
+              Subscribe — R49/mo →
+            </button>
           </div>
-          <div style="font-size:20px; font-weight:900;">R49<span style="font-size:13px; font-weight:600;">/mo</span></div>
-        </a>
+          <div id="paystack-msg" style="font-size:13px; margin-top:10px; display:none;"></div>
+        </div>
 
-        <div style="position:relative; margin:24px 0; display:flex; align-items:center; gap:12px;">
+        <div style="position:relative; margin:20px 0; display:flex; align-items:center; gap:12px;">
           <div style="flex:1; height:1px; background:#333;"></div>
           <span style="font-size:12px; color:#666; font-weight:600; white-space:nowrap;">or get 3 more free</span>
           <div style="flex:1; height:1px; background:#333;"></div>
@@ -1890,6 +1894,109 @@
       }
     }
 
+    // ─── PAYSTACK PAYMENT ────────────────────────────────────────────────────
+    async function startPaystackPayment() {
+      const email = document.getElementById('paystack-email').value.trim();
+      const msgEl = document.getElementById('paystack-msg');
+      const btn   = document.getElementById('paystack-btn');
+
+      if (!email || !email.includes('@')) {
+        msgEl.textContent = 'Please enter a valid email to continue.';
+        msgEl.style.color = '#EF4444';
+        msgEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Opening payment…';
+      msgEl.textContent = 'Connecting to Paystack…';
+      msgEl.style.color = '#888';
+      msgEl.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/create-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || 'Payment init failed');
+        }
+
+        // Store reference so we can verify after redirect
+        localStorage.setItem('nochill_ps_ref', data.reference);
+        localStorage.setItem('nochill_ps_email', email);
+
+        // Redirect to Paystack hosted page
+        window.location.href = data.authorization_url;
+
+      } catch (err) {
+        msgEl.textContent = `Error: ${err.message}. Try again or email chiefmuhanelwa@gmail.com`;
+        msgEl.style.color = '#EF4444';
+        btn.disabled = false;
+        btn.textContent = 'Subscribe — R49/mo →';
+      }
+    }
+
+    // ─── VERIFY PAYMENT ON RETURN ────────────────────────────────────────────
+    async function checkPaymentReturn() {
+      const params = new URLSearchParams(window.location.search);
+      const refFromUrl = params.get('reference') || params.get('trxref');
+      const refFromStorage = localStorage.getItem('nochill_ps_ref');
+      const reference = refFromUrl || refFromStorage;
+
+      if (!reference) return;
+
+      // Clean URL without reloading
+      if (refFromUrl) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      try {
+        const res = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          // Clear stored reference
+          localStorage.removeItem('nochill_ps_ref');
+          const email = data.email || localStorage.getItem('nochill_ps_email') || '';
+          localStorage.removeItem('nochill_ps_email');
+
+          // Unlock unlimited usage
+          unlockUsage();
+
+          // Tag in MailerLite as paid subscriber
+          if (email) {
+            try {
+              await fetch('https://connect.mailerlite.com/api/subscribers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MAILERLITE_KEY}` },
+                body: JSON.stringify({ email, groups: [MAILERLITE_GROUP], tags: ['hooks_subscriber', 'paid_r49'] })
+              });
+            } catch(e) { /* non-blocking */ }
+          }
+
+          // Show success and go to form
+          showScreen('s-paywall');
+          const container = document.querySelector('#s-paywall .container');
+          container.innerHTML = `
+            <div style="width:64px;height:64px;background:rgba(134,239,172,0.12);border:1px solid rgba(134,239,172,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px;">✓</div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:12px;">Payment Confirmed</div>
+            <h2 style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text);margin-bottom:12px;">Unlimited hooks unlocked.</h2>
+            <p style="font-size:15px;color:#888;margin-bottom:36px;line-height:1.7;">You now have unlimited access to the Hook Generator. Go build something people can't scroll past.</p>
+            <button onclick="showScreen('s-form'); updateUsageBadge();" style="background:var(--gold);color:#111;font-family:inherit;font-size:15px;font-weight:800;padding:14px 28px;border-radius:10px;cursor:pointer;border:none;">Start Generating →</button>
+          `;
+          setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 3500);
+        }
+      } catch(e) { /* silently ignore verify errors on load */ }
+    }
+
     // ─── PAYWALL EMAIL HANDLER ────────────────────────────────────────────────
     async function paywallEmailSubmit() {
       const email = document.getElementById('paywall-email').value.trim();
@@ -1940,6 +2047,9 @@
 
     // Init usage badge
     updateUsageBadge();
+
+    // Check if returning from Paystack payment
+    checkPaymentReturn();
   </script>
 
 </body>
