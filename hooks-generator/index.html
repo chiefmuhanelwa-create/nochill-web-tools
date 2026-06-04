@@ -232,8 +232,51 @@
     .generate-btn:hover { opacity: 0.9; }
 
     /* RESULTS */
+    /* ── ANIMATIONS ── */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(14px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes formExit {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-10px); }
+    }
+    @keyframes copyFlash {
+      0%   { background: #22C55E; color: #000; transform: scale(1.04); }
+      100% { background: #22C55E; color: #000; transform: scale(1); }
+    }
+    @keyframes spinOnce {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
     .results { display: none; }
     .results.visible { display: block; }
+    .results.visible .results-header { animation: slideUp .35s ease both; }
+    .results.visible .regen-back-btns { animation: slideUp .35s ease .35s both; }
+
+    .hook-card {
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .hook-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.45);
+    }
+    .hook-card.entering {
+      animation: cardIn .35s ease both;
+    }
+    .formCard-exit { animation: formExit .2s ease forwards; }
+
+    .copy-btn.copied {
+      animation: copyFlash .15s ease;
+      background: #22C55E !important;
+      color: #000 !important;
+    }
+    .regen-btn.spinning .regen-icon { display: inline-block; animation: spinOnce .5s ease; }
 
     .results-header {
       margin-bottom: 20px;
@@ -752,10 +795,24 @@
         container.appendChild(card);
       });
 
-      // Show results
-      document.getElementById('formCard').style.display = 'none';
-      document.getElementById('results').classList.add('visible');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Stagger card entrance animations
+      container.querySelectorAll('.hook-card').forEach((card, i) => {
+        card.style.opacity = '0';
+        setTimeout(() => {
+          card.classList.add('entering');
+          card.style.opacity = '';
+        }, i * 75);
+      });
+
+      // Show results with transition
+      const formCard = document.getElementById('formCard');
+      formCard.classList.add('formCard-exit');
+      setTimeout(() => {
+        formCard.style.display = 'none';
+        formCard.classList.remove('formCard-exit');
+        document.getElementById('results').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 180);
     }
 
     function copyHook(btn, text) {
