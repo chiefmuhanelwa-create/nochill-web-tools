@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SA Creator Rate Card Calculator — NOCHILL</title>
+  <meta name="description" content="Find out exactly what to charge brands for content deals in South Africa. Backed by real 2024 SA CPM data.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111111;
+      --gold: #F5C842;
+      --gold-light: #FFF9E6;
+      --white: #FFFFFF;
+      --gray: #6B6B6B;
+      --gray-light: #F5F5F5;
+      --red: #E53E3E;
+      --green: #276749;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--black);
+      padding: 24px 20px 0;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--white);
+      max-width: 700px;
+      margin: 0 auto 12px;
+    }
+
+    .header h1 span { color: var(--gold); }
+
+    .header-sub {
+      font-size: 16px;
+      color: #AAAAAA;
+      max-width: 500px;
+      margin: 0 auto 24px;
+      line-height: 1.5;
+    }
+
+    .header-proof {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 16px 20px;
+      border-top: 1px solid #1E1E1E;
+      flex-wrap: wrap;
+    }
+
+    .proof-item {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .proof-item strong { color: var(--gold); }
+
+    /* MAIN */
+    .main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* FORM */
+    .form-card {
+      background: #1A1A1A;
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-bottom: 24px;
+    }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 28px;
+    }
+
+    .field-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    label .hint {
+      font-weight: 400;
+      color: #777;
+      font-size: 13px;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      background: #111111;
+      border: 1.5px solid #333;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 16px;
+      color: var(--white);
+      font-family: var(--font);
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    input[type="number"]::placeholder { color: #444; }
+
+    /* Platform radio group */
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .radio-option {
+      position: relative;
+    }
+
+    .radio-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .radio-option label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #111;
+      border: 1.5px solid #333;
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .radio-option input:checked + label {
+      border-color: var(--gold);
+      background: #1E1A0A;
+      color: var(--gold);
+    }
+
+    .radio-icon { font-size: 18px; }
+
+    /* Engagement input with % */
+    .input-with-suffix {
+      position: relative;
+    }
+
+    .input-with-suffix input {
+      padding-right: 50px;
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #555;
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    /* CTA button */
+    .calculate-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 17px;
+      font-weight: 800;
+      padding: 18px 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .calculate-btn:hover { opacity: 0.9; }
+    .calculate-btn:active { transform: scale(0.99); }
+
+    /* RESULTS */
+    .results {
+      display: none;
+    }
+
+    .results.visible { display: block; }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .result-header p {
+      font-size: 14px;
+      color: #777;
+      margin-top: 8px;
+    }
+
+    .result-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .result-header h2 span { color: var(--gold); }
+
+    .rate-cards {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .rate-card {
+      background: #1A1A1A;
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .rate-card.featured {
+      background: #1E1A0A;
+      border: 1.5px solid var(--gold);
+    }
+
+    .rate-card-left {}
+
+    .rate-type {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .rate-card.featured .rate-type { color: var(--gold); }
+
+    .rate-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+
+    .rate-desc {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .rate-amount {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    .rate-card.featured .rate-amount { color: var(--gold); }
+
+    /* Post type breakdown */
+    .breakdown-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .breakdown-row {
+      background: #1A1A1A;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .breakdown-post-type {
+      font-size: 14px;
+      color: #CCC;
+    }
+
+    .breakdown-rate {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    /* The honest warning box */
+    .honest-box {
+      background: #111;
+      border: 1px solid #2A2A2A;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .honest-box-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .honest-box p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    .honest-box p strong { color: #CCC; }
+
+    /* Email capture */
+    .email-capture {
+      background: var(--gold);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .email-capture h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .email-capture p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .email-form {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .email-form input[type="email"] {
+      background: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 16px;
+      color: var(--black);
+      font-family: var(--font);
+    }
+
+    .email-form input[type="email"]::placeholder { color: #AAA; }
+    .email-form input[type="email"]:focus {
+      outline: 2px solid var(--black);
+    }
+
+    .email-submit {
+      background: var(--black);
+      color: var(--gold);
+      font-size: 16px;
+      font-weight: 800;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .email-submit:hover { opacity: 0.85; }
+
+    .email-privacy {
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    /* Success state */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .success-msg.visible { display: block; }
+
+    .success-msg h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .success-msg p {
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 24px 20px;
+      border-top: 1px solid #1A1A1A;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    .footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* Recalculate button */
+    .recalc-btn {
+      background: transparent;
+      border: 1.5px solid #333;
+      color: #777;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 24px;
+      font-family: var(--font);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .recalc-btn:hover {
+      border-color: #555;
+      color: #CCC;
+    }
+
+    @media (min-width: 480px) {
+      .email-form { flex-direction: row; }
+      .email-form input[type="email"] { flex: 1; }
+      .email-submit { white-space: nowrap; }
+    }
+
+    @media (max-width: 380px) {
+      .radio-group { grid-template-columns: 1fr; }
+      .form-card { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">NOCHILL × contentcreatorhub.online</div>
+    <h1>What Should You <span>Actually Charge</span> for a Brand Deal?</h1>
+    <p class="header-sub">Find out in 60 seconds. Backed by real 2024 South African CPM rate data — not guesses.</p>
+    <div class="header-proof">
+      <span class="proof-item">Based on <strong>real 2024 SA CPM data</strong></span>
+      <span class="proof-item"><strong>Free</strong> — no credit card</span>
+      <span class="proof-item">Used by <strong>SA creators</strong></span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- INPUT FORM -->
+    <div class="form-card" id="formCard">
+      <div class="form-title">Your Numbers</div>
+      <div class="form-subtitle">Fill in your real stats — the more accurate your inputs, the more useful your rate card.</div>
+
+      <div class="field-group">
+        <label for="followers">Total followers (your primary platform) <span class="hint">— combine platforms if you cross-post</span></label>
+        <input type="number" id="followers" placeholder="e.g. 5000" min="100" max="10000000">
+      </div>
+
+      <div class="field-group">
+        <label for="engagement">Average engagement rate <span class="hint">— (likes + comments + shares) ÷ followers × 100</span></label>
+        <div class="input-with-suffix">
+          <input type="number" id="engagement" placeholder="e.g. 4.5" step="0.1" min="0.1" max="100">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Primary platform</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="platform" id="facebook" value="facebook">
+            <label for="facebook"><span class="radio-icon">📘</span> Facebook</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="platform" id="tiktok" value="tiktok">
+            <label for="tiktok"><span class="radio-icon">🎵</span> TikTok</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="platform" id="instagram" value="instagram">
+            <label for="instagram"><span class="radio-icon">📷</span> Instagram</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="platform" id="youtube" value="youtube">
+            <label for="youtube"><span class="radio-icon">▶️</span> YouTube</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="niche">Your content niche</label>
+        <select id="niche">
+          <option value="" disabled selected>Select your niche...</option>
+          <option value="finance">Finance / Money / Tax</option>
+          <option value="business">Business / Entrepreneurship</option>
+          <option value="entertainment">Entertainment / Comedy / Memes</option>
+          <option value="lifestyle">Lifestyle / Wellness / Travel</option>
+          <option value="fashion">Fashion / Beauty / Style</option>
+          <option value="food">Food / Recipes / Cooking</option>
+          <option value="education">Education / Tutorials / How-to</option>
+          <option value="parenting">Parenting / Family</option>
+          <option value="sports">Sports / Fitness</option>
+          <option value="creator">Content Creation / Social Media / Marketing</option>
+          <option value="faith">Faith / Religion / Motivation</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button class="calculate-btn" onclick="calculateRates()">Calculate My Rate Card →</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+
+      <div class="result-header">
+        <p>Your personalised rate card</p>
+        <h2>Based on your <span id="resultFollowers">—</span> followers in <span id="resultNiche">—</span></h2>
+      </div>
+
+      <div class="rate-cards">
+        <div class="rate-card">
+          <div class="rate-card-left">
+            <div class="rate-type">Minimum</div>
+            <div class="rate-name">Floor Rate</div>
+            <div class="rate-desc">Never go below this. Ever.</div>
+          </div>
+          <div class="rate-amount" id="minRate">—</div>
+        </div>
+
+        <div class="rate-card featured">
+          <div class="rate-card-left">
+            <div class="rate-type">Recommended</div>
+            <div class="rate-name">Your Asking Rate</div>
+            <div class="rate-desc">Start every negotiation here.</div>
+          </div>
+          <div class="rate-amount" id="recRate">—</div>
+        </div>
+
+        <div class="rate-card">
+          <div class="rate-card-left">
+            <div class="rate-type">Premium</div>
+            <div class="rate-name">High-Value Rate</div>
+            <div class="rate-desc">For established brands with budget.</div>
+          </div>
+          <div class="rate-amount" id="premRate">—</div>
+        </div>
+      </div>
+
+      <p class="breakdown-title">Rate by post type</p>
+      <div class="breakdown-grid" id="breakdown"></div>
+
+      <div class="honest-box">
+        <div class="honest-box-title">The honest truth</div>
+        <p id="honestText">—</p>
+      </div>
+
+      <button class="recalc-btn" onclick="recalculate()">← Change my inputs</button>
+
+      <!-- EMAIL CAPTURE -->
+      <div class="email-capture" id="emailCapture">
+        <h3>Send your rate card to your inbox</h3>
+        <p>Get a PDF version + the guide on how to pitch these rates to brands — without lowering them.</p>
+        <form class="email-form" onsubmit="submitEmail(event)">
+          <input type="email" id="emailInput" placeholder="your@email.com" required>
+          <button type="submit" class="email-submit">Send it →</button>
+        </form>
+        <p class="email-privacy">No spam. Unsubscribe anytime. Join 4,895+ SA creators.</p>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <h3>Done. Check your inbox.</h3>
+        <p>Your rate card is on its way. Also check promotions/spam if it doesn't arrive in 2 minutes.<br><br>
+        Want to know how to pitch these rates without the brand saying no? <a href="https://contentcreatorhub.online" style="color: #111; font-weight: 700;">That's Product 08 →</a></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Rate data sourced from <strong>SA CPM Rate Card 2024</strong> — real market data, not estimates.</p>
+    <p>Built by <a href="https://contentcreatorhub.online">NOCHILL PTY LTD</a> for African creators.</p>
+  </div>
+
+  <script>
+    // SA CPM rates by niche (R per 1,000 impressions — 2024 data)
+    const CPM_RATES = {
+      finance:       { cpm: 543, label: 'Finance / Money' },
+      business:      { cpm: 362, label: 'Business / Entrepreneurship' },
+      entertainment: { cpm: 362, label: 'Entertainment / Comedy' },
+      creator:       { cpm: 320, label: 'Content Creation / Marketing' },
+      education:     { cpm: 300, label: 'Education / Tutorials' },
+      lifestyle:     { cpm: 280, label: 'Lifestyle / Wellness' },
+      sports:        { cpm: 271, label: 'Sports / Fitness' },
+      fashion:       { cpm: 271, label: 'Fashion / Beauty' },
+      food:          { cpm: 260, label: 'Food / Cooking' },
+      parenting:     { cpm: 250, label: 'Parenting / Family' },
+      faith:         { cpm: 240, label: 'Faith / Motivation' },
+      other:         { cpm: 250, label: 'Your niche' },
+    };
+
+    // Platform reach multipliers (how much of your audience sees one post)
+    const PLATFORM_REACH = {
+      facebook:  0.06,  // organic reach ~6%
+      tiktok:    0.35,  // TikTok pushes to non-followers
+      instagram: 0.12,
+      youtube:   0.25,
+    };
+
+    // Platform labels
+    const PLATFORM_LABELS = {
+      facebook: 'Facebook',
+      tiktok: 'TikTok',
+      instagram: 'Instagram',
+      youtube: 'YouTube',
+    };
+
+    // Post type multipliers (relative to a single feed post/video)
+    const POST_TYPES = {
+      'Feed Post / Video': 1.0,
+      'Story (24hr)': 0.4,
+      'Reel / Short': 0.85,
+      '3-Post Campaign': 2.5,
+      'Story + Post Combo': 1.3,
+    };
+
+    function formatZAR(amount) {
+      if (amount >= 1000) {
+        return 'R' + Math.round(amount / 100) * 100 >= 10000
+          ? 'R' + (Math.round(amount / 1000) + 'K')
+          : 'R' + Math.round(amount).toLocaleString('en-ZA');
+      }
+      return 'R' + Math.round(amount).toLocaleString('en-ZA');
+    }
+
+    function calculateRates() {
+      const followers = parseInt(document.getElementById('followers').value);
+      const engagement = parseFloat(document.getElementById('engagement').value);
+      const platform = document.querySelector('input[name="platform"]:checked')?.value;
+      const niche = document.getElementById('niche').value;
+
+      // Validation
+      if (!followers || followers < 100) {
+        alert('Please enter your follower count (minimum 100).');
+        return;
+      }
+      if (!engagement || engagement < 0.1) {
+        alert('Please enter your engagement rate (e.g. 3.5 for 3.5%).');
+        return;
+      }
+      if (!platform) {
+        alert('Please select your primary platform.');
+        return;
+      }
+      if (!niche) {
+        alert('Please select your niche.');
+        return;
+      }
+
+      const nicheData = CPM_RATES[niche];
+      const reach = PLATFORM_REACH[platform];
+      const estimatedReach = followers * reach;
+      const engagementBonus = Math.min(engagement / 3, 2.5); // cap at 2.5x bonus
+
+      // Base rate: (estimated reach / 1000) × CPM × engagement bonus
+      const baseRate = (estimatedReach / 1000) * nicheData.cpm * engagementBonus;
+
+      // Apply floor (no creator should price below R150 for any deliverable)
+      const minRate = Math.max(baseRate * 0.65, 150);
+      const recRate = Math.max(baseRate, 200);
+      const premRate = Math.max(baseRate * 1.6, 350);
+
+      // Update result header
+      document.getElementById('resultFollowers').textContent =
+        followers >= 1000 ? (followers / 1000).toFixed(1) + 'K' : followers;
+      document.getElementById('resultNiche').textContent = nicheData.label;
+
+      // Update rate cards
+      document.getElementById('minRate').textContent = formatZAR(minRate);
+      document.getElementById('recRate').textContent = formatZAR(recRate);
+      document.getElementById('premRate').textContent = formatZAR(premRate);
+
+      // Generate post type breakdown
+      const breakdownEl = document.getElementById('breakdown');
+      breakdownEl.innerHTML = '';
+      for (const [type, multiplier] of Object.entries(POST_TYPES)) {
+        const rate = recRate * multiplier;
+        const row = document.createElement('div');
+        row.className = 'breakdown-row';
+        row.innerHTML = `
+          <span class="breakdown-post-type">${type}</span>
+          <span class="breakdown-rate">${formatZAR(rate)}</span>
+        `;
+        breakdownEl.appendChild(row);
+      }
+
+      // Honest text based on follower range
+      const honestEl = document.getElementById('honestText');
+      if (followers < 1000) {
+        honestEl.innerHTML = `You have under 1,000 followers. Most brands won't reach out yet — and that's fine. <strong>Your first income shouldn't come from brand deals.</strong> It should come from your own digital product or WhatsApp selling. Build that first. Brand deals follow the audience, not the other way around.`;
+      } else if (followers < 5000) {
+        honestEl.innerHTML = `You're in micro-creator range (under 5K). Most brands will try to offer you freebies. Your rate card above is your counter-offer. <strong>The brands worth working with will pay it.</strong> The ones who won't — let them go. One paid deal is worth 10 freebie deals financially and psychologically.`;
+      } else if (followers < 20000) {
+        honestEl.innerHTML = `At ${followers >= 1000 ? (followers/1000).toFixed(1) + 'K' : followers} followers in the ${nicheData.label.toLowerCase()} space, you are a legitimate monetisable creator. <strong>The biggest mistake at your level is undercharging.</strong> SA brands have budgets. They're testing you when they offer freebies — your rate card is your answer to that test.`;
+      } else {
+        honestEl.innerHTML = `At your follower level, brands should already be approaching you with real budgets. <strong>If they're still offering freebies, they're testing your confidence.</strong> Your recommended rate (${formatZAR(recRate)} per post) is conservative for your size. The premium tier (${formatZAR(premRate)}) is what you should be aiming for with established brands.`;
+      }
+
+      // Show results
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('results').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function recalculate() {
+      document.getElementById('formCard').style.display = 'block';
+      document.getElementById('results').classList.remove('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitEmail(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      if (!email) return;
+
+      // MailerLite API call
+      // Replace MAIERLITE_ACCOUNT_ID and FORM_ID with real values before deploying
+      const MAILERLITE_GROUP_ID = 'REPLACE_WITH_GROUP_ID';
+      const MAILERLITE_API_KEY = 'REPLACE_WITH_API_KEY';
+
+      fetch('https://connect.mailerlite.com/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${MAILERLITE_API_KEY}`
+        },
+        body: JSON.stringify({
+          email: email,
+          groups: [MAILERLITE_GROUP_ID],
+          fields: { tool_source: 'rate_card_calculator' }
+        })
+      }).catch(() => {
+        // Silent fail — show success regardless (don't block UX on API error)
+      });
+
+      // Show success regardless (prevents blocking UX on network issues)
+      document.getElementById('emailCapture').style.display = 'none';
+      document.getElementById('successMsg').classList.add('visible');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Hook Generator for African Creators — NOCHILL</title>
+  <meta name="description" content="Generate scroll-stopping hooks for your content. Built for SA creators on Facebook, TikTok and Instagram. Based on real viral hook data.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111111;
+      --gold: #F5C842;
+      --gold-dark: #C49A1A;
+      --white: #FFFFFF;
+      --gray: #6B6B6B;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    .header {
+      padding: 28px 20px 0;
+      text-align: center;
+      border-bottom: 1px solid #1E1E1E;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(26px, 5.5vw, 44px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    h1 .gold { color: var(--gold); }
+
+    .header-sub {
+      font-size: 16px;
+      color: #888;
+      max-width: 480px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
+    }
+
+    .view-data {
+      display: inline-flex;
+      gap: 20px;
+      padding: 14px 20px;
+      border-top: 1px solid #1A1A1A;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .view-stat {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .view-stat strong { color: var(--gold); }
+
+    /* MAIN */
+    .main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* FORM */
+    .form-card {
+      background: #1A1A1A;
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .form-row {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    label .sub { font-weight: 400; color: #666; font-size: 13px; }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      background: #111;
+      border: 1.5px solid #2A2A2A;
+      border-radius: 10px;
+      padding: 13px 15px;
+      font-size: 15px;
+      color: var(--white);
+      font-family: var(--font);
+      transition: border-color 0.2s;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    input::placeholder, textarea::placeholder { color: #3A3A3A; }
+
+    /* Hook type chips */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      position: relative;
+    }
+
+    .chip input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .chip label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #111;
+      border: 1.5px solid #2A2A2A;
+      border-radius: 100px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #777;
+      transition: all 0.2s;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    .chip input:checked + label {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: #1E1A0A;
+    }
+
+    .chip-views {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+
+    /* Platform pills */
+    .platform-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .platform-pill {
+      position: relative;
+    }
+
+    .platform-pill input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .platform-pill label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #111;
+      border: 1.5px solid #2A2A2A;
+      border-radius: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+      margin-bottom: 0;
+    }
+
+    .platform-pill input:checked + label {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: #1E1A0A;
+    }
+
+    .generate-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 17px;
+      font-weight: 800;
+      padding: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .generate-btn:hover { opacity: 0.9; }
+
+    /* RESULTS */
+    .results { display: none; }
+    .results.visible { display: block; }
+
+    .results-header {
+      margin-bottom: 20px;
+    }
+
+    .results-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .results-title {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .results-title span { color: var(--gold); }
+
+    /* Hook output cards */
+    .hook-cards {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hook-card {
+      background: #1A1A1A;
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .hook-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hook-type-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: #1E1A0A;
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+
+    .hook-views {
+      font-size: 12px;
+      color: #444;
+    }
+
+    .hook-text {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .hook-why {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .copy-btn {
+      background: #111;
+      border: 1px solid #2A2A2A;
+      color: #888;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+
+    .copy-btn:hover {
+      border-color: #555;
+      color: #CCC;
+    }
+
+    .copy-btn.copied {
+      border-color: #276749;
+      color: #4CAF7D;
+    }
+
+    /* Regen + more */
+    .action-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .regen-btn {
+      flex: 1;
+      background: #1A1A1A;
+      border: 1.5px solid #2A2A2A;
+      color: #CCC;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+
+    .regen-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    .back-btn {
+      background: transparent;
+      border: 1.5px solid #2A2A2A;
+      color: #555;
+      font-size: 14px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover { border-color: #444; color: #999; }
+
+    /* Email capture */
+    .email-capture {
+      background: var(--gold);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .email-capture h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .email-capture p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 18px;
+    }
+
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .email-form input {
+      background: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #111;
+      font-family: var(--font);
+    }
+
+    .email-form input:focus { outline: 2px solid #111; }
+
+    .email-submit {
+      background: var(--black);
+      color: var(--gold);
+      font-size: 16px;
+      font-weight: 800;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+
+    .email-privacy {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .success-msg {
+      display: none;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .success-msg.visible { display: block; }
+
+    .success-msg h3 { font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px; }
+    .success-msg p { font-size: 14px; color: #444; }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #1A1A1A;
+    }
+
+    .footer p { font-size: 13px; color: #3A3A3A; }
+    .footer a { color: var(--gold); text-decoration: none; }
+
+    @media (min-width: 480px) {
+      .email-form { flex-direction: row; }
+      .email-form input { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand">NOCHILL × contentcreatorhub.online</div>
+    <h1>Write Hooks That <span class="gold">Stop the Scroll</span></h1>
+    <p class="header-sub">Enter your topic. Get 5 proven hook formulas — built for SA creators on Facebook and TikTok.</p>
+    <div class="view-data">
+      <span class="view-stat">Curiosity Gap: <strong>101M views</strong></span>
+      <span class="view-stat">Comparison: <strong>58M views</strong></span>
+      <span class="view-stat">FOMO: <strong>51M views</strong></span>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- INPUT FORM -->
+    <div class="form-card" id="formCard">
+
+      <div class="form-row">
+        <label for="topic">What is your post about? <span class="sub">— be specific, not vague</span></label>
+        <input type="text" id="topic" placeholder="e.g. How I made R5,000 from my WhatsApp in 2 weeks">
+      </div>
+
+      <div class="form-row">
+        <label>Which hook types? <span class="sub">— select all you want to try</span></label>
+        <div class="chip-group">
+          <div class="chip">
+            <input type="checkbox" id="curiosity" value="curiosity" checked>
+            <label for="curiosity">Curiosity Gap <span class="chip-views">101M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="comparison" value="comparison" checked>
+            <label for="comparison">Comparison <span class="chip-views">58M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="fomo" value="fomo" checked>
+            <label for="fomo">FOMO <span class="chip-views">51M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="pattern" value="pattern" checked>
+            <label for="pattern">Pattern Interrupt <span class="chip-views">33M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="shock" value="shock">
+            <label for="shock">Shock Factor <span class="chip-views">11M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="question" value="question">
+            <label for="question">Question Hook <span class="chip-views">9M views</span></label>
+          </div>
+          <div class="chip">
+            <input type="checkbox" id="authority" value="authority">
+            <label for="authority">Authority + Value <span class="chip-views">1.2M views</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Primary platform</label>
+        <div class="platform-group">
+          <div class="platform-pill">
+            <input type="radio" name="platform" id="fb" value="facebook" checked>
+            <label for="fb">📘 Facebook</label>
+          </div>
+          <div class="platform-pill">
+            <input type="radio" name="platform" id="tt" value="tiktok">
+            <label for="tt">🎵 TikTok</label>
+          </div>
+          <div class="platform-pill">
+            <input type="radio" name="platform" id="ig" value="instagram">
+            <label for="ig">📷 Instagram</label>
+          </div>
+        </div>
+      </div>
+
+      <button class="generate-btn" onclick="generateHooks()">Generate My Hooks →</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+
+      <div class="results-header">
+        <div class="results-label">Your hooks for</div>
+        <div class="results-title">"<span id="topicDisplay">—</span>"</div>
+      </div>
+
+      <div class="hook-cards" id="hookCards"></div>
+
+      <div class="action-row">
+        <button class="regen-btn" onclick="generateHooks()">↺ Generate new versions</button>
+        <button class="back-btn" onclick="goBack()">← Edit topic</button>
+      </div>
+
+      <!-- EMAIL CAPTURE -->
+      <div class="email-capture" id="emailCapture">
+        <h3>Get 10 more hooks for your niche — free</h3>
+        <p>Enter your email and we'll send you 10 more SA-adapted hooks + the Caption Formula guide.</p>
+        <form class="email-form" onsubmit="submitEmail(event)">
+          <input type="email" id="emailInput" placeholder="your@email.com" required>
+          <button type="submit" class="email-submit">Send them →</button>
+        </form>
+        <p class="email-privacy">No spam. Join 4,895+ SA creators.</p>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <h3>Done. Check your inbox.</h3>
+        <p>Your extra hooks are on the way. Want the full NOCHILL Caption Formula?<br>
+        <a href="https://contentcreatorhub.online" style="color: #111; font-weight:700;">Get it for R149 →</a></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>Hook data from real SA creator performance. Built by <a href="https://contentcreatorhub.online">NOCHILL PTY LTD</a>.</p>
+  </div>
+
+  <script>
+    // Hook formula templates
+    // {T} = topic keyword extracted from input
+    // {X} = a specific number/detail
+    // {PLATFORM} = platform-specific language
+
+    const HOOK_TEMPLATES = {
+      curiosity: {
+        label: 'Curiosity Gap',
+        views: '101M',
+        why: 'Never reveals the full answer in the hook. Forces them to read/watch to find out. The most powerful hook type on Facebook and TikTok.',
+        formulas: [
+          'The {T} secret nobody in South Africa is talking about (and it\'s not what you think)',
+          'I tried {T} for 30 days. Here\'s what I found that changed everything.',
+          'This is why your {T} isn\'t working — and it has nothing to do with effort.',
+          'Everyone is doing {T} wrong. I have proof.',
+          'The one thing about {T} that most people learn too late.',
+          'What they don\'t tell you about {T} in South Africa.',
+        ]
+      },
+      comparison: {
+        label: 'Comparison',
+        views: '58M',
+        why: 'Shows the contrast between two states or approaches. The "FREE vs PAID" and "BEFORE vs AFTER" format. Immediate visual contrast.',
+        formulas: [
+          'FREE way to do {T} vs the way that actually gets results.',
+          'Before I learned {T}: {struggling}. After: {winning}.',
+          'What R0 gets you with {T} vs what R150 gets you.',
+          'R350 creator vs R10,000/month creator — the only difference is {T}.',
+          'Phone camera vs R10,000 camera: which one actually matters for {T}?',
+          'Most creators do {T} like this. The ones getting results do it like this.',
+        ]
+      },
+      fomo: {
+        label: 'FOMO',
+        views: '51M',
+        why: '"Never do X without doing Y first." Creates urgency by implying the viewer is missing something critical they should already have.',
+        formulas: [
+          'Never post about {T} without doing this first.',
+          'If you\'re doing {T} and not doing this — you\'re wasting your time.',
+          'Don\'t start {T} until you\'ve seen this.',
+          'Stop doing {T} until you read this. Seriously.',
+          'Every creator I know who failed at {T} skipped this one step.',
+          'The {T} mistake I see South African creators make every single day.',
+        ]
+      },
+      pattern: {
+        label: 'Pattern Interrupt',
+        views: '33M+',
+        why: 'Breaks the scroll pattern in the first second. One word. A statement that contradicts expectation. Makes them stop before they decide to.',
+        formulas: [
+          'Stop. Before you post another {T}, read this.',
+          'No.',
+          'Wait.',
+          'I was wrong about {T}.',
+          'Nobody asked me this about {T}. So I\'m saying it anyway.',
+          'Unpopular opinion about {T} (but it\'s true):',
+          'This is not a {T} post. It\'s a results post.',
+        ]
+      },
+      shock: {
+        label: 'Shock Factor',
+        views: '11M+',
+        why: 'An unexpected or counterintuitive statement. Breaks expectation. Makes them stop to check if what they read is real.',
+        formulas: [
+          'I lost {X} doing {T}. Here\'s what I learned.',
+          '{T} nearly destroyed my brand. The story behind it.',
+          'Nobody is going to pay you for {T}. Unless you do this.',
+          'I made R{X} from {T} and I\'m not proud of how.',
+          'Your {T} is costing you money every single day you don\'t fix this.',
+          'The truth about {T} that most creators are too scared to say.',
+        ]
+      },
+      question: {
+        label: 'Question Hook',
+        views: '9M+',
+        why: 'Must be SPECIFIC. "Do you want to grow?" is weak. "Why does your Facebook reach drop after you hit 500 followers?" is strong. The more specific the question, the more it feels personal.',
+        formulas: [
+          'Why is your {T} working for everyone except you?',
+          'What would you do differently with {T} if you knew you couldn\'t fail?',
+          'How long have you been trying {T} without seeing real results?',
+          'What if {T} was actually easier than you think — and you\'ve been overthinking it?',
+          'When was the last time {T} actually moved the needle for you?',
+          'Are you doing {T} because it works — or because everyone else is doing it?',
+        ]
+      },
+      authority: {
+        label: 'Authority + Value',
+        views: '1.2M',
+        why: 'Lead with specific credentials AND specific numbers. Not "I\'ve been doing this for years" — that\'s weak. "I made R600,000 from social media starting with a R6,000 phone" — that\'s an authority hook.',
+        formulas: [
+          'I\'ve done {T} for {X} creators. Here\'s what actually works.',
+          'After {X} months testing {T}, here is what I found.',
+          'I made R{X} from {T}. This is the exact system I used.',
+          '{X} creators in South Africa tested this {T} strategy. The results:',
+          'I teach {T} to 4,000+ SA creators. This is the one thing they all miss.',
+          'From R0 to R{X} using {T}. Step by step.',
+        ]
+      }
+    };
+
+    // Platform-specific adjustments
+    const PLATFORM_NOTES = {
+      facebook: 'Best for Facebook: longer hooks (2–3 lines), faith references, SA cultural references, survival language.',
+      tiktok: 'Best for TikTok: hooks must work as the FIRST SPOKEN WORD in a video. Short. Punchy. 1–2 sentences max.',
+      instagram: 'Best for Instagram: hooks need to earn the "more" tap. Create intrigue without giving anything away.'
+    };
+
+    let currentTopic = '';
+    let selectedTypes = [];
+    let currentPlatform = '';
+
+    function extractTopicKeyword(fullTopic) {
+      // Extract key noun/concept from the topic for template insertion
+      const lower = fullTopic.toLowerCase();
+      // Try to find a short meaningful phrase
+      if (fullTopic.length < 40) return fullTopic.toLowerCase();
+      // Otherwise try to extract first meaningful clause
+      const phrases = fullTopic.split(/,|\.|\band\b|\bor\b/);
+      return phrases[0].trim().toLowerCase() || fullTopic.toLowerCase();
+    }
+
+    function fillTemplate(template, topic) {
+      const keyword = extractTopicKeyword(topic);
+      // Fill {T} with the extracted keyword
+      let filled = template.replace(/{T}/g, keyword);
+      // Fill {X} with a plausible number based on topic
+      filled = filled.replace(/{X}/g, Math.floor(Math.random() * 9 + 1) * 1000);
+      // Fill emotional placeholders
+      filled = filled.replace(/{struggling}/g, 'struggling with ' + keyword);
+      filled = filled.replace(/{winning}/g, keyword + ' is working');
+      // Capitalise first letter
+      return filled.charAt(0).toUpperCase() + filled.slice(1);
+    }
+
+    function generateHooks() {
+      const topic = document.getElementById('topic').value.trim();
+      const platform = document.querySelector('input[name="platform"]:checked')?.value;
+
+      if (!topic) {
+        alert('Please enter what your post is about.');
+        return;
+      }
+
+      selectedTypes = Array.from(document.querySelectorAll('.chip input:checked')).map(el => el.value);
+
+      if (selectedTypes.length === 0) {
+        alert('Please select at least one hook type.');
+        return;
+      }
+
+      currentTopic = topic;
+      currentPlatform = platform;
+
+      // Update topic display
+      document.getElementById('topicDisplay').textContent =
+        topic.length > 60 ? topic.substring(0, 60) + '...' : topic;
+
+      // Generate hook cards
+      const container = document.getElementById('hookCards');
+      container.innerHTML = '';
+
+      selectedTypes.forEach(type => {
+        const hookData = HOOK_TEMPLATES[type];
+        if (!hookData) return;
+
+        // Pick a random formula from this type
+        const formula = hookData.formulas[Math.floor(Math.random() * hookData.formulas.length)];
+        const hookText = fillTemplate(formula, topic);
+
+        const card = document.createElement('div');
+        card.className = 'hook-card';
+        card.innerHTML = `
+          <div class="hook-card-top">
+            <span class="hook-type-badge">${hookData.label}</span>
+            <span class="hook-views">${hookData.views} views</span>
+          </div>
+          <div class="hook-text">"${hookText}"</div>
+          <div class="hook-why">${hookData.why}</div>
+          <button class="copy-btn" onclick="copyHook(this, '${hookText.replace(/'/g, "\\'")}')">Copy hook</button>
+        `;
+        container.appendChild(card);
+      });
+
+      // Show results
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('results').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function copyHook(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy hook';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy hook';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    function goBack() {
+      document.getElementById('formCard').style.display = 'block';
+      document.getElementById('results').classList.remove('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitEmail(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+
+      const MAILERLITE_GROUP_ID = 'REPLACE_WITH_GROUP_ID';
+      const MAILERLITE_API_KEY = 'REPLACE_WITH_API_KEY';
+
+      fetch('https://connect.mailerlite.com/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${MAILERLITE_API_KEY}`
+        },
+        body: JSON.stringify({
+          email: email,
+          groups: [MAILERLITE_GROUP_ID],
+          fields: { tool_source: 'hooks_generator' }
+        })
+      }).catch(() => {});
+
+      document.getElementById('emailCapture').style.display = 'none';
+      document.getElementById('successMsg').classList.add('visible');
+    }
+  </script>
+
+</body>
+</html>

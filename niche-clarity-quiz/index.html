@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niche Clarity Assessment — NOCHILL PTY LTD</title>
+    <meta name="description" content="24 questions. AI-powered analysis. Discover your profitable content niche and get your personalised NOCHILL product roadmap.">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --black:#111111;--card:#1A1A1A;--card2:#222222;--border:#2E2E2E;
+            --gold:#F5C842;--gold-bg:rgba(245,200,66,0.12);--gold-border:rgba(245,200,66,0.35);
+            --white:#FFFFFF;--gray:#888888;--gray2:#BBBBBB;
+            --green:#22C55E;--green-bg:rgba(34,197,94,0.1);--green-border:rgba(34,197,94,0.3);
+            --red:#EF4444;--red-bg:rgba(239,68,68,0.1);--red-border:rgba(239,68,68,0.3);
+            --radius:12px;--radius-sm:8px;
+        }
+        html{scroll-behavior:smooth}
+        body{background:var(--black);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+        /* ── PROGRESS BAR ── */
+        #progressWrap{position:fixed;top:0;left:0;right:0;height:3px;background:var(--border);z-index:999}
+        #progressFill{height:100%;background:var(--gold);transition:width .5s ease;width:0%}
+
+        /* ── SCREENS ── */
+        .screen{display:none;min-height:100vh;padding:56px 20px 48px;max-width:640px;margin:0 auto}
+        .screen.active{display:block;animation:fadeUp .35s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ── INTRO ── */
+        .brand-tag{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:40px;display:block}
+        .h1{font-size:clamp(28px,7vw,44px);font-weight:900;line-height:1.1;margin-bottom:18px}
+        .h1 em{font-style:normal;color:var(--gold)}
+        .lead{font-size:16px;color:var(--gray2);line-height:1.7;margin-bottom:32px}
+        .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+        .pill{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:7px 14px;font-size:13px;color:var(--gray2);display:flex;align-items:center;gap:5px}
+        .pill b{color:var(--gold)}
+        .cat-preview{display:flex;flex-direction:column;gap:6px;margin-bottom:36px}
+        .cat-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--gray2)}
+        .cat-row .ico{width:30px;height:30px;background:var(--gold-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+
+        /* ── BUTTONS ── */
+        .btn{width:100%;padding:15px 24px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:opacity .2s,transform .1s}
+        .btn:active{transform:scale(.98)}
+        .btn-gold{background:var(--gold);color:var(--black)}
+        .btn-gold:hover{opacity:.9}
+        .btn-gold:disabled{opacity:.4;cursor:not-allowed}
+        .btn-ghost{background:transparent;color:var(--gray);border:1px solid var(--border);font-size:14px;padding:12px 20px}
+        .btn-ghost:hover{color:var(--white);border-color:var(--gray)}
+        .nav-row{display:flex;gap:10px;margin-top:24px}
+        .nav-row .btn-ghost{flex:1}
+        .nav-row .btn-gold{flex:2.5}
+
+        /* ── QUIZ HEADER ── */
+        .qz-step{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+        .qz-title{font-size:clamp(20px,5vw,28px);font-weight:800;margin-bottom:4px}
+        .qz-sub{font-size:14px;color:var(--gray);margin-bottom:28px}
+
+        /* ── QUESTION CARDS ── */
+        .q-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 14px;margin-bottom:12px;transition:border-color .2s}
+        .q-card.has-answer{border-color:rgba(245,200,66,.3)}
+        .q-label{font-size:14px;font-weight:600;line-height:1.5;margin-bottom:14px;color:var(--white)}
+        .q-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--gold-bg);border-radius:50%;font-size:10px;font-weight:800;color:var(--gold);margin-right:6px;flex-shrink:0;vertical-align:middle}
+
+        /* Radio */
+        .opts{display:flex;flex-direction:column;gap:7px}
+        .opt{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--gray2);transition:all .15s}
+        .opt:hover{border-color:var(--gold-border);background:var(--gold-bg);color:var(--white)}
+        .opt.sel{border-color:var(--gold);background:var(--gold-bg);color:var(--white)}
+        .dot{width:16px;height:16px;border:2px solid var(--border);border-radius:50%;flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+        .opt.sel .dot{border-color:var(--gold);background:var(--gold)}
+        .opt.sel .dot::after{content:'';width:5px;height:5px;background:var(--black);border-radius:50%}
+
+        /* Checkbox */
+        .chk-box{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+        .opt.sel .chk-box{border-color:var(--gold);background:var(--gold)}
+        .opt.sel .chk-box::after{content:'✓';font-size:10px;font-weight:900;color:var(--black)}
+
+        /* Textarea */
+        .q-textarea{width:100%;background:var(--black);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;font-size:14px;color:var(--white);font-family:inherit;resize:vertical;min-height:76px;transition:border-color .2s;line-height:1.5}
+        .q-textarea:focus{outline:none;border-color:var(--gold)}
+        .q-textarea::placeholder{color:var(--gray)}
+
+        /* Validation flash */
+        .q-card.invalid .q-textarea{border-color:#F59E0B;animation:shake .3s ease}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+        /* ── EMAIL SCREEN ── */
+        .email-icon{width:56px;height:56px;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:24px}
+        .h2{font-size:clamp(22px,5vw,32px);font-weight:800;line-height:1.2;margin-bottom:12px}
+        .preview-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0 16px;margin-bottom:24px}
+        .preview-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--gray2)}
+        .preview-row:last-child{border-bottom:none}
+        .preview-row .star{color:var(--gold);font-size:12px}
+        .field-group{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+        .field{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;font-size:15px;color:var(--white);font-family:inherit;transition:border-color .2s}
+        .field:focus{outline:none;border-color:var(--gold)}
+        .field::placeholder{color:var(--gray)}
+        .err-box{background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;color:#FCA5A5;display:none;margin-top:10px}
+        .privacy{text-align:center;font-size:11px;color:var(--gray);margin-top:12px}
+
+        /* ── LOADING SCREEN ── */
+        .loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 20px}
+        .spinner{width:52px;height:52px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:28px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .load-title{font-size:20px;font-weight:700;margin-bottom:8px}
+        .load-sub{font-size:14px;color:var(--gray);max-width:260px;line-height:1.6}
+        .load-steps{margin-top:28px;display:flex;flex-direction:column;gap:10px;text-align:left;width:100%;max-width:260px}
+        .load-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--gray);transition:color .3s}
+        .load-step.active{color:var(--gold)}
+        .load-step.done{color:var(--green)}
+        .step-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .3s}
+        .load-step.active .step-dot{background:var(--gold)}
+        .load-step.done .step-dot{background:var(--green)}
+
+        /* ── RESULTS SCREEN ── */
+        .results-wrap{padding-top:24px}
+        .r-badge{display:inline-block;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px}
+        .r-name{font-size:clamp(22px,5vw,30px);font-weight:900;margin-bottom:4px}
+        .r-date{font-size:13px;color:var(--gray);margin-bottom:36px}
+
+        /* Score ring */
+        .score-center{display:flex;flex-direction:column;align-items:center;margin-bottom:40px}
+        .ring-wrap{position:relative;width:130px;height:130px;margin-bottom:14px}
+        .ring-wrap svg{transform:rotate(-90deg)}
+        .ring-bg{fill:none;stroke:var(--border);stroke-width:9}
+        .ring-fill{fill:none;stroke:var(--gold);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+        .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .ring-num{font-size:34px;font-weight:900;color:var(--gold);line-height:1}
+        .ring-of{font-size:11px;color:var(--gray);letter-spacing:1px;text-transform:uppercase}
+        .score-desc{font-size:14px;color:var(--gray2);text-align:center;max-width:280px}
+
+        /* Section */
+        .r-section{margin-bottom:32px}
+        .r-sec-title{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+
+        /* Niche statement */
+        .niche-box{background:var(--card);border:1px solid var(--gold);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden}
+        .niche-box::before{content:'\201C';position:absolute;top:-14px;left:14px;font-size:72px;color:var(--gold-bg);font-family:Georgia,serif;line-height:1;pointer-events:none}
+        .niche-text{font-size:16px;font-weight:600;line-height:1.65;position:relative;z-index:1}
+        .niche-hint{font-size:11px;color:var(--gray);margin-top:10px}
+
+        /* Called Expert */
+        .ce-box{background:linear-gradient(135deg,rgba(245,200,66,.09),rgba(245,200,66,.03));border:1px solid var(--gold);border-radius:var(--radius);padding:22px;margin-bottom:32px;display:none}
+        .ce-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+        .ce-title{font-size:19px;font-weight:800;margin-bottom:8px}
+        .ce-body{font-size:13px;color:var(--gray2);line-height:1.65;margin-bottom:16px}
+        .btn-ce{display:block;background:var(--gold);color:var(--black);padding:14px;border-radius:10px;font-size:15px;font-weight:800;text-align:center;text-decoration:none;transition:opacity .2s}
+        .btn-ce:hover{opacity:.9}
+
+        /* Category bars */
+        .cat-bars{display:flex;flex-direction:column;gap:13px}
+        .bar-row{display:flex;flex-direction:column;gap:5px}
+        .bar-head{display:flex;justify-content:space-between;font-size:12px}
+        .bar-name{color:var(--gray2)}
+        .bar-val{color:var(--gold);font-weight:700}
+        .bar-track{height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+        .bar-fill{height:100%;background:var(--gold);border-radius:100px;transition:width 1.3s cubic-bezier(.4,0,.2,1)}
+
+        /* Strengths / Gaps */
+        .str-list,.gap-list{display:flex;flex-direction:column;gap:9px}
+        .str-item,.gap-item{display:flex;align-items:flex-start;gap:11px;padding:13px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--gray2);line-height:1.55}
+        .str-ico{color:var(--green);flex-shrink:0;margin-top:1px;font-size:15px}
+        .gap-ico{color:var(--gold);flex-shrink:0;margin-top:1px;font-size:14px}
+
+        /* Opportunity */
+        .opp-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius);padding:18px;font-size:14px;color:var(--white);line-height:1.65}
+
+        /* Product cards */
+        .prod-cards{display:flex;flex-direction:column;gap:12px}
+        .prod-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-decoration:none;transition:border-color .2s,background .2s}
+        .prod-card:hover{border-color:var(--gold-border);background:rgba(245,200,66,.04)}
+        .prod-card.first{border-color:var(--gold)}
+        .prod-badge{display:inline-block;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:9px}
+        .prod-card.first .prod-badge{background:var(--gold);color:var(--black)}
+        .prod-card:not(.first) .prod-badge{background:var(--border);color:var(--gray)}
+        .prod-name{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+        .prod-price{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:7px}
+        .prod-reason{font-size:12px;color:var(--gray);line-height:1.5}
+        .prod-arrow{display:flex;align-items:center;gap:5px;margin-top:11px;font-size:12px;font-weight:600;color:var(--gold)}
+
+        /* Next steps */
+        .steps-list{display:flex;flex-direction:column;gap:9px}
+        .step-item{display:flex;align-items:flex-start;gap:13px;padding:13px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+        .step-num{width:24px;height:24px;background:var(--gold);color:var(--black);border-radius:50%;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .step-text{font-size:13px;color:var(--gray2);line-height:1.55;padding-top:3px}
+
+        /* Footer */
+        .r-footer{text-align:center;padding:32px 0 16px;font-size:11px;color:var(--gray)}
+        .r-footer a{color:var(--gold);text-decoration:none}
+
+        /* Responsive */
+        @media(max-width:400px){
+            .screen{padding:50px 14px 40px}
+            .pills{gap:6px}
+            .pill{font-size:11px;padding:6px 11px}
+        }
+    </style>
+</head>
+<body>
+
+<div id="progressWrap"><div id="progressFill"></div></div>
+
+<!-- ╔══════════════════════════════╗
+     ║  SCREEN 0 — INTRO           ║
+     ╚══════════════════════════════╝ -->
+<div class="screen active" id="s-intro">
+    <span class="brand-tag">NOCHILL PTY LTD</span>
+    <h1 class="h1">Find Your <em>Profitable Niche</em><br>in 12 Minutes.</h1>
+    <p class="lead">24 questions across 6 categories. Our AI reads your answers and delivers a complete niche assessment — your score, your niche statement, and the exact products built for where you are right now.</p>
+    <div class="pills">
+        <div class="pill"><b>24</b> questions</div>
+        <div class="pill"><b>6</b> categories</div>
+        <div class="pill"><b>~12 min</b></div>
+        <div class="pill"><b>AI</b> powered</div>
+        <div class="pill"><b>Free</b></div>
+    </div>
+    <div class="cat-preview">
+        <div class="cat-row"><div class="ico">🔥</div>Passion &amp; Knowledge</div>
+        <div class="cat-row"><div class="ico">🎯</div>Skills &amp; Expertise</div>
+        <div class="cat-row"><div class="ico">👥</div>Audience &amp; Their Problems</div>
+        <div class="cat-row"><div class="ico">💰</div>Market &amp; Monetization</div>
+        <div class="cat-row"><div class="ico">📱</div>Content Reality</div>
+        <div class="cat-row"><div class="ico">🚀</div>Vision &amp; Goals</div>
+    </div>
+    <button class="btn btn-gold" onclick="startQuiz()">Start My Assessment →</button>
+</div>
+
+<!-- ╔══════════════════════════════╗
+     ║  SCREEN 1 — QUIZ            ║
+     ╚══════════════════════════════╝ -->
+<div class="screen" id="s-quiz">
+    <div class="qz-step" id="qzStep"></div>
+    <div class="qz-title" id="qzTitle"></div>
+    <div class="qz-sub" id="qzSub"></div>
+    <div id="qzBody"></div>
+    <div class="nav-row">
+        <button class="btn btn-ghost" id="btnBack" onclick="nav(-1)">← Back</button>
+        <button class="btn btn-gold" id="btnNext" onclick="nav(1)">Continue →</button>
+    </div>
+</div>
+
+<!-- ╔══════════════════════════════╗
+     ║  SCREEN 2 — EMAIL           ║
+     ╚══════════════════════════════╝ -->
+<div class="screen" id="s-email">
+    <div class="email-icon">📊</div>
+    <h2 class="h2">Your Analysis<br>is Ready.</h2>
+    <p class="lead" style="margin-bottom:24px">Enter your details below to unlock your full personalised niche report.</p>
+    <div class="preview-box">
+        <div class="preview-row"><span class="star">✦</span>Your Niche Clarity Score (0–100)</div>
+        <div class="preview-row"><span class="star">✦</span>Your personalised Niche Statement</div>
+        <div class="preview-row"><span class="star">✦</span>6-category score breakdown</div>
+        <div class="preview-row"><span class="star">✦</span>Your 3 strengths &amp; 2 gaps</div>
+        <div class="preview-row"><span class="star">✦</span>Your biggest untapped opportunity</div>
+        <div class="preview-row"><span class="star">✦</span>2 products matched to where you are now</div>
+        <div class="preview-row"><span class="star">✦</span>3 specific next action steps</div>
+    </div>
+    <div class="field-group">
+        <input type="text" id="uName" class="field" placeholder="Your first name" autocomplete="given-name">
+        <input type="email" id="uEmail" class="field" placeholder="Your email address" autocomplete="email">
+    </div>
+    <button class="btn btn-gold" id="btnResults" onclick="submitEmail()">Unlock My Results →</button>
+    <div class="err-box" id="emailErr">Please enter your first name and a valid email address.</div>
+    <p class="privacy">No spam. Your results are sent here. Unsubscribe anytime.</p>
+</div>
+
+<!-- ╔══════════════════════════════╗
+     ║  SCREEN 3 — LOADING         ║
+     ╚══════════════════════════════╝ -->
+<div class="screen" id="s-loading">
+    <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="load-title">Analysing Your Profile…</div>
+        <div class="load-sub">Our AI is reading your 24 answers and building your personalised niche assessment.</div>
+        <div class="load-steps">
+            <div class="load-step" id="ls1"><div class="step-dot"></div>Reading your answers</div>
+            <div class="load-step" id="ls2"><div class="step-dot"></div>Calculating your niche score</div>
+            <div class="load-step" id="ls3"><div class="step-dot"></div>Building your niche statement</div>
+            <div class="load-step" id="ls4"><div class="step-dot"></div>Matching products to your stage</div>
+        </div>
+    </div>
+</div>
+
+<!-- ╔══════════════════════════════╗
+     ║  SCREEN 4 — RESULTS         ║
+     ╚══════════════════════════════╝ -->
+<div class="screen" id="s-results">
+    <div class="results-wrap">
+        <div class="r-badge">Niche Assessment Report</div>
+        <div class="r-name" id="rName"></div>
+        <div class="r-date" id="rDate"></div>
+
+        <!-- Score ring -->
+        <div class="score-center r-section">
+            <div class="ring-wrap">
+                <svg viewBox="0 0 130 130" width="130" height="130">
+                    <circle class="ring-bg" cx="65" cy="65" r="54"/>
+                    <circle class="ring-fill" id="ringFill" cx="65" cy="65" r="54"
+                        stroke-dasharray="339.3" stroke-dashoffset="339.3"/>
+                </svg>
+                <div class="ring-text">
+                    <div class="ring-num" id="ringNum">0</div>
+                    <div class="ring-of">/ 100</div>
+                </div>
+            </div>
+            <div class="score-desc" id="scoreDesc"></div>
+        </div>
+
+        <!-- Niche statement -->
+        <div class="r-section">
+            <div class="r-sec-title">Your Niche Statement</div>
+            <div class="niche-box">
+                <p class="niche-text" id="nicheText"></p>
+                <p class="niche-hint">Copy this into your bio, your intro video, your first email. This is your positioning.</p>
+            </div>
+        </div>
+
+        <!-- Called Expert box (conditional) -->
+        <div class="ce-box" id="ceBox">
+            <div class="ce-tag">⚡ Premium Match Detected</div>
+            <div class="ce-title">Your profile qualifies for CHKPLT.</div>
+            <p class="ce-body">Your credentials, experience, and expertise put you in a different category. CHKPLT is our application-only program for professionals who are ready to turn what they already know into a digital business. This is not a course — it's a personalised system built around your expertise.</p>
+            <a href="https://contentcreatorhub.online/apply" target="_blank" class="btn-ce">Apply for CHKPLT →</a>
+        </div>
+
+        <!-- Category breakdown -->
+        <div class="r-section">
+            <div class="r-sec-title">Score Breakdown</div>
+            <div class="cat-bars" id="catBars"></div>
+        </div>
+
+        <!-- Strengths -->
+        <div class="r-section">
+            <div class="r-sec-title">Your Strengths</div>
+            <div class="str-list" id="strList"></div>
+        </div>
+
+        <!-- Gaps -->
+        <div class="r-section">
+            <div class="r-sec-title">Where to Focus</div>
+            <div class="gap-list" id="gapList"></div>
+        </div>
+
+        <!-- Opportunity -->
+        <div class="r-section">
+            <div class="r-sec-title">Your Biggest Opportunity</div>
+            <div class="opp-box" id="oppBox"></div>
+        </div>
+
+        <!-- Products -->
+        <div class="r-section">
+            <div class="r-sec-title">Products Built For You</div>
+            <div class="prod-cards" id="prodCards"></div>
+        </div>
+
+        <!-- Next steps -->
+        <div class="r-section">
+            <div class="r-sec-title">Your Next 3 Steps</div>
+            <div class="steps-list" id="stepsList"></div>
+        </div>
+
+        <div class="r-footer">
+            <p>Built by <a href="https://contentcreatorhub.online" target="_blank">NOCHILL PTY LTD</a> · @nochillgod</p>
+            <p style="margin-top:5px">contentcreatorhub.online</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// QUESTION DATA
+// ═══════════════════════════════════════════════════════════
+
+const CATS = [
+    {
+        id:'passion', title:'Passion & Knowledge', sub:'What you love and know deeply', icon:'🔥',
+        questions:[
+            {id:'p1', type:'text', label:'What topic could you genuinely teach someone about right now, without any preparation?', ph:'e.g. How to manage money as a South African freelancer without burning out…'},
+            {id:'p2', type:'radio', label:'How long have you been actively involved in this topic?', opts:['Less than 1 year','1–3 years','3–5 years','5+ years']},
+            {id:'p3', type:'radio', label:'Where does most of your knowledge in this area come from?', opts:['Formal education & qualifications','Professional work experience','Personal journey & self-teaching','A combination of all three']},
+            {id:'p4', type:'text', label:'If you wrote a book tomorrow about your topic, what would it be called and who would it be for?', ph:'e.g. "The Working Mom\'s Wealth Blueprint — for Black South African professionals earning R30K+ who have no savings plan"…'}
+        ]
+    },
+    {
+        id:'expertise', title:'Skills & Expertise', sub:'What you are qualified and ready to teach', icon:'🎯',
+        questions:[
+            {id:'e1', type:'text', label:"What professional qualifications, certifications, or credentials do you hold? (Type 'none yet' if applicable)", ph:'e.g. BCom Accounting, CIMA certified, 9 years as Senior Financial Analyst at FNB…'},
+            {id:'e2', type:'text', label:'What do friends, family, or colleagues most often come to you for advice on?', ph:'e.g. They always ask me about salary negotiations, career moves, and how I manage my income…'},
+            {id:'e3', type:'radio', label:'How would you honestly rate your expertise level in your main area?', opts:["I'm still learning — I know more than beginners","I'm competent — I'm better than most at this","I'm advanced — people actively seek my advice and pay for it","I'm recognised as an expert in my field"]},
+            {id:'e4', type:'text', label:'Give one specific result you helped someone else achieve using your knowledge.', ph:'e.g. I helped a friend restructure her debt and save R8,000 a month within 90 days…'}
+        ]
+    },
+    {
+        id:'audience', title:'Audience & Their Problems', sub:'Who you are built to serve', icon:'👥',
+        questions:[
+            {id:'a1', type:'text', label:'Describe the specific person you most want to help. Include their age, job, and current situation.', ph:'e.g. A 35-year-old teacher in Johannesburg who earns R28K a month, has expertise, but doesn\'t know how to start an online business…'},
+            {id:'a2', type:'text', label:"What is their single biggest frustration or pain point right now?", ph:'e.g. She sees younger creators with half her knowledge making money online and feels left behind…'},
+            {id:'a3', type:'text', label:'What does success look like for them after 90 days of working with you?', ph:'e.g. She has a defined niche, her first digital product live, and her first 3 paying clients from her existing network…'},
+            {id:'a4', type:'check', label:'Where does your ideal audience spend most of their time online?', opts:['Facebook','Instagram','TikTok','YouTube','LinkedIn','WhatsApp']}
+        ]
+    },
+    {
+        id:'market', title:'Market & Monetization', sub:'Your current income and growth reality', icon:'💰',
+        questions:[
+            {id:'m1', type:'radio', label:'What is your current monthly income from content, coaching, or your expertise online?', opts:["R0 — I haven't started monetising","R1 – R5,000 / month","R5,001 – R20,000 / month","R20,001 or more / month"]},
+            {id:'m2', type:'radio', label:'Have you ever sold anything online — a product, a service, or your knowledge?', opts:["Never tried","I tried but got zero sales","Yes — a few sales here and there","Yes — I sell consistently every month"]},
+            {id:'m3', type:'radio', label:'How many followers or subscribers do you have across ALL platforms combined?', opts:['0 – 500','501 – 5,000','5,001 – 20,000','20,001 or more']},
+            {id:'m4', type:'radio', label:'What format would your ideal audience most likely pay for?', opts:['A digital workbook or PDF guide','A video course or masterclass','1-on-1 coaching or consulting','A monthly community membership','Templates, tools, or swipe files']}
+        ]
+    },
+    {
+        id:'content', title:'Content Reality', sub:'How you show up and what holds you back', icon:'📱',
+        questions:[
+            {id:'c1', type:'radio', label:'How consistently have you been creating and posting content in the last 3 months?', opts:["I haven't started yet","1–2 times a month","Once a week","Multiple times a week or daily"]},
+            {id:'c2', type:'radio', label:'What type of content feels most natural for you to create?', opts:['Talking to camera — video reels, TikToks, YouTube','Writing — captions, newsletters, LinkedIn articles','Teaching — tutorials, breakdowns, step-by-steps','Sharing behind-the-scenes of my life or work',"I'm not sure what feels natural yet"]},
+            {id:'c3', type:'radio', label:"What's your biggest fear about putting yourself out there publicly?", opts:['Being judged or criticised by people I know','Not knowing enough to teach anyone','Not having the right technical skills or equipment','Not having enough time in my schedule',"I'm ready — I'm just waiting for a clear direction"]},
+            {id:'c4', type:'check', label:'What do you already have access to right now?', opts:['A smartphone with a decent camera','A laptop or desktop computer','Ring light or basic studio lighting','A microphone (even a budget one)','An active Canva account','An existing social media following (any size)']}
+        ]
+    },
+    {
+        id:'vision', title:'Vision & Goals', sub:'Where you are going and how fast', icon:'🚀',
+        questions:[
+            {id:'v1', type:'text', label:'In 3 years, what do you want people to say about you and your brand?', ph:'e.g. "She is the most trusted voice for South African nurses who want to build a health and wellness business from their phone…"'},
+            {id:'v2', type:'radio', label:"What's your income target from content or your expertise in the next 12 months?", opts:['R0 – R10,000 total','R10,001 – R50,000','R50,001 – R200,000','R200,001 or more']},
+            {id:'v3', type:'radio', label:'Are you building this as side income or going full-time?', opts:['Side income — I\'m keeping my job for now','Replacing my job completely within 12 months',"I'm already full-time in content or digital business","I'm not sure yet — I need clarity first"]},
+            {id:'v4', type:'radio', label:'Which statement best describes where you are right now?', opts:['"I have an idea but I haven\'t started"','"I\'ve started but I\'m stuck and inconsistent"','"I\'m creating content but making no money from it"','"I\'m making money but I want to scale and systemise"']}
+        ]
+    }
+];
+
+const CAT_LABELS = {passion:'Passion & Knowledge',expertise:'Skills & Expertise',audience:'Audience Clarity',market:'Market Readiness',content:'Content Consistency',vision:'Vision & Direction'};
+const PRODUCT_URLS = {
+    'Niche Clarity Workbook':'https://contentcreatorhub.online/products/niche-clarity-workbook',
+    "The Influencer's Code":'https://contentcreatorhub.online/products/the-influencers-code',
+    'Tax For Content Creators':'https://contentcreatorhub.online/products/tax-for-content-creators',
+    'Build Your Personal Brand Course':'https://contentcreatorhub.online/products/build-your-personal-brand-course',
+    'PAIDS Framework Workbook':'https://contentcreatorhub.online/products/paids-framework-workbook',
+    'Creator Starter Bundle':'https://contentcreatorhub.online/products/creator-starter-bundle',
+    'CHKPLT Premium Program':'https://contentcreatorhub.online/apply'
+};
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+
+let catIdx = 0;
+const ans = {};
+let userName = '', userEmail = '';
+
+// ═══════════════════════════════════════════════════════════
+// SCREEN ROUTING
+// ═══════════════════════════════════════════════════════════
+
+function show(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    window.scrollTo({top:0,behavior:'instant'});
+}
+
+function setProgress(pct){
+    document.getElementById('progressFill').style.width = pct+'%';
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ RENDER
+// ═══════════════════════════════════════════════════════════
+
+function startQuiz(){
+    catIdx = 0;
+    renderCat(0);
+    show('s-quiz');
+    setProgress(8);
+}
+
+function nav(dir){
+    if(dir===1){
+        if(!validate()) return;
+        save();
+        if(catIdx < CATS.length-1){
+            catIdx++;
+            renderCat(catIdx);
+            setProgress(8 + catIdx * 12);
+        } else {
+            show('s-email');
+            setProgress(85);
+        }
+    } else {
+        if(catIdx>0){
+            catIdx--;
+            renderCat(catIdx);
+            setProgress(8 + catIdx * 12);
+        } else {
+            show('s-intro');
+            setProgress(0);
+        }
+    }
+}
+
+function renderCat(i){
+    const cat = CATS[i];
+    document.getElementById('qzStep').textContent = `Step ${i+1} of 6 · ${cat.icon} ${cat.title}`;
+    document.getElementById('qzTitle').textContent = cat.title;
+    document.getElementById('qzSub').textContent = cat.sub;
+    document.getElementById('btnBack').textContent = i===0 ? '← Intro' : '← Back';
+
+    const body = document.getElementById('qzBody');
+    body.innerHTML = '';
+
+    cat.questions.forEach((q,qi)=>{
+        const saved = ans[q.id];
+        const card = document.createElement('div');
+        card.className = 'q-card' + (saved && (typeof saved==='string'?saved.length>0:saved.length>0) ? ' has-answer':'');
+        card.setAttribute('data-qid', q.id);
+
+        let inner = `<div class="q-label"><span class="q-num">${qi+1}</span>${q.label}</div>`;
+
+        if(q.type==='text'){
+            inner += `<textarea class="q-textarea" id="txt_${q.id}" placeholder="${q.ph||''}"
+                oninput="ans['${q.id}']=this.value.trim();this.closest('.q-card').classList.toggle('has-answer',this.value.trim().length>0)"
+                >${saved||''}</textarea>`;
+        } else if(q.type==='radio'){
+            const optsHTML = q.opts.map(o=>`
+                <div class="opt${saved===o?' sel':''}" onclick="pickRadio('${q.id}',this,'${esc(o)}')">
+                    <div class="dot"></div><span>${o}</span>
+                </div>`).join('');
+            inner += `<div class="opts" id="ro_${q.id}">${optsHTML}</div>`;
+        } else if(q.type==='check'){
+            const savedArr = saved||[];
+            const optsHTML = q.opts.map(o=>`
+                <div class="opt${savedArr.includes(o)?' sel':''}" onclick="toggleChk('${q.id}',this,'${esc(o)}')">
+                    <div class="chk-box"></div><span>${o}</span>
+                </div>`).join('');
+            inner += `<div class="opts" id="ck_${q.id}">${optsHTML}</div>`;
+        }
+
+        card.innerHTML = inner;
+        body.appendChild(card);
+    });
+}
+
+function esc(s){ return s.replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+
+function pickRadio(qId, el, val){
+    el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');
+    ans[qId] = val;
+    el.closest('.q-card').classList.add('has-answer');
+}
+
+function toggleChk(qId, el, val){
+    if(!ans[qId]) ans[qId]=[];
+    if(el.classList.contains('sel')){
+        el.classList.remove('sel');
+        ans[qId] = ans[qId].filter(v=>v!==val);
+    } else {
+        el.classList.add('sel');
+        ans[qId].push(val);
+    }
+    const card = el.closest('.q-card');
+    card.classList.toggle('has-answer', ans[qId].length>0);
+}
+
+// ═══════════════════════════════════════════════════════════
+// VALIDATION + SAVE
+// ═══════════════════════════════════════════════════════════
+
+function validate(){
+    const cat = CATS[catIdx];
+    let ok = true;
+    cat.questions.forEach(q=>{
+        const card = document.querySelector(`[data-qid="${q.id}"]`);
+        let filled = false;
+        if(q.type==='text'){
+            const el = document.getElementById('txt_'+q.id);
+            filled = el && el.value.trim().length > 0;
+            ans[q.id] = el ? el.value.trim() : '';
+        } else if(q.type==='radio') filled = !!ans[q.id];
+        else if(q.type==='check') filled = ans[q.id] && ans[q.id].length > 0;
+        if(!filled){
+            ok = false;
+            if(card) card.classList.add('invalid');
+            setTimeout(()=>{ if(card) card.classList.remove('invalid'); }, 800);
+        }
+    });
+    return ok;
+}
+
+function save(){
+    CATS[catIdx].questions.forEach(q=>{
+        if(q.type==='text'){
+            const el = document.getElementById('txt_'+q.id);
+            if(el) ans[q.id] = el.value.trim();
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════════
+// EMAIL + API CALL
+// ═══════════════════════════════════════════════════════════
+
+async function submitEmail(){
+    const name = document.getElementById('uName').value.trim();
+    const email = document.getElementById('uEmail').value.trim();
+    const errEl = document.getElementById('emailErr');
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!name || !emailRx.test(email)){
+        errEl.style.display='block';
+        return;
+    }
+    errEl.style.display='none';
+    userName = name;
+    userEmail = email;
+
+    show('s-loading');
+    setProgress(90);
+    startLoadAnim();
+
+    const answerSummary = buildSummary();
+    const minWait = new Promise(r=>setTimeout(r, 4200));
+
+    try {
+        const [result] = await Promise.all([
+            callAnalyze(name, answerSummary),
+            minWait
+        ]);
+        renderResults(result, name);
+        callSubscribe(name, email, result.nicheScore, result.calledExpertSignal);
+        show('s-results');
+        setProgress(100);
+        setTimeout(()=>animateRing(result.nicheScore), 150);
+        setTimeout(()=>animateBars(result.scoreBreakdown), 400);
+    } catch(err){
+        console.error('API error:', err);
+        const fb = fallback();
+        renderResults(fb, name);
+        callSubscribe(name, email, fb.nicheScore, false);
+        show('s-results');
+        setProgress(100);
+        setTimeout(()=>animateRing(fb.nicheScore), 150);
+        setTimeout(()=>animateBars(fb.scoreBreakdown), 400);
+    }
+}
+
+function buildSummary(){
+    const out = {};
+    CATS.forEach(cat=>{
+        cat.questions.forEach(q=>{
+            const v = ans[q.id];
+            if(v) out[q.label.substring(0,70)] = Array.isArray(v) ? v.join(', ') : v;
+        });
+    });
+    return out;
+}
+
+async function callAnalyze(name, answers){
+    const r = await fetch('/api/analyze',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({name, answers})
+    });
+    if(!r.ok) throw new Error('API '+r.status);
+    const d = await r.json();
+    return d.result;
+}
+
+async function callSubscribe(name, email, score, calledExpert){
+    try {
+        await fetch('/api/subscribe',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({name, email, nicheScore:score, calledExpert})
+        });
+    } catch(e){ /* silent */ }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOADING ANIMATION
+// ═══════════════════════════════════════════════════════════
+
+function startLoadAnim(){
+    const ids = ['ls1','ls2','ls3','ls4'];
+    ids.forEach((id,i)=>{
+        document.getElementById(id).className='load-step';
+    });
+    ids.forEach((id,i)=>{
+        setTimeout(()=>{
+            if(i>0) document.getElementById(ids[i-1]).className='load-step done';
+            document.getElementById(id).className='load-step active';
+        }, i * 950);
+    });
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════════════════════════════
+
+function renderResults(d, name){
+    document.getElementById('rName').textContent = name+"'s Niche Report";
+    document.getElementById('rDate').textContent = new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});
+
+    const scoreMap = [
+        [80,'Strong niche foundation — you\'re ready to build'],
+        [60,'Good foundation — close these gaps and go'],
+        [40,'Early stage — follow the roadmap below'],
+        [0,'Just starting — your direction is now clear']
+    ];
+    const desc = scoreMap.find(([min])=>d.nicheScore>=min)[1];
+    document.getElementById('scoreDesc').textContent = desc;
+
+    document.getElementById('nicheText').textContent = d.nicheStatement;
+
+    if(d.calledExpertSignal) document.getElementById('ceBox').style.display='block';
+
+    // Category bars (rendered first; animated after)
+    const barsEl = document.getElementById('catBars');
+    barsEl.innerHTML = '';
+    Object.entries(d.scoreBreakdown).forEach(([k,v])=>{
+        barsEl.innerHTML += `
+            <div class="bar-row">
+                <div class="bar-head">
+                    <span class="bar-name">${CAT_LABELS[k]||k}</span>
+                    <span class="bar-val">${v}</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" data-w="${v}" style="width:0%"></div>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById('strList').innerHTML = d.strengths.map(s=>
+        `<div class="str-item"><span class="str-ico">✓</span>${s}</div>`).join('');
+
+    document.getElementById('gapList').innerHTML = d.gaps.map(g=>
+        `<div class="gap-item"><span class="gap-ico">▲</span>${g}</div>`).join('');
+
+    document.getElementById('oppBox').textContent = d.biggestOpportunity;
+
+    document.getElementById('prodCards').innerHTML = d.productRecommendations.map((p,i)=>`
+        <a href="${PRODUCT_URLS[p.product]||'https://contentcreatorhub.online'}" target="_blank"
+           class="prod-card ${i===0?'first':''}">
+            <div class="prod-badge">${p.priority}</div>
+            <div class="prod-name">${p.product}</div>
+            <div class="prod-price">${p.price}</div>
+            <div class="prod-reason">${p.reason}</div>
+            <div class="prod-arrow">View product →</div>
+        </a>`).join('');
+
+    document.getElementById('stepsList').innerHTML = d.nextSteps.map((s,i)=>`
+        <div class="step-item">
+            <div class="step-num">${i+1}</div>
+            <div class="step-text">${s}</div>
+        </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// ANIMATIONS
+// ═══════════════════════════════════════════════════════════
+
+function animateRing(score){
+    const circ = 339.3;
+    const offset = circ - (score/100)*circ;
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+    let cur = 0;
+    const step = score / 70;
+    const t = setInterval(()=>{
+        cur = Math.min(cur+step, score);
+        document.getElementById('ringNum').textContent = Math.round(cur);
+        if(cur>=score) clearInterval(t);
+    }, 22);
+}
+
+function animateBars(breakdown){
+    document.querySelectorAll('.bar-fill').forEach(el=>{
+        el.style.width = el.getAttribute('data-w')+'%';
+    });
+}
+
+// ═══════════════════════════════════════════════════════════
+// FALLBACK (if API unavailable)
+// ═══════════════════════════════════════════════════════════
+
+function fallback(){
+    return {
+        nicheScore:55,
+        nicheStatement:"I help aspiring African creators go from unclear and unpaid to a defined niche and consistent income through a proven system built for the South African market.",
+        scoreBreakdown:{passion:72,expertise:60,audience:50,market:48,content:55,vision:65},
+        strengths:[
+            "You completed a 24-question deep assessment — that commitment separates you from 90% of people who 'think about it'",
+            "Your passion is genuine and teachable — you have more than enough to start",
+            "You have a clear vision of where you want to go"
+        ],
+        gaps:[
+            "Your audience definition needs to be more specific — the more precise your 'who', the faster you grow",
+            "Your monetization pathway isn't clear yet — the Niche Clarity Workbook gives you the exact framework"
+        ],
+        biggestOpportunity:"You have real knowledge and a real vision. The gap is packaging and positioning. With the right structure, your first product could be live within 30 days.",
+        calledExpertSignal:false,
+        productRecommendations:[
+            {product:"Niche Clarity Workbook",price:"R199",reason:"Your answers show you need a structured framework to define, validate, and position your niche before building anything else.",priority:"START HERE"},
+            {product:"Creator Starter Bundle",price:"R499",reason:"Once your niche is locked, this bundle gives you the complete content and monetization foundation to build on.",priority:"THEN THIS"}
+        ],
+        nextSteps:[
+            "Get the Niche Clarity Workbook and block 2 hours this weekend to complete it in one session",
+            "Write your niche statement using the formula above — post it to your bio this week",
+            "Follow @nochillgod on all platforms and DM 'NICHE' to get the next step"
+        ]
+    };
+}
+</script>
+</body>
+</html>
