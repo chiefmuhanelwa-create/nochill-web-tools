@@ -264,11 +264,66 @@
       font-size: 0.95rem; font-weight: 800;
       padding: 15px 24px; border-radius: var(--radius-sm);
       border: none; cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
+      transition: transform .15s, box-shadow .15s, background .3s;
       letter-spacing: 0.01em;
     }
     .generate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,78,216,.35); }
     .generate-btn:active { transform: translateY(0); }
+    .generate-btn.success { background: var(--green); }
+
+    /* Colour template picker */
+    .template-picker {
+      padding: 0 24px 16px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .template-picker-label { font-size: 11px; font-weight: 700; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.1em; }
+    .template-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 700;
+      border: 1.5px solid var(--border); background: var(--surface);
+      cursor: pointer; transition: all .15s; color: var(--dim);
+    }
+    .template-btn .t-swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .template-btn.active { border-color: currentColor; }
+    .template-btn.active.t-blue { color: #1D4ED8; border-color: #1D4ED8; background: rgba(29,78,216,0.07); }
+    .template-btn.active.t-gold { color: #b8943a; border-color: #C9A646; background: rgba(201,166,70,0.08); }
+    .template-btn.active.t-black { color: #0A0A0A; border-color: #0A0A0A; background: rgba(10,10,10,0.05); }
+
+    /* Logo upload */
+    .logo-upload-row { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
+    .logo-preview-thumb {
+      width: 56px; height: 40px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); object-fit: contain; display: none;
+      background: var(--surface);
+    }
+    .logo-upload-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 14px; background: var(--surface);
+      border: 1.5px dashed var(--border); border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 700; color: var(--dim); cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .logo-upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .logo-remove-btn {
+      font-size: 11px; font-weight: 700; color: var(--subtle);
+      background: none; border: none; cursor: pointer; display: none;
+    }
+    .logo-remove-btn:hover { color: var(--red); }
+
+    /* Invoice themes */
+    .invoice-preview[data-theme="gold"] .inv-title { color: #C9A646; }
+    .invoice-preview[data-theme="gold"] .inv-total-row.grand { border-top-color: #C9A646; color: #0A0A0A; }
+    .invoice-preview[data-theme="gold"] .inv-banking-label { color: #b8943a; }
+    .invoice-preview[data-theme="black"] .inv-title { color: #0A0A0A; }
+    .invoice-preview[data-theme="black"] .inv-total-row.grand { border-top-color: #0A0A0A; }
+
+    /* Invoice logo in header */
+    .inv-logo { max-height: 48px; max-width: 120px; object-fit: contain; display: none; margin-bottom: 8px; }
+
+    /* Preview flash on generate */
+    @keyframes previewFlash { 0%{box-shadow:0 0 0 3px rgba(5,150,105,.5)} 100%{box-shadow:0 4px 24px rgba(0,0,0,.06)} }
+    .invoice-preview.just-generated { animation: previewFlash .7s ease-out; }
 
     /* ── PREVIEW PANEL ─────────────────────────────────────── */
     .preview-panel {
@@ -424,8 +479,12 @@
       .preview-panel { position: static; }
       .invoice-preview {
         border: none; box-shadow: none;
-        padding: 20px; border-radius: 0;
+        padding: 32px; border-radius: 0;
+        page-break-inside: avoid;
       }
+      .inv-logo { max-height: 56px; max-width: 140px; }
+      .inv-line { page-break-inside: avoid; }
+      @page { margin: 0.5in; size: A4; }
     }
 
     /* ── MOBILE ────────────────────────────────────────────── */
@@ -503,6 +562,20 @@
   <!-- FORM PANEL -->
   <div class="form-panel">
 
+    <!-- COLOUR TEMPLATE PICKER -->
+    <div class="template-picker">
+      <span class="template-picker-label">Template:</span>
+      <button type="button" class="template-btn t-blue active" onclick="setTheme('blue', this)">
+        <span class="t-swatch" style="background:#1D4ED8"></span> Classic Blue
+      </button>
+      <button type="button" class="template-btn t-gold" onclick="setTheme('gold', this)">
+        <span class="t-swatch" style="background:#C9A646"></span> NOCHILL Gold
+      </button>
+      <button type="button" class="template-btn t-black" onclick="setTheme('black', this)">
+        <span class="t-swatch" style="background:#0A0A0A"></span> Minimal Black
+      </button>
+    </div>
+
     <!-- YOUR DETAILS -->
     <div class="form-section">
       <div class="form-section-head">
@@ -510,6 +583,18 @@
         <span class="section-badge" id="details-badge">Fills once, saves automatically</span>
       </div>
       <div class="field-group">
+        <div>
+          <label class="nx-label">Your Logo (optional)</label>
+          <div class="logo-upload-row">
+            <img id="logo-preview-thumb" class="logo-preview-thumb" alt="Logo">
+            <label class="logo-upload-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              Upload Logo
+              <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+            </label>
+            <button type="button" class="logo-remove-btn" id="logo-remove-btn" onclick="removeLogo()">Remove</button>
+          </div>
+        </div>
         <div>
           <label class="nx-label">Your Name / Business Name <span>*</span></label>
           <input class="nx-input" id="creator-name" placeholder="e.g. NOCHILL PTY LTD" oninput="updatePreview(); saveDetails();">
@@ -673,6 +758,7 @@
 
       <div class="inv-header">
         <div>
+          <img id="inv-logo-img" class="inv-logo" alt="Logo">
           <div class="inv-creator-name" id="prev-creator-name"><span class="inv-placeholder">Your Name / Business</span></div>
           <div class="inv-creator-meta" id="prev-creator-meta"></div>
         </div>
@@ -961,9 +1047,8 @@
     calcTotals();
   }
 
-  // ── GENERATE (scroll to preview on mobile) ───────────────
+  // ── GENERATE ─────────────────────────────────────────────
   function generateInvoice() {
-    // Validate required fields
     const required = [
       { id: 'creator-name',   label: 'Your name' },
       { id: 'creator-email',  label: 'Your email' },
@@ -977,14 +1062,64 @@
       const el = document.getElementById(r.id);
       if (!el || !el.value.trim()) {
         el?.focus();
-        el?.style && (el.borderColor = 'red');
-        alert(`Please fill in: ${r.label}`);
+        if (el?.style) el.style.borderColor = '#DC2626';
+        setTimeout(() => { if (el?.style) el.style.borderColor = ''; }, 2000);
+        el?.closest('.form-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
     }
-    if (window.innerWidth <= 800) {
-      document.getElementById('invoice-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // Scroll to preview and flash it
+    const preview = document.getElementById('invoice-preview');
+    preview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    preview.classList.remove('just-generated');
+    void preview.offsetWidth; // reflow to restart animation
+    preview.classList.add('just-generated');
+    setTimeout(() => preview.classList.remove('just-generated'), 1000);
+
+    // Update button state
+    const btn = document.querySelector('.generate-btn');
+    btn.textContent = '✓ Invoice Ready — Save as PDF above';
+    btn.classList.add('success');
+    setTimeout(() => {
+      btn.textContent = 'Generate My Invoice →';
+      btn.classList.remove('success');
+    }, 4000);
+  }
+
+  // ── COLOUR THEMES ─────────────────────────────────────────
+  function setTheme(theme, btn) {
+    document.getElementById('invoice-preview').setAttribute('data-theme', theme);
+    document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    localStorage.setItem('nochill_inv_theme', theme);
+  }
+
+  // ── LOGO UPLOAD ───────────────────────────────────────────
+  function handleLogoUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const src = e.target.result;
+      const thumb = document.getElementById('logo-preview-thumb');
+      const invLogo = document.getElementById('inv-logo-img');
+      const removeBtn = document.getElementById('logo-remove-btn');
+      thumb.src = src;
+      thumb.style.display = 'block';
+      invLogo.src = src;
+      invLogo.style.display = 'block';
+      removeBtn.style.display = 'inline-flex';
+      localStorage.setItem('nochill_inv_logo', src);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeLogo() {
+    document.getElementById('logo-preview-thumb').style.display = 'none';
+    document.getElementById('inv-logo-img').style.display = 'none';
+    document.getElementById('logo-remove-btn').style.display = 'none';
+    document.getElementById('logo-input').value = '';
+    localStorage.removeItem('nochill_inv_logo');
   }
 
   // ── SAVE / LOAD DETAILS ──────────────────────────────────
@@ -1004,17 +1139,38 @@
   function loadDetails() {
     try {
       const raw = localStorage.getItem('nochill_inv_details');
-      if (!raw) return;
-      const data = JSON.parse(raw);
-      SAVE_FIELDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && data[id]) el.value = data[id];
-      });
-      const b = document.getElementById('details-badge');
-      const bb = document.getElementById('banking-badge');
-      if (b)  { b.textContent = 'Loaded ✓'; b.classList.add('saved'); }
-      if (bb) { bb.textContent = 'Loaded ✓'; bb.classList.add('saved'); }
+      if (raw) {
+        const data = JSON.parse(raw);
+        SAVE_FIELDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && data[id]) el.value = data[id];
+        });
+        const b = document.getElementById('details-badge');
+        const bb = document.getElementById('banking-badge');
+        if (b)  { b.textContent = 'Loaded ✓'; b.classList.add('saved'); }
+        if (bb) { bb.textContent = 'Loaded ✓'; bb.classList.add('saved'); }
+      }
     } catch(e) {}
+
+    // Restore logo
+    const savedLogo = localStorage.getItem('nochill_inv_logo');
+    if (savedLogo) {
+      const thumb = document.getElementById('logo-preview-thumb');
+      const invLogo = document.getElementById('inv-logo-img');
+      const removeBtn = document.getElementById('logo-remove-btn');
+      thumb.src = savedLogo;
+      thumb.style.display = 'block';
+      invLogo.src = savedLogo;
+      invLogo.style.display = 'block';
+      removeBtn.style.display = 'inline-flex';
+    }
+
+    // Restore theme
+    const savedTheme = localStorage.getItem('nochill_inv_theme') || 'blue';
+    document.getElementById('invoice-preview').setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('.template-btn').forEach(b => {
+      b.classList.toggle('active', b.classList.contains('t-' + savedTheme));
+    });
   }
 
   // ── RESET ────────────────────────────────────────────────

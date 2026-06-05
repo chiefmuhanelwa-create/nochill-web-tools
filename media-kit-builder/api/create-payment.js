@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         email,
-        amount: 9900, // R99 in kobo (cents)
+        amount: 4999, // R49.99 in kobo (cents) — second kit onwards
         currency: 'ZAR',
         callback_url: CALLBACK_URL,
         metadata: {

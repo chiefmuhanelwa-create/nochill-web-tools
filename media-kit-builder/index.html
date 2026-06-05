@@ -812,15 +812,9 @@
         <div class="value-item"><div class="value-check">✓</div> Downloads as a high-resolution PDF — yours forever</div>
       </div>
 
-      <div class="price-badge" style="margin-bottom:28px;">
-        <span class="price-now">R99</span>
-        <span class="price-was">R500</span>
-        <span class="price-label">one-time · yours forever</span>
-      </div>
-
       <div class="intro-cta-row">
-        <button class="cta-glow" onclick="showScreen('s-payment')">Build My Media Kit — R99 →</button>
-        <p class="intro-guarantee">One-time payment. Instant access. Yours forever.</p>
+        <button class="cta-glow" onclick="showScreen('s-email-gate'); window.scrollTo({top:0,behavior:'smooth'})">Build My Free Media Kit →</button>
+        <p class="intro-guarantee">Free. Drop your email and build your first kit instantly.</p>
       </div>
 
       <div class="intro-status">
@@ -871,31 +865,38 @@
   </div>
 </div>
 
-<!-- ─── PAYMENT ─────────────────────────────────────────────────────────────── -->
-<div id="s-payment" class="screen">
+<!-- ─── EMAIL GATE (Free first kit) ──────────────────────────────────────────── -->
+<div id="s-email-gate" class="screen">
   <div class="payment-wrap">
     <div class="payment-card">
-      <div class="payment-icon">💎</div>
-      <h2 class="payment-title">You're one step away.</h2>
-      <p class="payment-sub">After payment you'll be taken directly to the builder. Your kit is saved locally — come back to it any time.</p>
+      <div class="payment-icon">🎯</div>
+      <h2 class="payment-title">Your first media kit is free.</h2>
+      <p class="payment-sub">Drop your email and you'll be taken straight to the builder. No card required. Your kit is yours forever.</p>
       <div class="payment-features">
         <div class="payment-feature"><div class="payment-feature-dot"></div>Agency-grade 4-page layout</div>
         <div class="payment-feature"><div class="payment-feature-dot"></div>Upload photo, logos, stats, testimonials</div>
         <div class="payment-feature"><div class="payment-feature-dot"></div>Live preview as you build</div>
         <div class="payment-feature"><div class="payment-feature-dot"></div>Download as PDF — yours forever</div>
       </div>
-      <div class="price-badge" style="width:100%; justify-content:center; margin-bottom:20px;">
-        <span class="price-now">R99</span>
-        <span class="price-was">R500</span>
-        <span class="price-label">one-time payment</span>
-      </div>
+      <input type="email" id="gate-email" class="payment-input" placeholder="your@email.com">
+      <button class="cta-glow" style="width:100%; justify-content:center;" onclick="startEmailGate()">Start Building — Free →</button>
+      <div id="gate-msg" class="payment-msg"></div>
+      <p class="payment-guarantee">We'll also send you 30 bonus caption templates and SA creator resources. Unsubscribe any time.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PAYMENT (R49.99 for second kit) ─────────────────────────────────────── -->
+<div id="s-payment" class="screen">
+  <div class="payment-wrap">
+    <div class="payment-card">
+      <div class="payment-icon">💎</div>
+      <h2 class="payment-title">Build another kit — R49.99</h2>
+      <p class="payment-sub">Your second media kit is R49.99 — one-time. This unlocks a fresh builder session. Your current kit is still saved.</p>
       <input type="email" id="payment-email" class="payment-input" placeholder="your@email.com">
-      <button class="cta-glow" style="width:100%; justify-content:center;" onclick="startPayment()">Pay R99 with Paystack →</button>
+      <button class="cta-glow" style="width:100%; justify-content:center;" onclick="startPayment()">Pay R49.99 with Paystack →</button>
       <div id="payment-msg" class="payment-msg"></div>
-      <p class="payment-guarantee">🔒 Secured by Paystack. Card, EFT, or USSD accepted. South African payment methods supported.</p>
-      <div class="payment-already">
-        <button class="payment-already-btn" onclick="showScreen('s-builder')">Already paid? Skip to builder →</button>
-      </div>
+      <p class="payment-guarantee">🔒 Secured by Paystack. Card, EFT, or USSD accepted.</p>
     </div>
   </div>
 </div>
@@ -1246,7 +1247,33 @@
     chevron.classList.toggle('open', !isOpen);
   }
 
-  // ─── PAYMENT ──────────────────────────────────────────────────────────────
+  // ─── EMAIL GATE (free first kit) ─────────────────────────────────────────
+  async function startEmailGate() {
+    const email = document.getElementById('gate-email').value.trim();
+    const msgEl = document.getElementById('gate-msg');
+    if (!email || !email.includes('@')) {
+      msgEl.textContent = 'Please enter a valid email to continue.';
+      msgEl.style.color = 'var(--red)';
+      msgEl.style.display = 'block';
+      return;
+    }
+    msgEl.textContent = 'One moment...';
+    msgEl.style.color = 'var(--text-sub, #666)';
+    msgEl.style.display = 'block';
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tags: ['media_kit_free'] })
+      });
+    } catch(_) {}
+    localStorage.setItem('nochill_mk_email', email);
+    localStorage.setItem('nochill_mk_unlocked', '1');
+    showScreen('s-builder');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── PAYMENT (R49.99 for subsequent kits) ─────────────────────────────────
   async function startPayment() {
     const email = document.getElementById('payment-email').value.trim();
     const msgEl = document.getElementById('payment-msg');
