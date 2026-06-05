@@ -450,6 +450,39 @@
       margin-bottom: 6px;
       display: block;
     }
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .field-label-row .field-label { margin-bottom: 0; }
+    .ai-suggest-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: rgba(201,166,70,0.1);
+      border: 1px solid rgba(201,166,70,0.35);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #b8943a;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .ai-suggest-btn:hover { background: rgba(201,166,70,0.18); }
+    .ai-suggest-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .ai-suggest-msg {
+      font-size: 11px;
+      min-height: 14px;
+      margin-top: 4px;
+    }
+    .ai-suggest-msg.loading { color: #b8943a; }
+    .ai-suggest-msg.success { color: #059669; }
+    .ai-suggest-msg.error { color: #dc2626; }
     .field-input {
       width: 100%;
       background: var(--bg);
@@ -931,8 +964,22 @@
             <div class="field-row"><div class="field-label">Full Name</div><input class="field-input" id="f-name" placeholder="Lerato Dlamini" oninput="updatePreview()"></div>
             <div class="field-row"><div class="field-label">Handle</div><input class="field-input" id="f-handle" placeholder="@lerato.creates" oninput="updatePreview()"></div>
           </div>
-          <div class="field-row"><div class="field-label">Tagline</div><input class="field-input" id="f-tagline" placeholder="Finance educator for SA millennials" oninput="updatePreview()"></div>
-          <div class="field-row"><div class="field-label">Bio <span style="color:var(--text-sub); font-weight:400; text-transform:none; letter-spacing:0;">(2–3 sentences)</span></div><textarea class="field-textarea" id="f-bio" placeholder="Tell brands who you are, who you serve, and why your audience trusts you." oninput="updatePreview()"></textarea></div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Tagline</div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('positioning', 'f-tagline')" type="button">✨ AI Suggest</button>
+            </div>
+            <input class="field-input" id="f-tagline" placeholder="Finance educator for SA millennials" oninput="updatePreview()">
+            <div class="ai-suggest-msg" id="ai-msg-f-tagline"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Bio <span style="color:var(--text-sub); font-weight:400; text-transform:none; letter-spacing:0;">(2–3 sentences)</span></div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('bio', 'f-bio')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-bio" placeholder="Tell brands who you are, who you serve, and why your audience trusts you." oninput="updatePreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-bio"></div>
+          </div>
           <div class="field-row-2col">
             <div class="field-row"><div class="field-label">Location</div><input class="field-input" id="f-location" placeholder="Johannesburg, SA" oninput="updatePreview()"></div>
             <div class="field-row"><div class="field-label">Niche Tags</div><input class="field-input" id="f-niches" placeholder="Finance, Lifestyle" oninput="updatePreview()"></div>
@@ -1671,6 +1718,49 @@
   function setVal(id, val) { const el = document.getElementById(id); if (el && val) el.value = val; }
   function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
   function esc(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // ─── AI SUGGEST ───────────────────────────────────────────────────────────
+  async function aiSuggest(field, targetId) {
+    const btn = document.querySelector(`[onclick="aiSuggest('${field}', '${targetId}')"]`);
+    const msgEl = document.getElementById(`ai-msg-${targetId}`);
+
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Thinking...'; }
+    if (msgEl) { msgEl.textContent = 'Generating suggestion...'; msgEl.className = 'ai-suggest-msg loading'; }
+
+    const context = {
+      name:           document.getElementById('f-name')?.value?.trim() || '',
+      title:          document.getElementById('f-tagline')?.value?.trim() || '',
+      niche:          document.getElementById('f-niches')?.value?.trim() || '',
+      targetAudience: document.getElementById('f-bio')?.value?.trim()?.split('.')[0] || '',
+      location:       document.getElementById('f-location')?.value?.trim() || 'South Africa',
+      followers:      platformData[0]?.followers || '',
+      engagementRate: platformData[0]?.er || '',
+    };
+
+    try {
+      const res = await fetch('/api/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field, context })
+      });
+      const data = await res.json();
+      if (data.ok && data.suggestion) {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.value = data.suggestion;
+          el.dispatchEvent(new Event('input'));
+        }
+        if (msgEl) { msgEl.textContent = '✓ Suggestion applied — edit it to make it yours.'; msgEl.className = 'ai-suggest-msg success'; }
+        setTimeout(() => { if (msgEl) { msgEl.textContent = ''; msgEl.className = 'ai-suggest-msg'; } }, 4000);
+      } else {
+        if (msgEl) { msgEl.textContent = 'Could not generate suggestion. Try again.'; msgEl.className = 'ai-suggest-msg error'; }
+      }
+    } catch (_) {
+      if (msgEl) { msgEl.textContent = 'Connection error. Please try again.'; msgEl.className = 'ai-suggest-msg error'; }
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = '✨ AI Suggest'; }
+  }
 
   // ─── INIT ─────────────────────────────────────────────────────────────────
   checkPaymentReturn();
