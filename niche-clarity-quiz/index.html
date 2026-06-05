@@ -42,6 +42,7 @@
             min-height:100vh;
             line-height:1.6;
             -webkit-font-smoothing:antialiased;
+            overflow-x:hidden;
         }
 
         /* ── KEYFRAMES ── */
@@ -82,7 +83,7 @@
         }
         .nx-live-dot{
             display:inline-block;width:8px;height:8px;border-radius:999px;
-            background:#D4541F;animation:live-pulse 1.8s ease-out infinite;vertical-align:middle;
+            background:#D4541F;animation:live-pulse 1.8s ease-out 3;vertical-align:middle;
         }
 
         /* ── SCREENS ── */
@@ -123,7 +124,7 @@
             padding:14px 28px;cursor:pointer;
             box-shadow:0 0 20px rgba(124,58,237,0.30),0 0 60px rgba(124,58,237,0.12),0 4px 16px rgba(10,10,10,0.12);
             transition:transform .25s ease,box-shadow .25s ease;
-            animation:cta-idle 3s ease-in-out infinite;
+            animation:none;
             font-family:'Inter',sans-serif;
         }
         .cta-glow:hover{
@@ -150,7 +151,7 @@
             width:400px;height:300px;
             background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);
             pointer-events:none;z-index:0;
-            animation:glow-breathe 4s ease-in-out infinite;
+            animation:none;
         }
         .intro-inner{position:relative;z-index:1}
         #s-intro{position:relative;overflow:hidden}
@@ -452,7 +453,61 @@
             nav.site-nav{padding:0 16px}
             .nav-steps{display:none}
         }
-    </style>
+
+        @media(max-width:600px){
+            /* ── MOBILE-SPECIFIC FIXES ── */
+
+            /* iOS Safari: prevent auto-zoom on input focus — font-size must be >= 16px */
+            .q-textarea { font-size: 16px; }
+            .field { font-size: 16px; }
+
+            /* Touch targets: quiz option rows must be at least 44px tall */
+            .opt {
+                padding: 13px 14px;
+                min-height: 44px;
+            }
+
+            /* Nav: prevent overflow — hide segments sooner, shrink brand */
+            nav.site-nav { padding: 0 14px; gap: 8px; }
+            .nav-brand { font-size: 11px; letter-spacing: 0.12em; }
+            .nav-steps { gap: 4px; }
+            .seg { width: 20px; }
+            .nx-status-live { padding: 5px 9px; font-size: 10px; letter-spacing: 0.12em; }
+
+            /* Screen padding */
+            .screen { padding: 40px 16px 56px; }
+
+            /* Intro orb: prevent overflow */
+            .intro-orb { width: 100%; }
+
+            /* CTA buttons: full width and adequate height */
+            .cta-glow { min-height: 44px; }
+            .btn-ghost { min-height: 44px; }
+
+            /* Nav row buttons — column-reverse puts Continue on top on mobile */
+            .nav-row { flex-direction: column-reverse; }
+            .nav-row .btn-ghost { flex: none; width: 100%; }
+            .nav-row .cta-glow { flex: none; width: 100%; }
+
+            /* Results: product cards full width */
+            .prod-card { padding: 16px; }
+
+            /* Checkbox / radio options: ensure label text doesn't overflow */
+            .opt { word-break: break-word; }
+
+            /* Score ring: already sized at 130px, fine on mobile */
+
+            /* Bar label: shorten if needed */
+            .bar-head { font-size: 11px; }
+        }
+      @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
 

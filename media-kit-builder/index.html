@@ -54,6 +54,7 @@
       z-index: 200;
       background: rgba(250,247,240,0.92);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       padding: 0 28px;
       height: 56px;
@@ -168,7 +169,7 @@
       height: 8px;
       border-radius: 999px;
       background: var(--orange);
-      animation: live-pulse 1.8s ease-out infinite;
+      animation: live-pulse 1.8s ease-out 3;
       vertical-align: middle;
     }
 
@@ -183,6 +184,10 @@
       color: var(--text-h);
       font-family: var(--font);
       transition: border-color .2s, box-shadow .2s;
+    }
+    /* Prevent iOS Safari zoom on input focus */
+    @media (max-width: 768px) {
+      .nx-input, .nx-textarea, .nx-select { font-size: 16px; }
     }
     .nx-input:focus, .nx-textarea:focus, .nx-select:focus {
       outline: none;
@@ -356,7 +361,7 @@
       border: 1px solid var(--border-md);
       color: var(--text-h);
       font-family: var(--font);
-      font-size: 14px;
+      font-size: 16px;
       padding: 13px 16px;
       border-radius: 10px;
       outline: none;
@@ -412,6 +417,7 @@
     .form-section { border-bottom: 1px solid var(--border); }
     .form-section-header {
       padding: 14px 24px;
+      min-height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -475,6 +481,10 @@
     }
     .field-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
     .field-textarea::placeholder { color: var(--text-sub); }
+    /* Prevent iOS Safari zoom on input focus (field-input/textarea are 13px normally) */
+    @media (max-width: 768px) {
+      .field-input, .field-textarea { font-size: 16px; }
+    }
     .field-row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .field-row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
     .field-hint { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
@@ -536,6 +546,10 @@
       outline: none;
     }
     .platform-name-select:focus { border-color: var(--primary); }
+    /* Prevent iOS zoom on select */
+    @media (max-width: 768px) {
+      .platform-name-select { font-size: 16px; }
+    }
     .platform-remove {
       background: none;
       border: none;
@@ -557,7 +571,8 @@
       font-family: var(--font);
       font-size: 12px;
       font-weight: 600;
-      padding: 8px 14px;
+      padding: 12px 14px;
+      min-height: 44px;
       border-radius: 8px;
       cursor: pointer;
       width: 100%;
@@ -726,6 +741,47 @@
       .builder-form-panel { position: static; height: auto; }
       .builder-preview-panel { padding: 20px 16px; }
     }
+    @media (max-width: 600px) {
+      /* Intro left padding: reduce on small screens */
+      .intro-left { padding: 40px 24px; }
+
+      /* Payment card: reduce padding */
+      .payment-card { padding: 28px 20px; }
+
+      /* Two-column field grids collapse to single column */
+      .field-row-2col { grid-template-columns: 1fr; }
+
+      /* Three-column field grids collapse to single column */
+      .field-row-3col { grid-template-columns: 1fr; }
+
+      /* Logo grid: 2 columns instead of 4 */
+      .logo-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Platform name select: prevent iOS zoom */
+      .platform-name-select { font-size: 16px; }
+
+      /* Rate item: stack inputs */
+      .rate-item { grid-template-columns: 1fr; gap: 6px; }
+      .rate-item .field-input { width: 100% !important; }
+
+      /* Nav pill: hide on very small screens to prevent overflow */
+      .nav-pill { display: none; }
+
+      /* Kit scale wrap: ensure it doesn't cause horizontal scroll */
+      .builder-preview-panel { overflow-x: hidden; }
+      #preview-scale-wrap { overflow: hidden; }
+
+      /* Download button: full width on mobile */
+      .download-btn { width: 100%; justify-content: center; }
+      .preview-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -734,7 +790,7 @@
   <div class="nav-brand">NOCHILL</div>
   <div class="nav-right">
     <span class="nav-save-indicator" id="save-indicator"></span>
-    <a href="https://nochill-rate-card-calculator.vercel.app" class="nav-pill">Rate Card</a>
+    <a href="https://nochill-rate-card.vercel.app" class="nav-pill">Rate Card</a>
   </div>
 </nav>
 
@@ -1005,7 +1061,7 @@
             <div class="rate-item"><input class="field-input" placeholder="Blog Post / Newsletter" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
             <div class="rate-item"><input class="field-input" placeholder="UGC (brand assets only)" oninput="updateRates()"><input class="field-input" placeholder="R0,000" style="width:100px;" oninput="updateRates()"></div>
           </div>
-          <div class="field-hint" style="margin-top:8px;">Not sure of your rates? Use our <a href="https://nochill-rate-card-calculator.vercel.app" target="_blank" style="color:var(--primary);">Rate Card Calculator →</a></div>
+          <div class="field-hint" style="margin-top:8px;">Not sure of your rates? Use our <a href="https://nochill-rate-card.vercel.app" target="_blank" style="color:var(--primary);">Rate Card Calculator →</a></div>
         </div>
       </div>
 

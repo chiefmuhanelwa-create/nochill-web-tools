@@ -39,6 +39,7 @@
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ── KEYFRAMES ─────────────────────────────────────────── */
@@ -83,6 +84,7 @@
       top: 0;
       z-index: 100;
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .topbar-inner {
       max-width: 900px;
@@ -136,7 +138,7 @@
       width: 8px; height: 8px;
       border-radius: 999px;
       background: var(--orange);
-      animation: live-pulse 1.8s ease-out infinite;
+      animation: live-pulse 1.8s ease-out 3;
     }
 
     /* ── NX LABEL ────────────────────────────────────────────── */
@@ -741,7 +743,7 @@
       background: var(--primary-bg);
       position: relative;
       overflow: hidden;
-      animation: slideUp 0.4s ease 150ms both, emeraldPulse 3s ease-in-out 1s infinite;
+      animation: slideUp 0.4s ease 150ms both;
     }
     @keyframes emeraldPulse {
       0%, 100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.0); }
@@ -979,6 +981,69 @@
       .price-range-block { flex-direction: column; align-items: flex-start; }
       .action-row { flex-direction: column; }
       .action-row .btn { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 600px) {
+      /* ── MOBILE-SPECIFIC FIXES ── */
+
+      /* iOS Safari: prevent auto-zoom on input focus */
+      .nx-input, .form-input, .form-select { font-size: 16px; }
+
+      /* input-grid-3 fully collapses on narrow screens */
+      .input-grid-3 { grid-template-columns: 1fr; }
+
+      /* Currency row: stack currency selector and rate badge vertically */
+      .currency-row { flex-direction: column; align-items: stretch; }
+      .currency-select-wrap { min-width: unset; width: 100%; }
+      .rate-badge {
+        min-width: unset;
+        width: 100%;
+        white-space: normal;
+        font-size: 12px;
+      }
+
+      /* Topbar: prevent overflow */
+      .topbar { padding: 0.75rem 1rem; }
+      .topbar-inner { gap: 0.5rem; }
+      .logo { font-size: 0.88rem; }
+      .nx-status-live { padding: 5px 9px; font-size: 10px; letter-spacing: 0.12em; }
+
+      /* Step segments: reduce width so they don't overflow */
+      .step-seg { width: 24px; }
+
+      /* Bar chart: reduce fixed label width */
+      .bar-label { width: 80px; font-size: 0.72rem; }
+      .bar-value { width: 60px; }
+
+      /* Containers */
+      .container { padding: 0 1rem; }
+
+      /* Bottom nav: stack buttons */
+      .bottom-nav { flex-direction: column; }
+      .bottom-nav .btn { width: 100%; justify-content: center; }
+
+      /* Platform card input grid: 1 col */
+      .input-grid-2 { grid-template-columns: 1fr; }
+
+      /* Email capture inputs */
+      .email-form-row { flex-direction: column; }
+
+      /* Rate cards already 1-col at 480px — keep */
+
+      /* Section header: allow wrap */
+      .section-header { flex-wrap: wrap; gap: 0.5rem; }
+
+      /* Touch targets: buttons must be at least 44px */
+      .btn { min-height: 44px; }
+      .radio-card { min-height: 44px; }
+      .checkbox-card { min-height: 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>

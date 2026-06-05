@@ -45,6 +45,7 @@
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ─── KEYFRAMES ─── */
@@ -161,7 +162,7 @@
       width: 8px; height: 8px;
       border-radius: 999px;
       background: var(--orange);
-      animation: live-pulse 1.8s ease-out infinite;
+      animation: live-pulse 1.8s ease-out 3;
     }
 
     /* ─── LAYOUT ─── */
@@ -190,6 +191,7 @@
       max-width: 720px;
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
     }
     .intro-hero::before {
       content: '';
@@ -201,7 +203,7 @@
       height: 360px;
       background: radial-gradient(ellipse at center, rgba(79,70,229,0.12) 0%, transparent 70%);
       pointer-events: none;
-      animation: heroGlow 4s ease-in-out infinite;
+      animation: none;
     }
 
     .intro-badge {
@@ -301,7 +303,7 @@
       transition: transform .25s ease, box-shadow .25s ease;
       font-family: 'Inter', sans-serif;
       text-decoration: none;
-      animation: cta-pulse 3s ease-in-out infinite;
+      animation: none;
     }
     .cta-glow:hover {
       animation: none;
@@ -608,7 +610,7 @@
       letter-spacing: -0.3px;
       box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
       transition: transform .25s ease, box-shadow .25s ease;
-      animation: cta-pulse 3s ease-in-out infinite;
+      animation: none;
     }
     .btn-generate:hover {
       animation: none;
@@ -1241,6 +1243,63 @@
       .formula-row { flex-direction: column; }
       .formula-pill { min-width: unset; }
       .paywall-card { padding: 32px 20px; }
+
+      /* ── MOBILE-SPECIFIC FIXES ── */
+
+      /* iOS Safari: prevent auto-zoom on input focus — font-size must be >= 16px */
+      .nx-input,
+      select.nx-input,
+      textarea.nx-input,
+      .paywall-input { font-size: 16px; }
+
+      /* Touch targets: make pill labels at least 44px tall */
+      .opt-pill-wrap label,
+      .opt-pill {
+        padding: 11px 16px;
+        min-height: 44px;
+        white-space: normal;
+      }
+      .checkbox-pill label {
+        padding: 11px 14px;
+        min-height: 44px;
+        white-space: normal;
+      }
+      .awareness-option label { min-height: 44px; }
+
+      /* Nav: prevent overflow on small screens */
+      .nav { padding: 0 12px; gap: 8px; }
+      .nav-logo-tool { display: none; }
+      .nx-status-live { padding: 5px 10px; font-size: 10px; letter-spacing: 0.12em; }
+
+      /* Paywall input row: stack vertically on mobile */
+      .paywall-input-row { flex-direction: column; }
+      .paywall-input { min-width: unset; width: 100%; }
+      .paywall-btn-primary,
+      .paywall-btn-ghost { width: 100%; justify-content: center; white-space: normal; }
+
+      /* Hook actions: stack on very small screens */
+      .hook-actions { gap: 8px; }
+
+      /* Email capture card padding */
+      .email-capture { padding: 28px 20px; }
+
+      /* Container padding */
+      .container, .container-wide { padding: 0 16px; }
+
+      /* Results header */
+      .results-title { font-size: 26px; }
+
+      /* Upsell actions */
+      .upsell-actions { flex-direction: column; align-items: stretch; }
+      .upsell-btn-primary,
+      .upsell-btn-ghost { justify-content: center; text-align: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>

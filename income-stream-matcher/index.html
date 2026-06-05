@@ -110,7 +110,7 @@
       height: 8px;
       border-radius: 999px;
       background: var(--orange);
-      animation: live-pulse 1.8s ease-out infinite;
+      animation: live-pulse 1.8s ease-out 3;
       flex-shrink: 0;
     }
     .nav-tools { display: flex; gap: 6px; }
@@ -632,6 +632,37 @@
       .intro-stats { flex-direction: column; gap: 0; }
       .intro-stat + .intro-stat::before { top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 1px; }
       .upsell-card { flex-direction: column; }
+
+      /* Fix iOS Safari input zoom — font-size must be >= 16px */
+      .gate-input { font-size: 16px; }
+
+      /* Ensure pill options have >= 44px touch target */
+      .pill-opt { padding: 10px 16px; min-height: 44px; }
+
+      /* Ensure radio options have >= 44px touch target */
+      .radio-opt { min-height: 44px; }
+
+      /* Ensure ghost button has >= 44px touch target */
+      .btn-ghost { min-height: 44px; padding: 12px 20px; }
+
+      /* Full-width gate form on mobile so it doesn't overflow */
+      .gate-form { flex-direction: column; }
+      .gate-input { min-width: unset; width: 100%; }
+      .gate-btn { width: 100%; min-height: 44px; }
+
+      /* Status badge: allow wrapping instead of overflowing */
+      .status-badge { white-space: normal; text-align: center; }
+
+      /* Nav left — hide tool label on very small screens to prevent overflow */
+      .nav-tool-label { display: none; }
+      .nav-sep { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
@@ -651,7 +682,7 @@
   <div class="nav-tools">
     <a href="https://nochill-niche-clarity-quiz.vercel.app" class="nav-pill">Niche Quiz</a>
     <a href="https://nochill-hooks-generator.vercel.app" class="nav-pill">Hook Generator</a>
-    <a href="https://nochill-rate-card-calculator.vercel.app" class="nav-pill">Rate Card</a>
+    <a href="https://nochill-rate-card.vercel.app" class="nav-pill">Rate Card</a>
   </div>
 </nav>
 

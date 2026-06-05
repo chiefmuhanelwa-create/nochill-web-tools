@@ -112,9 +112,9 @@ Generate 7 hooks total. Mix at least 3 different hook types. Every hook must app
     });
     const data = await response.json();
     const raw = data.content[0].text;
-    // Strip markdown code fences if Claude wrapped the JSON
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
-    const parsed = JSON.parse(cleaned);
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found in AI response');
+    const parsed = JSON.parse(jsonMatch[0]);
     return res.status(200).json({ ok: true, hooks: parsed.hooks });
   } catch (error) {
     console.error('API error:', error);
