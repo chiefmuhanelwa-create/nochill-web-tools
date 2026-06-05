@@ -7,36 +7,91 @@
   <meta name="description" content="Generate viral content hooks for African creators using Ndivhuwo's R×A×C×U^B framework. 7 scroll-stopping hooks in seconds.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    /* ─── DESIGN TOKENS ─── */
     :root {
-      --black: #111111;
-      --gold: #F5C842;
-      --gold-dim: rgba(245,200,66,0.15);
-      --gold-glow: rgba(245,200,66,0.35);
-      --green: #22C55E;
-      --green-dim: rgba(34,197,94,0.15);
-      --bg: #1A1A1A;
-      --card: #222222;
-      --border: #333333;
-      --border-light: #2A2A2A;
-      --text: #F0F0F0;
-      --text-muted: #888888;
-      --text-dim: #AAAAAA;
-      --red: #EF4444;
+      --primary: #4F46E5;
+      --primary-mid: #6366F1;
+      --primary-bright: #818CF8;
+      --primary-deep: #312E81;
+      --primary-bg: rgba(79,70,229,0.10);
+      --primary-border: rgba(79,70,229,0.35);
+      --orange: #D4541F;
+
+      --bg: #FAF7F0;
+      --surface: #FFFFFF;
+      --elevated: #F4EFE3;
+      --text-head: #0A0A0A;
+      --text-body: #1F1B16;
+      --text-dim: #5C5448;
+      --text-subtle: #8A8071;
+      --border: rgba(10,10,10,0.10);
+      --border-light: rgba(10,10,10,0.06);
+
+      --green: #059669;
+      --green-bg: rgba(5,150,105,0.10);
+      --green-border: rgba(5,150,105,0.35);
+      --red: #DC2626;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--text-body);
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes card-enter {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes live-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,84,31,0.55); }
+      70%  { box-shadow: 0 0 0 10px rgba(212,84,31,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,84,31,0); }
+    }
+    @keyframes cta-pulse {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.02); }
+    }
+    @keyframes loadingPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
+      50%     { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+    }
+    @keyframes progressAnim {
+      0%  { width: 0%; }
+      20% { width: 15%; }
+      40% { width: 35%; }
+      60% { width: 60%; }
+      80% { width: 82%; }
+      95% { width: 94%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @keyframes stepPulse {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.45; }
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes heroGlow {
+      0%,100% { opacity: 0.55; }
+      50%     { opacity: 0.85; }
     }
 
     /* ─── NAV ─── */
@@ -44,8 +99,9 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      background: rgba(17,17,17,0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(250,247,240,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       height: 60px;
@@ -54,35 +110,62 @@
       justify-content: space-between;
     }
     .nav-logo {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 900;
       letter-spacing: -0.5px;
-      color: var(--text);
+      color: var(--text-head);
     }
-    .nav-logo span { color: var(--gold); }
+    .nav-logo-accent { color: var(--primary); }
+    .nav-logo-tool {
+      font-weight: 400;
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-left: 4px;
+    }
     .nav-back {
       display: none;
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text-dim);
       background: none;
       border: none;
       cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
       transition: color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
     }
-    .nav-back:hover { color: var(--text); background: var(--card); }
+    .nav-back:hover { color: var(--text-head); background: var(--elevated); }
     .nav-back svg { width: 14px; height: 14px; }
     .nav-back.visible { display: flex; }
 
-    /* ─── LAYOUT ─── */
-    .page-wrap {
-      padding-top: 60px;
-      min-height: 100vh;
+    /* live pill */
+    .nx-status-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9A3A12;
+      background: rgba(212,84,31,0.10);
+      border: 1px solid rgba(212,84,31,0.30);
     }
+    .nx-live-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--orange);
+      animation: live-pulse 1.8s ease-out infinite;
+    }
+
+    /* ─── LAYOUT ─── */
+    .page-wrap { padding-top: 60px; min-height: 100vh; }
 
     .screen {
       display: none;
@@ -91,21 +174,8 @@
     }
     .screen.active { display: block; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-    .container-wide {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 920px; margin: 0 auto; padding: 0 24px; }
 
     /* ─── SCREEN 1: INTRO ─── */
     #s-intro {
@@ -115,80 +185,80 @@
     }
 
     .intro-hero {
-      padding: 80px 24px 60px;
+      padding: 80px 24px 64px;
       text-align: center;
       max-width: 720px;
       margin: 0 auto;
+      position: relative;
+    }
+    .intro-hero::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 360px;
+      background: radial-gradient(ellipse at center, rgba(79,70,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      animation: heroGlow 4s ease-in-out infinite;
     }
 
     .intro-badge {
+      position: relative;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: var(--gold-dim);
-      border: 1px solid rgba(245,200,66,0.3);
-      border-radius: 100px;
-      padding: 5px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.5px;
+      gap: 8px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-deep);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       margin-bottom: 28px;
     }
-    .intro-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s ease infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
 
     .intro-headline {
+      position: relative;
       font-size: clamp(36px, 6vw, 64px);
       font-weight: 900;
       line-height: 1.05;
       letter-spacing: -2px;
-      color: var(--text);
+      color: var(--text-head);
       margin-bottom: 20px;
     }
-    .intro-headline .highlight {
-      color: var(--gold);
-      position: relative;
-    }
+    .intro-headline .highlight { color: var(--primary); }
 
     .intro-sub {
+      position: relative;
       font-size: 17px;
-      color: var(--text-muted);
+      color: var(--text-dim);
       max-width: 480px;
       margin: 0 auto 40px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
-    .intro-sub strong {
-      color: var(--text-dim);
-      font-weight: 600;
-    }
+    .intro-sub strong { color: var(--text-body); font-weight: 700; }
 
+    /* Stats row */
     .intro-stats {
       display: flex;
       justify-content: center;
-      gap: 0;
       margin-bottom: 44px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background: var(--card);
+      background: var(--surface);
       max-width: 480px;
       margin-left: auto;
       margin-right: auto;
+      box-shadow: 0 2px 12px rgba(10,10,10,0.05);
     }
     .intro-stat {
       flex: 1;
-      padding: 20px 16px;
+      padding: 22px 16px;
       text-align: center;
       position: relative;
     }
@@ -200,122 +270,136 @@
       background: var(--border);
     }
     .intro-stat-num {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--gold);
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
       display: block;
       letter-spacing: -1px;
     }
     .intro-stat-label {
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       margin-top: 3px;
       font-weight: 500;
     }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--gold);
-      color: var(--black);
-      font-family: inherit;
+    /* CTA button */
+    .cta-glow {
+      position: relative;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #FFFFFF;
+      font-weight: 700;
       font-size: 16px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      padding: 16px 36px;
+      border: 1px solid rgba(49,46,129,0.45);
       border-radius: 10px;
-      border: none;
+      padding: 16px 36px;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-      text-decoration: none;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(245,200,66,0.35);
-      background: #ffd44a;
-    }
-    .btn-primary:active { transform: translateY(0); }
-    .btn-primary svg { width: 18px; height: 18px; }
-
-    .btn-secondary {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s;
+      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      animation: cta-pulse 3s ease-in-out infinite;
     }
-    .btn-secondary:hover { color: var(--text); border-color: #555; background: var(--card); }
+    .cta-glow:hover {
+      animation: none;
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20);
+    }
+    .cta-glow svg { width: 18px; height: 18px; }
 
     .intro-social-proof {
-      margin-top: 28px;
+      margin-top: 20px;
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
     }
-    .intro-social-proof span {
-      color: var(--green);
-      font-weight: 600;
-    }
+    .intro-social-proof .sp-green { color: var(--green); font-weight: 600; }
 
+    /* Framework section */
     .intro-framework {
       max-width: 720px;
       margin: 0 auto;
-      padding: 0 24px 80px;
+      padding: 0 24px 88px;
     }
-    .framework-title {
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
+    .section-divider { border-top: 1px solid var(--border-light); margin-bottom: 40px; }
+
+    .nx-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
+      color: var(--primary-deep);
+    }
+    .framework-label {
+      text-align: center;
       margin-bottom: 20px;
     }
     .formula-row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
     }
     .formula-pill {
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 16px;
+      border-radius: 12px;
+      padding: 14px 16px;
       text-align: center;
       flex: 1;
-      min-width: 120px;
+      min-width: 100px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .formula-pill:hover {
+      border-color: var(--primary-border);
+      box-shadow: 0 0 16px rgba(79,70,229,0.10);
     }
     .formula-pill-letter {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 900;
-      color: var(--gold);
+      color: var(--primary);
       display: block;
       letter-spacing: -1px;
     }
     .formula-pill-label {
       font-size: 11px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 2px;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
     }
 
-    /* ─── SCREEN 2: FORM ─── */
-    #s-form {
-      padding: 40px 0 80px;
+    /* ─── NX-CARD ─── */
+    .nx-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s ease, border-color .3s ease, box-shadow .4s ease;
+      animation: card-enter .5s ease both;
     }
+    .nx-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .nx-card:hover {
+      border-color: var(--primary-border);
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(79,70,229,0.18), 0 12px 32px -8px rgba(10,10,10,0.10);
+    }
+    .nx-card:hover::before { opacity: 1; }
+
+    /* ─── SCREEN 2: FORM ─── */
+    #s-form { padding: 40px 0 88px; }
 
     .form-header {
       text-align: center;
@@ -323,87 +407,82 @@
       margin-bottom: 36px;
     }
     .form-header h2 {
-      font-size: 28px;
-      font-weight: 800;
+      font-size: 30px;
+      font-weight: 900;
       letter-spacing: -1px;
+      color: var(--text-head);
       margin-bottom: 8px;
     }
-    .form-header p {
-      font-size: 15px;
-      color: var(--text-muted);
-    }
+    .form-header p { font-size: 15px; color: var(--text-dim); }
 
+    /* form section card */
     .form-section {
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 24px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .form-section-label {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--gold);
-      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary-deep);
+      margin-bottom: 10px;
     }
-    .form-section-label .step-num {
+    .step-num {
       width: 22px; height: 22px;
-      background: var(--gold-dim);
-      border: 1px solid rgba(245,200,66,0.3);
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
       border-radius: 50%;
       font-size: 11px;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--gold);
-    }
-    .form-section-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
+      color: var(--primary);
+      flex-shrink: 0;
     }
     .form-section-hint {
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       margin-bottom: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
+    .field-required { color: var(--primary); margin-left: 2px; }
 
-    .form-input {
+    /* nx-input */
+    .nx-input {
       width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-family: inherit;
+      background: var(--surface);
+      border: 1px solid rgba(10,10,10,0.12);
+      border-radius: 10px;
+      padding: 13px 15px;
       font-size: 15px;
-      color: var(--text);
+      color: var(--text-head);
+      font-family: 'Inter', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
       -webkit-appearance: none;
     }
-    .form-input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px var(--gold-dim);
+    .nx-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
     }
-    .form-input::placeholder { color: var(--text-muted); }
+    .nx-input::placeholder { color: var(--text-subtle); }
 
-    select.form-input {
+    select.nx-input {
       cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A8071' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
       padding-right: 40px;
     }
-
-    textarea.form-input {
+    textarea.nx-input {
       resize: vertical;
       min-height: 90px;
     }
@@ -411,45 +490,72 @@
     .char-count {
       text-align: right;
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       margin-top: 6px;
     }
 
-    /* Radio pills */
-    .radio-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .radio-pill input[type="radio"] { display: none; }
-    .radio-pill label {
-      display: flex;
+    /* opt-pill (radio pills) */
+    .opt-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .opt-pill-wrap input[type="radio"] { display: none; }
+    .opt-pill-wrap label,
+    .opt-pill {
+      display: inline-flex;
       align-items: center;
       padding: 8px 16px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
+      border-radius: 999px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .2s;
+      user-select: none;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .opt-pill-wrap label:hover,
+    .opt-pill:hover { border-color: var(--primary-border); color: var(--primary); }
+    .opt-pill-wrap input:checked + label,
+    .opt-pill.sel {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+
+    /* checkbox pills */
+    .checkbox-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .checkbox-pill input[type="checkbox"] { display: none; }
+    .checkbox-pill label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
       user-select: none;
       white-space: nowrap;
     }
-    .radio-pill input:checked + label {
-      background: var(--gold-dim);
-      border-color: var(--gold);
-      color: var(--gold);
-      font-weight: 600;
+    .checkbox-pill label:hover { border-color: var(--primary-border); color: var(--primary); }
+    .checkbox-pill input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+      color: var(--primary);
     }
-    .radio-pill label:hover { border-color: #555; color: var(--text); }
+    .checkbox-pill input:checked + label::before {
+      content: '✓';
+      font-size: 11px;
+      font-weight: 800;
+    }
 
-    /* Awareness radio - card style */
-    .awareness-options {
-      display: grid;
-      gap: 10px;
-    }
+    /* awareness cards */
+    .awareness-options { display: grid; gap: 10px; }
     .awareness-option input[type="radio"] { display: none; }
     .awareness-option label {
       display: block;
@@ -458,61 +564,21 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .18s;
     }
-    .awareness-option label:hover { border-color: #555; }
+    .awareness-option label:hover { border-color: var(--primary-border); background: var(--surface); }
     .awareness-option input:checked + label {
-      background: var(--gold-dim);
-      border-color: var(--gold);
+      border-color: var(--primary);
+      background: var(--primary-bg);
     }
     .awareness-option-title {
       font-size: 14px;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text-head);
       margin-bottom: 3px;
     }
-    .awareness-option input:checked + label .awareness-option-title { color: var(--gold); }
-    .awareness-option-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    /* Checkbox pills */
-    .checkbox-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .checkbox-pill input[type="checkbox"] { display: none; }
-    .checkbox-pill label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.15s;
-      user-select: none;
-      white-space: nowrap;
-    }
-    .checkbox-pill input:checked + label {
-      background: var(--gold-dim);
-      border-color: var(--gold);
-      color: var(--gold);
-      font-weight: 600;
-    }
-    .checkbox-pill label:hover { border-color: #555; color: var(--text); }
-    .checkbox-pill input:checked + label::before {
-      content: '✓';
-      font-size: 11px;
-      font-weight: 800;
-    }
+    .awareness-option input:checked + label .awareness-option-title { color: var(--primary); }
+    .awareness-option-desc { font-size: 12px; color: var(--text-subtle); }
 
     .form-error {
       color: var(--red);
@@ -523,34 +589,36 @@
     }
     .form-error.visible { display: block; }
 
-    .form-submit-wrap {
-      margin-top: 24px;
-      text-align: center;
-    }
+    /* generate button */
     .btn-generate {
       width: 100%;
-      background: var(--gold);
-      color: var(--black);
-      font-family: inherit;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
       font-size: 17px;
       font-weight: 800;
       padding: 18px 32px;
       border-radius: 10px;
-      border: none;
+      border: 1px solid rgba(49,46,129,0.45);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: transform 0.15s, box-shadow 0.15s;
       letter-spacing: -0.3px;
+      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: cta-pulse 3s ease-in-out infinite;
     }
     .btn-generate:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(245,200,66,0.4);
+      animation: none;
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20);
     }
     .btn-generate:active { transform: translateY(0); }
     .btn-generate svg { width: 20px; height: 20px; }
+
+    .form-submit-wrap { margin-top: 24px; text-align: center; }
 
     /* ─── SCREEN 3: LOADING ─── */
     #s-loading {
@@ -561,69 +629,49 @@
     .loading-logo {
       width: 72px;
       height: 72px;
-      background: var(--gold-dim);
-      border: 2px solid var(--gold);
+      background: var(--primary-bg);
+      border: 2px solid var(--primary-border);
       border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 32px;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 900;
-      color: var(--gold);
+      color: var(--primary);
       animation: loadingPulse 2s ease infinite;
     }
-    @keyframes loadingPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 var(--gold-glow); }
-      50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(245,200,66,0); }
-    }
-
     .loading-status {
       font-size: 18px;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text-head);
       margin-bottom: 10px;
       letter-spacing: -0.3px;
       min-height: 28px;
       transition: opacity 0.3s;
     }
-
     .loading-sub {
       font-size: 14px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       margin-bottom: 40px;
     }
-
     .progress-wrap {
       max-width: 360px;
       margin: 0 auto 16px;
-      background: var(--card);
+      background: var(--elevated);
       border: 1px solid var(--border);
-      border-radius: 100px;
+      border-radius: 999px;
       height: 6px;
       overflow: hidden;
     }
     .progress-bar {
       height: 100%;
-      border-radius: 100px;
-      background: linear-gradient(90deg, var(--gold), #ffd44a, var(--gold));
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary-bright), var(--primary), var(--primary-bright));
       background-size: 200% 100%;
-      animation: progressAnim 1.8s ease forwards, shimmer 1.5s ease infinite;
+      animation: progressAnim 10s ease forwards, shimmer 1.5s ease infinite;
       width: 0%;
     }
-    @keyframes progressAnim {
-      0%   { width: 0%; }
-      20%  { width: 15%; }
-      40%  { width: 35%; }
-      60%  { width: 60%; }
-      80%  { width: 82%; }
-      95%  { width: 94%; }
-    }
-    @keyframes shimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
     .loading-steps {
       display: flex;
       flex-direction: column;
@@ -637,105 +685,94 @@
       align-items: center;
       gap: 10px;
       font-size: 13px;
-      color: var(--text-muted);
+      color: var(--text-subtle);
       opacity: 0;
       transform: translateX(-8px);
       transition: all 0.3s ease;
     }
-    .loading-step.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .loading-step.visible { opacity: 1; transform: translateX(0); }
     .loading-step.done { color: var(--green); }
     .step-icon {
-      width: 18px; height: 18px;
+      width: 20px; height: 20px;
       border-radius: 50%;
-      background: var(--card);
+      background: var(--elevated);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 9px;
       flex-shrink: 0;
+      color: var(--text-subtle);
     }
     .loading-step.done .step-icon {
-      background: var(--green-dim);
-      border-color: var(--green);
+      background: var(--green-bg);
+      border-color: var(--green-border);
       color: var(--green);
     }
     .loading-step.active .step-icon {
-      background: var(--gold-dim);
-      border-color: var(--gold);
+      background: var(--primary-bg);
+      border-color: var(--primary-border);
+      color: var(--primary);
       animation: stepPulse 1s ease infinite;
-    }
-    @keyframes stepPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
     }
 
     /* ─── SCREEN 4: RESULTS ─── */
-    #s-results {
-      padding: 40px 0 80px;
-    }
+    #s-results { padding: 40px 0 88px; }
 
-    .results-header {
-      padding: 0 24px;
-      margin-bottom: 32px;
-    }
+    .results-header { padding: 0 24px; margin-bottom: 32px; }
     .results-meta {
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--gold);
+      letter-spacing: 0.18em;
+      color: var(--primary);
       margin-bottom: 8px;
     }
     .results-title {
       font-size: 32px;
       font-weight: 900;
       letter-spacing: -1px;
+      color: var(--text-head);
       margin-bottom: 6px;
     }
-    .results-topic {
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-    .results-topic strong { color: var(--text-dim); }
+    .results-topic { font-size: 15px; color: var(--text-dim); }
+    .results-topic strong { color: var(--text-body); font-weight: 600; }
 
-    .hooks-grid {
-      display: grid;
-      gap: 16px;
-      margin-bottom: 48px;
-    }
+    .hooks-grid { display: grid; gap: 16px; margin-bottom: 48px; }
 
+    /* hook card */
     .hook-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid rgba(79,70,229,0.20);
+      border-radius: 16px;
       padding: 24px;
-      opacity: 0;
-      transform: translateY(16px);
-      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .3s ease;
+      cursor: default;
     }
-    .hook-card.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .hook-card.visible { opacity: 1; transform: translateY(0); }
+    .hook-card:hover {
+      border-color: rgba(79,70,229,0.50);
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(79,70,229,0.20), 0 8px 24px rgba(10,10,10,0.08);
+    }
+    .hook-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 3px; height: 100%;
+      background: linear-gradient(180deg, #6366F1, #4F46E5);
+      border-radius: 16px 0 0 16px;
     }
     .hook-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(79,70,229,0.45), transparent);
       opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .hook-card:hover {
-      border-color: rgba(245,200,66,0.4);
-      box-shadow: 0 4px 20px rgba(245,200,66,0.1), 0 0 0 1px rgba(245,200,66,0.15);
-      transform: translateY(-2px);
+      transition: opacity .3s ease;
     }
     .hook-card:hover::before { opacity: 1; }
 
@@ -748,42 +785,38 @@
     }
     .hook-num {
       width: 28px; height: 28px;
-      background: var(--gold-dim);
-      border: 1px solid rgba(245,200,66,0.3);
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
       font-weight: 800;
-      color: var(--gold);
+      color: var(--primary);
       flex-shrink: 0;
     }
     .hook-type-badge {
       display: inline-flex;
       align-items: center;
       padding: 4px 10px;
-      background: rgba(255,255,255,0.05);
+      background: var(--elevated);
       border: 1px solid var(--border);
-      border-radius: 100px;
+      border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
       color: var(--text-dim);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
     }
-
     .hook-text {
       font-size: 20px;
       font-weight: 700;
       line-height: 1.4;
-      color: var(--text);
+      color: var(--text-head);
       letter-spacing: -0.4px;
       margin-bottom: 16px;
-      transition: color 0.15s;
     }
-    .hook-card:hover .hook-text { color: #fff; }
-
     .hook-actions {
       display: flex;
       align-items: center;
@@ -792,25 +825,26 @@
       flex-wrap: wrap;
     }
 
+    /* copy button */
     .btn-copy {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--gold-dim);
-      border: 1px solid rgba(245,200,66,0.3);
+      background: var(--primary-bg);
+      border: 1px solid rgba(79,70,229,0.25);
       border-radius: 8px;
       padding: 8px 14px;
-      font-family: inherit;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 600;
-      color: var(--gold);
+      color: var(--primary);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .2s;
     }
-    .btn-copy:hover { background: rgba(245,200,66,0.25); }
+    .btn-copy:hover { background: rgba(79,70,229,0.15); transform: scale(1.04); }
     .btn-copy.copied {
-      background: var(--green-dim);
-      border-color: rgba(34,197,94,0.3);
+      background: var(--green-bg);
+      border-color: var(--green-border);
       color: var(--green);
     }
     .btn-copy svg { width: 14px; height: 14px; }
@@ -823,18 +857,15 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 8px 14px;
-      font-family: inherit;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text-dim);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .2s;
     }
-    .btn-expand:hover { border-color: #555; color: var(--text); }
-    .btn-expand svg {
-      width: 14px; height: 14px;
-      transition: transform 0.2s;
-    }
+    .btn-expand:hover { border-color: var(--primary-border); color: var(--primary); }
+    .btn-expand svg { width: 14px; height: 14px; transition: transform 0.2s; }
     .btn-expand.open svg { transform: rotate(180deg); }
 
     .hook-details {
@@ -843,10 +874,7 @@
       transition: max-height 0.35s ease, opacity 0.35s ease;
       opacity: 0;
     }
-    .hook-details.open {
-      max-height: 600px;
-      opacity: 1;
-    }
+    .hook-details.open { max-height: 600px; opacity: 1; }
 
     .hook-detail-section {
       border-top: 1px solid var(--border-light);
@@ -857,30 +885,30 @@
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      color: var(--text-subtle);
       margin-bottom: 5px;
     }
     .hook-detail-text {
       font-size: 13px;
       color: var(--text-dim);
-      line-height: 1.6;
+      line-height: 1.65;
     }
     .hook-detail-text.formula {
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 12px;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 12px;
-      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-dim);
     }
     .hook-cta-box {
       background: var(--bg);
       border: 1px solid var(--border);
-      border-left: 3px solid var(--gold);
-      border-radius: 6px;
-      padding: 10px 12px;
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 14px;
       font-size: 13px;
       color: var(--text-dim);
       font-style: italic;
@@ -888,70 +916,67 @@
 
     /* ─── EMAIL CAPTURE ─── */
     .email-capture {
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 24px;
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 20px;
       text-align: center;
+      box-shadow: 0 2px 16px rgba(10,10,10,0.04);
     }
     .email-capture-badge {
       display: inline-block;
-      background: var(--green-dim);
-      border: 1px solid rgba(34,197,94,0.3);
-      border-radius: 100px;
-      padding: 4px 12px;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 999px;
+      padding: 5px 14px;
       font-size: 11px;
       font-weight: 700;
       color: var(--green);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.12em;
       margin-bottom: 16px;
     }
     .email-capture h3 {
       font-size: 22px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: -0.5px;
+      color: var(--text-head);
       margin-bottom: 8px;
     }
     .email-capture p {
       font-size: 14px;
-      color: var(--text-muted);
+      color: var(--text-dim);
       margin-bottom: 24px;
+      line-height: 1.6;
     }
     .email-form {
       display: grid;
       gap: 10px;
-      max-width: 400px;
+      max-width: 420px;
       margin: 0 auto;
     }
-    .email-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .email-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .btn-email-submit {
       width: 100%;
-      background: var(--green);
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
       color: #fff;
-      font-family: inherit;
+      font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 700;
       padding: 14px 24px;
       border-radius: 10px;
-      border: none;
+      border: 1px solid rgba(49,46,129,0.45);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.15s;
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: all .2s;
     }
-    .btn-email-submit:hover { background: #16a34a; transform: translateY(-1px); }
-    .btn-email-submit.success {
-      background: var(--green);
-      pointer-events: none;
-    }
+    .btn-email-submit:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .btn-email-submit.success { background: var(--green); border-color: transparent; pointer-events: none; box-shadow: none; }
     .email-message {
       font-size: 13px;
       margin-top: 10px;
@@ -959,43 +984,248 @@
       min-height: 20px;
     }
     .email-message.success { color: var(--green); }
-    .email-message.error { color: var(--red); }
+    .email-message.error   { color: var(--red); }
 
-    /* ─── RESULTS FOOTER ─── */
-    .results-footer {
+    /* ─── UPSELL / PRODUCT BOX ─── */
+    .upsell-box {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid var(--primary-border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
       text-align: center;
     }
+    .upsell-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .upsell-box h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+    .upsell-box p {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+    .upsell-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .upsell-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 13px 24px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: 1px solid rgba(49,46,129,0.45);
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .upsell-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .upsell-btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text-dim);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 13px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .upsell-btn-ghost:hover { color: var(--text-head); border-color: var(--primary-border); }
+
+    /* ─── RESULTS FOOTER ─── */
+    .results-footer { text-align: center; }
     .btn-new-hooks {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 14px 28px;
-      font-family: inherit;
+      font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text-dim);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .2s;
     }
-    .btn-new-hooks:hover { border-color: #555; color: var(--text); background: #2a2a2a; }
+    .btn-new-hooks:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-bg); }
     .btn-new-hooks svg { width: 16px; height: 16px; }
 
-    /* ─── MISC ─── */
-    .field-required {
-      color: var(--gold);
-      margin-left: 2px;
-    }
-    .visually-hidden {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
+    /* ─── PAYWALL SCREEN ─── */
+    #s-paywall { padding: 60px 0 88px; }
+
+    .paywall-card {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid rgba(79,70,229,0.30);
+      border-radius: 20px;
+      padding: 44px 40px;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
       overflow: hidden;
-      clip: rect(0,0,0,0);
+    }
+    .paywall-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 21px;
+      background: linear-gradient(180deg, rgba(79,70,229,0.18) 0%, rgba(79,70,229,0.04) 40%, transparent 100%);
+      z-index: -1;
+    }
+    .paywall-icon {
+      width: 64px; height: 64px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 26px;
+    }
+    .paywall-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .paywall-card h2 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-head);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .paywall-card > p {
+      font-size: 15px;
+      color: var(--text-dim);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .paywall-sub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    .paywall-sub-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 4px;
+    }
+    .paywall-sub-card-desc {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .paywall-input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .paywall-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg);
+      border: 1px solid rgba(10,10,10,0.12);
+      border-radius: 9px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text-head);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .paywall-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.10);
+    }
+    .paywall-input::placeholder { color: var(--text-subtle); }
+    .paywall-btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 11px 20px;
+      border-radius: 9px;
+      cursor: pointer;
       white-space: nowrap;
-      border-width: 0;
+      border: 1px solid rgba(49,46,129,0.45);
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: all .2s;
+    }
+    .paywall-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .paywall-btn-ghost {
+      background: transparent;
+      border: 1px solid var(--primary-border);
+      border-radius: 9px;
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    .paywall-btn-ghost:hover { background: var(--primary-bg); }
+    .paywall-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .paywall-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .paywall-divider-text { font-size: 12px; color: var(--text-subtle); font-weight: 600; white-space: nowrap; }
+    .paywall-msg { font-size: 13px; margin-top: 10px; display: none; }
+    .paywall-back {
+      margin-top: 20px;
+      background: none;
+      border: none;
+      color: var(--text-subtle);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 8px;
+      transition: color .15s;
+    }
+    .paywall-back:hover { color: var(--text-dim); }
+
+    /* ─── MISC ─── */
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
     }
 
     /* ─── RESPONSIVE ─── */
@@ -1010,6 +1240,7 @@
       .email-row { grid-template-columns: 1fr; }
       .formula-row { flex-direction: column; }
       .formula-pill { min-width: unset; }
+      .paywall-card { padding: 32px 20px; }
     }
   </style>
 </head>
@@ -1017,13 +1248,19 @@
 
   <!-- NAV -->
   <nav class="nav">
-    <div class="nav-logo">NO<span>CHILL</span> Hooks</div>
+    <div class="nav-logo">
+      NO<span class="nav-logo-accent">CHILL</span><span class="nav-logo-tool">Hooks</span>
+    </div>
     <button class="nav-back" id="nav-back" onclick="goBackToForm()" aria-label="Back to form">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
       Back
     </button>
+    <div class="nx-status-live">
+      <span class="nx-live-dot"></span>
+      Free Tool
+    </div>
   </nav>
 
   <div class="page-wrap">
@@ -1033,7 +1270,10 @@
     ══════════════════════════════════════ -->
     <div id="s-intro" class="screen active">
       <div class="intro-hero">
-        <div class="intro-badge">Hook Science Engine</div>
+        <div class="intro-badge">
+          <span class="nx-live-dot"></span>
+          Hook Science Engine
+        </div>
         <h1 class="intro-headline">
           You Post.<br>
           <span class="highlight">Nobody Watches.</span>
@@ -1055,7 +1295,7 @@
             <div class="intro-stat-label">Platforms</div>
           </div>
         </div>
-        <button class="btn-primary" onclick="showScreen('s-form')">
+        <button class="cta-glow" onclick="showScreen('s-form')">
           Generate My Hooks
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -1063,12 +1303,13 @@
           </svg>
         </button>
         <p class="intro-social-proof">
-          <span>Free to use.</span> No sign-up required to generate.
+          <span class="sp-green">Free to use.</span> No sign-up required to generate.
         </p>
       </div>
 
       <div class="intro-framework">
-        <p class="framework-title">The R×A×C×U^B Formula</p>
+        <div class="section-divider"></div>
+        <p class="nx-label framework-label">The R×A×C×U^B Formula</p>
         <div class="formula-row">
           <div class="formula-pill">
             <span class="formula-pill-letter">R</span>
@@ -1107,7 +1348,7 @@
         <form id="hook-form" novalidate>
 
           <!-- 1. Topic -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.05s">
             <div class="form-section-label">
               <span class="step-num">1</span>
               Your Topic <span class="field-required">*</span>
@@ -1116,7 +1357,7 @@
             <input
               type="text"
               id="f-topic"
-              class="form-input"
+              class="nx-input"
               placeholder="e.g. How I built a R100K business starting with R6K salary"
               maxlength="200"
               required
@@ -1125,13 +1366,13 @@
           </div>
 
           <!-- 2. Niche -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.10s">
             <div class="form-section-label">
               <span class="step-num">2</span>
               Your Niche
             </div>
             <p class="form-section-hint">Select the category that best fits your content.</p>
-            <select id="f-niche" class="form-input">
+            <select id="f-niche" class="nx-input">
               <option value="Personal Branding">Personal Branding</option>
               <option value="Business & Entrepreneurship">Business &amp; Entrepreneurship</option>
               <option value="Finance & Money">Finance &amp; Money</option>
@@ -1148,30 +1389,30 @@
           </div>
 
           <!-- 3. Platform -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.15s">
             <div class="form-section-label">
               <span class="step-num">3</span>
               Primary Platform
             </div>
             <p class="form-section-hint">Where will you post this content?</p>
-            <div class="radio-pills" role="radiogroup" aria-label="Platform">
-              <div class="radio-pill">
+            <div class="opt-pills" role="radiogroup" aria-label="Platform">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="platform" id="p-tiktok" value="TikTok" checked>
                 <label for="p-tiktok">TikTok</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="platform" id="p-instagram" value="Instagram">
                 <label for="p-instagram">Instagram</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="platform" id="p-youtube" value="YouTube">
                 <label for="p-youtube">YouTube</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="platform" id="p-linkedin" value="LinkedIn">
                 <label for="p-linkedin">LinkedIn</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="platform" id="p-facebook" value="Facebook">
                 <label for="p-facebook">Facebook</label>
               </div>
@@ -1179,7 +1420,7 @@
           </div>
 
           <!-- 4. Hook Types -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.20s">
             <div class="form-section-label">
               <span class="step-num">4</span>
               Hook Types <span class="field-required">*</span>
@@ -1223,7 +1464,7 @@
           </div>
 
           <!-- 5. Awareness Level -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.25s">
             <div class="form-section-label">
               <span class="step-num">5</span>
               Audience Awareness Level
@@ -1262,26 +1503,26 @@
           </div>
 
           <!-- 6. Goal -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.30s">
             <div class="form-section-label">
               <span class="step-num">6</span>
               Your Goal
             </div>
             <p class="form-section-hint">What do you want this content to do for you?</p>
-            <div class="radio-pills" role="radiogroup" aria-label="Goal">
-              <div class="radio-pill">
+            <div class="opt-pills" role="radiogroup" aria-label="Goal">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="goal" id="g-lead" value="Lead Generation" checked>
                 <label for="g-lead">Lead Generation</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="goal" id="g-sale" value="Direct Sale">
                 <label for="g-sale">Direct Sale</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="goal" id="g-auth" value="Authority Building">
                 <label for="g-auth">Authority Building</label>
               </div>
-              <div class="radio-pill">
+              <div class="opt-pill-wrap">
                 <input type="radio" name="goal" id="g-ent" value="Entertainment">
                 <label for="g-ent">Entertainment</label>
               </div>
@@ -1289,15 +1530,16 @@
           </div>
 
           <!-- 7. Unique Angle -->
-          <div class="form-section">
+          <div class="form-section nx-card" style="animation-delay:.35s">
             <div class="form-section-label">
               <span class="step-num">7</span>
-              Your Unique Angle <span style="font-size:10px; font-weight:400; text-transform:none; letter-spacing:0; color:var(--text-muted); margin-left:4px;">(optional)</span>
+              Your Unique Angle
+              <span style="font-size:11px; font-weight:400; text-transform:none; letter-spacing:0; color:var(--text-subtle); margin-left:4px;">(optional)</span>
             </div>
             <p class="form-section-hint">Any personal story, real stats, or contrarian angle? The more real this is, the harder the hooks hit.</p>
             <textarea
               id="f-angle"
-              class="form-input"
+              class="nx-input"
               placeholder="e.g. Lost 780K followers but grew revenue to R300K/month. Owed SARS R285K while teaching money."
               maxlength="200"
               oninput="updateCharCount(this)"
@@ -1312,7 +1554,7 @@
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </button>
-            <div id="usage-badge" style="margin-top:12px; text-align:center; font-size:12px; font-weight:600; color:#888;"></div>
+            <div id="usage-badge" style="margin-top:12px; text-align:center; font-size:12px; font-weight:600; color:var(--text-subtle);"></div>
           </div>
 
         </form>
@@ -1379,14 +1621,14 @@
               <input
                 type="text"
                 id="e-name"
-                class="form-input"
+                class="nx-input"
                 placeholder="Your first name"
                 required
               >
               <input
                 type="email"
                 id="e-email"
-                class="form-input"
+                class="nx-input"
                 placeholder="Your email address"
                 required
               >
@@ -1403,13 +1645,17 @@
         </div>
 
         <!-- UPSELL LADDER -->
-        <div style="background:linear-gradient(135deg,#1e1a0e,#222); border:1px solid rgba(245,200,66,0.3); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center;">
-          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold); margin-bottom:12px;">Next Step</div>
-          <h3 style="font-size:20px; font-weight:800; color:var(--text); margin-bottom:8px; letter-spacing:-0.5px;">Your hooks are good. Your system needs to be better.</h3>
-          <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;">You now know the framework. <em>The Influencer's Code</em> gives you the full 120-hook bank, the PAIDS income system, and the complete playbook for turning content into consistent income — built for African creators.</p>
-          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:#111; font-weight:800; font-size:14px; padding:13px 24px; border-radius:9px; text-decoration:none; transition:transform 0.15s, box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(245,200,66,0.35)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">Get The Influencer's Code — R299 →</a>
-            <a href="https://contentcreatorhub.online" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-muted); font-weight:600; font-size:13px; padding:13px 20px; border-radius:9px; text-decoration:none; border:1px solid var(--border); transition:all 0.15s;" onmouseover="this.style.color='var(--text)'; this.style.borderColor='#555'" onmouseout="this.style.color='var(--text-muted)'; this.style.borderColor='var(--border)'">Browse all products</a>
+        <div class="upsell-box">
+          <div class="upsell-box-label">Next Step</div>
+          <h3>Your hooks are good. Your system needs to be better.</h3>
+          <p>You now know the framework. <em>The Influencer's Code</em> gives you the full 120-hook bank, the PAIDS income system, and the complete playbook for turning content into consistent income — built for African creators.</p>
+          <div class="upsell-actions">
+            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-btn-primary">
+              Get The Influencer's Code — R299 →
+            </a>
+            <a href="https://contentcreatorhub.online" target="_blank" class="upsell-btn-ghost">
+              Browse all products
+            </a>
           </div>
         </div>
 
@@ -1428,43 +1674,45 @@
 
     <!-- ── PAYWALL SCREEN ─────────────────────────────── -->
     <div id="s-paywall" class="screen">
-      <div class="container" style="padding-top:60px; padding-bottom:80px; text-align:center; max-width:560px;">
-        <div style="width:64px; height:64px; background:rgba(245,200,66,0.12); border:1px solid rgba(245,200,66,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:28px;">🔒</div>
-        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold); margin-bottom:12px;">3 Free Generations Used</div>
-        <h2 style="font-size:28px; font-weight:900; letter-spacing:-1px; color:var(--text); margin-bottom:12px; line-height:1.2;">Your hooks are working.<br>Now go unlimited.</h2>
-        <p style="font-size:15px; color:#888; margin-bottom:36px; line-height:1.7;">You've seen what the R×A×C×U^B framework can do. Upgrade to generate as many hooks as you need — every topic, every platform, every day.</p>
+      <div class="container">
+        <div class="paywall-card">
+          <div class="paywall-icon">🔒</div>
+          <div class="paywall-label">3 Free Generations Used</div>
+          <h2>Your hooks are working.<br>Now go unlimited.</h2>
+          <p>You've seen what the R×A×C×U^B framework can do. Upgrade to generate as many hooks as you need — every topic, every platform, every day.</p>
 
-        <!-- Upgrade via Paystack -->
-        <div style="background:var(--card); border:1px solid rgba(245,200,66,0.3); border-radius:12px; padding:24px; text-align:left; margin-bottom:12px;">
-          <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Subscribe with Paystack — R49/month</p>
-          <p style="font-size:12px; color:#666; margin-bottom:16px;">Card, bank transfer, USSD — all African payment methods supported. Cancel any time.</p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;" id="paystack-form">
-            <input type="email" id="paystack-email" placeholder="your@email.com" style="flex:1; min-width:200px; background:#1A1A1A; border:1px solid #444; color:var(--text); font-family:inherit; font-size:14px; padding:11px 14px; border-radius:8px; outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#444'">
-            <button onclick="startPaystackPayment()" id="paystack-btn" style="display:flex; align-items:center; gap:8px; background:var(--gold); color:#111; font-family:inherit; font-size:14px; font-weight:800; padding:11px 20px; border-radius:8px; cursor:pointer; white-space:nowrap; border:none; transition:all 0.15s;">
-              Subscribe — R49/mo →
-            </button>
+          <!-- Upgrade via Paystack -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Subscribe with Paystack — R49/month</p>
+            <p class="paywall-sub-card-desc">Card, bank transfer, USSD — all African payment methods supported. Cancel any time.</p>
+            <div class="paywall-input-row" id="paystack-form">
+              <input type="email" id="paystack-email" placeholder="your@email.com" class="paywall-input">
+              <button onclick="startPaystackPayment()" id="paystack-btn" class="paywall-btn-primary">
+                Subscribe — R49/mo →
+              </button>
+            </div>
+            <div id="paystack-msg" class="paywall-msg"></div>
           </div>
-          <div id="paystack-msg" style="font-size:13px; margin-top:10px; display:none;"></div>
-        </div>
 
-        <div style="position:relative; margin:20px 0; display:flex; align-items:center; gap:12px;">
-          <div style="flex:1; height:1px; background:#333;"></div>
-          <span style="font-size:12px; color:#666; font-weight:600; white-space:nowrap;">or get 3 more free</span>
-          <div style="flex:1; height:1px; background:#333;"></div>
-        </div>
-
-        <!-- Email for more uses -->
-        <div style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; text-align:left;">
-          <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Drop your email — get 3 more generations free</p>
-          <p style="font-size:12px; color:#666; margin-bottom:16px;">We'll also send you hook templates and creator resources. Unsubscribe any time.</p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;" id="paywall-form">
-            <input type="email" id="paywall-email" placeholder="your@email.com" style="flex:1; min-width:200px; background:#1A1A1A; border:1px solid #444; color:var(--text); font-family:inherit; font-size:14px; padding:11px 14px; border-radius:8px; outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#444'">
-            <button onclick="paywallEmailSubmit()" style="background:transparent; border:1px solid var(--gold); color:var(--gold); font-family:inherit; font-size:14px; font-weight:700; padding:11px 20px; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all 0.15s;" onmouseover="this.style.background='var(--gold)'; this.style.color='#111'" onmouseout="this.style.background='transparent'; this.style.color='var(--gold)'">Get 3 More Free</button>
+          <div class="paywall-divider">
+            <div class="paywall-divider-line"></div>
+            <span class="paywall-divider-text">or get 3 more free</span>
+            <div class="paywall-divider-line"></div>
           </div>
-          <div id="paywall-msg" style="font-size:13px; margin-top:10px; color:var(--green); display:none;"></div>
-        </div>
 
-        <button onclick="showScreen('s-form')" style="margin-top:20px; background:none; border:none; color:#555; font-family:inherit; font-size:13px; cursor:pointer; text-decoration:underline; padding:8px;">← Back to form</button>
+          <!-- Email for more uses -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Drop your email — get 3 more generations free</p>
+            <p class="paywall-sub-card-desc">We'll also send you hook templates and creator resources. Unsubscribe any time.</p>
+            <div class="paywall-input-row" id="paywall-form">
+              <input type="email" id="paywall-email" placeholder="your@email.com" class="paywall-input">
+              <button onclick="paywallEmailSubmit()" class="paywall-btn-ghost">Get 3 More Free</button>
+            </div>
+            <div id="paywall-msg" class="paywall-msg"></div>
+          </div>
+
+          <button onclick="showScreen('s-form')" class="paywall-back">← Back to form</button>
+        </div>
       </div>
     </div>
 
@@ -1492,7 +1740,7 @@
       if (isUnlocked()) { el.innerHTML = '<span style="color:var(--green);">✓ Unlimited generations</span>'; return; }
       const used = getUsage();
       const rem  = Math.max(0, FREE_LIMIT - used);
-      const colors = ['var(--green)', 'var(--green)', 'var(--gold)', 'var(--red)'];
+      const colors = ['var(--green)', 'var(--green)', 'var(--primary)', 'var(--red)'];
       const color  = colors[Math.min(used, 3)];
       el.innerHTML = `<span style="color:${color};">${rem} of ${FREE_LIMIT} free generation${rem !== 1 ? 's' : ''} remaining</span>`;
     }
@@ -1756,7 +2004,7 @@
             ${hook.platform_tip ? `
             <div class="hook-detail-section">
               <div class="hook-detail-label">Platform Tip</div>
-              <div class="hook-detail-text" style="font-style:italic; color:var(--text-muted)">${escHtml(hook.platform_tip)}</div>
+              <div class="hook-detail-text" style="font-style:italic; color:var(--text-subtle)">${escHtml(hook.platform_tip)}</div>
             </div>` : ''}
             ${hook.cta_suggestion ? `
             <div class="hook-detail-section">
@@ -1891,7 +2139,7 @@
 
       if (!email || !email.includes('@')) {
         msgEl.textContent = 'Please enter a valid email to continue.';
-        msgEl.style.color = '#EF4444';
+        msgEl.style.color = '#DC2626';
         msgEl.style.display = 'block';
         return;
       }
@@ -1899,7 +2147,7 @@
       btn.disabled = true;
       btn.textContent = 'Opening payment…';
       msgEl.textContent = 'Connecting to Paystack…';
-      msgEl.style.color = '#888';
+      msgEl.style.color = 'var(--text-subtle)';
       msgEl.style.display = 'block';
 
       try {
@@ -1923,7 +2171,7 @@
 
       } catch (err) {
         msgEl.textContent = `Error: ${err.message}. Try again or email chiefmuhanelwa@gmail.com`;
-        msgEl.style.color = '#EF4444';
+        msgEl.style.color = '#DC2626';
         btn.disabled = false;
         btn.textContent = 'Subscribe — R49/mo →';
       }
@@ -1975,11 +2223,13 @@
           showScreen('s-paywall');
           const container = document.querySelector('#s-paywall .container');
           container.innerHTML = `
-            <div style="width:64px;height:64px;background:rgba(134,239,172,0.12);border:1px solid rgba(134,239,172,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px;">✓</div>
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:12px;">Payment Confirmed</div>
-            <h2 style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text);margin-bottom:12px;">Unlimited hooks unlocked.</h2>
-            <p style="font-size:15px;color:#888;margin-bottom:36px;line-height:1.7;">You now have unlimited access to the Hook Generator. Go build something people can't scroll past.</p>
-            <button onclick="showScreen('s-form'); updateUsageBadge();" style="background:var(--gold);color:#111;font-family:inherit;font-size:15px;font-weight:800;padding:14px 28px;border-radius:10px;cursor:pointer;border:none;">Start Generating →</button>
+            <div style="text-align:center; max-width:480px; margin:0 auto; padding: 60px 24px;">
+              <div style="width:64px;height:64px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:26px;">✓</div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--green);margin-bottom:12px;">Payment Confirmed</div>
+              <h2 style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text-head);margin-bottom:12px;">Unlimited hooks unlocked.</h2>
+              <p style="font-size:15px;color:var(--text-dim);margin-bottom:36px;line-height:1.7;">You now have unlimited access to the Hook Generator. Go build something people can't scroll past.</p>
+              <button onclick="showScreen('s-form'); updateUsageBadge();" class="cta-glow" style="margin:0 auto;">Start Generating →</button>
+            </div>
           `;
           setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 3500);
         }
@@ -1992,12 +2242,12 @@
       const msgEl = document.getElementById('paywall-msg');
       if (!email || !email.includes('@')) {
         msgEl.textContent = 'Please enter a valid email.';
-        msgEl.style.color = '#EF4444';
+        msgEl.style.color = '#DC2626';
         msgEl.style.display = 'block';
         return;
       }
       msgEl.textContent = 'Adding you...';
-      msgEl.style.color = '#888';
+      msgEl.style.color = 'var(--text-subtle)';
       msgEl.style.display = 'block';
       try {
         await fetch('/api/subscribe', {
