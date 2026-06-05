@@ -831,6 +831,7 @@ function nav(dir){
             catIdx++;
             renderCat(catIdx);
             setProgress(8 + catIdx * 12);
+            window.scrollTo({top:0,behavior:'smooth'});
         } else {
             show('s-email');
             setProgress(85);
@@ -840,6 +841,7 @@ function nav(dir){
             catIdx--;
             renderCat(catIdx);
             setProgress(8 + catIdx * 12);
+            window.scrollTo({top:0,behavior:'smooth'});
         } else {
             show('s-intro');
             setProgress(0);
