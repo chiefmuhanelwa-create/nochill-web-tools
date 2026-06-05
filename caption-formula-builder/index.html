@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caption Formula Builder — Scroll-Stopping Captions | NOCHILL</title>
+  <meta name="description" content="Apply Ndivhuwo's 10 scroll-stopping caption formulas to any topic. 3 ready-to-post captions in 30 seconds. Built for African creators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --primary: #4F46E5;
+      --primary-mid: #6366F1;
+      --primary-bright: #818CF8;
+      --primary-deep: #312E81;
+      --primary-bg: rgba(79,70,229,0.10);
+      --primary-border: rgba(79,70,229,0.35);
+      --orange: #D4541F;
+
+      --bg: #FAF7F0;
+      --surface: #FFFFFF;
+      --elevated: #F4EFE3;
+      --text-head: #0A0A0A;
+      --text-body: #1F1B16;
+      --text-dim: #5C5448;
+      --text-subtle: #8A8071;
+      --border: rgba(10,10,10,0.10);
+      --border-light: rgba(10,10,10,0.06);
+
+      --green: #059669;
+      --green-bg: rgba(5,150,105,0.10);
+      --green-border: rgba(5,150,105,0.35);
+      --red: #DC2626;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes card-enter {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes live-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,84,31,0.55); }
+      70%  { box-shadow: 0 0 0 10px rgba(212,84,31,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,84,31,0); }
+    }
+    @keyframes cta-pulse {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.02); }
+    }
+    @keyframes loadingPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
+      50%     { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+    }
+    @keyframes progressAnim {
+      0%  { width: 0%; }
+      20% { width: 15%; }
+      40% { width: 35%; }
+      60% { width: 60%; }
+      80% { width: 82%; }
+      95% { width: 94%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @keyframes stepPulse {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.45; }
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250,247,240,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text-head);
+    }
+    .nav-logo-accent { color: var(--primary); }
+    .nav-logo-tool {
+      font-weight: 400;
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .nav-back {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-back:hover { color: var(--text-head); background: var(--elevated); }
+    .nav-back svg { width: 14px; height: 14px; }
+    .nav-back.visible { display: flex; }
+
+    .nx-status-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9A3A12;
+      background: rgba(212,84,31,0.10);
+      border: 1px solid rgba(212,84,31,0.30);
+    }
+    .nx-live-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--orange);
+      animation: live-pulse 1.8s ease-out 3;
+    }
+
+    /* ─── LAYOUT ─── */
+    .page-wrap { padding-top: 60px; min-height: 100vh; }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      animation: fadeIn 0.35s ease forwards;
+    }
+    .screen.active { display: block; }
+
+    .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── SCREEN 1: INTRO ─── */
+    #s-intro {
+      display: block;
+      opacity: 1;
+      animation: none;
+    }
+
+    .intro-hero {
+      padding: 80px 24px 64px;
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-hero::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 360px;
+      background: radial-gradient(ellipse at center, rgba(79,70,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .intro-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-deep);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .intro-headline {
+      position: relative;
+      font-size: clamp(34px, 6vw, 60px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--text-head);
+      margin-bottom: 20px;
+    }
+    .intro-headline .highlight { color: var(--primary); }
+
+    .intro-sub {
+      position: relative;
+      font-size: 17px;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+    .intro-sub strong { color: var(--text-body); font-weight: 700; }
+
+    .intro-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .intro-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .intro-pill-users {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: var(--green);
+    }
+    .intro-pill-free {
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      color: var(--primary-deep);
+    }
+
+    /* Stats row */
+    .intro-stats {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 12px rgba(10,10,10,0.05);
+    }
+    .intro-stat {
+      flex: 1;
+      padding: 22px 16px;
+      text-align: center;
+      position: relative;
+    }
+    .intro-stat:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--border);
+    }
+    .intro-stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      display: block;
+      letter-spacing: -1px;
+    }
+    .intro-stat-label {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    /* CTA button */
+    .cta-glow {
+      position: relative;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 16px;
+      border: 1px solid rgba(49,46,129,0.45);
+      border-radius: 10px;
+      padding: 16px 36px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 22px rgba(79,70,229,0.30), 0 4px 14px rgba(79,70,229,0.20);
+      transition: transform .2s, box-shadow .2s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+    }
+    .cta-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 36px rgba(79,70,229,0.50), 0 8px 24px rgba(79,70,229,0.30);
+    }
+    .cta-glow svg { width: 18px; height: 18px; }
+
+    .intro-social-proof {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-subtle);
+    }
+    .sp-green { color: var(--green); font-weight: 700; }
+
+    /* Formula preview section */
+    .intro-formulas {
+      padding: 0 24px 64px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 36px;
+    }
+    .nx-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-subtle);
+    }
+    .formulas-label {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .formula-preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .formula-preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .formula-preview-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .formula-preview-template {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* ─── SCREEN 2: FORM ─── */
+    #s-form { padding: 40px 0 88px; }
+
+    .form-header {
+      padding: 0 0 28px;
+    }
+    .form-header h2 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+    .form-header p {
+      font-size: 15px;
+      color: var(--text-dim);
+    }
+
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      animation: card-enter 0.4s ease both;
+    }
+    .form-section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-subtle);
+      margin-bottom: 8px;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .field-required { color: var(--red); font-size: 14px; }
+    .form-section-hint {
+      font-size: 13px;
+      color: var(--text-subtle);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    /* Inputs */
+    .nx-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid rgba(10,10,10,0.12);
+      border-radius: 9px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text-head);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      resize: vertical;
+    }
+    .nx-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.10);
+    }
+    .nx-input::placeholder { color: var(--text-subtle); }
+    textarea.nx-input { min-height: 80px; line-height: 1.6; }
+
+    .char-count {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-subtle);
+      text-align: right;
+    }
+
+    .form-error {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 8px;
+      display: none;
+    }
+    .form-error.visible { display: block; }
+
+    /* Radio pills */
+    .opt-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .opt-pill-wrap input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .opt-pill-wrap label {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .opt-pill-wrap label:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+    }
+    .opt-pill-wrap input[type="radio"]:checked + label {
+      background: var(--primary-bg);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Formula selector cards */
+    .formula-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .formula-option {
+      position: relative;
+    }
+    .formula-option input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .formula-option label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--bg);
+    }
+    .formula-option label:hover {
+      border-color: var(--primary-border);
+      background: rgba(79,70,229,0.04);
+    }
+    .formula-option input[type="checkbox"]:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+    }
+    .formula-check-box {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      transition: all .15s;
+      color: transparent;
+    }
+    .formula-option input[type="checkbox"]:checked + label .formula-check-box {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .formula-card-info { flex: 1; }
+    .formula-card-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 2px;
+    }
+    .formula-option input[type="checkbox"]:checked + label .formula-card-name {
+      color: var(--primary);
+    }
+    .formula-card-template {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .formula-select-hint {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* Form submit */
+    .form-submit-wrap {
+      margin-top: 28px;
+      text-align: center;
+    }
+    .btn-generate {
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 40px;
+      border: 1px solid rgba(49,46,129,0.45);
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 22px rgba(79,70,229,0.30);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 36px rgba(79,70,229,0.50);
+    }
+    .btn-generate svg { width: 18px; height: 18px; }
+
+    /* ─── SCREEN 3: LOADING ─── */
+    #s-loading {
+      padding: 100px 24px 60px;
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .loading-logo {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #6366F1, #312E81);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 900;
+      color: #fff;
+      margin: 0 auto 28px;
+      animation: loadingPulse 1.6s ease-in-out infinite;
+    }
+    .loading-status {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 8px;
+      transition: opacity 0.2s;
+    }
+    .loading-sub {
+      font-size: 14px;
+      color: var(--text-subtle);
+      margin-bottom: 28px;
+    }
+    .progress-wrap {
+      background: var(--elevated);
+      border-radius: 999px;
+      height: 6px;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #6366F1, #818CF8, #6366F1);
+      background-size: 200% 100%;
+      animation: progressAnim 10s ease forwards, shimmer 1.5s ease infinite;
+    }
+    .loading-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+    .loading-step {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-subtle);
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all .3s;
+    }
+    .loading-step.visible { display: flex; }
+    .loading-step.active {
+      border-color: var(--primary-border);
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+    .loading-step.done {
+      border-color: var(--green-border);
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .step-icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      color: var(--text-subtle);
+    }
+    .loading-step.done .step-icon {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+      color: var(--green);
+    }
+    .loading-step.active .step-icon {
+      background: var(--primary-bg);
+      border-color: var(--primary-border);
+      color: var(--primary);
+      animation: stepPulse 1s ease infinite;
+    }
+
+    /* ─── SCREEN 4: RESULTS ─── */
+    #s-results { padding: 40px 0 88px; }
+
+    .results-header { padding: 0 0 32px; }
+    .results-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .results-title {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+    .results-topic { font-size: 15px; color: var(--text-dim); }
+    .results-topic strong { color: var(--text-body); font-weight: 600; }
+
+    .captions-grid { display: grid; gap: 16px; margin-bottom: 40px; }
+
+    /* caption card */
+    .caption-card {
+      background: var(--surface);
+      border: 1px solid rgba(79,70,229,0.20);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .3s ease;
+    }
+    .caption-card.visible { opacity: 1; transform: translateY(0); }
+    .caption-card:hover {
+      border-color: rgba(79,70,229,0.50);
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(79,70,229,0.18), 0 8px 24px rgba(10,10,10,0.08);
+    }
+    .caption-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 3px; height: 100%;
+      background: linear-gradient(180deg, #6366F1, #4F46E5);
+      border-radius: 16px 0 0 16px;
+    }
+    .caption-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(79,70,229,0.45), transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .caption-card:hover::before { opacity: 1; }
+
+    .caption-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .caption-formula-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .caption-platform-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .caption-text {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.55;
+      color: var(--text-head);
+      letter-spacing: -0.2px;
+      margin-bottom: 16px;
+    }
+    .caption-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-bg);
+      border: 1px solid rgba(79,70,229,0.25);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-copy:hover { background: rgba(79,70,229,0.15); transform: scale(1.04); }
+    .btn-copy.copied {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+      color: var(--green);
+    }
+    .btn-copy svg { width: 14px; height: 14px; }
+
+    .btn-expand {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-expand:hover { border-color: var(--primary-border); color: var(--primary); }
+    .btn-expand svg { width: 14px; height: 14px; transition: transform 0.2s; }
+    .btn-expand.open svg { transform: rotate(180deg); }
+
+    .caption-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.35s ease;
+      opacity: 0;
+    }
+    .caption-details.open { max-height: 700px; opacity: 1; }
+
+    .caption-detail-section {
+      border-top: 1px solid var(--border-light);
+      padding-top: 14px;
+      margin-top: 14px;
+    }
+    .caption-detail-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-subtle);
+      margin-bottom: 6px;
+    }
+    .caption-detail-text {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+    .caption-formula-breakdown {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+    .cta-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .cta-option-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* ─── EMAIL CAPTURE ─── */
+    .email-capture {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(10,10,10,0.04);
+    }
+    .email-capture-badge {
+      display: inline-block;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+    .email-capture h3 {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+    .email-capture p {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .email-form {
+      display: grid;
+      gap: 10px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .email-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-email-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: 1px solid rgba(49,46,129,0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: all .2s;
+    }
+    .btn-email-submit:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .btn-email-submit.success { background: var(--green); border-color: transparent; pointer-events: none; box-shadow: none; }
+    .email-message {
+      font-size: 13px;
+      margin-top: 10px;
+      font-weight: 500;
+      min-height: 20px;
+    }
+    .email-message.success { color: var(--green); }
+    .email-message.error   { color: var(--red); }
+
+    /* ─── UPSELL / PRODUCT BOX ─── */
+    .upsell-box {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid var(--primary-border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .upsell-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .upsell-box h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+    .upsell-box p {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+    .upsell-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .upsell-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 13px 24px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: 1px solid rgba(49,46,129,0.45);
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .upsell-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .upsell-btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text-dim);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 13px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .upsell-btn-ghost:hover { color: var(--text-head); border-color: var(--primary-border); }
+
+    /* ─── RESULTS FOOTER ─── */
+    .results-footer { text-align: center; }
+    .btn-new-captions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-new-captions:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-bg); }
+    .btn-new-captions svg { width: 16px; height: 16px; }
+
+    /* ─── PAYWALL SCREEN ─── */
+    #s-paywall { padding: 60px 0 88px; }
+
+    .paywall-card {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid rgba(79,70,229,0.30);
+      border-radius: 20px;
+      padding: 44px 40px;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .paywall-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 21px;
+      background: linear-gradient(180deg, rgba(79,70,229,0.18) 0%, rgba(79,70,229,0.04) 40%, transparent 100%);
+      z-index: -1;
+    }
+    .paywall-icon {
+      width: 64px; height: 64px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 26px;
+    }
+    .paywall-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .paywall-card h2 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-head);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .paywall-card > p {
+      font-size: 15px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    .paywall-benefits {
+      list-style: none;
+      text-align: left;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: grid;
+      gap: 8px;
+    }
+    .paywall-benefits li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+    .paywall-benefits li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .paywall-sub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    .paywall-sub-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 4px;
+    }
+    .paywall-sub-card-desc {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .paywall-input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .paywall-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg);
+      border: 1px solid rgba(10,10,10,0.12);
+      border-radius: 9px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text-head);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .paywall-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.10);
+    }
+    .paywall-input::placeholder { color: var(--text-subtle); }
+    .paywall-btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 11px 20px;
+      border-radius: 9px;
+      cursor: pointer;
+      white-space: nowrap;
+      border: 1px solid rgba(49,46,129,0.45);
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: all .2s;
+    }
+    .paywall-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .paywall-btn-ghost {
+      background: transparent;
+      border: 1px solid var(--primary-border);
+      border-radius: 9px;
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    .paywall-btn-ghost:hover { background: var(--primary-bg); }
+    .paywall-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .paywall-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .paywall-divider-text { font-size: 12px; color: var(--text-subtle); font-weight: 600; white-space: nowrap; }
+    .paywall-msg { font-size: 13px; margin-top: 10px; display: none; font-weight: 500; }
+    .paywall-back {
+      margin-top: 20px;
+      background: none;
+      border: none;
+      color: var(--text-subtle);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 8px;
+      transition: color .15s;
+    }
+    .paywall-back:hover { color: var(--text-dim); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .intro-headline { letter-spacing: -1.5px; }
+      .intro-stats { flex-direction: column; }
+      .intro-stat:not(:last-child)::after {
+        right: 20%; left: 20%;
+        top: auto; bottom: 0;
+        width: auto; height: 1px;
+      }
+      .email-row { grid-template-columns: 1fr; }
+      .formula-preview-grid { grid-template-columns: 1fr; }
+      .paywall-card { padding: 32px 20px; }
+      .nx-input, textarea.nx-input, .paywall-input { font-size: 16px; }
+      .opt-pill-wrap label { padding: 11px 16px; min-height: 44px; }
+      .nav { padding: 0 12px; gap: 8px; }
+      .nav-logo-tool { display: none; }
+      .nx-status-live { padding: 5px 10px; font-size: 10px; }
+      .paywall-input-row { flex-direction: column; }
+      .paywall-input { min-width: unset; width: 100%; }
+      .paywall-btn-primary, .paywall-btn-ghost { width: 100%; justify-content: center; }
+      .caption-actions { gap: 6px; }
+      .email-capture { padding: 28px 20px; }
+      .container, .container-wide { padding: 0 16px; }
+      .results-title { font-size: 24px; }
+      .upsell-actions { flex-direction: column; align-items: stretch; }
+      .upsell-btn-primary, .upsell-btn-ghost { justify-content: center; text-align: center; }
+      .intro-badges { flex-direction: column; gap: 8px; }
+      .caption-card-top { flex-direction: column; gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      NO<span class="nav-logo-accent">CHILL</span><span class="nav-logo-tool">Captions</span>
+    </div>
+    <button class="nav-back" id="nav-back" onclick="goBackToForm()" aria-label="Back to form">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back
+    </button>
+    <div class="nx-status-live">
+      <span class="nx-live-dot"></span>
+      Free Tool
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- ══════════════════════════════════════
+         SCREEN 1: INTRO
+    ══════════════════════════════════════ -->
+    <div id="s-intro" class="screen active">
+      <div class="intro-hero">
+        <div class="intro-badge">
+          <span class="nx-live-dot"></span>
+          10 Scroll-Stopping Formulas
+        </div>
+        <h1 class="intro-headline">
+          Caption Formula<br>
+          <span class="highlight">Builder</span>
+        </h1>
+        <p class="intro-sub">
+          Apply Ndivhuwo's 10 scroll-stopping formulas to any topic. <strong>3 captions ready to post in 30 seconds.</strong>
+        </p>
+        <div class="intro-badges">
+          <span class="intro-pill intro-pill-users">
+            ✓ Used by 2,400+ SA creators
+          </span>
+          <span class="intro-pill intro-pill-free">
+            3 free generations — no card needed
+          </span>
+        </div>
+        <div class="intro-stats">
+          <div class="intro-stat">
+            <span class="intro-stat-num">70.8%</span>
+            <div class="intro-stat-label">Creators stuck on "what to post"</div>
+          </div>
+          <div class="intro-stat">
+            <span class="intro-stat-num">10</span>
+            <div class="intro-stat-label">Proven caption formulas</div>
+          </div>
+          <div class="intro-stat">
+            <span class="intro-stat-num">30s</span>
+            <div class="intro-stat-label">Time to 3 captions</div>
+          </div>
+        </div>
+        <button class="cta-glow" onclick="showScreen('s-form')">
+          Build My Captions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+        <p class="intro-social-proof">
+          <span class="sp-green">Free to start.</span> No sign-up required.
+        </p>
+      </div>
+
+      <div class="intro-formulas">
+        <div class="section-divider"></div>
+        <p class="nx-label formulas-label">The 10 NOCHILL Caption Formulas</p>
+        <div style="margin-bottom: 20px;"></div>
+        <div class="formula-preview-grid">
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Pain Reveal</div>
+            <div class="formula-preview-template">[Painful thing]? Here's what nobody told you about [topic].</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Transformation</div>
+            <div class="formula-preview-template">From [before] to [after] in [timeframe]. Here's exactly how.</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Bold Claim</div>
+            <div class="formula-preview-template">I'll say what everyone else is afraid to say: [truth].</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Curiosity Gap</div>
+            <div class="formula-preview-template">The real reason [common struggle] (it's not what you think).</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Story Open</div>
+            <div class="formula-preview-template">The day [turning point]. Here's what happened next.</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Social Proof</div>
+            <div class="formula-preview-template">[Specific result] with [simple method]. Here's the breakdown.</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">List</div>
+            <div class="formula-preview-template">[Number] things nobody tells you about [topic].</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Contrarian</div>
+            <div class="formula-preview-template">Stop [common advice]. [Better alternative] instead.</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">Question Hook</div>
+            <div class="formula-preview-template">[Question they're afraid to answer]? Then read this.</div>
+          </div>
+          <div class="formula-preview-card">
+            <div class="formula-preview-name">How-To</div>
+            <div class="formula-preview-template">How to [desired outcome] without [feared cost].</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 2: FORM
+    ══════════════════════════════════════ -->
+    <div id="s-form" class="screen">
+      <div class="container">
+        <div class="form-header">
+          <h2>Build Your Caption Brief</h2>
+          <p>The more specific your topic, the sharper your captions.</p>
+        </div>
+
+        <form id="caption-form" novalidate>
+
+          <!-- 1. Topic -->
+          <div class="form-section" style="animation-delay:.05s">
+            <div class="form-section-label">
+              <span class="step-num">1</span>
+              Your Content Topic <span class="field-required">*</span>
+            </div>
+            <p class="form-section-hint">What is this post about? Be specific — "how to get brand deals as a Soweto creator" beats "content creation".</p>
+            <textarea
+              id="f-topic"
+              class="nx-input"
+              placeholder="e.g. How I made R8,000 from one TikTok without showing my face"
+              maxlength="200"
+              rows="3"
+              oninput="updateCharCount(this, 'topic-count')"
+              required
+            ></textarea>
+            <div class="char-count"><span id="topic-count">0</span> / 200</div>
+            <div class="form-error" id="err-topic">Please enter your content topic to continue.</div>
+          </div>
+
+          <!-- 2. Platform -->
+          <div class="form-section" style="animation-delay:.10s">
+            <div class="form-section-label">
+              <span class="step-num">2</span>
+              Platform
+            </div>
+            <p class="form-section-hint">Where will you post? Captions are tuned for each platform's style and algorithm.</p>
+            <div class="opt-pills" role="radiogroup" aria-label="Platform">
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-tiktok" value="TikTok" checked>
+                <label for="p-tiktok">TikTok</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-facebook" value="Facebook">
+                <label for="p-facebook">Facebook</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-instagram" value="Instagram">
+                <label for="p-instagram">Instagram</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-linkedin" value="LinkedIn">
+                <label for="p-linkedin">LinkedIn</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Tone -->
+          <div class="form-section" style="animation-delay:.15s">
+            <div class="form-section-label">
+              <span class="step-num">3</span>
+              Tone
+            </div>
+            <p class="form-section-hint">How do you want to sound? Match your personality, not what you think you should sound like.</p>
+            <div class="opt-pills" role="radiogroup" aria-label="Tone">
+              <div class="opt-pill-wrap">
+                <input type="radio" name="tone" id="t-raw" value="Real & Raw" checked>
+                <label for="t-raw">Real &amp; Raw</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="tone" id="t-inspo" value="Inspirational">
+                <label for="t-inspo">Inspirational</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="tone" id="t-edu" value="Educational">
+                <label for="t-edu">Educational</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="tone" id="t-ent" value="Entertaining">
+                <label for="t-ent">Entertaining</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Formulas -->
+          <div class="form-section" style="animation-delay:.20s">
+            <div class="form-section-label">
+              <span class="step-num">4</span>
+              Caption Formulas <span class="field-required">*</span>
+            </div>
+            <p class="form-section-hint">Pick 1–3 formulas. We'll generate one caption per formula selected.</p>
+            <div class="formula-selector-grid" role="group" aria-label="Caption formulas">
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-pain" value="Pain Reveal">
+                <label for="f-pain">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Pain Reveal</span>
+                    <span class="formula-card-template">[Painful thing]? Here's what nobody told you about [topic].</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-transform" value="Transformation">
+                <label for="f-transform">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Transformation</span>
+                    <span class="formula-card-template">From [before] to [after] in [timeframe]. Here's exactly how.</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-bold" value="Bold Claim">
+                <label for="f-bold">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Bold Claim</span>
+                    <span class="formula-card-template">I'll say what everyone else is afraid to say: [truth].</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-curiosity" value="Curiosity Gap">
+                <label for="f-curiosity">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Curiosity Gap</span>
+                    <span class="formula-card-template">The real reason [common struggle] (it's not what you think).</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-story" value="Story Open">
+                <label for="f-story">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Story Open</span>
+                    <span class="formula-card-template">The day [turning point]. Here's what happened next.</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-proof" value="Social Proof">
+                <label for="f-proof">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Social Proof</span>
+                    <span class="formula-card-template">[Specific result] with [simple method]. Here's the breakdown.</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-list" value="List">
+                <label for="f-list">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">List</span>
+                    <span class="formula-card-template">[Number] things nobody tells you about [topic].</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-contrarian" value="Contrarian">
+                <label for="f-contrarian">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Contrarian</span>
+                    <span class="formula-card-template">Stop [common advice]. [Better alternative] instead.</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-question" value="Question Hook">
+                <label for="f-question">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">Question Hook</span>
+                    <span class="formula-card-template">[Question they're afraid to answer]? Then read this.</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="formula-option">
+                <input type="checkbox" id="f-howto" value="How-To">
+                <label for="f-howto">
+                  <span class="formula-check-box">✓</span>
+                  <span class="formula-card-info">
+                    <span class="formula-card-name">How-To</span>
+                    <span class="formula-card-template">How to [desired outcome] without [feared cost].</span>
+                  </span>
+                </label>
+              </div>
+
+            </div>
+            <p class="formula-select-hint">Select 1–3 formulas above</p>
+            <div class="form-error" id="err-formulas">Pick at least one formula to continue.</div>
+          </div>
+
+          <!-- 5. Unique Angle -->
+          <div class="form-section" style="animation-delay:.25s">
+            <div class="form-section-label">
+              <span class="step-num">5</span>
+              Your Unique Angle
+              <span style="font-size:11px; font-weight:400; text-transform:none; letter-spacing:0; color:var(--text-subtle); margin-left:4px;">(optional)</span>
+            </div>
+            <p class="form-section-hint">Real number, personal story, or contrarian take? This turns a generic caption into one only you could write.</p>
+            <textarea
+              id="f-angle"
+              class="nx-input"
+              placeholder="e.g. I wrote a caption for a post I almost didn't publish. It got shared 1,400 times."
+              maxlength="200"
+              rows="2"
+              oninput="updateCharCount(this, 'angle-count')"
+            ></textarea>
+            <div class="char-count"><span id="angle-count">0</span> / 200</div>
+          </div>
+
+          <div class="form-submit-wrap">
+            <button type="button" class="btn-generate" onclick="generateCaptions()">
+              Generate My Captions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+            <div id="usage-badge" style="margin-top:12px; text-align:center; font-size:12px; font-weight:600; color:var(--text-subtle);"></div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 3: LOADING
+    ══════════════════════════════════════ -->
+    <div id="s-loading" class="screen">
+      <div style="max-width:480px; margin:0 auto; padding:100px 24px 60px; text-align:center;">
+        <div class="loading-logo">N</div>
+        <div class="loading-status" id="loading-status">Selecting your formula...</div>
+        <div class="loading-sub">Building your captions — about 10 seconds</div>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="loading-steps">
+          <div class="loading-step" id="lstep-1">
+            <div class="step-icon">1</div>
+            <span>Loading your formula</span>
+          </div>
+          <div class="loading-step" id="lstep-2">
+            <div class="step-icon">2</div>
+            <span>Calibrating platform tone</span>
+          </div>
+          <div class="loading-step" id="lstep-3">
+            <div class="step-icon">3</div>
+            <span>Weaving in African context</span>
+          </div>
+          <div class="loading-step" id="lstep-4">
+            <div class="step-icon">4</div>
+            <span>Crafting CTA bridges</span>
+          </div>
+          <div class="loading-step" id="lstep-5">
+            <div class="step-icon">5</div>
+            <span>Finalising your captions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 4: RESULTS
+    ══════════════════════════════════════ -->
+    <div id="s-results" class="screen">
+      <div class="container">
+
+        <div class="results-header">
+          <div class="results-meta" id="results-meta-label">3 Captions Generated</div>
+          <h2 class="results-title">Your Scroll-Stopping Captions</h2>
+          <p class="results-topic">Topic: <strong id="results-topic-label"></strong></p>
+        </div>
+
+        <div class="captions-grid" id="captions-grid">
+          <!-- Caption cards injected here -->
+        </div>
+
+        <!-- Email capture -->
+        <div class="email-capture">
+          <div class="email-capture-badge">Free Bonus</div>
+          <h3>Save These + Get the Full Caption Swipe File</h3>
+          <p>Drop your email and we'll send your captions straight to your inbox — plus 30 bonus caption templates built for SA creators.</p>
+          <form class="email-form" id="email-form" onsubmit="submitEmail(event)">
+            <div class="email-row">
+              <input
+                type="text"
+                id="e-name"
+                class="nx-input"
+                placeholder="Your first name"
+                required
+              >
+              <input
+                type="email"
+                id="e-email"
+                class="nx-input"
+                placeholder="Your email address"
+                required
+              >
+            </div>
+            <button type="submit" class="btn-email-submit" id="email-submit-btn">
+              Send My Captions
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+            <div class="email-message" id="email-message"></div>
+          </form>
+        </div>
+
+        <!-- UPSELL -->
+        <div class="upsell-box">
+          <div class="upsell-box-label">Next Step</div>
+          <h3>Your captions are ready. Your content system needs to catch up.</h3>
+          <p>Ndivhuwo wrote a caption for a post she almost didn't publish. It got shared 1,400 times. <em>The Influencer's Code</em> teaches the full system — hooks, captions, monetisation — built for African creators who are done guessing.</p>
+          <div class="upsell-actions">
+            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-btn-primary">
+              Get The Influencer's Code — R299 →
+            </a>
+            <a href="https://contentcreatorhub.online" target="_blank" class="upsell-btn-ghost">
+              Browse all products
+            </a>
+          </div>
+        </div>
+
+        <div class="results-footer">
+          <button class="btn-new-captions" onclick="goBackToForm()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 .49-3.8"/>
+            </svg>
+            Generate New Captions
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 5: PAYWALL
+    ══════════════════════════════════════ -->
+    <div id="s-paywall" class="screen">
+      <div class="container">
+        <div class="paywall-card">
+          <div class="paywall-icon">🔒</div>
+          <div class="paywall-label">3 Free Generations Used</div>
+          <h2>You've used your 3 free generations.</h2>
+          <p>Subscribe for R49/month — unlimited caption generation, all 10 formulas, all platforms.</p>
+
+          <ul class="paywall-benefits">
+            <li>Unlimited captions across all 10 formulas</li>
+            <li>All 4 platforms + tone variations</li>
+            <li>Formula breakdown: WHY each caption works</li>
+            <li>Caption-to-CTA bridge suggestions</li>
+          </ul>
+
+          <!-- Paystack subscribe -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Subscribe with Paystack — R49/month</p>
+            <p class="paywall-sub-card-desc">Card, bank transfer, USSD — all SA payment methods supported. Cancel any time.</p>
+            <div class="paywall-input-row" id="paystack-form">
+              <input type="email" id="paystack-email" placeholder="your@email.com" class="paywall-input" aria-label="Email for subscription">
+              <button onclick="startPaystackPayment()" id="paystack-btn" class="paywall-btn-primary">
+                Subscribe — R49/mo →
+              </button>
+            </div>
+            <div id="paystack-msg" class="paywall-msg"></div>
+          </div>
+
+          <div class="paywall-divider">
+            <div class="paywall-divider-line"></div>
+            <span class="paywall-divider-text">or not ready to subscribe?</span>
+            <div class="paywall-divider-line"></div>
+          </div>
+
+          <!-- Email for more free uses -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Not ready to subscribe? Get 10 more free.</p>
+            <p class="paywall-sub-card-desc">Drop your email — we'll unlock 10 more generations and send you creator resources weekly. Unsubscribe any time.</p>
+            <div class="paywall-input-row" id="paywall-free-form">
+              <input type="email" id="paywall-email" placeholder="your@email.com" class="paywall-input" aria-label="Email for free unlock">
+              <button onclick="paywallEmailSubmit()" class="paywall-btn-ghost">Get 10 More Free</button>
+            </div>
+            <div id="paywall-msg-free" class="paywall-msg"></div>
+          </div>
+
+          <button onclick="showScreen('s-form')" class="paywall-back">← Back to form</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <script>
+    // ─── CONSTANTS ──────────────────────────────────────────────────────────────
+    const USAGE_KEY  = 'nochill_caption_used';
+    const UNLOCK_KEY = 'nochill_caption_unlocked';
+    const FREE_LIMIT = 3;
+
+    // The 10 formulas with templates and fallback generators
+    const FORMULAS = {
+      'Pain Reveal': {
+        template: '[Painful thing]? Here\'s what nobody told you about [topic].',
+        fallback: (topic) =>
+          `Posting every day for 6 months and still at zero sales? Here's what nobody told you about monetising content in South Africa — especially when you're growing in ${topic}.`,
+        breakdown: 'The Pain Reveal formula opens with the exact frustration your audience feels daily — it creates instant recognition. Readers think "that\'s me" before they\'ve read the second sentence. The "what nobody told you" frame positions you as the insider breaking the silence.',
+        ctas: [
+          'The reason they never tell you this is because it kills the advice industry...',
+          'Save this post. You\'re going to come back to it.',
+          'Comment YES if this is you right now — I read every reply.'
+        ]
+      },
+      'Transformation': {
+        template: 'From [before] to [after] in [timeframe]. Here\'s exactly how.',
+        fallback: (topic) =>
+          `From R0 online income to R8,000/month in 90 days — all from creating content about ${topic}. Here's exactly how I did it (and what I wish I knew from day one).`,
+        breakdown: 'The Transformation formula satisfies the human brain\'s obsession with before-and-after contrast. The timeframe creates credibility and urgency. "Here\'s exactly how" is a promise — it converts passive scrollers into active readers because they want the mechanism.',
+        ctas: [
+          'Step 1 is the one most people skip — and it\'s why they stay stuck...',
+          'Drop "DETAILS" in the comments and I\'ll share the full breakdown.',
+          'Follow me if you want the next part of this story.'
+        ]
+      },
+      'Bold Claim': {
+        template: 'I\'ll say what everyone else is afraid to say: [truth].',
+        fallback: (topic) =>
+          `I'll say what everyone else is afraid to say: most creators teaching ${topic} have never actually made money from it. Here's what the ones earning quietly are doing differently.`,
+        breakdown: 'Bold Claim works because it signals courage. In a sea of safe, hedged content, someone willing to say the unsaid stands out immediately. The phrase "afraid to say" pre-sells the reader on a revelation — they\'re already leaning in before the truth drops.',
+        ctas: [
+          'Agree or disagree? Tell me below — I want to hear the pushback.',
+          'If this landed, share it with a creator who needs to see it.',
+          'The creators doing this quietly are building real businesses. Here\'s what they know...'
+        ]
+      },
+      'Curiosity Gap': {
+        template: 'The real reason [common struggle] (it\'s not what you think).',
+        fallback: (topic) =>
+          `The real reason most SA creators never make money from ${topic} (it's not followers, it's not consistency, and it's not the algorithm). The answer will change how you create forever.`,
+        breakdown: 'The Curiosity Gap formula exploits the brain\'s need to close open loops. By naming a common struggle and immediately saying "it\'s not what you think," you\'ve created an itch the reader must scratch. The parenthetical eliminates the most likely guesses — forcing them to read on for the real answer.',
+        ctas: [
+          'The real answer is something almost no coach will say out loud...',
+          'Read this twice. Then read it again tomorrow.',
+          'Tell me: have you experienced this without knowing why?'
+        ]
+      },
+      'Story Open': {
+        template: 'The day [turning point]. Here\'s what happened next.',
+        fallback: (topic) =>
+          `The day I wrote a caption for a post I almost didn\'t publish about ${topic} — it got shared 1,400 times. That\'s when I knew captions were the real product. Here\'s what happened next.`,
+        breakdown: 'Story Open drops the reader into the middle of a pivotal moment — no buildup, no context, just the scene. "The day" signals that something significant happened. "Here\'s what happened next" is the oldest narrative promise in existence. Humans are wired to need story resolution — they cannot stop reading.',
+        ctas: [
+          'What happened next changed everything I thought I knew about content...',
+          'Follow for the full story — I\'m dropping part 2 this week.',
+          'If you\'ve had a moment like this, tell me about it below.'
+        ]
+      },
+      'Social Proof': {
+        template: '[Specific result] with [simple method]. Here\'s the breakdown.',
+        fallback: (topic) =>
+          `R200 — that was my first payment from content about ${topic}. Not from a brand deal. Not from ads. From a caption I almost deleted. Here\'s the full breakdown of what I did differently.`,
+        breakdown: 'Social Proof formulas lead with the result — not the method. The brain evaluates outcomes before effort. Specificity (R200, not "a little money") makes it credible. "Simple method" neutralises the fear of complexity. "Here\'s the breakdown" converts the passive viewer into an active student.',
+        ctas: [
+          'The method is simpler than you expect — but it requires one decision most creators avoid...',
+          'Save this. The breakdown starts in the comments.',
+          'Has this worked for you? I\'d love to feature your story next.'
+        ]
+      },
+      'List': {
+        template: '[Number] things nobody tells you about [topic].',
+        fallback: (topic) =>
+          `5 things nobody tells you about building an audience around ${topic} in South Africa:\n\n1. Your accent is an asset, not a liability\n2. Facebook still dominates for monetisation\n3. R49 can unlock more than a R5,000 ad spend\n4. The algorithm rewards authenticity, not consistency\n5. Your first R200 is the hardest — everything after is system`,
+        breakdown: 'List formulas promise a complete, digestible truth — and the brain craves completion. "Nobody tells you" positions the creator as an insider with access to hidden knowledge. The number creates a mental contract: the reader knows exactly how much time they\'re committing, which reduces friction to start reading.',
+        ctas: [
+          'Which one surprised you most? Tell me in the comments.',
+          'Save this list — you\'ll need it when you hit #3.',
+          'Follow for the full breakdown of each point this week.'
+        ]
+      },
+      'Contrarian': {
+        template: 'Stop [common advice]. [Better alternative] instead.',
+        fallback: (topic) =>
+          `Stop posting daily about ${topic} and expecting results. Post intentionally instead — one clear hook, one specific lesson, one strong CTA. Three posts a week with that structure will outperform seven posts of noise every single time.`,
+        breakdown: 'Contrarian formulas work by pattern interruption — "stop" is a hard cut in the scroll. The formula then earns the right to the alternative by naming the exact bad advice first. Readers who\'ve tried the common advice feel vindicated, not attacked. You become the person who finally said what they suspected.',
+        ctas: [
+          'I know this goes against everything you\'ve heard. Here\'s the data that changed my mind...',
+          'Tag a creator who needs to hear this.',
+          'How many days did you waste on the old advice before you saw this?'
+        ]
+      },
+      'Question Hook': {
+        template: '[Question they\'re afraid to answer]? Then read this.',
+        fallback: (topic) =>
+          `Still creating content about ${topic} without a clear monetisation plan? Then read this — because the answer isn\'t "post more." It\'s about knowing exactly which one post should be doing the selling for you.`,
+        breakdown: 'Question Hook formulas select your audience by asking a question only your ideal reader would say yes to. "Then read this" is a direct command — it converts a question into momentum. The creator positions themselves as the person holding the answer, which creates instant authority without a single credential mentioned.',
+        ctas: [
+          'The answer most coaches charge R3,000 to reveal is actually this...',
+          'Reply "YES" if this is you right now — I\'ll send you the framework directly.',
+          'The one post that does the selling for you looks like this...'
+        ]
+      },
+      'How-To': {
+        template: 'How to [desired outcome] without [feared cost].',
+        fallback: (topic) =>
+          `How to build a loyal audience around ${topic} without posting every day, without showing your face, and without spending a single rand on ads. The three things you actually need — and why most creators never figure out all three.`,
+        breakdown: 'The How-To formula removes the biggest objection before the reader even forms it. "Without [feared cost]" is doing the heavy lifting — it pre-empts the "but I can\'t because..." response. By listing what they don\'t have to do, you make the desired outcome feel accessible for the first time.',
+        ctas: [
+          'The three things are simpler than you think — but in a specific order...',
+          'Save this for when you\'re ready to implement instead of just learn.',
+          'Which of the "withouts" matters most to you? Tell me below.'
+        ]
+      }
+    };
+
+    // ─── STATE ───────────────────────────────────────────────────────────────
+    let currentTopic = '';
+    let currentFormValues = {};
+    let loadingTimer = null;
+    let loadingStepTimers = [];
+
+    // ─── USAGE TRACKING ──────────────────────────────────────────────────────
+    function getUsage()      { return parseInt(localStorage.getItem(USAGE_KEY) || '0', 10); }
+    function isUnlocked()    { return localStorage.getItem(UNLOCK_KEY) === '1'; }
+    function incrementUsage(){ localStorage.setItem(USAGE_KEY, getUsage() + 1); updateUsageBadge(); }
+    function unlockUsage()   { localStorage.setItem(UNLOCK_KEY, '1'); updateUsageBadge(); }
+
+    function updateUsageBadge() {
+      const el = document.getElementById('usage-badge');
+      if (!el) return;
+      if (isUnlocked()) {
+        el.innerHTML = '<span style="color:var(--green);">✓ Unlimited generations</span>';
+        return;
+      }
+      const used = getUsage();
+      const rem  = Math.max(0, FREE_LIMIT - used);
+      const color = rem > 1 ? 'var(--green)' : rem === 1 ? 'var(--orange)' : 'var(--red)';
+      el.innerHTML = `<span style="color:${color};">${rem} of ${FREE_LIMIT} free generation${rem !== 1 ? 's' : ''} remaining</span>`;
+    }
+
+    // ─── SCREEN NAVIGATION ───────────────────────────────────────────────────
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+        s.style.opacity = '0';
+      });
+      const target = document.getElementById(id);
+      target.style.display = 'block';
+      target.classList.add('active');
+      void target.offsetWidth;
+      target.style.opacity = '';
+
+      const backBtn = document.getElementById('nav-back');
+      if (id === 's-intro') {
+        backBtn.classList.remove('visible');
+      } else {
+        backBtn.classList.add('visible');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBackToForm() {
+      clearLoadingTimers();
+      showScreen('s-form');
+    }
+
+    // ─── FORM UTILITIES ───────────────────────────────────────────────────────
+    function updateCharCount(el, countId) {
+      const countEl = document.getElementById(countId);
+      if (countEl) countEl.textContent = el.value.length;
+    }
+
+    function getFormValues() {
+      const topic    = document.getElementById('f-topic').value.trim();
+      const platform = document.querySelector('input[name="platform"]:checked')?.value || 'TikTok';
+      const tone     = document.querySelector('input[name="tone"]:checked')?.value || 'Real & Raw';
+      const angle    = document.getElementById('f-angle').value.trim();
+      const formulaCheckboxes = document.querySelectorAll('.formula-selector-grid input[type="checkbox"]:checked');
+      const formulas = Array.from(formulaCheckboxes).map(cb => cb.value);
+      return { topic, platform, tone, formulas, angle };
+    }
+
+    function validateForm(values) {
+      let valid = true;
+
+      const topicErr = document.getElementById('err-topic');
+      if (!values.topic) {
+        topicErr.classList.add('visible');
+        document.getElementById('f-topic').focus();
+        valid = false;
+      } else {
+        topicErr.classList.remove('visible');
+      }
+
+      const formulaErr = document.getElementById('err-formulas');
+      if (values.formulas.length === 0) {
+        formulaErr.classList.add('visible');
+        if (valid) {
+          formulaErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        valid = false;
+      } else {
+        formulaErr.classList.remove('visible');
+      }
+
+      // Cap at 3 formulas
+      if (values.formulas.length > 3) {
+        formulaErr.textContent = 'Please select a maximum of 3 formulas.';
+        formulaErr.classList.add('visible');
+        if (valid) formulaErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        valid = false;
+      } else {
+        formulaErr.textContent = 'Pick at least one formula to continue.';
+      }
+
+      return valid;
+    }
+
+    // ─── LOADING ANIMATION ────────────────────────────────────────────────────
+    const loadingMessages = [
+      'Loading your formula...',
+      'Calibrating platform tone...',
+      'Weaving in African context...',
+      'Crafting CTA bridges...',
+      'Finalising your captions...'
+    ];
+
+    function clearLoadingTimers() {
+      if (loadingTimer) clearInterval(loadingTimer);
+      loadingStepTimers.forEach(t => clearTimeout(t));
+      loadingStepTimers = [];
+    }
+
+    function startLoadingAnimation() {
+      const statusEl = document.getElementById('loading-status');
+      const steps    = document.querySelectorAll('.loading-step');
+
+      steps.forEach((s, i) => {
+        s.classList.remove('visible', 'active', 'done');
+        s.querySelector('.step-icon').textContent = i + 1;
+      });
+
+      const bar = document.getElementById('progress-bar');
+      bar.style.animation = 'none';
+      void bar.offsetWidth;
+      bar.style.animation = 'progressAnim 10s ease forwards, shimmer 1.5s ease infinite';
+
+      const stepDelays = [300, 1500, 3000, 5000, 7200];
+      stepDelays.forEach((delay, i) => {
+        const t = setTimeout(() => {
+          if (i > 0) {
+            steps[i - 1].classList.remove('active');
+            steps[i - 1].classList.add('done');
+            steps[i - 1].querySelector('.step-icon').textContent = '✓';
+          }
+          steps[i].classList.add('visible', 'active');
+          statusEl.style.opacity = '0';
+          setTimeout(() => {
+            statusEl.textContent = loadingMessages[i];
+            statusEl.style.opacity = '1';
+          }, 150);
+        }, delay);
+        loadingStepTimers.push(t);
+      });
+    }
+
+    // ─── FALLBACK CAPTIONS ────────────────────────────────────────────────────
+    function buildFallbackCaptions(values) {
+      const { topic, formulas } = values;
+      const t = topic.length > 50 ? topic.slice(0, 47).trimEnd() + '…' : topic;
+      const selected = formulas.slice(0, 3);
+
+      return selected.map(formulaName => {
+        const formula = FORMULAS[formulaName];
+        if (!formula) return null;
+        return {
+          formula: formulaName,
+          text:    formula.fallback(t),
+          breakdown: formula.breakdown,
+          ctas: formula.ctas,
+          platform: values.platform
+        };
+      }).filter(Boolean);
+    }
+
+    // ─── MAIN GENERATE FUNCTION ───────────────────────────────────────────────
+    async function generateCaptions() {
+      const values = getFormValues();
+      if (!validateForm(values)) return;
+
+      // Usage gate
+      if (!isUnlocked() && getUsage() >= FREE_LIMIT) {
+        showScreen('s-paywall');
+        return;
+      }
+      incrementUsage();
+
+      currentTopic    = values.topic;
+      currentFormValues = values;
+
+      showScreen('s-loading');
+      clearLoadingTimers();
+      startLoadingAnimation();
+
+      // Update results meta count label
+      const count = Math.min(values.formulas.length, 3);
+      const metaEl = document.getElementById('results-meta-label');
+      if (metaEl) metaEl.textContent = `${count} Caption${count !== 1 ? 's' : ''} Generated`;
+
+      try {
+        const response = await fetch('/api/captions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values)
+        });
+
+        const data = await response.json();
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        if (data.ok && Array.isArray(data.captions) && data.captions.length > 0) {
+          renderResults(data.captions, currentTopic);
+        } else {
+          renderResults(buildFallbackCaptions(values), currentTopic);
+        }
+      } catch (err) {
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        renderResults(buildFallbackCaptions(values), currentTopic);
+      }
+    }
+
+    // ─── RENDER RESULTS ───────────────────────────────────────────────────────
+    function renderResults(captions, topic) {
+      document.getElementById('results-topic-label').textContent = topic;
+
+      const grid = document.getElementById('captions-grid');
+      grid.innerHTML = '';
+
+      captions.forEach((cap, i) => {
+        const formulaName = escHtml(cap.formula || 'Caption');
+        const platform    = escHtml(cap.platform || currentFormValues.platform || '');
+        const captionText = escHtml(cap.text || '');
+        const breakdown   = cap.breakdown || '';
+        const ctas        = Array.isArray(cap.ctas) ? cap.ctas : [];
+
+        const card = document.createElement('div');
+        card.className = 'caption-card';
+
+        let ctaHtml = '';
+        if (ctas.length > 0) {
+          const ctaItems = ctas.map(c => `<div class="cta-option-item">${escHtml(c)}</div>`).join('');
+          ctaHtml = `
+            <div class="caption-detail-section">
+              <div class="caption-detail-label">Add Your CTA — Pick One</div>
+              <div class="cta-options">${ctaItems}</div>
+            </div>`;
+        }
+
+        let breakdownHtml = '';
+        if (breakdown) {
+          breakdownHtml = `
+            <div class="caption-detail-section">
+              <div class="caption-detail-label">Formula Breakdown — Why This Works</div>
+              <div class="caption-formula-breakdown">${escHtml(breakdown)}</div>
+            </div>`;
+        }
+
+        card.innerHTML = `
+          <div class="caption-card-top">
+            <span class="caption-formula-badge">${formulaName}</span>
+            ${platform ? `<span class="caption-platform-badge">${platform}</span>` : ''}
+          </div>
+          <div class="caption-text">${captionText.replace(/\n/g, '<br>')}</div>
+          <div class="caption-actions">
+            <button class="btn-copy" onclick="copyCaption(this, ${JSON.stringify(cap.text || '')})">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copy Caption
+            </button>
+            <button class="btn-expand" onclick="toggleDetails(this)" aria-expanded="false">
+              Formula Breakdown
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+          </div>
+          <div class="caption-details">
+            ${breakdownHtml}
+            ${ctaHtml}
+          </div>
+        `;
+
+        grid.appendChild(card);
+        setTimeout(() => card.classList.add('visible'), i * 100);
+      });
+
+      // Reset email form state
+      const emailMsg = document.getElementById('email-message');
+      if (emailMsg) {
+        emailMsg.textContent = '';
+        emailMsg.className = 'email-message';
+      }
+      const submitBtn = document.getElementById('email-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('success');
+        submitBtn.innerHTML = `Send My Captions
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>`;
+      }
+
+      showScreen('s-results');
+    }
+
+    // ─── COPY CAPTION ─────────────────────────────────────────────────────────
+    function copyCaption(btn, text) {
+      const original = btn.innerHTML;
+      const successHtml = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Copied!
+      `;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = successHtml;
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 2200);
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        btn.innerHTML = successHtml;
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 2200);
+      });
+    }
+
+    // ─── EXPAND / COLLAPSE ────────────────────────────────────────────────────
+    function toggleDetails(btn) {
+      const card    = btn.closest('.caption-card');
+      const details = card.querySelector('.caption-details');
+      const isOpen  = details.classList.contains('open');
+      details.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    }
+
+    // ─── EMAIL SUBMIT (RESULTS SCREEN) ────────────────────────────────────────
+    async function submitEmail(e) {
+      e.preventDefault();
+      const name  = document.getElementById('e-name').value.trim();
+      const email = document.getElementById('e-email').value.trim();
+      const msgEl = document.getElementById('email-message');
+      const btn   = document.getElementById('email-submit-btn');
+
+      if (!name || !email) {
+        msgEl.textContent = 'Please fill in both fields.';
+        msgEl.className   = 'email-message error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 0.8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending...`;
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, tags: ['caption_tool_lead'] })
+        });
+        const resData = await res.json().catch(() => ({}));
+
+        if (resData.already) {
+          msgEl.textContent = `You're already on the list — check your inbox!`;
+          msgEl.className   = 'email-message success';
+          btn.innerHTML     = `✓ Already subscribed`;
+          btn.classList.add('success');
+          unlockUsage();
+        } else if (res.ok || resData.ok) {
+          msgEl.textContent = `Done! Check your inbox, ${escHtml(name)}.`;
+          msgEl.className   = 'email-message success';
+          btn.innerHTML     = `✓ Sent!`;
+          btn.classList.add('success');
+          unlockUsage();
+          document.getElementById('email-form').reset();
+          document.getElementById('topic-count') && (document.getElementById('topic-count').textContent = '0');
+          document.getElementById('angle-count') && (document.getElementById('angle-count').textContent = '0');
+        } else {
+          throw new Error(resData.error || 'Submission failed');
+        }
+      } catch (err) {
+        msgEl.textContent = `Something went wrong. Email us: chiefmuhanelwa@gmail.com`;
+        msgEl.className   = 'email-message error';
+        btn.disabled      = false;
+        btn.innerHTML     = `Try Again`;
+      }
+    }
+
+    // ─── PAYSTACK PAYMENT ─────────────────────────────────────────────────────
+    async function startPaystackPayment() {
+      const email = document.getElementById('paystack-email').value.trim();
+      const msgEl = document.getElementById('paystack-msg');
+      const btn   = document.getElementById('paystack-btn');
+
+      if (!email || !email.includes('@')) {
+        msgEl.textContent   = 'Please enter a valid email to continue.';
+        msgEl.style.color   = 'var(--red)';
+        msgEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled     = true;
+      btn.textContent  = 'Opening payment…';
+      msgEl.textContent   = 'Connecting to Paystack…';
+      msgEl.style.color   = 'var(--text-subtle)';
+      msgEl.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/create-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, product: 'caption_builder' })
+        });
+        const data = await res.json();
+
+        if (!data.ok) throw new Error(data.error || 'Payment init failed');
+
+        localStorage.setItem('nochill_ps_ref',   data.reference);
+        localStorage.setItem('nochill_ps_email', email);
+        window.location.href = data.authorization_url;
+
+      } catch (err) {
+        msgEl.textContent   = `Error: ${err.message}. Try again or email chiefmuhanelwa@gmail.com`;
+        msgEl.style.color   = 'var(--red)';
+        btn.disabled        = false;
+        btn.textContent     = 'Subscribe — R49/mo →';
+      }
+    }
+
+    // ─── VERIFY PAYMENT ON RETURN ────────────────────────────────────────────
+    async function checkPaymentReturn() {
+      const params       = new URLSearchParams(window.location.search);
+      const refFromUrl   = params.get('reference') || params.get('trxref');
+      const refFromStore = localStorage.getItem('nochill_ps_ref');
+      const reference    = refFromUrl || refFromStore;
+
+      if (!reference) return;
+
+      if (refFromUrl) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      try {
+        const res = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          localStorage.removeItem('nochill_ps_ref');
+          const email = data.email || localStorage.getItem('nochill_ps_email') || '';
+          localStorage.removeItem('nochill_ps_email');
+
+          unlockUsage();
+
+          if (email) {
+            try {
+              await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, tags: ['caption_subscriber', 'paid_r49'] })
+              });
+            } catch(e) { /* non-blocking */ }
+          }
+
+          showScreen('s-paywall');
+          const container = document.querySelector('#s-paywall .container');
+          container.innerHTML = `
+            <div style="text-align:center; max-width:480px; margin:0 auto; padding:60px 24px;">
+              <div style="width:64px;height:64px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:26px;">✓</div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--green);margin-bottom:12px;">Payment Confirmed</div>
+              <h2 style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text-head);margin-bottom:12px;">Unlimited captions unlocked.</h2>
+              <p style="font-size:15px;color:var(--text-dim);margin-bottom:36px;line-height:1.7;">You now have unlimited access to all 10 formulas. Go build captions that stop the scroll.</p>
+              <button onclick="showScreen('s-form'); updateUsageBadge();" class="cta-glow" style="margin:0 auto;">Start Generating →</button>
+            </div>
+          `;
+          setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 3500);
+        }
+      } catch(e) { /* silently ignore verify errors on load */ }
+    }
+
+    // ─── PAYWALL FREE EMAIL UNLOCK ────────────────────────────────────────────
+    async function paywallEmailSubmit() {
+      const email = document.getElementById('paywall-email').value.trim();
+      const msgEl = document.getElementById('paywall-msg-free');
+
+      if (!email || !email.includes('@')) {
+        msgEl.textContent   = 'Please enter a valid email.';
+        msgEl.style.color   = 'var(--red)';
+        msgEl.style.display = 'block';
+        return;
+      }
+
+      msgEl.textContent   = 'Adding you...';
+      msgEl.style.color   = 'var(--text-subtle)';
+      msgEl.style.display = 'block';
+
+      try {
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, tags: ['caption_tool_lead'] })
+        });
+      } catch(e) { /* non-blocking */ }
+
+      unlockUsage();
+      msgEl.textContent = '✓ Unlocked! Redirecting you to the builder...';
+      msgEl.style.color = 'var(--green)';
+      document.getElementById('paywall-free-form').style.display = 'none';
+      setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 1600);
+    }
+
+    // ─── HELPERS ──────────────────────────────────────────────────────────────
+    function escHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Enforce max 3 formula selections
+    function enforceFormulaLimit() {
+      const boxes = document.querySelectorAll('.formula-selector-grid input[type="checkbox"]');
+      boxes.forEach(box => {
+        box.addEventListener('change', () => {
+          const checked = document.querySelectorAll('.formula-selector-grid input[type="checkbox"]:checked');
+          if (checked.length > 3) {
+            box.checked = false;
+            const errEl = document.getElementById('err-formulas');
+            errEl.textContent = 'Maximum 3 formulas. Uncheck one first.';
+            errEl.classList.add('visible');
+            setTimeout(() => {
+              errEl.textContent = 'Pick at least one formula to continue.';
+              errEl.classList.remove('visible');
+            }, 2500);
+          }
+        });
+      });
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    document.getElementById('s-intro').style.display = 'block';
+    document.getElementById('s-intro').style.opacity = '1';
+
+    updateUsageBadge();
+    enforceFormulaLimit();
+    checkPaymentReturn();
+  </script>
+
+</body>
+</html>
