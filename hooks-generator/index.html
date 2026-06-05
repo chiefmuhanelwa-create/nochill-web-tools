@@ -1875,6 +1875,9 @@
 
     // ─── FALLBACK HOOKS ───────────────────────────────────────────────────────
     function buildFallbackHooks(topic) {
+      // Trim to first 40 chars so raw paragraph text doesn't bleed into templates
+      const t = topic.length > 40 ? topic.slice(0, 37).trimEnd() + '…' : topic;
+      topic = t;
       return [
         {
           text: `You're working every day and still not seeing results. This is why.`,

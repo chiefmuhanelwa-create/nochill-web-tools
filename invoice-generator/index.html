@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Deal Invoice Generator — NOCHILL</title>
+  <meta name="description" content="Generate a professional brand deal invoice in 2 minutes. Built for SA content creators. Free.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:        #1D4ED8;
+      --primary-mid:    #2563EB;
+      --primary-bright: #60A5FA;
+      --primary-deep:   #1E3A8A;
+      --primary-bg:     rgba(29,78,216,0.08);
+      --primary-border: rgba(29,78,216,0.25);
+      --orange:         #D4541F;
+      --bg:             #FAF7F0;
+      --surface:        #FFFFFF;
+      --elevated:       #F4EFE3;
+      --ink:            #0A0A0A;
+      --body:           #1F1B16;
+      --dim:            #5C5448;
+      --subtle:         #8A8071;
+      --border:         rgba(10,10,10,0.10);
+      --border-strong:  rgba(10,10,10,0.18);
+      --green:          #059669;
+      --green-bg:       rgba(5,150,105,0.10);
+      --green-border:   rgba(5,150,105,0.30);
+      --red:            #DC2626;
+      --red-bg:         rgba(220,38,38,0.08);
+      --gold:           #C9A646;
+      --gold-bg:        rgba(201,166,70,0.10);
+      --gold-border:    rgba(201,166,70,0.30);
+      --radius:         16px;
+      --radius-sm:      10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--body);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── KEYFRAMES ─────────────────────────────────────────── */
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+    @keyframes live-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,84,31,.55); }
+      70%  { box-shadow: 0 0 0 10px rgba(212,84,31,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,84,31,0); }
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* ── NAV ───────────────────────────────────────────────── */
+    nav.site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,247,240,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-size: 12px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-tag {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--primary-bg); color: var(--primary);
+      border: 1px solid var(--primary-border);
+    }
+    .nav-live {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+      background: var(--orange); color: white;
+      padding: 4px 10px; border-radius: 20px;
+      animation: live-pulse 2s infinite;
+    }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 64px 24px 48px;
+      max-width: 640px; margin: 0 auto;
+      animation: fadeUp .5s ease both;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-bg); border: 1px solid var(--primary-border);
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
+      font-weight: 900; line-height: 1.1;
+      color: var(--ink); margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p {
+      font-size: 1.05rem; color: var(--dim);
+      max-width: 480px; margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+    .hero-proof {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 600; color: var(--dim);
+    }
+    .proof-item .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    }
+
+    /* ── MAIN LAYOUT ───────────────────────────────────────── */
+    .main-wrap {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 20px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 800px) { .main-wrap { grid-template-columns: 1fr; } }
+
+    /* ── FORM PANEL ────────────────────────────────────────── */
+    .form-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: fadeUp .5s .1s ease both;
+    }
+    .form-section {
+      padding: 24px 24px 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .form-section:last-of-type { border-bottom: none; }
+    .form-section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .form-section-title {
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--primary);
+    }
+    .section-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      background: var(--elevated); color: var(--subtle);
+    }
+    .section-badge.saved {
+      background: var(--green-bg); color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 12px; }
+    .field-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+    .nx-label {
+      display: block; font-size: 11px; font-weight: 700;
+      color: var(--dim); margin-bottom: 5px; letter-spacing: 0.04em;
+    }
+    .nx-label span { color: var(--red); }
+    .nx-input, .nx-select, .nx-textarea {
+      width: 100%; padding: 10px 14px;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.9rem;
+      font-family: inherit; color: var(--body);
+      transition: border-color .15s, box-shadow .15s;
+      outline: none;
+    }
+    .nx-input:focus, .nx-select:focus, .nx-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-bg);
+    }
+    .nx-textarea { resize: vertical; min-height: 72px; }
+
+    /* VAT toggle */
+    .vat-toggle-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; background: var(--elevated);
+      border-radius: var(--radius-sm); cursor: pointer;
+    }
+    .toggle-switch {
+      width: 36px; height: 20px; border-radius: 10px;
+      background: var(--border-strong); position: relative;
+      transition: background .2s; flex-shrink: 0;
+    }
+    .toggle-switch.on { background: var(--primary); }
+    .toggle-switch::after {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: white; top: 3px; left: 3px;
+      transition: left .2s;
+    }
+    .toggle-switch.on::after { left: 19px; }
+    .vat-label { font-size: 0.88rem; font-weight: 600; color: var(--body); }
+    .vat-label small { font-weight: 400; color: var(--subtle); }
+
+    /* Line items */
+    .line-items { display: flex; flex-direction: column; gap: 10px; }
+    .line-item {
+      display: grid; grid-template-columns: 1fr auto auto;
+      gap: 8px; align-items: center;
+    }
+    .line-item .nx-input.amount-input { width: 110px; text-align: right; }
+    .remove-line {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--red-bg); border: 1px solid rgba(220,38,38,.2);
+      color: var(--red); font-size: 1.1rem; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s; flex-shrink: 0;
+    }
+    .remove-line:hover { background: rgba(220,38,38,.18); }
+    .add-line-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.85rem; font-weight: 600; color: var(--primary);
+      background: var(--primary-bg); border: 1.5px dashed var(--primary-border);
+      border-radius: var(--radius-sm); padding: 9px 14px;
+      cursor: pointer; transition: background .15s; width: 100%;
+      margin-top: 4px;
+    }
+    .add-line-btn:hover { background: rgba(29,78,216,.14); }
+
+    /* Totals */
+    .totals-block {
+      background: var(--elevated); border-radius: var(--radius-sm);
+      padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;
+      margin-top: 12px;
+    }
+    .total-row { display: flex; justify-content: space-between; font-size: 0.88rem; color: var(--dim); }
+    .total-row.grand { font-size: 1rem; font-weight: 800; color: var(--ink); padding-top: 8px; border-top: 1px solid var(--border-strong); }
+
+    /* Save details */
+    .save-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; color: var(--subtle); cursor: pointer;
+      padding: 0 24px 20px;
+    }
+    .save-row input { accent-color: var(--primary); }
+
+    /* Generate btn */
+    .generate-btn {
+      display: block; width: calc(100% - 48px); margin: 0 24px 24px;
+      background: var(--primary); color: white;
+      font-size: 0.95rem; font-weight: 800;
+      padding: 15px 24px; border-radius: var(--radius-sm);
+      border: none; cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      letter-spacing: 0.01em;
+    }
+    .generate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,78,216,.35); }
+    .generate-btn:active { transform: translateY(0); }
+
+    /* ── PREVIEW PANEL ─────────────────────────────────────── */
+    .preview-panel {
+      position: sticky; top: 72px;
+      display: flex; flex-direction: column; gap: 16px;
+      animation: fadeUp .5s .2s ease both;
+    }
+    @media (max-width: 800px) { .preview-panel { position: static; } }
+
+    .preview-actions {
+      display: flex; gap: 10px;
+    }
+    .print-btn, .reset-btn {
+      flex: 1; padding: 11px 16px; border-radius: var(--radius-sm);
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      border: none; transition: all .15s;
+    }
+    .print-btn {
+      background: var(--ink); color: white;
+    }
+    .print-btn:hover { background: var(--primary); }
+    .reset-btn {
+      background: var(--surface); color: var(--dim);
+      border: 1.5px solid var(--border);
+    }
+    .reset-btn:hover { border-color: var(--border-strong); color: var(--body); }
+
+    /* Invoice preview */
+    .invoice-preview {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+
+    .inv-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+    .inv-creator-name { font-size: 1.1rem; font-weight: 900; color: #0A0A0A; margin-bottom: 4px; }
+    .inv-creator-meta { font-size: 0.78rem; color: #5C5448; line-height: 1.6; }
+    .inv-title { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.02em; color: var(--primary); text-align: right; }
+    .inv-number { font-size: 0.78rem; color: #5C5448; text-align: right; margin-top: 4px; }
+
+    .inv-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-bottom: 28px;
+      padding-bottom: 28px; border-bottom: 2px solid #E8E1D4;
+    }
+    .inv-meta-label { font-size: 9px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #8A8071; margin-bottom: 6px; }
+    .inv-meta-val   { font-size: 0.88rem; color: #0A0A0A; line-height: 1.5; }
+    .inv-meta-val strong { font-weight: 700; }
+
+    .inv-table { width: 100%; margin-bottom: 16px; }
+    .inv-table-head {
+      display: grid; grid-template-columns: 1fr auto;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #8A8071; padding-bottom: 8px; border-bottom: 1px solid #E8E1D4;
+    }
+    .inv-table-head .th-right { text-align: right; }
+    .inv-line {
+      display: grid; grid-template-columns: 1fr auto;
+      padding: 10px 0; border-bottom: 1px solid #F4EFE3;
+      font-size: 0.88rem; color: #1F1B16;
+    }
+    .inv-line .amount { text-align: right; font-weight: 600; white-space: nowrap; }
+    .inv-line.empty-row { color: #8A8071; font-style: italic; }
+
+    .inv-totals { margin-top: 4px; }
+    .inv-total-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.85rem; color: #5C5448;
+      padding: 5px 0;
+    }
+    .inv-total-row.grand {
+      font-size: 1rem; font-weight: 900; color: #0A0A0A;
+      padding: 12px 0 0; margin-top: 6px;
+      border-top: 2px solid #0A0A0A;
+    }
+
+    .inv-banking {
+      margin-top: 28px; padding-top: 24px;
+      border-top: 1px solid #E8E1D4;
+    }
+    .inv-banking-label { font-size: 9px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #8A8071; margin-bottom: 12px; }
+    .inv-banking-grid {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 4px 20px; font-size: 0.82rem;
+    }
+    .inv-bk-key   { color: #8A8071; font-weight: 600; white-space: nowrap; }
+    .inv-bk-val   { color: #0A0A0A; font-weight: 700; }
+
+    .inv-footer {
+      margin-top: 24px; padding-top: 16px;
+      border-top: 1px solid #E8E1D4;
+      font-size: 0.78rem; color: #8A8071; line-height: 1.6;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .inv-footer-brand { font-weight: 700; color: #5C5448; }
+
+    .inv-placeholder { color: #C4B89A; font-style: italic; }
+
+    /* ── EMAIL CAPTURE ─────────────────────────────────────── */
+    .email-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .email-card h3 { font-size: 1rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+    .email-card p  { font-size: 0.85rem; color: var(--dim); margin-bottom: 16px; line-height: 1.55; }
+    .email-form    { display: flex; gap: 8px; }
+    .email-form .nx-input { flex: 1; }
+    .email-submit {
+      padding: 10px 16px; background: var(--primary); color: white;
+      font-size: 0.85rem; font-weight: 700; border: none;
+      border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap;
+      transition: opacity .15s;
+    }
+    .email-submit:hover { opacity: .85; }
+    .email-success {
+      display: none; align-items: center; gap: 10px;
+      font-size: 0.88rem; font-weight: 600; color: var(--green);
+    }
+    .email-success.show { display: flex; }
+
+    /* ── UPSELL ────────────────────────────────────────────── */
+    .upsell-card {
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .upsell-card .up-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 10px;
+    }
+    .upsell-card h3 { font-size: 0.95rem; font-weight: 800; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+    .upsell-card p  { font-size: 0.82rem; color: var(--dim); margin-bottom: 14px; line-height: 1.55; }
+    .upsell-link {
+      display: inline-block; font-size: 0.85rem; font-weight: 700;
+      color: var(--primary); text-decoration: none;
+      padding: 9px 18px; border: 1.5px solid var(--primary-border);
+      border-radius: var(--radius-sm); background: var(--surface);
+      transition: all .15s;
+    }
+    .upsell-link:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* ── PRINT ─────────────────────────────────────────────── */
+    @media print {
+      nav, .form-panel, .preview-actions, .email-card, .upsell-card, .hero { display: none !important; }
+      body { background: white; }
+      .main-wrap { display: block; padding: 0; max-width: 100%; }
+      .preview-panel { position: static; }
+      .invoice-preview {
+        border: none; box-shadow: none;
+        padding: 20px; border-radius: 0;
+      }
+    }
+
+    /* ── MOBILE ────────────────────────────────────────────── */
+    @media (max-width: 500px) {
+      .hero h1  { font-size: 1.75rem; }
+      .invoice-preview { padding: 24px 20px; }
+      .inv-header { flex-direction: column; gap: 12px; }
+      .inv-title { text-align: left; }
+      .inv-number { text-align: left; }
+      .inv-meta-grid { grid-template-columns: 1fr; gap: 16px; }
+      .email-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <span class="nav-brand">NOCHILL</span>
+  <div class="nav-right">
+    <span class="nav-tag">Invoice Generator</span>
+    <span class="nav-live">Free</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">💼 Brand Deal Tool</div>
+  <h1>Generate Your Invoice in <span>2 Minutes</span> — Before the Agency Forgets to Pay You.</h1>
+  <p>Fill in your details once. Generate a professional EOM invoice every campaign. Download. Send. Get paid.</p>
+  <div class="hero-proof">
+    <div class="proof-item"><span class="dot"></span>SA banking formats built in</div>
+    <div class="proof-item"><span class="dot"></span>EOM due date auto-calculated</div>
+    <div class="proof-item"><span class="dot"></span>VAT optional</div>
+    <div class="proof-item"><span class="dot"></span>Free. Always.</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+
+    <!-- YOUR DETAILS -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <span class="form-section-title">Your Details</span>
+        <span class="section-badge" id="details-badge">Fills once, saves automatically</span>
+      </div>
+      <div class="field-group">
+        <div>
+          <label class="nx-label">Your Name / Business Name <span>*</span></label>
+          <input class="nx-input" id="creator-name" placeholder="e.g. NOCHILL PTY LTD" oninput="updatePreview(); saveDetails();">
+        </div>
+        <div class="field-row">
+          <div>
+            <label class="nx-label">Your Email <span>*</span></label>
+            <input class="nx-input" id="creator-email" type="email" placeholder="you@email.com" oninput="updatePreview(); saveDetails();">
+          </div>
+          <div>
+            <label class="nx-label">Your Phone</label>
+            <input class="nx-input" id="creator-phone" placeholder="0XX XXX XXXX" oninput="updatePreview(); saveDetails();">
+          </div>
+        </div>
+        <div>
+          <label class="nx-label">Your Address (optional)</label>
+          <input class="nx-input" id="creator-address" placeholder="Street, City, Province" oninput="updatePreview(); saveDetails();">
+        </div>
+        <div>
+          <label class="nx-label">VAT Number (if registered)</label>
+          <input class="nx-input" id="vat-number" placeholder="4XXXXXXXXX" oninput="updatePreview(); saveDetails();">
+        </div>
+      </div>
+    </div>
+
+    <!-- BANKING DETAILS -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <span class="form-section-title">Your Banking Details</span>
+        <span class="section-badge" id="banking-badge">Saves automatically</span>
+      </div>
+      <div class="field-group">
+        <div class="field-row">
+          <div>
+            <label class="nx-label">Bank <span>*</span></label>
+            <select class="nx-select" id="bank-name" onchange="autoBranchCode(); updatePreview(); saveDetails();">
+              <option value="">Select bank...</option>
+              <option value="Standard Bank">Standard Bank</option>
+              <option value="FNB / RMB">FNB / RMB</option>
+              <option value="ABSA">ABSA</option>
+              <option value="Nedbank">Nedbank</option>
+              <option value="Capitec">Capitec</option>
+              <option value="Discovery Bank">Discovery Bank</option>
+              <option value="Investec">Investec</option>
+              <option value="TymeBank">TymeBank</option>
+              <option value="African Bank">African Bank</option>
+              <option value="Bidvest Bank">Bidvest Bank</option>
+            </select>
+          </div>
+          <div>
+            <label class="nx-label">Account Type <span>*</span></label>
+            <select class="nx-select" id="account-type" onchange="updatePreview(); saveDetails();">
+              <option value="Current">Current</option>
+              <option value="Savings">Savings</option>
+              <option value="Cheque">Cheque</option>
+              <option value="Transmission">Transmission</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="nx-label">Account Name <span>*</span></label>
+          <input class="nx-input" id="account-name" placeholder="Name on account" oninput="updatePreview(); saveDetails();">
+        </div>
+        <div class="field-row">
+          <div>
+            <label class="nx-label">Account Number <span>*</span></label>
+            <input class="nx-input" id="account-number" placeholder="000 000 0000" oninput="updatePreview(); saveDetails();">
+          </div>
+          <div>
+            <label class="nx-label">Branch Code</label>
+            <input class="nx-input" id="branch-code" placeholder="Auto-filled" oninput="updatePreview(); saveDetails();">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THIS INVOICE -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <span class="form-section-title">This Invoice</span>
+        <span class="section-badge">Fill for every campaign</span>
+      </div>
+      <div class="field-group">
+        <div>
+          <label class="nx-label">Agency Name <span>*</span></label>
+          <input class="nx-input" id="agency-name" placeholder="e.g. The Tilt Effect" oninput="updatePreview();">
+        </div>
+        <div class="field-row">
+          <div>
+            <label class="nx-label">Billing Contact Name</label>
+            <input class="nx-input" id="billing-contact" placeholder="e.g. Avista Dukhanti" oninput="updatePreview();">
+          </div>
+          <div>
+            <label class="nx-label">Billing Contact Email</label>
+            <input class="nx-input" id="billing-email" type="email" placeholder="billing@agency.co.za" oninput="updatePreview();">
+          </div>
+        </div>
+        <div>
+          <label class="nx-label">Brand / Campaign Name <span>*</span></label>
+          <input class="nx-input" id="campaign-name" placeholder="e.g. Capitec POS Device Campaign" oninput="updatePreview();">
+        </div>
+        <div class="field-row">
+          <div>
+            <label class="nx-label">Invoice Date <span>*</span></label>
+            <input class="nx-input" id="invoice-date" type="date" oninput="calcDueDate(); updatePreview();">
+          </div>
+          <div>
+            <label class="nx-label">Payment Due Date</label>
+            <input class="nx-input" id="due-date" type="date" oninput="updatePreview();">
+          </div>
+        </div>
+        <div>
+          <label class="nx-label">Invoice Number</label>
+          <input class="nx-input" id="invoice-number" placeholder="Auto-generated" oninput="updatePreview();">
+        </div>
+      </div>
+    </div>
+
+    <!-- DELIVERABLES -->
+    <div class="form-section">
+      <div class="form-section-head">
+        <span class="form-section-title">Deliverables</span>
+        <span class="section-badge">What you delivered</span>
+      </div>
+      <div class="field-group">
+        <div class="line-items" id="line-items"></div>
+        <button class="add-line-btn" onclick="addLine()">+ Add deliverable</button>
+        <div class="totals-block" id="totals-block">
+          <div class="total-row"><span>Subtotal</span><span id="subtotal-display">R0.00</span></div>
+          <div class="total-row" id="vat-row" style="display:none;"><span>VAT (15%)</span><span id="vat-display">R0.00</span></div>
+          <div class="total-row grand"><span>Total Due</span><span id="total-display">R0.00</span></div>
+        </div>
+        <div class="vat-toggle-row" onclick="toggleVat()">
+          <div class="toggle-switch" id="vat-toggle"></div>
+          <span class="vat-label">Include VAT (15%) <small>— only if VAT registered</small></span>
+        </div>
+      </div>
+    </div>
+
+    <label class="save-row">
+      <input type="checkbox" id="save-check" checked onchange="saveDetails();">
+      Remember my details for next time
+    </label>
+
+    <button class="generate-btn" onclick="generateInvoice()">
+      Generate My Invoice →
+    </button>
+
+  </div>
+
+  <!-- PREVIEW PANEL -->
+  <div class="preview-panel">
+
+    <div class="preview-actions">
+      <button class="print-btn" onclick="window.print()">⬇ Save as PDF</button>
+      <button class="reset-btn" onclick="resetForm()">Start New Invoice</button>
+    </div>
+
+    <!-- LIVE INVOICE PREVIEW -->
+    <div class="invoice-preview" id="invoice-preview">
+
+      <div class="inv-header">
+        <div>
+          <div class="inv-creator-name" id="prev-creator-name"><span class="inv-placeholder">Your Name / Business</span></div>
+          <div class="inv-creator-meta" id="prev-creator-meta"></div>
+        </div>
+        <div>
+          <div class="inv-title">INVOICE</div>
+          <div class="inv-number" id="prev-inv-number"><span class="inv-placeholder">INV-202606-001</span></div>
+        </div>
+      </div>
+
+      <div class="inv-meta-grid">
+        <div>
+          <div class="inv-meta-label">Invoice Date</div>
+          <div class="inv-meta-val" id="prev-inv-date"><span class="inv-placeholder">DD Month YYYY</span></div>
+        </div>
+        <div>
+          <div class="inv-meta-label">Payment Due</div>
+          <div class="inv-meta-val" id="prev-due-date"><span class="inv-placeholder">End of Month</span></div>
+        </div>
+        <div>
+          <div class="inv-meta-label">Billed To</div>
+          <div class="inv-meta-val" id="prev-billed-to"><span class="inv-placeholder">Agency Name</span></div>
+        </div>
+        <div>
+          <div class="inv-meta-label">Campaign</div>
+          <div class="inv-meta-val" id="prev-campaign"><span class="inv-placeholder">Brand / Campaign</span></div>
+        </div>
+      </div>
+
+      <div class="inv-table">
+        <div class="inv-table-head">
+          <span>Deliverable</span>
+          <span class="th-right">Amount</span>
+        </div>
+        <div id="prev-lines">
+          <div class="inv-line empty-row">
+            <span>Add your deliverables on the left</span>
+            <span class="amount">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="inv-totals">
+        <div class="inv-total-row"><span>Subtotal</span><span id="prev-subtotal">R0.00</span></div>
+        <div class="inv-total-row" id="prev-vat-row" style="display:none;"><span>VAT (15%)</span><span id="prev-vat">R0.00</span></div>
+        <div class="inv-total-row grand"><span>Total Due</span><span id="prev-total">R0.00</span></div>
+      </div>
+
+      <div class="inv-banking">
+        <div class="inv-banking-label">Banking Details — EFT Payment</div>
+        <div class="inv-banking-grid" id="prev-banking">
+          <span class="inv-bk-key">Bank</span><span class="inv-bk-val" id="bk-bank"><span class="inv-placeholder">Your bank</span></span>
+          <span class="inv-bk-key">Account Name</span><span class="inv-bk-val" id="bk-accname"><span class="inv-placeholder">Account holder</span></span>
+          <span class="inv-bk-key">Account No.</span><span class="inv-bk-val" id="bk-accnum"><span class="inv-placeholder">000 000 0000</span></span>
+          <span class="inv-bk-key">Branch Code</span><span class="inv-bk-val" id="bk-branch"><span class="inv-placeholder">XXXXXX</span></span>
+          <span class="inv-bk-key">Account Type</span><span class="inv-bk-val" id="bk-type"><span class="inv-placeholder">Current</span></span>
+          <span class="inv-bk-key">Reference</span><span class="inv-bk-val" id="bk-ref"><span class="inv-placeholder">Invoice number</span></span>
+        </div>
+      </div>
+
+      <div class="inv-footer">
+        <div>
+          Payment terms: <strong>End of Month (EOM)</strong><br>
+          All amounts in South African Rand (ZAR).<br>
+          Please use invoice number as payment reference.
+        </div>
+        <div class="inv-footer-brand">Thank you.</div>
+      </div>
+
+    </div>
+
+    <!-- EMAIL CAPTURE -->
+    <div class="email-card">
+      <h3>Get the Full Invoice Guide</h3>
+      <p>We'll send you the complete guide on how to invoice agencies correctly — including the follow-up script when they haven't paid by EOM.</p>
+      <div class="email-form" id="email-form">
+        <input class="nx-input" type="email" id="cap-email" placeholder="your@email.com">
+        <button class="email-submit" onclick="submitEmail()">Send It →</button>
+      </div>
+      <div class="email-success" id="email-success">
+        ✓ On its way to your inbox.
+      </div>
+    </div>
+
+    <!-- UPSELL -->
+    <div class="upsell-card">
+      <div class="up-tag">Next Step</div>
+      <h3>How to Invoice a Brand Agency So You Actually Get Paid — And Don't Get Ghosted.</h3>
+      <p>The invoice is step one. The follow-up is where most creators lose payment. This guide covers who to send it to, when to follow up, and exactly what to say when they go quiet.</p>
+      <a href="https://contentcreatorhub.online" class="upsell-link">Get the Invoice Kit → R99</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── BRANCH CODE MAP ──────────────────────────────────────
+  const BRANCH_CODES = {
+    'Standard Bank':  '051001',
+    'FNB / RMB':      '250655',
+    'ABSA':           '632005',
+    'Nedbank':        '198765',
+    'Capitec':        '470010',
+    'Discovery Bank': '679000',
+    'Investec':       '580105',
+    'TymeBank':       '678910',
+    'African Bank':   '430000',
+    'Bidvest Bank':   '462005',
+  };
+
+  // ── STATE ────────────────────────────────────────────────
+  let lineItems = [];
+  let vatOn = false;
+  let invCounter = 1;
+
+  // ── INIT ─────────────────────────────────────────────────
+  function init() {
+    // Set today's date
+    const today = new Date();
+    document.getElementById('invoice-date').value = today.toISOString().split('T')[0];
+    calcDueDate();
+
+    // Generate invoice number
+    const y = today.getFullYear();
+    const m = String(today.getMonth()+1).padStart(2,'0');
+    const rand = String(Math.floor(Math.random()*900)+100);
+    document.getElementById('invoice-number').value = `INV-${y}${m}-${rand}`;
+
+    // Load saved details
+    loadDetails();
+
+    // Add first blank line item
+    addLine();
+    updatePreview();
+  }
+
+  // ── AUTO BRANCH CODE ─────────────────────────────────────
+  function autoBranchCode() {
+    const bank = document.getElementById('bank-name').value;
+    if (BRANCH_CODES[bank]) {
+      document.getElementById('branch-code').value = BRANCH_CODES[bank];
+    }
+  }
+
+  // ── CALC DUE DATE (EOM) ──────────────────────────────────
+  function calcDueDate() {
+    const dateVal = document.getElementById('invoice-date').value;
+    if (!dateVal) return;
+    const d = new Date(dateVal);
+    // Last day of same month
+    const eom = new Date(d.getFullYear(), d.getMonth()+1, 0);
+    document.getElementById('due-date').value = eom.toISOString().split('T')[0];
+    updatePreview();
+  }
+
+  // ── LINE ITEMS ───────────────────────────────────────────
+  function addLine() {
+    const id = Date.now();
+    lineItems.push({ id, desc: '', amount: '' });
+    renderLines();
+  }
+
+  function removeLine(id) {
+    lineItems = lineItems.filter(l => l.id !== id);
+    if (lineItems.length === 0) addLine();
+    else renderLines();
+    updatePreview();
+  }
+
+  function renderLines() {
+    const container = document.getElementById('line-items');
+    container.innerHTML = lineItems.map((l, i) => `
+      <div class="line-item">
+        <input class="nx-input" placeholder="e.g. IG Reel (60s)" value="${esc(l.desc)}"
+          oninput="lineItems[${i}].desc=this.value; updatePreview();">
+        <input class="nx-input amount-input" placeholder="R0.00" value="${esc(l.amount)}"
+          oninput="lineItems[${i}].amount=this.value; calcTotals(); updatePreview();"
+          onblur="formatAmount(${i}, this);">
+        <button class="remove-line" onclick="removeLine(${l.id})">×</button>
+      </div>
+    `).join('');
+    calcTotals();
+  }
+
+  function formatAmount(idx, input) {
+    const raw = input.value.replace(/[^0-9.]/g,'');
+    const num = parseFloat(raw);
+    if (!isNaN(num)) {
+      input.value = 'R' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      lineItems[idx].amount = input.value;
+    }
+    calcTotals();
+    updatePreview();
+  }
+
+  function parseAmount(str) {
+    return parseFloat(String(str).replace(/[^0-9.]/g,'')) || 0;
+  }
+
+  function formatRand(num) {
+    return 'R' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function calcTotals() {
+    const sub = lineItems.reduce((s, l) => s + parseAmount(l.amount), 0);
+    const vat = vatOn ? sub * 0.15 : 0;
+    const total = sub + vat;
+
+    document.getElementById('subtotal-display').textContent = formatRand(sub);
+    document.getElementById('vat-display').textContent = formatRand(vat);
+    document.getElementById('total-display').textContent = formatRand(total);
+    document.getElementById('vat-row').style.display = vatOn ? 'flex' : 'none';
+
+    // Preview totals
+    document.getElementById('prev-subtotal').textContent = formatRand(sub);
+    document.getElementById('prev-vat').textContent = formatRand(vat);
+    document.getElementById('prev-total').textContent = formatRand(total);
+    document.getElementById('prev-vat-row').style.display = vatOn ? 'flex' : 'none';
+  }
+
+  // ── VAT TOGGLE ───────────────────────────────────────────
+  function toggleVat() {
+    vatOn = !vatOn;
+    document.getElementById('vat-toggle').classList.toggle('on', vatOn);
+    calcTotals();
+    updatePreview();
+  }
+
+  // ── FORMAT DATE ──────────────────────────────────────────
+  function formatDate(val) {
+    if (!val) return '';
+    const d = new Date(val + 'T00:00:00');
+    return d.toLocaleDateString('en-ZA', { day:'2-digit', month:'long', year:'numeric' });
+  }
+
+  // ── LIVE PREVIEW UPDATE ──────────────────────────────────
+  function updatePreview() {
+    const g = id => document.getElementById(id);
+    const val = id => g(id) ? g(id).value.trim() : '';
+    const ph = (el, text, fallback) => {
+      el.innerHTML = text || `<span class="inv-placeholder">${fallback}</span>`;
+    };
+
+    // Creator name
+    ph(g('prev-creator-name'), val('creator-name'), 'Your Name / Business');
+
+    // Creator meta
+    const meta = [val('creator-email'), val('creator-phone'), val('creator-address'), val('vat-number') ? `VAT: ${val('vat-number')}` : ''].filter(Boolean).join(' · ');
+    g('prev-creator-meta').textContent = meta;
+
+    // Invoice number
+    ph(g('prev-inv-number'), val('invoice-number'), 'INV-202606-001');
+
+    // Dates
+    ph(g('prev-inv-date'), formatDate(val('invoice-date')), 'DD Month YYYY');
+    ph(g('prev-due-date'), formatDate(val('due-date')), 'End of Month');
+
+    // Billed to
+    const billedParts = [val('agency-name'), val('billing-contact'), val('billing-email')].filter(Boolean);
+    ph(g('prev-billed-to'), billedParts.join('<br>'), 'Agency Name');
+
+    // Campaign
+    ph(g('prev-campaign'), val('campaign-name'), 'Brand / Campaign');
+
+    // Lines
+    const linesHtml = lineItems.filter(l => l.desc || l.amount).map(l => `
+      <div class="inv-line">
+        <span>${esc(l.desc) || '<span class="inv-placeholder">Deliverable</span>'}</span>
+        <span class="amount">${esc(l.amount) || '—'}</span>
+      </div>
+    `).join('');
+    g('prev-lines').innerHTML = linesHtml || `<div class="inv-line empty-row"><span>Add your deliverables on the left</span><span class="amount">—</span></div>`;
+
+    // Banking
+    const setText = (id, text, fallback) => {
+      const el = g(id);
+      if (!el) return;
+      el.innerHTML = text || `<span class="inv-placeholder">${fallback}</span>`;
+    };
+    setText('bk-bank',    val('bank-name'),     'Your bank');
+    setText('bk-accname', val('account-name'),  'Account holder');
+    setText('bk-accnum',  val('account-number'),'000 000 0000');
+    setText('bk-branch',  val('branch-code'),   'XXXXXX');
+    setText('bk-type',    val('account-type'),  'Current');
+    setText('bk-ref',     val('invoice-number'),'Invoice number');
+
+    calcTotals();
+  }
+
+  // ── GENERATE (scroll to preview on mobile) ───────────────
+  function generateInvoice() {
+    // Validate required fields
+    const required = [
+      { id: 'creator-name',   label: 'Your name' },
+      { id: 'creator-email',  label: 'Your email' },
+      { id: 'bank-name',      label: 'Bank' },
+      { id: 'account-name',   label: 'Account name' },
+      { id: 'account-number', label: 'Account number' },
+      { id: 'agency-name',    label: 'Agency name' },
+      { id: 'campaign-name',  label: 'Campaign name' },
+    ];
+    for (const r of required) {
+      const el = document.getElementById(r.id);
+      if (!el || !el.value.trim()) {
+        el?.focus();
+        el?.style && (el.borderColor = 'red');
+        alert(`Please fill in: ${r.label}`);
+        return;
+      }
+    }
+    if (window.innerWidth <= 800) {
+      document.getElementById('invoice-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // ── SAVE / LOAD DETAILS ──────────────────────────────────
+  const SAVE_FIELDS = ['creator-name','creator-email','creator-phone','creator-address','vat-number','bank-name','account-type','account-name','account-number','branch-code'];
+
+  function saveDetails() {
+    if (!document.getElementById('save-check')?.checked) return;
+    const data = {};
+    SAVE_FIELDS.forEach(id => { data[id] = document.getElementById(id)?.value || ''; });
+    localStorage.setItem('nochill_inv_details', JSON.stringify(data));
+    const b = document.getElementById('details-badge');
+    const bb = document.getElementById('banking-badge');
+    if (b)  { b.textContent = 'Saved ✓'; b.classList.add('saved'); }
+    if (bb) { bb.textContent = 'Saved ✓'; bb.classList.add('saved'); }
+  }
+
+  function loadDetails() {
+    try {
+      const raw = localStorage.getItem('nochill_inv_details');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      SAVE_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && data[id]) el.value = data[id];
+      });
+      const b = document.getElementById('details-badge');
+      const bb = document.getElementById('banking-badge');
+      if (b)  { b.textContent = 'Loaded ✓'; b.classList.add('saved'); }
+      if (bb) { bb.textContent = 'Loaded ✓'; bb.classList.add('saved'); }
+    } catch(e) {}
+  }
+
+  // ── RESET ────────────────────────────────────────────────
+  function resetForm() {
+    ['agency-name','billing-contact','billing-email','campaign-name'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    lineItems = [];
+    addLine();
+
+    const today = new Date();
+    document.getElementById('invoice-date').value = today.toISOString().split('T')[0];
+    calcDueDate();
+
+    const y = today.getFullYear();
+    const m = String(today.getMonth()+1).padStart(2,'0');
+    const rand = String(Math.floor(Math.random()*900)+100);
+    document.getElementById('invoice-number').value = `INV-${y}${m}-${rand}`;
+
+    updatePreview();
+  }
+
+  // ── EMAIL CAPTURE ────────────────────────────────────────
+  async function submitEmail() {
+    const email = document.getElementById('cap-email').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    const name = document.getElementById('creator-name').value.trim();
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, tags: ['tool_invoice_generator'] })
+      });
+    } catch(e) {}
+    document.getElementById('email-form').style.display = 'none';
+    document.getElementById('email-success').classList.add('show');
+  }
+
+  // ── HELPERS ──────────────────────────────────────────────
+  function esc(str) {
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── START ────────────────────────────────────────────────
+  init();
+</script>
+</body>
+</html>
