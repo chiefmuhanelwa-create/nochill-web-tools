@@ -815,6 +815,40 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    /* ─── SERVICES SECTION ───────────────────────────────── */
+    .services-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+    .services-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .services-item-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); }
+    .item-remove-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; font-size: 12px; padding: 2px 8px; border-radius: 4px; transition: color .15s; font-family: var(--font); }
+    .item-remove-btn:hover { color: var(--red); }
+    .usage-row { display: grid; grid-template-columns: 1fr 120px; gap: 10px; align-items: center; margin-bottom: 8px; }
+    .usage-row-label { font-size: 13px; color: var(--text-b); }
+    .content-mix-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .field-hint-inline { font-size: 11px; color: var(--text-sub); font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+    /* ─── KIT PAGE 4 — VALUE PROPOSITION ─────────────────── */
+    .kit-page-vp { background: #080808; padding: 48px; }
+    .kit-vp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 24px; }
+    .kit-vp-block { background: #0E0E0E; border: 1px solid #1A1A1A; border-radius: 8px; padding: 18px; }
+    .kit-vp-block-title { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #E11D48; margin-bottom: 10px; }
+    .kit-vp-block-text { font-size: 13px; color: #CCCCCC; line-height: 1.65; }
+    .kit-usp-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .kit-usp-dot { width: 6px; height: 6px; background: #E11D48; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .kit-usp-text { font-size: 13px; color: #CCCCCC; line-height: 1.6; }
+
+    /* ─── KIT PAGE 5 — SERVICES ──────────────────────────── */
+    .kit-page-services { background: #080808; padding: 48px; }
+    .kit-services-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+    .kit-services-table th { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #555; padding: 0 0 12px; text-align: left; border-bottom: 1px solid #1A1A1A; }
+    .kit-services-table td { font-size: 12px; color: #CCCCCC; padding: 10px 0; border-bottom: 1px solid #111; vertical-align: top; }
+    .kit-services-table td.svc-name { font-weight: 700; color: #FFF; font-size: 13px; }
+    .kit-services-table td.svc-price { font-size: 14px; font-weight: 800; color: #FB7185; text-align: right; white-space: nowrap; }
+    .kit-usage-table { width: 100%; border-collapse: collapse; }
+    .kit-usage-table td { font-size: 12px; color: #CCCCCC; padding: 9px 0; border-bottom: 1px solid #111; }
+    .kit-usage-table td:last-child { text-align: right; color: #FB7185; font-weight: 700; }
+    .kit-rationale { font-size: 12px; color: #888; line-height: 1.65; font-style: italic; padding: 14px; border-left: 3px solid #E11D48; background: #0E0E0E; border-radius: 0 6px 6px 0; margin-top: 12px; }
+    .kit-services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -996,6 +1030,16 @@
         <div class="form-section-body">
           <div id="platforms-list"></div>
           <button class="add-btn" onclick="addPlatform()">+ Add platform</button>
+          <div class="field-row-2col" style="margin-top:14px;">
+            <div class="field-row"><div class="field-label">Posting Frequency</div><input class="field-input" id="f-posting-freq" placeholder="4× per week" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Turnaround Time</div><input class="field-input" id="f-turnaround" placeholder="5–7 business days" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-label" style="margin:4px 0 8px;">Content Mix <span class="field-hint-inline">(% should total ~100)</span></div>
+          <div class="content-mix-row">
+            <div class="field-row"><div class="field-label">Entertain %</div><input class="field-input" id="f-mix-entertain" type="number" min="0" max="100" placeholder="40" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Educate %</div><input class="field-input" id="f-mix-educate" type="number" min="0" max="100" placeholder="40" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">Encourage %</div><input class="field-input" id="f-mix-encourage" type="number" min="0" max="100" placeholder="20" oninput="updatePreview()"></div>
+          </div>
         </div>
       </div>
 
@@ -1047,7 +1091,53 @@
         </div>
       </div>
 
-      <!-- SECTION 5: Brands -->
+      <!-- SECTION 5: Value Proposition -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">👊</span> Value Proposition</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-row">
+            <div class="field-label">Target Audience <span class="field-hint-inline">Who specifically do you serve?</span></div>
+            <input class="field-input" id="f-target-audience" placeholder="SA women aged 25–35 navigating money for the first time" oninput="updatePreview()">
+          </div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Unique Selling Points <span class="field-hint-inline">(one per line)</span></div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('uniqueSellingPoints','f-usps')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-usps" rows="4" placeholder="• 8% engagement rate — 2.4x SA average&#10;• 3 years finance content, certified NQF4&#10;• Community of 60K+ active money learners" oninput="updateValuePropPreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-usps"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Transformation Outcome</div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('transformationOutcome','f-transformation')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-transformation" rows="3" placeholder="I transform financial anxiety into confident money moves..." oninput="updateValuePropPreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-transformation"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Market Opportunity</div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('marketOpportunity','f-market-opp')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-market-opp" rows="3" placeholder="SA's personal finance content market grew 34% YoY..." oninput="updateValuePropPreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-market-opp"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-label-row">
+              <div class="field-label">Audience Pain Points <span class="field-hint-inline">(one per line)</span></div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('audiencePainPoints','f-pain-points')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-pain-points" rows="4" placeholder="• Overwhelmed by conflicting financial advice&#10;• Struggling with debt cycles and no financial role models&#10;• Feeling excluded from finance spaces" oninput="updateValuePropPreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-pain-points"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: Brands -->
       <div class="form-section">
         <div class="form-section-header" onclick="toggleSection(this)">
           <div class="form-section-title"><span class="form-section-icon">🏢</span> Brand Partnerships</div>
@@ -1113,7 +1203,36 @@
         </div>
       </div>
 
-      <!-- SECTION 8: Contact -->
+      <!-- SECTION 9: Services & Investment -->
+      <div class="form-section">
+        <div class="form-section-header" onclick="toggleSection(this)">
+          <div class="form-section-title"><span class="form-section-icon">💼</span> Services & Investment</div>
+          <span class="form-section-chevron">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-label" style="margin-bottom:8px;">Service Packages</div>
+          <div id="services-list"></div>
+          <button class="add-btn" onclick="addService()">+ Add service package</button>
+          <div class="field-label" style="margin:16px 0 8px;">Add-Ons</div>
+          <div id="addons-list"></div>
+          <button class="add-btn" onclick="addAddOn()">+ Add add-on</button>
+          <div class="field-row" style="margin-top:16px;">
+            <div class="field-label-row">
+              <div class="field-label">Pricing Rationale</div>
+              <button class="ai-suggest-btn" onclick="aiSuggest('pricingRationale','f-pricing-rationale')" type="button">✨ AI Suggest</button>
+            </div>
+            <textarea class="field-textarea" id="f-pricing-rationale" rows="3" placeholder="Rates reflect audience reach, engagement quality, production effort, and usage rights..." oninput="updateServicesPreview()"></textarea>
+            <div class="ai-suggest-msg" id="ai-msg-f-pricing-rationale"></div>
+          </div>
+          <div class="field-label" style="margin:14px 0 8px;">Usage Rights Matrix</div>
+          <div class="usage-row"><span class="usage-row-label">Organic use only</span><input class="field-input" id="ur-organic" value="Included" oninput="updateServicesPreview()"></div>
+          <div class="usage-row"><span class="usage-row-label">Paid ads (30 days)</span><input class="field-input" id="ur-paid30" value="+25%" oninput="updateServicesPreview()"></div>
+          <div class="usage-row"><span class="usage-row-label">Paid ads (90 days)</span><input class="field-input" id="ur-paid90" value="+50%" oninput="updateServicesPreview()"></div>
+          <div class="usage-row"><span class="usage-row-label">Full buyout</span><input class="field-input" id="ur-buyout" value="Custom quote" oninput="updateServicesPreview()"></div>
+        </div>
+      </div>
+
+      <!-- SECTION 10: Contact -->
       <div class="form-section">
         <div class="form-section-header" onclick="toggleSection(this)">
           <div class="form-section-title"><span class="form-section-icon">📩</span> Contact</div>
@@ -1123,9 +1242,11 @@
           <div class="field-row"><div class="field-label">Email</div><input class="field-input" id="c-email" placeholder="hello@yoursite.com" oninput="updatePreview()"></div>
           <div class="field-row"><div class="field-label">Website</div><input class="field-input" id="c-website" placeholder="www.yoursite.com" oninput="updatePreview()"></div>
           <div class="field-row-2col">
-            <div class="field-row"><div class="field-label">WhatsApp</div><input class="field-input" id="c-whatsapp" placeholder="+27 00 000 0000" oninput="updatePreview()"></div>
+            <div class="field-row"><div class="field-label">WhatsApp / Phone</div><input class="field-input" id="c-whatsapp" placeholder="+27 00 000 0000" oninput="updatePreview()"></div>
             <div class="field-row"><div class="field-label">Instagram</div><input class="field-input" id="c-instagram" placeholder="@handle" oninput="updatePreview()"></div>
           </div>
+          <div class="field-row"><div class="field-label">Booking Link</div><input class="field-input" id="c-booking" placeholder="calendly.com/yourname" oninput="updatePreview()"></div>
+          <div class="field-row"><div class="field-label">Response Time</div><input class="field-input" id="c-response-time" placeholder="Within 24 hours" oninput="updatePreview()"></div>
         </div>
       </div>
 
@@ -1235,7 +1356,57 @@
             </div>
           </div>
 
-          <!-- PAGE 4: RATES & CONTACT -->
+          <!-- PAGE 4: VALUE PROPOSITION -->
+          <div class="kit-page">
+            <div class="kit-page-vp">
+              <div class="kit-section-eyebrow" style="margin-bottom:20px;">Why Brands Partner With Me</div>
+              <div id="kit-vp-market" style="margin-bottom:24px; font-size:14px; color:#888; font-style:italic;">Add market opportunity in the form →</div>
+              <div class="kit-vp-grid">
+                <div>
+                  <div class="kit-audience-label" style="margin-bottom:10px;">Unique Selling Points</div>
+                  <div id="kit-usps-list"><div style="color:#333; font-size:12px;">Add USPs in the Value Proposition section →</div></div>
+                  <div class="kit-audience-label" style="margin-top:20px; margin-bottom:10px;">Transformation I Create</div>
+                  <div id="kit-transformation-text" style="font-size:13px; color:#333; line-height:1.65;">Add transformation outcome in the form →</div>
+                </div>
+                <div>
+                  <div class="kit-audience-label" style="margin-bottom:10px;">Audience Pain Points</div>
+                  <div id="kit-pain-points-list"><div style="color:#333; font-size:12px;">Add pain points in the form →</div></div>
+                  <div class="kit-audience-label" style="margin-top:20px; margin-bottom:10px;">Target Audience</div>
+                  <div id="kit-target-audience-text" style="font-size:13px; color:#333; line-height:1.65;">Add target audience in the form →</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAGE 5: SERVICES & INVESTMENT -->
+          <div class="kit-page">
+            <div class="kit-page-services">
+              <div class="kit-section-eyebrow" style="margin-bottom:20px;">Collaboration Packages & Investment</div>
+              <div class="kit-audience-label" style="margin-bottom:12px;">Service Packages</div>
+              <table class="kit-services-table" id="kit-services-table">
+                <tr><th>Package</th><th>Description</th><th>Timeline</th><th>Revisions</th><th style="text-align:right;">Rate (ZAR)</th></tr>
+                <tr><td colspan="5" style="color:#333; font-size:12px; text-align:center; padding:16px 0;">Add service packages in the form →</td></tr>
+              </table>
+              <div id="kit-addons-section"></div>
+              <div class="kit-services-grid">
+                <div>
+                  <div class="kit-audience-label" style="margin-bottom:10px;">Usage Rights</div>
+                  <table class="kit-usage-table" id="kit-usage-table">
+                    <tr><td>Organic use only</td><td>Included</td></tr>
+                    <tr><td>Paid ads (30 days)</td><td>+25%</td></tr>
+                    <tr><td>Paid ads (90 days)</td><td>+50%</td></tr>
+                    <tr><td>Full buyout</td><td>Custom quote</td></tr>
+                  </table>
+                </div>
+                <div>
+                  <div class="kit-audience-label" style="margin-bottom:8px;">Pricing Philosophy</div>
+                  <div class="kit-rationale" id="kit-rationale-text">Pricing reflects audience reach, engagement quality, content production effort, and usage rights. Data-driven and transparent.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAGE 6: RATES & CONTACT -->
           <div class="kit-page">
             <div class="kit-page-4">
               <div>
@@ -1388,10 +1559,189 @@
     } catch(e) {}
   }
 
+  // ─── SERVICES & ADD-ONS MANAGEMENT ───────────────────────────────────────
+  let servicesData = [];
+  let addOnsData = [];
+
+  function addService() {
+    if (servicesData.length >= 5) return;
+    servicesData.push({ name: '', description: '', price: '', turnaround: '7–14 days', revisions: '2 rounds' });
+    renderServicesList();
+  }
+
+  function removeService(idx) {
+    servicesData.splice(idx, 1);
+    renderServicesList();
+    updateServicesPreview();
+  }
+
+  function renderServicesList() {
+    const list = document.getElementById('services-list');
+    if (!list) return;
+    list.innerHTML = servicesData.map((s, i) => `
+      <div class="services-item">
+        <div class="services-item-header">
+          <span class="services-item-num">Package ${i+1}</span>
+          <button class="item-remove-btn" onclick="removeService(${i})">Remove</button>
+        </div>
+        <div class="field-row-2col">
+          <div class="field-row"><div class="field-label">Package Name</div><input class="field-input" value="${esc(s.name)}" placeholder="Instagram Reel Package" oninput="servicesData[${i}].name=this.value; updateServicesPreview();"></div>
+          <div class="field-row"><div class="field-label">Price (ZAR)</div><input class="field-input" value="${esc(s.price)}" placeholder="R4,500" oninput="servicesData[${i}].price=this.value; updateServicesPreview();"></div>
+        </div>
+        <div class="field-row">
+          <div class="field-label-row">
+            <div class="field-label">Description</div>
+            <button class="ai-suggest-btn" onclick="aiSuggestService(${i})" type="button">✨ AI</button>
+          </div>
+          <textarea class="field-textarea" style="min-height:56px;" placeholder="1 × 60-90s Reel + caption + 5 stories..." oninput="servicesData[${i}].description=this.value; updateServicesPreview();">${esc(s.description)}</textarea>
+        </div>
+        <div class="field-row-2col">
+          <div class="field-row"><div class="field-label">Turnaround</div><input class="field-input" value="${esc(s.turnaround)}" placeholder="7–14 days" oninput="servicesData[${i}].turnaround=this.value; updateServicesPreview();"></div>
+          <div class="field-row"><div class="field-label">Revisions</div><input class="field-input" value="${esc(s.revisions)}" placeholder="2 rounds" oninput="servicesData[${i}].revisions=this.value; updateServicesPreview();"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  function addAddOn() {
+    if (addOnsData.length >= 3) return;
+    addOnsData.push({ name: '', description: '', price: '' });
+    renderAddOnsList();
+  }
+
+  function removeAddOn(idx) {
+    addOnsData.splice(idx, 1);
+    renderAddOnsList();
+    updateServicesPreview();
+  }
+
+  function renderAddOnsList() {
+    const list = document.getElementById('addons-list');
+    if (!list) return;
+    list.innerHTML = addOnsData.map((a, i) => `
+      <div class="services-item" style="padding:10px 14px;">
+        <div class="services-item-header">
+          <span class="services-item-num">Add-On ${i+1}</span>
+          <button class="item-remove-btn" onclick="removeAddOn(${i})">Remove</button>
+        </div>
+        <div class="field-row-3col">
+          <div class="field-row"><div class="field-label">Name</div><input class="field-input" value="${esc(a.name)}" placeholder="Extra Stories Set" oninput="addOnsData[${i}].name=this.value; updateServicesPreview();"></div>
+          <div class="field-row"><div class="field-label">Description</div><input class="field-input" value="${esc(a.description)}" placeholder="5 additional stories" oninput="addOnsData[${i}].description=this.value; updateServicesPreview();"></div>
+          <div class="field-row"><div class="field-label">Price (ZAR)</div><input class="field-input" value="${esc(a.price)}" placeholder="+R800" oninput="addOnsData[${i}].price=this.value; updateServicesPreview();"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function aiSuggestService(idx) {
+    const s = servicesData[idx];
+    const listEl = document.getElementById('services-list');
+    if (!listEl) return;
+    const btns = listEl.querySelectorAll('.ai-suggest-btn');
+    const textareas = listEl.querySelectorAll('textarea');
+    const btn = btns[idx]; const textarea = textareas[idx];
+    if (btn) { btn.disabled = true; btn.textContent = '⏳...'; }
+    const context = {
+      serviceName: s.name || 'Content Package',
+      deliverables: s.description || s.name,
+      platforms: platformData.filter(p=>p.followers).map(p=>`${p.name}: ${p.followers}`).join(', '),
+      uniqueValue: v('f-tagline') || v('f-niches'),
+    };
+    try {
+      const res = await fetch('/api/suggest', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ field:'serviceDescription', context }) });
+      const data = await res.json();
+      if (data.ok && data.suggestion && textarea) {
+        textarea.value = data.suggestion;
+        servicesData[idx].description = data.suggestion;
+        updateServicesPreview();
+      }
+    } catch(_) {}
+    if (btn) { btn.disabled = false; btn.textContent = '✨ AI'; }
+  }
+
+  function updateValuePropPreview() {
+    const marketOpp = document.getElementById('kit-vp-market');
+    if (marketOpp) {
+      const text = v('f-market-opp');
+      marketOpp.innerHTML = text
+        ? `<div style="font-size:14px; color:#CCCCCC; line-height:1.65; border-left:3px solid #E11D48; padding-left:16px;">${esc(text)}</div>`
+        : '<div style="color:#333; font-size:12px; font-style:italic;">Add market opportunity in the form →</div>';
+    }
+    const uspsList = document.getElementById('kit-usps-list');
+    if (uspsList) {
+      const usps = v('f-usps');
+      uspsList.innerHTML = usps
+        ? usps.split('\n').filter(l=>l.trim()).map(item=>`<div class="kit-usp-item"><div class="kit-usp-dot"></div><span class="kit-usp-text">${esc(item.replace(/^[•\-\*]\s*/,''))}</span></div>`).join('')
+        : '<div style="color:#333; font-size:12px;">Add USPs in the form →</div>';
+    }
+    const transformation = document.getElementById('kit-transformation-text');
+    if (transformation) {
+      const text = v('f-transformation');
+      transformation.textContent = text || 'Add transformation outcome in the form →';
+      transformation.style.color = text ? '#CCCCCC' : '#333';
+    }
+    const painList = document.getElementById('kit-pain-points-list');
+    if (painList) {
+      const points = v('f-pain-points');
+      painList.innerHTML = points
+        ? points.split('\n').filter(l=>l.trim()).map(item=>`<div class="kit-usp-item"><div class="kit-usp-dot" style="background:#555;"></div><span class="kit-usp-text" style="color:#888;">${esc(item.replace(/^[•\-\*]\s*/,''))}</span></div>`).join('')
+        : '<div style="color:#333; font-size:12px;">Add pain points in the form →</div>';
+    }
+    const targetText = document.getElementById('kit-target-audience-text');
+    if (targetText) {
+      const text = v('f-target-audience');
+      targetText.textContent = text || 'Add target audience in the form →';
+      targetText.style.color = text ? '#CCCCCC' : '#333';
+    }
+    saveToStorage();
+  }
+
+  function updateServicesPreview() {
+    const table = document.getElementById('kit-services-table');
+    if (table) {
+      const validServices = servicesData.filter(s=>s.name);
+      if (validServices.length === 0) {
+        table.innerHTML = `<tr><th>Package</th><th>Description</th><th>Timeline</th><th>Revisions</th><th style="text-align:right;">Rate (ZAR)</th></tr><tr><td colspan="5" style="color:#333; font-size:12px; text-align:center; padding:16px 0;">Add service packages in the form →</td></tr>`;
+      } else {
+        let rows = `<tr><th>Package</th><th>Description</th><th>Timeline</th><th>Revisions</th><th style="text-align:right;">Rate (ZAR)</th></tr>`;
+        validServices.forEach(s => {
+          rows += `<tr><td class="svc-name">${esc(s.name)}</td><td>${esc((s.description||'').substring(0,55))}${(s.description||'').length>55?'…':''}</td><td>${esc(s.turnaround)}</td><td>${esc(s.revisions)}</td><td class="svc-price">${esc(s.price)}</td></tr>`;
+        });
+        table.innerHTML = rows;
+      }
+    }
+    const addonsSection = document.getElementById('kit-addons-section');
+    if (addonsSection) {
+      const validAddOns = addOnsData.filter(a=>a.name);
+      if (validAddOns.length > 0) {
+        let html = `<div class="kit-audience-label" style="margin-bottom:10px;">Add-Ons</div>`;
+        validAddOns.forEach(a => {
+          html += `<div style="display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #111;"><div><span style="color:#FFF; font-size:12px; font-weight:700;">${esc(a.name)}</span>${a.description?`<span style="color:#666; font-size:11px; margin-left:8px;">${esc(a.description)}</span>`:''}</div>${a.price?`<span style="color:#FB7185; font-size:13px; font-weight:700;">${esc(a.price)}</span>`:''}</div>`;
+        });
+        addonsSection.innerHTML = html;
+      } else {
+        addonsSection.innerHTML = '';
+      }
+    }
+    const usageTable = document.getElementById('kit-usage-table');
+    if (usageTable) {
+      usageTable.innerHTML = `
+        <tr><td>Organic use only</td><td>${esc(v('ur-organic')||'Included')}</td></tr>
+        <tr><td>Paid ads (30 days)</td><td>${esc(v('ur-paid30')||'+25%')}</td></tr>
+        <tr><td>Paid ads (90 days)</td><td>${esc(v('ur-paid90')||'+50%')}</td></tr>
+        <tr><td>Full buyout</td><td>${esc(v('ur-buyout')||'Custom quote')}</td></tr>`;
+    }
+    const rationale = document.getElementById('kit-rationale-text');
+    if (rationale) {
+      const text = v('f-pricing-rationale');
+      rationale.textContent = text || 'Pricing reflects audience reach, engagement quality, content production effort, and usage rights. Data-driven and transparent.';
+    }
+    updateCompleteness();
+    saveToStorage();
+  }
+
   // ─── PLATFORM MANAGEMENT ─────────────────────────────────────────────────
   function addPlatform() {
     const idx = platformData.length;
-    platformData.push({ name: 'Instagram', followers: '', avgViews: '', er: '' });
+    platformData.push({ name: 'Instagram', followers: '', avgViews: '', er: '', topFormat: '' });
     renderPlatformList();
   }
 
@@ -1416,6 +1766,7 @@
           <div class="field-row"><div class="field-label">Avg Views</div><input class="field-input" value="${p.avgViews}" placeholder="12K" oninput="platformData[${i}].avgViews=this.value; updatePreview();"></div>
           <div class="field-row"><div class="field-label">Eng. Rate</div><input class="field-input" value="${p.er}" placeholder="4.2%" oninput="platformData[${i}].er=this.value; updatePreview();"></div>
         </div>
+        <div class="field-row"><div class="field-label">Top Format</div><input class="field-input" value="${p.topFormat||''}" placeholder="e.g. Reels, Short-form, Tutorials" oninput="platformData[${i}].topFormat=this.value; updatePreview();"></div>
       </div>`).join('');
   }
 
@@ -1551,6 +1902,8 @@
     // Brands
     updateBrandsPreview();
     updateLocations();
+    updateValuePropPreview();
+    updateServicesPreview();
     updateCompleteness();
     saveToStorage();
   }
@@ -1617,16 +1970,15 @@
 
   // ─── CONTACT ──────────────────────────────────────────────────────────────
   function updateContactPreview() {
-    const email = v('c-email');
-    const website = v('c-website');
-    const whatsapp = v('c-whatsapp');
-    const instagram = v('c-instagram');
     const grid = document.getElementById('kit-contact-grid');
+    if (!grid) return;
     let html = '';
-    if (email) html += contact('📧', email);
-    if (website) html += contact('🌐', website);
-    if (whatsapp) html += contact('💬', whatsapp);
-    if (instagram) html += contact('📸', instagram);
+    if (v('c-email')) html += contact('📧', v('c-email'));
+    if (v('c-website')) html += contact('🌐', v('c-website'));
+    if (v('c-whatsapp')) html += contact('💬', v('c-whatsapp'));
+    if (v('c-instagram')) html += contact('📸', v('c-instagram'));
+    if (v('c-booking')) html += contact('📅', v('c-booking'));
+    if (v('c-response-time')) html += contact('⏱', v('c-response-time'));
     if (!html) html = '<div class="kit-contact-item"><span class="kit-contact-icon">📩</span><span class="kit-contact-val">Add your contact details →</span></div>';
     grid.innerHTML = html;
   }
@@ -1638,16 +1990,18 @@
   // ─── COMPLETENESS ─────────────────────────────────────────────────────────
   function updateCompleteness() {
     let score = 0;
-    if (v('f-name')) score += 15;
-    if (v('f-bio')) score += 15;
-    if (profilePhotoSrc) score += 15;
-    if (platformData.some(p=>p.followers)) score += 20;
+    if (v('f-name')) score += 10;
+    if (v('f-bio')) score += 10;
+    if (profilePhotoSrc) score += 10;
+    if (platformData.some(p=>p.followers)) score += 15;
+    if (v('f-usps') || v('f-transformation')) score += 10;
+    if (v('f-market-opp')) score += 5;
+    if (servicesData.some(s=>s.name)) score += 15;
     if (Object.keys(logoSrcs).length > 0 || v('brand-names')) score += 10;
     const hasTestimonial = Array.from(document.querySelectorAll('#testimonials-list textarea')).some(t=>t.value.trim());
     if (hasTestimonial) score += 10;
-    const hasRate = Array.from(document.querySelectorAll('#rates-list .rate-item input:first-child')).some(i=>i.value.trim());
-    if (hasRate) score += 10;
     if (v('c-email') || v('c-instagram')) score += 5;
+    score = Math.min(score, 100);
     document.getElementById('completeness-fill').style.width = score + '%';
     document.getElementById('completeness-pct').textContent = score + '%';
     document.getElementById('save-indicator').textContent = score >= 50 ? '● Draft saved' : '';
@@ -1663,7 +2017,7 @@
     const scale = Math.min(1, availWidth / kitWidth);
     wrap.style.transform = `scale(${scale})`;
     wrap.style.transformOrigin = 'top left';
-    wrap.parentElement.style.minHeight = (1123 * 4 * scale + 80) + 'px';
+    wrap.parentElement.style.minHeight = (1123 * 6 * scale + 80) + 'px';
   }
 
   window.addEventListener('resize', scalePreview);
@@ -1690,7 +2044,21 @@
         ages: { '13': document.getElementById('age-13')?.value, '18': document.getElementById('age-18')?.value, '25': document.getElementById('age-25')?.value, '35': document.getElementById('age-35')?.value, '45': document.getElementById('age-45')?.value, '55': document.getElementById('age-55')?.value },
         gender: { f: document.getElementById('gender-f')?.value, m: document.getElementById('gender-m')?.value, o: document.getElementById('gender-o')?.value },
         photo: profilePhotoSrc,
-        logos: logoSrcs
+        logos: logoSrcs,
+        targetAudience: v('f-target-audience'),
+        usps: v('f-usps'),
+        transformation: v('f-transformation'),
+        marketOpp: v('f-market-opp'),
+        painPoints: v('f-pain-points'),
+        pricingRationale: v('f-pricing-rationale'),
+        services: servicesData,
+        addOns: addOnsData,
+        usageRights: { organic: v('ur-organic'), paid30: v('ur-paid30'), paid90: v('ur-paid90'), buyout: v('ur-buyout') },
+        postingFreq: v('f-posting-freq'),
+        turnaround: v('f-turnaround'),
+        contentMix: { entertain: v('f-mix-entertain'), educate: v('f-mix-educate'), encourage: v('f-mix-encourage') },
+        booking: v('c-booking'),
+        responseTime: v('c-response-time'),
       };
       localStorage.setItem('nochill_mk_data', JSON.stringify(formData));
     } catch(e) {}
@@ -1710,6 +2078,20 @@
       if (d.gender) { setVal('gender-f', d.gender.f); setVal('gender-m', d.gender.m); setVal('gender-o', d.gender.o); }
       if (d.photo) { profilePhotoSrc = d.photo; const img = document.getElementById('kit-photo'); img.src = d.photo; img.style.display = 'block'; document.getElementById('kit-photo-placeholder').style.display = 'none'; document.getElementById('photo-preview').src = d.photo; document.getElementById('photo-preview').style.display = 'block'; document.getElementById('photo-placeholder').style.display = 'none'; }
       if (d.logos) { Object.assign(logoSrcs, d.logos); Object.keys(d.logos).forEach(idx => { const img = document.getElementById(`logo-img-${idx}`); if (img) { img.src = d.logos[idx]; img.style.display = 'block'; const slot = document.getElementById(`logo-${idx}`); if (slot) slot.querySelector('.logo-slot-icon').style.display = 'none'; } }); }
+      if (d.targetAudience) setVal('f-target-audience', d.targetAudience);
+      if (d.usps) setVal('f-usps', d.usps);
+      if (d.transformation) setVal('f-transformation', d.transformation);
+      if (d.marketOpp) setVal('f-market-opp', d.marketOpp);
+      if (d.painPoints) setVal('f-pain-points', d.painPoints);
+      if (d.pricingRationale) setVal('f-pricing-rationale', d.pricingRationale);
+      if (d.services) { servicesData = d.services; renderServicesList(); }
+      if (d.addOns) { addOnsData = d.addOns; renderAddOnsList(); }
+      if (d.usageRights) { setVal('ur-organic', d.usageRights.organic||'Included'); setVal('ur-paid30', d.usageRights.paid30||'+25%'); setVal('ur-paid90', d.usageRights.paid90||'+50%'); setVal('ur-buyout', d.usageRights.buyout||'Custom quote'); }
+      if (d.postingFreq) setVal('f-posting-freq', d.postingFreq);
+      if (d.turnaround) setVal('f-turnaround', d.turnaround);
+      if (d.contentMix) { setVal('f-mix-entertain', d.contentMix.entertain); setVal('f-mix-educate', d.contentMix.educate); setVal('f-mix-encourage', d.contentMix.encourage); }
+      if (d.booking) setVal('c-booking', d.booking);
+      if (d.responseTime) setVal('c-response-time', d.responseTime);
     } catch(e) {}
   }
 
@@ -1727,14 +2109,35 @@
     if (btn) { btn.disabled = true; btn.textContent = '⏳ Thinking...'; }
     if (msgEl) { msgEl.textContent = 'Generating suggestion...'; msgEl.className = 'ai-suggest-msg loading'; }
 
+    const totalFollowers = (() => {
+      let t = 0;
+      platformData.forEach(p => {
+        const n = parseFloat((p.followers||'').replace(/[^0-9.]/g,''));
+        const m = (p.followers||'').toLowerCase().includes('k') ? 1000 : (p.followers||'').toLowerCase().includes('m') ? 1000000 : 1;
+        t += isNaN(n) ? 0 : n * m;
+      });
+      return t || '';
+    })();
     const context = {
-      name:           document.getElementById('f-name')?.value?.trim() || '',
-      title:          document.getElementById('f-tagline')?.value?.trim() || '',
-      niche:          document.getElementById('f-niches')?.value?.trim() || '',
-      targetAudience: document.getElementById('f-bio')?.value?.trim()?.split('.')[0] || '',
-      location:       document.getElementById('f-location')?.value?.trim() || 'South Africa',
-      followers:      platformData[0]?.followers || '',
-      engagementRate: platformData[0]?.er || '',
+      name:            v('f-name'),
+      title:           v('f-tagline'),
+      niche:           v('f-niches') || 'content creation',
+      targetAudience:  v('f-target-audience') || v('f-bio')?.split('.')[0] || '',
+      transformation:  v('f-transformation'),
+      location:        v('f-location') || 'South Africa',
+      followers:       totalFollowers,
+      engagementRate:  platformData[0]?.er || '',
+      achievements:    v('f-usps'),
+      experience:      v('f-tagline'),
+      skills:          v('f-niches'),
+      painPoints:      v('f-pain-points'),
+      results:         servicesData.map(s=>s.name).filter(Boolean).join(', '),
+      brandValue:      platformData[0]?.er ? `${platformData[0].er} engagement rate` : '',
+      platforms:       platformData.filter(p=>p.followers).map(p=>`${p.name}: ${p.followers}`).join(', '),
+      uniqueValue:     v('f-tagline'),
+      serviceName:     servicesData[0]?.name || '',
+      price:           servicesData[0]?.price || '',
+      productionValue: 'Professional content creation',
     };
 
     try {
@@ -1767,7 +2170,7 @@
 
   // Initialize platform list
   if (platformData.length === 0) {
-    platformData = [{ name: 'Instagram', followers: '', avgViews: '', er: '' }];
+    platformData = [{ name: 'Instagram', followers: '', avgViews: '', er: '', topFormat: '' }];
     renderPlatformList();
   }
 
