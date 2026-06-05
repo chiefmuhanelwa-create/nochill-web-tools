@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Message Generator — NOCHILL</title>
+  <meta name="description" content="Generate WhatsApp messages that get replies — built for South African creators who sell, pitch, and grow on WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #C9A646;
+      --primary-dark: #b8943a;
+      --primary-bg: rgba(201,166,70,0.08);
+      --primary-border: rgba(201,166,70,0.3);
+      --charcoal: #1C1C1C;
+      --bg: #FAF7F0;
+      --surface: #FFFFFF;
+      --surface-2: #F5F2EB;
+      --text-head: #1C1C1C;
+      --text-body: #3A3A3A;
+      --text-dim: #6B6B6B;
+      --text-muted: #999;
+      --border: #E8E2D6;
+      --border-dark: #D4CEC2;
+      --wa-green: #25D366;
+      --wa-dark: #128C7E;
+      --wa-bg: rgba(37,211,102,0.08);
+      --wa-border: rgba(37,211,102,0.25);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────── */
+    nav {
+      background: var(--charcoal);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      text-decoration: none;
+    }
+    .nav-tools {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-tools a {
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      font-family: 'Lato', sans-serif;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-tools a:hover { color: var(--primary); }
+
+    /* ─── SCREENS ────────────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ─── INTRO ───────────────────────────────────────────── */
+    .intro-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+    }
+    .intro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--wa-bg);
+      border: 1px solid var(--wa-border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--wa-dark);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .intro-badge svg { width: 14px; height: 14px; }
+    .intro-h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900;
+      color: var(--text-head);
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .intro-h1 span { color: var(--wa-green); }
+    .intro-sub {
+      font-size: 17px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .intro-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .intro-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .intro-stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-head);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .intro-stat-label { font-size: 12px; color: var(--text-dim); }
+
+    /* Message type preview cards */
+    .type-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .type-preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .type-preview-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--wa-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .type-preview-example {
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .type-preview-card.full-width { grid-column: 1 / -1; }
+
+    .btn-start {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px 32px;
+      background: var(--wa-green);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-start:hover { background: var(--wa-dark); transform: translateY(-1px); }
+    .btn-start svg { width: 20px; height: 20px; }
+    .intro-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* ─── FORM ──────────────────────────────────────────── */
+    .form-wrap {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .form-header { margin-bottom: 32px; }
+    .form-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 20px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .form-back-btn:hover { color: var(--text-head); }
+    .form-back-btn svg { width: 14px; height: 14px; }
+    .form-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-head);
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .form-subtitle { font-size: 14px; color: var(--text-dim); }
+
+    .form-section { margin-bottom: 28px; }
+    .form-label {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-head);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+    .form-hint {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      color: var(--text-head);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--wa-green); }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    /* Message type selector */
+    .type-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .type-option { position: relative; }
+    .type-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .type-option label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .type-option label:hover { border-color: var(--wa-border); background: var(--wa-bg); }
+    .type-option input[type="radio"]:checked + label {
+      border-color: var(--wa-green);
+      background: var(--wa-bg);
+    }
+    .type-option-icon { font-size: 18px; line-height: 1; }
+    .type-option-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: 0.3px;
+    }
+    .type-option-desc { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+
+    .btn-generate {
+      width: 100%;
+      padding: 18px;
+      background: var(--charcoal);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn-generate:hover { background: #333; }
+
+    /* ─── LOADING ─────────────────────────────────────────── */
+    .loading-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .loading-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 28px;
+      background: var(--wa-bg);
+      border: 2px solid var(--wa-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.08);opacity:0.8} }
+    .loading-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+    .loading-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 32px; }
+    .loading-steps { list-style: none; text-align: left; max-width: 300px; margin: 0 auto; }
+    .loading-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      transition: color 0.4s;
+    }
+    .loading-step:last-child { border-bottom: none; }
+    .loading-step.active { color: var(--wa-dark); font-weight: 700; }
+    .loading-step.done { color: var(--text-head); }
+    .loading-step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
+    .loading-step.active .loading-step-dot { background: var(--wa-green); }
+    .loading-step.done .loading-step-dot { background: var(--wa-green); }
+
+    /* ─── RESULTS ──────────────────────────────────────────── */
+    .results-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .results-header { margin-bottom: 32px; }
+    .results-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .results-meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--wa-bg);
+      border: 1px solid var(--wa-border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--wa-dark);
+    }
+    .results-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text-head);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .results-sub { font-size: 14px; color: var(--text-dim); }
+
+    .messages-grid { display: grid; gap: 20px; margin-bottom: 40px; }
+
+    /* WhatsApp message card */
+    .message-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s;
+    }
+    .message-card.visible { opacity: 1; transform: translateY(0); }
+    .message-card:hover { border-color: var(--wa-border); }
+
+    .message-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+    .message-type-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--wa-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .message-label-tag {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* WhatsApp chat bubble */
+    .message-bubble-wrap {
+      padding: 18px;
+      background: #ECE5DD;
+    }
+    .message-bubble {
+      background: var(--surface);
+      border-radius: 8px 8px 8px 2px;
+      padding: 12px 14px;
+      max-width: 85%;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .message-bubble::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 0;
+      border: 8px solid transparent;
+      border-right-color: var(--surface);
+      border-top: none;
+    }
+    .message-bubble-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #1a1a1a;
+      white-space: pre-wrap;
+    }
+    .message-bubble-time {
+      font-size: 11px;
+      color: #999;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .message-card-footer { padding: 14px 18px; }
+    .message-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .btn-copy-msg {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--wa-green);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+    }
+    .btn-copy-msg:hover { background: var(--wa-dark); }
+    .btn-copy-msg.copied { background: #128C7E; }
+    .btn-copy-msg svg { width: 14px; height: 14px; }
+    .btn-expand-msg {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .btn-expand-msg:hover { border-color: var(--border-dark); color: var(--text-head); }
+    .btn-expand-msg svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    .btn-expand-msg[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+    .message-details {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+    .message-details.open { max-height: 400px; opacity: 1; }
+    .message-detail-section { padding: 12px 0; border-top: 1px solid var(--border); }
+    .message-detail-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+    .message-detail-text { font-size: 13px; color: var(--text-body); line-height: 1.6; }
+    .message-tip {
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.6;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+    }
+
+    /* ─── EMAIL GATE ──────────────────────────────────────── */
+    .email-gate-section {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .email-gate-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+    .email-gate-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6; }
+    .email-gate-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .email-gate-form input {
+      flex: 1;
+      min-width: 200px;
+    }
+    .btn-email-submit {
+      padding: 13px 22px;
+      background: var(--charcoal);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-email-submit:hover { background: #333; }
+    .btn-email-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .email-gate-message {
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+    .email-gate-message.success { color: var(--wa-dark); }
+    .email-gate-message.error { color: #c0392b; }
+
+    /* ─── UPGRADE CTA ─────────────────────────────────────── */
+    .upgrade-section {
+      background: var(--charcoal);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      color: white;
+    }
+    .upgrade-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .upgrade-title span { color: var(--primary); }
+    .upgrade-sub { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 20px; line-height: 1.6; }
+    .upgrade-features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .upgrade-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+    }
+    .upgrade-features li::before { content: '✓'; color: var(--wa-green); font-weight: 900; flex-shrink: 0; }
+    .upgrade-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .upgrade-price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+    .upgrade-price-sub { font-size: 13px; color: rgba(255,255,255,0.5); }
+    .upgrade-email-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .upgrade-email-row input {
+      flex: 1;
+      min-width: 180px;
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: white;
+    }
+    .upgrade-email-row input::placeholder { color: rgba(255,255,255,0.35); }
+    .upgrade-email-row input:focus { border-color: var(--wa-green); }
+    .btn-upgrade {
+      padding: 13px 22px;
+      background: var(--wa-green);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-upgrade:hover { background: var(--wa-dark); }
+    .upgrade-message { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 10px; min-height: 18px; }
+
+    /* ─── PRODUCT CROSS-SELL ─────────────────────────────── */
+    .crosssell-section {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .crosssell-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .crosssell-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+    .crosssell-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; margin-bottom: 14px; }
+    .crosssell-price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-head);
+      margin-bottom: 12px;
+    }
+    .btn-crosssell {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      background: var(--primary);
+      color: var(--charcoal);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-crosssell:hover { background: var(--primary-dark); }
+
+    .btn-new-messages {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-new-messages:hover { border-color: var(--wa-border); color: var(--wa-dark); }
+    .btn-new-messages svg { width: 14px; height: 14px; }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    .site-footer {
+      background: var(--charcoal);
+      padding: 28px 24px;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .site-footer p { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.8; }
+    .site-footer a { color: var(--primary); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .intro-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .intro-stat { padding: 14px 10px; }
+      .intro-stat-num { font-size: 20px; }
+      .type-preview-grid { grid-template-columns: 1fr; }
+      .type-selector-grid { grid-template-columns: 1fr; }
+      .upgrade-features { grid-template-columns: 1fr; }
+      .message-card-actions { flex-direction: column; }
+      .btn-expand-msg { justify-content: center; }
+      .email-gate-form { flex-direction: column; }
+      .upgrade-email-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">NOCHILL</a>
+  <div class="nav-tools">
+    <a href="https://nochill-hooks-generator.vercel.app">Hooks</a>
+    <a href="https://nochill-caption-formula.vercel.app">Captions</a>
+    <a href="https://nochill-rate-card.vercel.app">Rate Card</a>
+    <a href="https://contentcreatorhub.online" target="_blank">Store</a>
+  </div>
+</nav>
+
+<!-- ─── INTRO ──────────────────────────────────────────── -->
+<div id="s-intro" class="screen active">
+  <div class="intro-wrap">
+    <div class="intro-badge">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp Message Generator
+    </div>
+
+    <h1 class="intro-h1">Messages that get<br><span>replies.</span></h1>
+    <p class="intro-sub">Most SA creators lose deals, sales, and brand partnerships in the DMs — not because they lack talent, but because they don't know how to write a message that gets a response. This changes today.</p>
+
+    <div class="intro-stats">
+      <div class="intro-stat">
+        <div class="intro-stat-num">5</div>
+        <div class="intro-stat-label">Message types</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-num">3</div>
+        <div class="intro-stat-label">Variants per type</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-num">30s</div>
+        <div class="intro-stat-label">To a ready-to-send message</div>
+      </div>
+    </div>
+
+    <div class="type-preview-grid">
+      <div class="type-preview-card">
+        <div class="type-preview-name">Brand Outreach</div>
+        <div class="type-preview-example">"Loved your latest campaign — I think I can help you reach SA creators differently. Got 2 mins?"</div>
+      </div>
+      <div class="type-preview-card">
+        <div class="type-preview-name">Sales Message</div>
+        <div class="type-preview-example">"Reply YES and I'll send the link now. R197 — 200+ creators have already used it."</div>
+      </div>
+      <div class="type-preview-card">
+        <div class="type-preview-name">Follow-Up</div>
+        <div class="type-preview-example">"No pressure — just flagging that my Q3 calendar is filling up fast. Still keen to work together."</div>
+      </div>
+      <div class="type-preview-card">
+        <div class="type-preview-name">Group Broadcast</div>
+        <div class="type-preview-example">"New guide just dropped. The exact system I used to land R50K in deals with under 20K followers."</div>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="showScreen('s-form'); window.scrollTo({top:0,behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Generate My WhatsApp Messages
+    </button>
+    <p class="intro-note">Free — no credit card required. One generation to start.</p>
+  </div>
+</div>
+
+<!-- ─── FORM ──────────────────────────────────────────────── -->
+<div id="s-form" class="screen">
+  <div class="form-wrap">
+    <div class="form-header">
+      <button class="form-back-btn" onclick="showScreen('s-intro'); window.scrollTo({top:0,behavior:'smooth'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <div class="form-title">Build your message</div>
+      <div class="form-subtitle">The more specific you are, the better the output.</div>
+    </div>
+
+    <form id="msg-form" novalidate>
+      <div class="form-section">
+        <label class="form-label">What type of message do you need?</label>
+        <div class="type-selector-grid">
+          <div class="type-option">
+            <input type="radio" name="messageType" id="mt-brand" value="Brand Outreach" checked>
+            <label for="mt-brand">
+              <span class="type-option-icon">🤝</span>
+              <span class="type-option-name">Brand Outreach</span>
+              <span class="type-option-desc">Cold DM to a brand or agency for collabs</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input type="radio" name="messageType" id="mt-sales" value="Sales Message">
+            <label for="mt-sales">
+              <span class="type-option-icon">💰</span>
+              <span class="type-option-name">Sales Message</span>
+              <span class="type-option-desc">Convert followers or warm leads into buyers</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input type="radio" name="messageType" id="mt-followup" value="Follow-Up">
+            <label for="mt-followup">
+              <span class="type-option-icon">🔁</span>
+              <span class="type-option-name">Follow-Up</span>
+              <span class="type-option-desc">Re-open a conversation with no response</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input type="radio" name="messageType" id="mt-broadcast" value="Group Broadcast">
+            <label for="mt-broadcast">
+              <span class="type-option-icon">📢</span>
+              <span class="type-option-name">Group Broadcast</span>
+              <span class="type-option-desc">Promote content or products to your WhatsApp community</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input type="radio" name="messageType" id="mt-testimonial" value="Testimonial Request">
+            <label for="mt-testimonial">
+              <span class="type-option-icon">⭐</span>
+              <span class="type-option-name">Testimonial Request</span>
+              <span class="type-option-desc">Ask happy customers for reviews or social proof</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label" for="topic">What are you promoting or pitching?</label>
+        <p class="form-hint">Be specific. "My digital guide on getting brand deals without 100K followers" beats "my product."</p>
+        <textarea id="topic" name="topic" placeholder="e.g. My WhatsApp Selling System guide (R249) — helps SA creators sell digital products via WhatsApp DMs without feeling salesy" required></textarea>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label" for="recipient">Who are you sending this to?</label>
+        <p class="form-hint">The more you know about them, the better the message.</p>
+        <input type="text" id="recipient" name="recipient" placeholder="e.g. Brand manager at a SA skincare brand, 10K–50K SA creator audience">
+      </div>
+
+      <div class="form-section">
+        <label class="form-label" for="tone">Tone</label>
+        <select id="tone" name="tone">
+          <option value="Confident and real">Confident and real</option>
+          <option value="Warm and friendly">Warm and friendly</option>
+          <option value="Direct and punchy">Direct and punchy</option>
+          <option value="Professional but human">Professional but human</option>
+          <option value="Bold and energetic">Bold and energetic</option>
+        </select>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label" for="angle">Your proof point or personal detail</label>
+        <p class="form-hint">A real number, result, or story makes your message stand out. Optional but powerful.</p>
+        <input type="text" id="angle" name="angle" placeholder="e.g. I helped 3 SA brands reach 100K+ people in 90 days, or I have 8K followers with 6.2% engagement">
+      </div>
+
+      <div class="form-section">
+        <label class="form-label" for="product">Price or deal value (if applicable)</label>
+        <input type="text" id="product" name="product" placeholder="e.g. R249, or R5,000 per post">
+      </div>
+
+      <button type="button" class="btn-generate" onclick="handleGenerate()">Generate 3 Messages</button>
+    </form>
+  </div>
+</div>
+
+<!-- ─── LOADING ────────────────────────────────────────────── -->
+<div id="s-loading" class="screen">
+  <div class="loading-wrap">
+    <div class="loading-icon">💬</div>
+    <div class="loading-title">Writing your messages</div>
+    <div class="loading-sub" id="loading-sub-text">Applying WhatsApp science — about 10 seconds</div>
+    <ul class="loading-steps">
+      <li class="loading-step" id="ls-1">
+        <div class="loading-step-dot"></div>
+        Reading your input
+      </li>
+      <li class="loading-step" id="ls-2">
+        <div class="loading-step-dot"></div>
+        Selecting best opening strategies
+      </li>
+      <li class="loading-step" id="ls-3">
+        <div class="loading-step-dot"></div>
+        Applying SA WhatsApp psychology
+      </li>
+      <li class="loading-step" id="ls-4">
+        <div class="loading-step-dot"></div>
+        Polishing 3 variants
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─── RESULTS ───────────────────────────────────────────── -->
+<div id="s-results" class="screen">
+  <div class="results-wrap">
+    <div class="results-header">
+      <div class="results-meta">
+        <span class="results-meta-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span id="results-meta-count">3 Messages Generated</span>
+        </span>
+      </div>
+      <div class="results-title">Your messages are ready.</div>
+      <div class="results-sub">Tap any message to copy. Read the strategy breakdown to understand what makes it work.</div>
+    </div>
+
+    <div class="messages-grid" id="messages-grid"></div>
+
+    <!-- Email gate -->
+    <div class="email-gate-section" id="email-gate-section">
+      <div class="email-gate-title">Save these messages + get 20 bonus WhatsApp scripts</div>
+      <p class="email-gate-sub">Drop your email and we'll send your messages straight to your inbox — plus 20 pre-written WhatsApp scripts for SA creators (brand outreach, sales, and follow-up templates).</p>
+      <div class="email-gate-form">
+        <input type="email" id="email-gate-input" placeholder="your@email.com">
+        <button class="btn-email-submit" id="email-gate-btn" onclick="handleEmailGate()">Send My Messages</button>
+      </div>
+      <div class="email-gate-message" id="email-gate-msg"></div>
+    </div>
+
+    <!-- Upgrade CTA -->
+    <div class="upgrade-section">
+      <div class="upgrade-title">Unlimited messages.<br>All 5 types. Every day. <span>R49/month.</span></div>
+      <p class="upgrade-sub">Stop rewriting the same message hoping it'll land. Get unlimited AI-generated WhatsApp scripts built for SA creators — brand deals, sales, follow-ups, broadcasts, testimonials.</p>
+      <ul class="upgrade-features">
+        <li>Unlimited message generation</li>
+        <li>All 5 message types</li>
+        <li>3 variants every time</li>
+        <li>Strategy breakdown included</li>
+        <li>SA context built in</li>
+        <li>Cancel any time</li>
+      </ul>
+      <div class="upgrade-price-row">
+        <span class="upgrade-price">R49</span>
+        <span class="upgrade-price-sub">/month — less than one WhatsApp deal missed</span>
+      </div>
+      <div class="upgrade-email-row">
+        <input type="email" id="upgrade-email-input" placeholder="your@email.com">
+        <button class="btn-upgrade" onclick="handleUpgrade()">Unlock Unlimited</button>
+      </div>
+      <div class="upgrade-message" id="upgrade-msg"></div>
+    </div>
+
+    <!-- Cross-sell: WhatsApp Selling System -->
+    <div class="crosssell-section">
+      <div class="crosssell-label">Recommended Product</div>
+      <div class="crosssell-title">WhatsApp Selling System</div>
+      <p class="crosssell-sub">The complete system for selling digital products via WhatsApp — from crafting your first message to closing sales and turning buyers into repeat customers. Built for SA creators.</p>
+      <div class="crosssell-price">R249</div>
+      <a href="https://contentcreatorhub.online" target="_blank" class="btn-crosssell">
+        Get the Full System
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <button class="btn-new-messages" onclick="goBackToForm()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+      Generate New Messages
+    </button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>
+    Built by <a href="https://contentcreatorhub.online" target="_blank">Ndivhuwo Muhanelwa</a> — NOCHILL<br>
+    <a href="https://contentcreatorhub.online" target="_blank">contentcreatorhub.online</a> · @nochill_god · For African creators
+  </p>
+</footer>
+
+<script>
+  const USAGE_KEY   = 'nochill_wa_used';
+  const UNLOCK_KEY  = 'nochill_wa_unlocked';
+  const EMAIL_KEY   = 'nochill_wa_email';
+
+  let loadingTimers = [];
+  let currentFormValues = {};
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function getFormValues() {
+    const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'Brand Outreach';
+    const topic       = document.getElementById('topic').value.trim();
+    const recipient   = document.getElementById('recipient').value.trim();
+    const tone        = document.getElementById('tone').value;
+    const angle       = document.getElementById('angle').value.trim();
+    const product     = document.getElementById('product').value.trim();
+    return { messageType, topic, recipient, tone, angle, product };
+  }
+
+  function clearLoadingTimers() {
+    loadingTimers.forEach(clearTimeout);
+    loadingTimers = [];
+  }
+
+  function startLoadingAnimation() {
+    const steps = ['ls-1','ls-2','ls-3','ls-4'];
+    steps.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('active','done'); }
+    });
+    steps.forEach((id, i) => {
+      loadingTimers.push(setTimeout(() => {
+        if (i > 0) {
+          const prev = document.getElementById(steps[i-1]);
+          if (prev) { prev.classList.remove('active'); prev.classList.add('done'); }
+        }
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      }, i * 1800));
+    });
+  }
+
+  function buildFallbackMessages(values) {
+    const t = values.topic || 'your product';
+    return [
+      {
+        type: values.messageType,
+        label: 'Direct opener',
+        text: `Hey! I wanted to reach out about ${t}.\n\nI think this could be exactly what you need right now.\n\nCan I send you more details?`,
+        strategy: 'Simple, direct approach that respects the recipient\'s time.',
+        tip: 'Send during business hours (9am–5pm) for best open rates.'
+      },
+      {
+        type: values.messageType,
+        label: 'Proof-first',
+        text: `Quick message — I\'ve been working with SA creators on ${t} and the results have been great.\n\nWould love to share what\'s working. Interested?`,
+        strategy: 'Leads with social proof to establish credibility before the ask.',
+        tip: 'If you have a specific number or result, add it in the second line.'
+      },
+      {
+        type: values.messageType,
+        label: 'Question hook',
+        text: `Are you still looking for ${t}?\n\nI have something that might be a perfect fit. Takes 30 seconds to review.\n\nReply YES and I\'ll send it now.`,
+        strategy: 'Opens with a question that invites engagement and uses a low-friction YES response.',
+        tip: 'The YES response mechanic dramatically increases reply rates on WhatsApp.'
+      }
+    ];
+  }
+
+  async function handleGenerate() {
+    const values = getFormValues();
+    if (!values.topic) {
+      document.getElementById('topic').focus();
+      document.getElementById('topic').style.borderColor = '#c0392b';
+      setTimeout(() => { document.getElementById('topic').style.borderColor = ''; }, 2000);
+      return;
+    }
+
+    const used     = localStorage.getItem(USAGE_KEY);
+    const unlocked = localStorage.getItem(UNLOCK_KEY);
+
+    if (used && !unlocked) {
+      document.getElementById('email-gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showScreen('s-results');
+      return;
+    }
+
+    currentFormValues = values;
+    showScreen('s-loading');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    clearLoadingTimers();
+    startLoadingAnimation();
+
+    try {
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values)
+      });
+
+      const data = await response.json();
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      if (data.ok && Array.isArray(data.messages) && data.messages.length > 0) {
+        renderResults(data.messages);
+      } else {
+        renderResults(buildFallbackMessages(values));
+      }
+    } catch (err) {
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      renderResults(buildFallbackMessages(values));
+    }
+
+    localStorage.setItem(USAGE_KEY, '1');
+  }
+
+  function renderResults(messages) {
+    const grid = document.getElementById('messages-grid');
+    grid.innerHTML = '';
+
+    document.getElementById('results-meta-count').textContent = `${messages.length} Message${messages.length !== 1 ? 's' : ''} Generated`;
+
+    messages.forEach((msg, i) => {
+      const card = document.createElement('div');
+      card.className = 'message-card';
+
+      const typeText    = escHtml(msg.type || currentFormValues.messageType || 'WhatsApp Message');
+      const labelText   = escHtml(msg.label || '');
+      const msgText     = msg.text || '';
+      const strategy    = msg.strategy || '';
+      const tip         = msg.tip || '';
+
+      card.innerHTML = `
+        <div class="message-card-header">
+          <span class="message-type-tag">${typeText}</span>
+          ${labelText ? `<span class="message-label-tag">${labelText}</span>` : ''}
+        </div>
+        <div class="message-bubble-wrap">
+          <div class="message-bubble">
+            <div class="message-bubble-text">${escHtml(msgText)}</div>
+            <div class="message-bubble-time">${new Date().toLocaleTimeString('en-ZA', {hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+        </div>
+        <div class="message-card-footer">
+          <div class="message-card-actions">
+            <button class="btn-copy-msg" onclick="copyMessage(this, ${JSON.stringify(msgText)})">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Message
+            </button>
+            ${strategy || tip ? `
+            <button class="btn-expand-msg" onclick="toggleMsgDetails(this)" aria-expanded="false">
+              Strategy
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>` : ''}
+          </div>
+          ${strategy || tip ? `
+          <div class="message-details">
+            ${strategy ? `
+            <div class="message-detail-section">
+              <div class="message-detail-label">Why This Works</div>
+              <div class="message-detail-text">${escHtml(strategy)}</div>
+            </div>` : ''}
+            ${tip ? `
+            <div class="message-detail-section">
+              <div class="message-detail-label">Sending Tip</div>
+              <div class="message-tip">${escHtml(tip)}</div>
+            </div>` : ''}
+          </div>` : ''}
+        </div>
+      `;
+
+      grid.appendChild(card);
+      setTimeout(() => card.classList.add('visible'), i * 120);
+    });
+
+    const emailMsg = document.getElementById('email-gate-msg');
+    if (emailMsg) { emailMsg.textContent = ''; emailMsg.className = 'email-gate-message'; }
+    const emailBtn = document.getElementById('email-gate-btn');
+    if (emailBtn) { emailBtn.disabled = false; emailBtn.textContent = 'Send My Messages'; }
+
+    const savedEmail = localStorage.getItem(EMAIL_KEY);
+    if (savedEmail) {
+      const egInput = document.getElementById('email-gate-input');
+      if (egInput) egInput.value = savedEmail;
+      const upInput = document.getElementById('upgrade-email-input');
+      if (upInput) upInput.value = savedEmail;
+    }
+
+    showScreen('s-results');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyMessage(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Message`;
+      }, 2000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy Message'; }, 2000);
+    });
+  }
+
+  function toggleMsgDetails(btn) {
+    const card    = btn.closest('.message-card-footer');
+    const details = card.querySelector('.message-details');
+    const open    = details.classList.contains('open');
+    details.classList.toggle('open', !open);
+    btn.setAttribute('aria-expanded', String(!open));
+  }
+
+  async function handleEmailGate() {
+    const email = document.getElementById('email-gate-input').value.trim();
+    const msgEl = document.getElementById('email-gate-msg');
+    const btn   = document.getElementById('email-gate-btn');
+
+    if (!email || !email.includes('@')) {
+      msgEl.textContent = 'Please enter a valid email.';
+      msgEl.className = 'email-gate-message error';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    msgEl.textContent = '';
+
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tags: ['wa_tool_lead'] })
+      });
+    } catch (_) {}
+
+    localStorage.setItem(EMAIL_KEY, email);
+    localStorage.setItem(UNLOCK_KEY, '1');
+
+    document.getElementById('upgrade-email-input').value = email;
+    btn.textContent = 'Sent!';
+    msgEl.textContent = 'Check your inbox — and generate more messages anytime.';
+    msgEl.className = 'email-gate-message success';
+  }
+
+  async function handleUpgrade() {
+    const email   = document.getElementById('upgrade-email-input').value.trim();
+    const msgEl   = document.getElementById('upgrade-msg');
+
+    if (!email || !email.includes('@')) {
+      msgEl.textContent = 'Please enter a valid email to continue.';
+      return;
+    }
+
+    msgEl.textContent = 'Redirecting to secure payment...';
+
+    try {
+      const res = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (data.ok && data.authorization_url) {
+        localStorage.setItem('nochill_wa_pending_ref', data.reference);
+        window.location.href = data.authorization_url;
+      } else {
+        msgEl.textContent = data.error || 'Payment setup failed. Try again.';
+      }
+    } catch (_) {
+      msgEl.textContent = 'Connection error. Please try again.';
+    }
+  }
+
+  function goBackToForm() {
+    showScreen('s-form');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Check for payment return
+  (function checkPaymentReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('reference') || params.get('trxref') || localStorage.getItem('nochill_wa_pending_ref');
+    if (!ref) return;
+
+    fetch('/api/verify-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reference: ref })
+    }).then(r => r.json()).then(data => {
+      if (data.ok) {
+        localStorage.setItem(UNLOCK_KEY, 'paid');
+        localStorage.removeItem('nochill_wa_pending_ref');
+        const savedEmail = data.email || localStorage.getItem(EMAIL_KEY);
+        if (savedEmail) {
+          fetch('/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: savedEmail, tags: ['wa_subscriber', 'paid_r49'] })
+          }).catch(() => {});
+        }
+        showUnlockSuccess();
+      }
+    }).catch(() => {});
+  })();
+
+  function showUnlockSuccess() {
+    const upgradeSection = document.querySelector('.upgrade-section');
+    if (upgradeSection) {
+      upgradeSection.innerHTML = `
+        <div style="text-align:center;padding:16px 0;">
+          <div style="font-size:40px;margin-bottom:16px;">🎉</div>
+          <h2 style="font-family:'Montserrat',sans-serif;font-size:24px;font-weight:900;letter-spacing:-0.5px;color:white;margin-bottom:10px;">Unlimited messages unlocked.</h2>
+          <p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.7;">You now have unlimited access to all 5 message types. Go build the conversations that close deals.</p>
+        </div>
+      `;
+    }
+  }
+
+  // Pre-fill upgrade email if email gate was filled
+  document.getElementById('email-gate-input').addEventListener('input', function() {
+    document.getElementById('upgrade-email-input').value = this.value;
+  });
+</script>
+</body>
+</html>
