@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Dashboard — NOCHILL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F0F0F;
+  --surface:#1A1A1A;
+  --surface2:#242424;
+  --surface3:#2E2E2E;
+  --gold:#D4A82F;
+  --gold-dim:rgba(212,168,47,0.15);
+  --text:#E8E8E8;
+  --text-dim:#999;
+  --text-muted:#666;
+  --green:#10B981;
+  --red:#EF4444;
+  --orange:#F59E0B;
+  --yellow:#FBBF24;
+  --blue:#3B82F6;
+  --purple:#8B5CF6;
+  --border:rgba(255,255,255,0.08);
+  --border-strong:rgba(255,255,255,0.14);
+  --sidebar-w:220px;
+  --radius:10px;
+  --radius-sm:6px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;overflow-x:hidden}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+a{color:inherit;text-decoration:none}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+
+/* ===== SCREEN ROUTING ===== */
+.screen{display:none}
+.screen.active{display:flex}
+
+/* ========================================
+   GATE SCREEN
+   ======================================== */
+#s-gate{
+  min-height:100vh;
+  flex-direction:column;
+  background:var(--bg);
+}
+
+/* Gate Nav */
+.gate-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,15,15,0.95);
+  backdrop-filter:blur(10px);
+}
+.gate-nav .logo{
+  font-size:18px;font-weight:800;letter-spacing:-0.5px;
+  color:var(--text);
+}
+.gate-nav .logo span{color:var(--gold)}
+.gate-nav .trial-badge{
+  background:var(--gold-dim);color:var(--gold);
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid rgba(212,168,47,0.25);
+}
+
+/* Gate Hero */
+.gate-hero{
+  padding:80px 32px 60px;
+  text-align:center;
+  max-width:760px;margin:0 auto;
+}
+.gate-hero .eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.gate-hero h1{
+  font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;
+  color:var(--text);margin-bottom:16px;
+}
+.gate-hero h1 .accent{color:var(--gold)}
+.gate-hero .sub{
+  font-size:18px;color:var(--text-dim);line-height:1.6;margin-bottom:0;
+}
+.gate-hero .stat-strip{
+  display:flex;gap:40px;justify-content:center;flex-wrap:wrap;
+  margin-top:40px;padding:24px 32px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+}
+.gate-hero .stat-strip .stat-item{text-align:left}
+.gate-hero .stat-strip .stat-num{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-1px}
+.gate-hero .stat-strip .stat-label{font-size:12px;color:var(--text-dim);margin-top:2px}
+
+/* Gate Proof */
+.gate-proof{
+  padding:0 32px 60px;
+  max-width:900px;margin:0 auto;width:100%;
+}
+.gate-proof .section-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:24px;text-align:center;
+}
+.quote-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:16px;
+  border-left:3px solid var(--gold);
+}
+.quote-card blockquote{
+  font-size:16px;line-height:1.7;color:var(--text);font-style:italic;margin-bottom:12px;
+}
+.quote-card .attribution{font-size:13px;color:var(--text-dim);font-weight:500}
+
+/* Gate Previews */
+.gate-previews{
+  padding:0 32px 60px;
+  max-width:1100px;margin:0 auto;width:100%;
+}
+.preview-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+@media(max-width:900px){.preview-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.preview-grid{grid-template-columns:1fr}}
+.preview-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;position:relative;
+}
+.preview-blur{
+  height:200px;
+  filter:blur(4px);
+  position:relative;
+  background:var(--surface2);
+  padding:16px;overflow:hidden;
+}
+.preview-blur .fake-row{
+  height:10px;background:var(--surface3);border-radius:4px;margin-bottom:8px;
+}
+.preview-blur .fake-row.short{width:60%}
+.preview-blur .fake-row.gold{background:rgba(212,168,47,0.3);width:40%}
+.preview-blur .fake-bar-group{display:flex;gap:6px;align-items:flex-end;margin-top:16px;height:80px}
+.preview-blur .fake-bar{
+  flex:1;background:var(--surface3);border-radius:3px 3px 0 0;
+}
+.preview-lock{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:rgba(15,15,15,0.6);
+}
+.preview-lock .lock-icon{font-size:28px;margin-bottom:6px}
+.preview-label{
+  padding:12px 16px;font-size:13px;font-weight:600;color:var(--text-dim);
+  border-top:1px solid var(--border);
+}
+
+/* Gate Pricing */
+.gate-pricing{
+  padding:0 32px 80px;
+  max-width:520px;margin:0 auto;width:100%;
+}
+.price-card{
+  background:var(--surface);border:2px solid var(--gold);border-radius:14px;
+  padding:36px;
+}
+.price-card .price-tag{
+  display:flex;align-items:baseline;gap:8px;margin-bottom:6px;
+}
+.price-card .amount{
+  font-size:52px;font-weight:800;color:var(--gold);letter-spacing:-2px;line-height:1;
+}
+.price-card .per{font-size:16px;color:var(--text-dim)}
+.price-card .trial-note{
+  font-size:13px;color:var(--green);font-weight:600;margin-bottom:24px;
+  display:flex;align-items:center;gap:6px;
+}
+.price-card .benefits{list-style:none;margin-bottom:28px}
+.price-card .benefits li{
+  padding:9px 0;border-bottom:1px solid var(--border);
+  font-size:14px;color:var(--text-dim);display:flex;align-items:center;gap:10px;
+}
+.price-card .benefits li:last-child{border:none}
+.price-card .benefits li .check{color:var(--green);font-size:15px;flex-shrink:0}
+.gate-form{display:flex;flex-direction:column;gap:12px}
+.gate-form input{
+  background:var(--surface2);border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);padding:13px 16px;
+  color:var(--text);font-size:15px;
+  transition:border-color .2s;
+  outline:none;
+}
+.gate-form input:focus{border-color:var(--gold)}
+.gate-form input::placeholder{color:var(--text-muted)}
+.btn-pay{
+  background:var(--gold);color:#0F0F0F;
+  border:none;border-radius:var(--radius-sm);
+  padding:15px 24px;font-size:16px;font-weight:700;
+  transition:opacity .2s,transform .1s;
+  width:100%;
+}
+.btn-pay:hover{opacity:.9}
+.btn-pay:active{transform:scale(.98)}
+.btn-pay:disabled{opacity:.5;cursor:not-allowed}
+.pay-note{text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px}
+.demo-link{
+  text-align:center;margin-top:16px;
+}
+.demo-link button{
+  background:none;border:1px solid var(--border-strong);color:var(--text-dim);
+  padding:10px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;
+  transition:all .2s;
+}
+.demo-link button:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ========================================
+   DASHBOARD SCREEN
+   ======================================== */
+#s-dash{
+  height:100vh;
+  flex-direction:row;
+  overflow:hidden;
+}
+
+/* Sidebar */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+  transition:width .3s;
+}
+.sidebar .sb-header{
+  padding:20px 20px 16px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar .sb-logo{
+  font-size:16px;font-weight:800;letter-spacing:-0.5px;
+}
+.sidebar .sb-logo span{color:var(--gold)}
+.sidebar .sb-user{
+  margin-top:8px;font-size:12px;color:var(--text-muted);
+}
+.sidebar .sb-user strong{color:var(--text-dim);font-weight:500}
+
+.sb-nav{flex:1;padding:12px 0}
+.sb-nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;
+  font-size:13px;font-weight:500;color:var(--text-dim);
+  cursor:pointer;transition:all .15s;
+  border-left:3px solid transparent;
+  user-select:none;
+}
+.sb-nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.sb-nav-item.active{
+  color:var(--gold);background:var(--gold-dim);
+  border-left-color:var(--gold);
+}
+.sb-nav-item .icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.sb-nav-item .label{}
+
+.sb-footer{
+  padding:16px 20px;border-top:1px solid var(--border);
+}
+.btn-logout{
+  width:100%;background:none;border:1px solid var(--border);
+  color:var(--text-muted);border-radius:var(--radius-sm);
+  padding:8px;font-size:12px;transition:all .2s;
+}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+/* Main content area */
+.dash-main{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;
+}
+.dash-topbar{
+  padding:14px 28px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);flex-shrink:0;
+}
+.dash-topbar .page-title{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+.dash-topbar .topbar-right{display:flex;align-items:center;gap:12px}
+.streak-badge{
+  background:var(--gold-dim);color:var(--gold);
+  padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid rgba(212,168,47,0.2);
+}
+
+.dash-content{
+  flex:1;overflow-y:auto;padding:28px;
+}
+
+/* ===== TAB PANELS ===== */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ===== CARDS & LAYOUT ===== */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.card-title{
+  font-size:13px;font-weight:600;color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;
+}
+.section-title{
+  font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px;
+  letter-spacing:-0.3px;
+}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* Stat card */
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.stat-card .s-label{font-size:12px;color:var(--text-muted);font-weight:500;margin-bottom:6px}
+.stat-card .s-value{font-size:30px;font-weight:800;color:var(--gold);letter-spacing:-1px;line-height:1}
+.stat-card .s-sub{font-size:12px;color:var(--text-muted);margin-top:6px}
+.stat-card .s-sub .up{color:var(--green)}
+.stat-card .s-sub .dn{color:var(--red)}
+
+/* Greeting */
+.greeting{margin-bottom:24px}
+.greeting h2{font-size:24px;font-weight:800;letter-spacing:-0.5px;color:var(--text)}
+.greeting p{font-size:14px;color:var(--text-dim);margin-top:4px}
+
+/* This week card */
+.week-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.week-card .wc-title{font-size:13px;font-weight:600;color:var(--text-dim);margin-bottom:14px}
+.week-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.week-row:last-child{border:none}
+.week-row .wr-label{font-size:13px;color:var(--text-dim)}
+.week-row .wr-val{font-size:15px;font-weight:700;color:var(--text)}
+
+/* Progress bar */
+.progress-wrap{margin-top:8px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px}
+.progress-bar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .6s ease}
+.progress-fill.green{background:var(--green)}
+.progress-fill.blue{background:var(--blue)}
+
+/* ===== TABLE ===== */
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{
+  background:var(--surface2);padding:10px 14px;
+  text-align:left;font-size:11px;font-weight:700;
+  color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:rgba(255,255,255,0.02)}
+tbody td{padding:11px 14px;color:var(--text-dim);vertical-align:middle}
+tbody td input.inline-input{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:4px;padding:5px 8px;color:var(--text);
+  font-size:13px;width:100px;outline:none;
+}
+tbody td input.inline-input:focus{border-color:var(--gold)}
+.change-pos{color:var(--green);font-weight:600}
+.change-neg{color:var(--red);font-weight:600}
+.change-zero{color:var(--text-muted)}
+
+/* ===== CSS BAR CHART ===== */
+.bar-chart{margin-top:8px}
+.bar-chart-inner{display:flex;gap:6px;align-items:flex-end;height:100px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.bar-col .b-bar{
+  width:100%;border-radius:3px 3px 0 0;background:var(--gold);
+  transition:height .5s ease;min-height:4px;
+  position:relative;
+}
+.bar-col .b-bar:hover::after{
+  content:attr(data-val);
+  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  background:var(--surface3);padding:2px 6px;border-radius:4px;
+  font-size:11px;color:var(--text);white-space:nowrap;
+}
+.bar-col .b-label{font-size:10px;color:var(--text-muted);text-align:center}
+
+/* ===== STATUS BADGES ===== */
+.badge{
+  display:inline-block;padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;
+  white-space:nowrap;
+}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}
+.badge-yellow{background:rgba(251,191,36,.12);color:var(--yellow)}
+.badge-orange{background:rgba(245,158,11,.12);color:var(--orange)}
+.badge-red{background:rgba(239,68,68,.12);color:var(--red)}
+.badge-blue{background:rgba(59,130,246,.12);color:var(--blue)}
+.badge-purple{background:rgba(139,92,246,.12);color:var(--purple)}
+
+/* Platform badges */
+.plat{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;
+}
+.plat-fb{background:rgba(24,119,242,.15);color:#1877F2}
+.plat-tt{background:rgba(255,255,255,.1);color:#E8E8E8}
+.plat-ig{background:rgba(228,64,95,.15);color:#E4405F}
+.plat-yt{background:rgba(255,0,0,.15);color:#FF0000}
+.plat-tw{background:rgba(29,161,242,.15);color:#1DA1F2}
+.plat-li{background:rgba(0,119,181,.15);color:#0077B5}
+
+/* ===== BUTTONS ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;border-radius:var(--radius-sm);
+  padding:9px 16px;font-size:13px;font-weight:600;
+  transition:all .15s;cursor:pointer;
+}
+.btn-primary{background:var(--gold);color:#0F0F0F}
+.btn-primary:hover{opacity:.9}
+.btn-ghost{background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border-strong);color:var(--text)}
+.btn-danger{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-sm{padding:6px 11px;font-size:12px}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.75);z-index:1000;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:14px;padding:28px;width:100%;max-width:480px;
+  max-height:90vh;overflow-y:auto;
+  animation:modalIn .2s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.modal-title{font-size:17px;font-weight:700}
+.modal-close{
+  background:none;border:none;color:var(--text-muted);font-size:20px;
+  padding:4px;line-height:1;transition:color .15s;
+}
+.modal-close:hover{color:var(--text)}
+.form-row{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:6px;display:block}
+.form-input{
+  width:100%;background:var(--surface2);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);padding:10px 13px;
+  color:var(--text);font-size:14px;outline:none;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:var(--text-muted)}
+select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+
+/* ===== SECTION HEADER ===== */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+
+/* ===== INCOME ===== */
+.income-total-banner{
+  background:linear-gradient(135deg,rgba(212,168,47,.2),rgba(212,168,47,.05));
+  border:1px solid rgba(212,168,47,.3);
+  border-radius:var(--radius);padding:24px 28px;margin-bottom:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+.income-total-banner .total-label{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:4px}
+.income-total-banner .total-amount{font-size:40px;font-weight:800;color:var(--gold);letter-spacing:-1.5px}
+.income-total-banner .milestone{
+  text-align:right;
+}
+.income-total-banner .milestone .ml-label{font-size:12px;color:var(--text-muted);margin-bottom:4px}
+.income-total-banner .milestone .ml-val{font-size:16px;font-weight:700;color:var(--text)}
+
+/* ===== CONTENT CALENDAR ===== */
+.calendar-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+}
+.cal-cell{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px;min-height:90px;
+  cursor:pointer;transition:border-color .15s;
+  position:relative;
+}
+.cal-cell:hover{border-color:var(--border-strong)}
+.cal-cell.has-post{border-color:rgba(212,168,47,0.2)}
+.cal-cell .cell-date{font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:500}
+.cal-cell .cell-post{
+  padding:5px 7px;border-radius:5px;margin-bottom:4px;
+  font-size:11px;line-height:1.3;
+}
+.cal-cell .cell-add{
+  display:flex;align-items:center;justify-content:center;
+  height:calc(100% - 20px);min-height:40px;
+  font-size:20px;color:var(--surface3);
+  transition:color .15s;
+}
+.cal-cell:hover .cell-add{color:var(--border-strong)}
+.cal-week-header{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:6px;
+}
+.cal-week-header span{
+  font-size:11px;font-weight:600;color:var(--text-muted);text-align:center;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+/* post status colors */
+.post-planned{background:rgba(59,130,246,.15);color:#93C5FD}
+.post-drafted{background:rgba(139,92,246,.15);color:#C4B5FD}
+.post-filmed{background:rgba(245,158,11,.12);color:#FCD34D}
+.post-posted{background:rgba(16,185,129,.15);color:#6EE7B7}
+
+/* ===== GOAL SETTER ===== */
+.goal-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;margin-top:20px;
+}
+.goal-card .goal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.goal-card .goal-title{font-size:14px;font-weight:600}
+.goal-input-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.goal-input{
+  background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);padding:8px 12px;
+  color:var(--text);font-size:14px;outline:none;width:160px;
+}
+.goal-input:focus{border-color:var(--gold)}
+
+/* ===== MOBILE BOTTOM NAV ===== */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);border-top:1px solid var(--border);
+  z-index:200;
+  padding:8px 0 env(safe-area-inset-bottom,8px);
+}
+.mobile-nav-inner{display:flex;justify-content:space-around}
+.mn-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 12px;cursor:pointer;transition:color .15s;
+  color:var(--text-muted);font-size:11px;font-weight:500;
+  border:none;background:none;
+}
+.mn-item .mn-icon{font-size:20px}
+.mn-item.active{color:var(--gold)}
+
+/* ===== EMPTY STATE ===== */
+.empty-state{
+  text-align:center;padding:48px 20px;
+  color:var(--text-muted);
+}
+.empty-state .es-icon{font-size:40px;margin-bottom:12px}
+.empty-state .es-title{font-size:15px;font-weight:600;color:var(--text-dim);margin-bottom:6px}
+.empty-state .es-sub{font-size:13px}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--surface2);border:1px solid var(--border-strong);
+  color:var(--text);padding:12px 20px;border-radius:8px;
+  font-size:13px;font-weight:500;z-index:2000;
+  transition:transform .3s ease;pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,.4);color:var(--green)}
+
+/* ===== DEAL STATS STRIP ===== */
+.deal-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;
+}
+.deal-stat{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;text-align:center;
+}
+.deal-stat .ds-val{font-size:22px;font-weight:800;color:var(--gold);letter-spacing:-1px}
+.deal-stat .ds-label{font-size:11px;color:var(--text-muted);margin-top:4px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .sidebar{display:none}
+  #s-dash{flex-direction:column}
+  .dash-main{height:100vh}
+  .dash-content{padding:16px 16px 80px}
+  .mobile-nav{display:block}
+  .dash-topbar{padding:12px 16px}
+  .gate-nav{padding:12px 20px}
+  .gate-hero{padding:48px 20px 40px}
+  .gate-proof,.gate-pricing{padding:0 20px 40px}
+  .gate-previews{padding:0 20px 40px}
+  .income-total-banner{flex-direction:column;align-items:flex-start}
+  .income-total-banner .milestone{text-align:left}
+  .deal-stats{grid-template-columns:1fr 1fr}
+  .calendar-grid{grid-template-columns:repeat(3,1fr)}
+  .cal-week-header{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){
+  .calendar-grid,.cal-week-header{grid-template-columns:repeat(2,1fr)}
+  .deal-stats{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  /* Stack dual pricing cards on mobile */
+  .gate-pricing > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================
+     GATE SCREEN
+     ============================ -->
+<div id="s-gate" class="screen">
+
+  <nav class="gate-nav">
+    <div class="logo">NO<span>CHILL</span> Creator Dashboard</div>
+    <div class="trial-badge">TOOL-09</div>
+  </nav>
+
+  <section class="gate-hero">
+    <div class="eyebrow">Built for African Creators · From 1,643 Survey Responses</div>
+    <h1>The numbers don't lie.<br><span class="accent">Start tracking them.</span></h1>
+    <p class="sub">One dashboard for your followers, income, brand deals, and content. Built for African creators who are serious about turning their content into a business.</p>
+    <div class="stat-strip">
+      <div class="stat-item">
+        <div class="stat-num">71.2%</div>
+        <div class="stat-label">of African creators don't know<br>if their content is working</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">65%</div>
+        <div class="stat-label">trying to grow with<br>no way to track it</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">38%</div>
+        <div class="stat-label">ready to monetize but<br>don't know their numbers</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gate-proof">
+    <div class="section-label">What creators say</div>
+    <div class="quote-card">
+      <blockquote>"I have 6.7k followers and still there seems to be no progress."</blockquote>
+      <div class="attribution">— Real creator, NOCHILL 66-person SA survey. This dashboard was built for them.</div>
+    </div>
+    <div class="quote-card">
+      <blockquote>"The day I started tracking every number — deal value, follower growth, income by stream — was the day I stopped guessing. Within 90 days I had R25K/month from Savanna Cider alone."</blockquote>
+      <div class="attribution">— Ndivhuwo, Content Creator &amp; Brand Partner</div>
+    </div>
+    <div class="quote-card" style="border-left-color:var(--green)">
+      <blockquote>"Most creators can't tell you what they earned last month, which platform grew fastest, or what their best-performing content was. The ones who know these numbers are the ones who eat."</blockquote>
+      <div class="attribution">— NOCHILL Creator Intelligence Report</div>
+    </div>
+  </section>
+
+  <!-- Upgrade nudge: replaces Product 12 Google Sheets tracker -->
+  <section style="padding:0 32px 24px;max-width:760px;margin:0 auto;width:100%">
+    <div style="background:rgba(212,168,47,0.08);border:1px solid rgba(212,168,47,0.25);border-radius:10px;padding:16px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:18px">📊</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--gold)">Upgrade from your Google Sheets tracker</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:2px">Leads from: Product 12 — 90-Day African Creator Growth System (R397). This dashboard replaces the Google Sheets Growth Dashboard — it does it all automatically.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gate-previews">
+    <div class="section-label" style="text-align:center;margin-bottom:20px;">What's inside</div>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <div class="preview-blur">
+          <div class="fake-row gold"></div>
+          <div class="fake-row"></div>
+          <div class="fake-row short"></div>
+          <div class="fake-row"></div>
+          <div class="fake-bar-group">
+            <div class="fake-bar" style="height:40%"></div>
+            <div class="fake-bar" style="height:70%"></div>
+            <div class="fake-bar" style="height:55%"></div>
+            <div class="fake-bar" style="height:90%"></div>
+            <div class="fake-bar" style="height:65%"></div>
+          </div>
+          <div class="preview-lock">
+            <div class="lock-icon">🔒</div>
+          </div>
+        </div>
+        <div class="preview-label">📊 Overview &amp; Quick Stats</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-blur">
+          <div class="fake-row"></div>
+          <div class="fake-row gold"></div>
+          <div class="fake-row short"></div>
+          <div class="fake-row"></div>
+          <div class="fake-row short"></div>
+          <div class="fake-row gold" style="width:55%"></div>
+          <div class="preview-lock"><div class="lock-icon">🔒</div></div>
+        </div>
+        <div class="preview-label">📈 Follower Tracker (6 platforms)</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-blur">
+          <div class="fake-row gold" style="height:14px;width:70%"></div>
+          <div class="fake-row short"></div>
+          <div class="fake-row"></div>
+          <div class="fake-row short"></div>
+          <div class="fake-row"></div>
+          <div class="fake-row short"></div>
+          <div class="preview-lock"><div class="lock-icon">🔒</div></div>
+        </div>
+        <div class="preview-label">💸 Income Tracker (5 streams)</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-blur">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;height:100%">
+            <div style="background:var(--surface3);border-radius:4px"></div>
+            <div style="background:rgba(212,168,47,0.2);border-radius:4px"></div>
+            <div style="background:var(--surface3);border-radius:4px"></div>
+            <div style="background:var(--surface3);border-radius:4px"></div>
+            <div style="background:var(--surface3);border-radius:4px"></div>
+            <div style="background:rgba(16,185,129,0.2);border-radius:4px"></div>
+          </div>
+          <div class="preview-lock"><div class="lock-icon">🔒</div></div>
+        </div>
+        <div class="preview-label">🗓 Content Calendar</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gate-pricing">
+    <!-- Shared email input -->
+    <div style="margin-bottom:20px">
+      <div class="gate-form" style="max-width:380px;margin:0 auto">
+        <input type="email" id="gate-email" placeholder="Your email address" autocomplete="email">
+        <div id="gate-pay-msg" style="font-size:12px;color:var(--text-muted);text-align:center;min-height:16px;margin-top:2px"></div>
+      </div>
+    </div>
+
+    <!-- Dual pricing grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:560px;margin:0 auto 20px">
+
+      <!-- Monthly card -->
+      <div style="background:var(--surface);border:1.5px solid var(--border-strong);border-radius:14px;padding:28px 22px;text-align:center;position:relative">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:10px">Monthly</div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:3px;margin-bottom:4px">
+          <span style="font-size:16px;font-weight:800;color:var(--gold)">R</span>
+          <span style="font-size:46px;font-weight:800;color:var(--gold);letter-spacing:-2px;line-height:1">99</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">per month · cancel anytime</div>
+        <button class="btn-pay" id="btn-pay-monthly" style="margin-bottom:8px" onclick="initiatePayment('monthly')">Start tracking today →</button>
+        <div class="pay-note">R99/month · Paystack · All SA methods</div>
+      </div>
+
+      <!-- Annual card — recommended -->
+      <div style="background:linear-gradient(135deg,rgba(212,168,47,0.12),rgba(212,168,47,0.04));border:2px solid var(--gold);border-radius:14px;padding:28px 22px;text-align:center;position:relative">
+        <!-- Recommended badge -->
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0F0F0F;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:4px 14px;border-radius:999px;white-space:nowrap">RECOMMENDED</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:10px">Annual</div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:3px;margin-bottom:4px">
+          <span style="font-size:16px;font-weight:800;color:var(--gold)">R</span>
+          <span style="font-size:46px;font-weight:800;color:var(--gold);letter-spacing:-2px;line-height:1">799</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">per year · billed once</div>
+        <div style="display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:var(--green);font-size:11px;font-weight:700;border-radius:999px;padding:3px 12px;margin-bottom:14px">Save R389 (33% off)</div>
+        <button class="btn-pay" id="btn-pay-annual" style="margin-bottom:8px" onclick="initiatePayment('annual')">Get Annual — Best Value →</button>
+        <div class="pay-note">Works out to R66.58/month</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:12px;color:var(--text-muted);max-width:480px;margin:0 auto 16px;line-height:1.6">
+      Built from 1,643 creator survey responses — tracks what SA creators actually need.<br>
+      Secured by Paystack · Card, bank transfer, USSD — all African payment methods.
+    </div>
+
+    <div class="demo-link">
+      <button onclick="unlockDemo()">Try demo mode first (sample data)</button>
+    </div>
+  </section>
+
+</div><!-- /s-gate -->
+
+
+<!-- ============================
+     DASHBOARD SCREEN
+     ============================ -->
+<div id="s-dash" class="screen">
+
+  <!-- Sidebar (desktop) -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <div class="sb-logo">NO<span>CHILL</span></div>
+      <div class="sb-user">Creator Dashboard <strong id="sb-plan-badge"></strong></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-nav-item active" data-tab="overview" onclick="switchTab('overview')">
+        <span class="icon">📊</span><span class="label">Overview</span>
+      </div>
+      <div class="sb-nav-item" data-tab="followers" onclick="switchTab('followers')">
+        <span class="icon">📈</span><span class="label">Follower Tracker</span>
+      </div>
+      <div class="sb-nav-item" data-tab="income" onclick="switchTab('income')">
+        <span class="icon">💸</span><span class="label">Income Tracker</span>
+      </div>
+      <div class="sb-nav-item" data-tab="deals" onclick="switchTab('deals')">
+        <span class="icon">🤝</span><span class="label">Brand Deals</span>
+      </div>
+      <div class="sb-nav-item" data-tab="calendar" onclick="switchTab('calendar')">
+        <span class="icon">🗓</span><span class="label">Content Calendar</span>
+      </div>
+      <div class="sb-nav-item" data-tab="engagement" onclick="switchTab('engagement')">
+        <span class="icon">📐</span><span class="label">Engagement Rate</span>
+      </div>
+      <div class="sb-nav-item" data-tab="bestmonth" onclick="switchTab('bestmonth')">
+        <span class="icon">🏆</span><span class="label">Best Month</span>
+      </div>
+    </nav>
+    <div class="sb-footer">
+      <button class="btn-logout" onclick="logout()">↩ Sign out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <div class="page-title" id="dash-page-title">Overview</div>
+      <div class="topbar-right">
+        <div class="streak-badge" id="streak-badge">🔥 Day 1</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- ===== TAB: OVERVIEW ===== -->
+      <div class="tab-panel active" id="tab-overview">
+        <div class="greeting">
+          <h2 id="greeting-text">Good morning, Creator.</h2>
+          <p id="greeting-date"></p>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:20px">
+          <div class="stat-card">
+            <div class="s-label">Total Followers</div>
+            <div class="s-value" id="ov-total-followers">0</div>
+            <div class="s-sub">across all platforms</div>
+          </div>
+          <div class="stat-card">
+            <div class="s-label">Posts This Month</div>
+            <div class="s-value" id="ov-posts-month">0</div>
+            <div class="s-sub">content pieces published</div>
+          </div>
+          <div class="stat-card">
+            <div class="s-label">Income This Month</div>
+            <div class="s-value" id="ov-income-month">R0</div>
+            <div class="s-sub">across all streams</div>
+          </div>
+          <div class="stat-card">
+            <div class="s-label">Active Brand Deals</div>
+            <div class="s-value" id="ov-active-deals">0</div>
+            <div class="s-sub">in pipeline</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:20px">
+          <div class="week-card">
+            <div class="wc-title">This Week</div>
+            <div class="week-row">
+              <span class="wr-label">Posts Planned</span>
+              <span class="wr-val" id="ov-week-planned">0</span>
+            </div>
+            <div class="week-row">
+              <span class="wr-label">Posts Published</span>
+              <span class="wr-val" id="ov-week-posted">0</span>
+            </div>
+            <div class="week-row">
+              <span class="wr-label">Consistency Rate</span>
+              <span class="wr-val" id="ov-consistency">—</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Income Breakdown (This Month)</div>
+            <div id="ov-income-breakdown">
+              <div class="empty-state" style="padding:20px 0">
+                <div class="es-sub">No income entries yet this month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Follower Growth — Current Month</div>
+          <div id="ov-follower-chart">
+            <div class="empty-state" style="padding:20px 0">
+              <div class="es-sub">Add follower counts in the Follower Tracker tab</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: FOLLOWERS ===== -->
+      <div class="tab-panel" id="tab-followers">
+        <div class="section-header">
+          <div class="section-title">Follower Tracker</div>
+        </div>
+
+        <div class="table-wrap" style="margin-bottom:20px">
+          <table>
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Current Followers</th>
+                <th>Start of Month</th>
+                <th>Change</th>
+                <th>Change %</th>
+              </tr>
+            </thead>
+            <tbody id="follower-table-body">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Monthly Growth Chart</div>
+            <div id="follower-bar-chart" style="margin-top:0"></div>
+          </div>
+
+          <div class="goal-card">
+            <div class="goal-header">
+              <div class="goal-title">90-Day Follower Goal</div>
+            </div>
+            <div class="goal-input-row">
+              <input type="number" class="goal-input" id="goal-followers-input" placeholder="e.g. 50000" min="0">
+              <button class="btn btn-primary btn-sm" onclick="saveGoal()">Set Goal</button>
+            </div>
+            <div id="goal-progress-wrap" style="display:none">
+              <div class="progress-wrap">
+                <div class="progress-label">
+                  <span id="goal-progress-label">0 / 0</span>
+                  <span id="goal-progress-pct">0%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="goal-progress-fill" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">Total current followers vs your goal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: INCOME ===== -->
+      <div class="tab-panel" id="tab-income">
+
+        <div class="income-total-banner">
+          <div>
+            <div class="total-label">Total Earned This Year</div>
+            <div class="total-amount" id="income-ytd">R0</div>
+          </div>
+          <div class="milestone">
+            <div class="ml-label">Next Milestone</div>
+            <div class="ml-val" id="income-next-milestone">R1,000</div>
+            <div style="margin-top:8px;min-width:180px">
+              <div class="progress-bar">
+                <div class="progress-fill green" id="milestone-fill" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Monthly income goal progress callout -->
+        <div id="income-goal-callout" style="display:none;margin-bottom:20px">
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--green)" id="income-goal-text">—</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:3px" id="income-goal-sub">Set a monthly goal in the Follower Tracker tab</div>
+            </div>
+            <div style="font-size:28px;font-weight:800;color:var(--green);letter-spacing:-1px" id="income-goal-pct">0%</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Income Streams</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-income')">+ Add Entry</button>
+        </div>
+
+        <div class="table-wrap" style="margin-bottom:24px">
+          <table>
+            <thead>
+              <tr>
+                <th>Income Stream</th>
+                <th>This Month</th>
+                <th>Target</th>
+                <th>Progress</th>
+                <th>YTD Total</th>
+              </tr>
+            </thead>
+            <tbody id="income-streams-table"></tbody>
+          </table>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Income Log</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Stream</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="income-log-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== TAB: BRAND DEALS ===== -->
+      <div class="tab-panel" id="tab-deals">
+
+        <div class="deal-stats" id="deal-stats-row"></div>
+
+        <div class="section-header">
+          <div class="section-title">Brand Deal Pipeline</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-deal')">+ Add Deal</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Deal Type</th>
+                <th>Value</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="deals-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== TAB: CALENDAR ===== -->
+      <div class="tab-panel" id="tab-calendar">
+        <div class="section-header">
+          <div class="section-title">Content Calendar — 4 Week View</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-content')">+ Add Post</button>
+        </div>
+
+        <div class="cal-week-header" id="cal-week-header"></div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+
+      <!-- ===== TAB: ENGAGEMENT RATE ===== -->
+      <div class="tab-panel" id="tab-engagement">
+        <div class="section-title" style="margin-bottom:20px">Engagement Rate Calculator</div>
+
+        <!-- Calculator -->
+        <div class="grid-2" style="margin-bottom:24px">
+          <div class="card">
+            <div class="card-title">Calculate Rate</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">(likes + comments) ÷ followers × 100</div>
+            <div class="form-row">
+              <label class="form-label">Likes on post</label>
+              <input type="number" class="form-input" id="eng-likes" placeholder="0" min="0" oninput="calcEngRate()">
+            </div>
+            <div class="form-row">
+              <label class="form-label">Comments on post</label>
+              <input type="number" class="form-input" id="eng-comments" placeholder="0" min="0" oninput="calcEngRate()">
+            </div>
+            <div class="form-row">
+              <label class="form-label">Followers (at time of post)</label>
+              <input type="number" class="form-input" id="eng-followers" placeholder="0" min="0" oninput="calcEngRate()">
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px">
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Engagement Rate</div>
+              <div style="font-size:52px;font-weight:800;letter-spacing:-2px;color:var(--gold)" id="eng-rate-display">—%</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="eng-rate-label">Enter values above</div>
+            </div>
+            <button class="btn btn-primary" onclick="logEngRate()" style="width:100%">Log This Rate</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Engagement Rate Benchmarks</div>
+            <div class="week-row"><span class="wr-label">Under 1%</span><span style="color:var(--red);font-weight:700">Low — review content strategy</span></div>
+            <div class="week-row"><span class="wr-label">1% – 3%</span><span style="color:var(--orange);font-weight:700">Average — room to improve</span></div>
+            <div class="week-row"><span class="wr-label">3% – 6%</span><span style="color:var(--green);font-weight:700">Good — keep it up</span></div>
+            <div class="week-row"><span class="wr-label">Above 6%</span><span style="color:var(--gold);font-weight:700">Excellent — your audience loves it</span></div>
+            <div style="margin-top:20px">
+              <div class="card-title">Your Average Rate</div>
+              <div style="font-size:32px;font-weight:800;color:var(--gold);letter-spacing:-1px" id="eng-avg-display">—%</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="eng-avg-label">Log rates to see your average</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History table -->
+        <div class="section-header">
+          <div class="section-title" style="font-size:15px">Rate History</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Platform / Note</th>
+                <th>Likes</th>
+                <th>Comments</th>
+                <th>Followers</th>
+                <th>Rate</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="eng-history-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== TAB: BEST MONTH ===== -->
+      <div class="tab-panel" id="tab-bestmonth">
+        <div class="section-title" style="margin-bottom:20px">Best Performing Month</div>
+        <div id="bestmonth-content"></div>
+      </div>
+
+    </div><!-- /dash-content -->
+  </div><!-- /dash-main -->
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <button class="mn-item active" data-tab="overview" onclick="switchTab('overview')">
+        <span class="mn-icon">📊</span>Overview
+      </button>
+      <button class="mn-item" data-tab="followers" onclick="switchTab('followers')">
+        <span class="mn-icon">📈</span>Followers
+      </button>
+      <button class="mn-item" data-tab="income" onclick="switchTab('income')">
+        <span class="mn-icon">💸</span>Income
+      </button>
+      <button class="mn-item" data-tab="deals" onclick="switchTab('deals')">
+        <span class="mn-icon">🤝</span>Deals
+      </button>
+      <button class="mn-item" data-tab="calendar" onclick="switchTab('calendar')">
+        <span class="mn-icon">🗓</span>Calendar
+      </button>
+      <button class="mn-item" data-tab="engagement" onclick="switchTab('engagement')">
+        <span class="mn-icon">📐</span>Engage
+      </button>
+    </div>
+  </nav>
+
+</div><!-- /s-dash -->
+
+
+<!-- ============================
+     MODALS
+     ============================ -->
+
+<!-- Income Modal -->
+<div class="modal-overlay" id="modal-income">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-income-title">Add Income Entry</div>
+      <button class="modal-close" onclick="closeModal('modal-income')">✕</button>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="income-date">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Amount (R)</label>
+        <input type="number" class="form-input" id="income-amount" placeholder="0.00" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Income Stream</label>
+      <select class="form-input" id="income-stream">
+        <option value="Brand Deals">Brand Deals</option>
+        <option value="Digital Products">Digital Products</option>
+        <option value="Affiliate/Commission">Affiliate/Commission</option>
+        <option value="Platform Monetisation">Platform Monetisation</option>
+        <option value="Services">Services</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Description</label>
+      <input type="text" class="form-input" id="income-desc" placeholder="e.g. Savanna Cider Instagram post">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Monthly Target for this stream (R)</label>
+      <input type="number" class="form-input" id="income-target" placeholder="Optional — sets your target" min="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-income')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveIncome()">Save Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- Deal Modal -->
+<div class="modal-overlay" id="modal-deal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-deal-title">Add Brand Deal</div>
+      <button class="modal-close" onclick="closeModal('modal-deal')">✕</button>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label class="form-label">Brand Name</label>
+        <input type="text" class="form-input" id="deal-brand" placeholder="e.g. Savanna Cider">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Deal Type</label>
+        <select class="form-input" id="deal-type">
+          <option value="Sponsored Post">Sponsored Post</option>
+          <option value="UGC">UGC</option>
+          <option value="Ambassador">Ambassador</option>
+          <option value="Affiliate">Affiliate</option>
+          <option value="Event">Event</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label class="form-label">Value (R)</label>
+        <input type="number" class="form-input" id="deal-value" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Status</label>
+        <select class="form-input" id="deal-status">
+          <option value="Pitched">Pitched</option>
+          <option value="Negotiating">Negotiating</option>
+          <option value="Active">Active</option>
+          <option value="Paid">Paid</option>
+          <option value="Declined">Declined</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="deal-date">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="deal-notes" rows="2" placeholder="Deliverables, deadlines, contact person..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-deal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDeal()">Save Deal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Content Modal -->
+<div class="modal-overlay" id="modal-content">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-content-title">Add Content Post</div>
+      <button class="modal-close" onclick="closeModal('modal-content')">✕</button>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="content-date">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Platform</label>
+        <select class="form-input" id="content-platform">
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Twitter/X">Twitter/X</option>
+          <option value="LinkedIn">LinkedIn</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Topic / Caption idea</label>
+      <input type="text" class="form-input" id="content-topic" placeholder="e.g. My morning routine vlog">
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label class="form-label">Format</label>
+        <select class="form-input" id="content-format">
+          <option value="Reel/Short">Reel/Short</option>
+          <option value="Feed Post">Feed Post</option>
+          <option value="Story">Story</option>
+          <option value="Long Video">Long Video</option>
+          <option value="Carousel">Carousel</option>
+          <option value="Live">Live</option>
+          <option value="Thread">Thread</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Status</label>
+        <select class="form-input" id="content-status">
+          <option value="Planned">Planned</option>
+          <option value="Drafted">Drafted</option>
+          <option value="Filmed">Filmed</option>
+          <option value="Posted">Posted</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-content')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveContent()">Save Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================
+     JAVASCRIPT
+     ============================ -->
+<script>
+'use strict';
+
+// ===== CONSTANTS =====
+const UNLOCK_KEY = 'nochill_dash_unlocked';
+const DATA_KEY   = 'nochill_dash_data';
+const EMAIL_KEY  = 'nochill_dash_email';
+const DEMO_KEY   = 'nochill_dash_demo';
+
+const PLATFORMS = ['facebook','tiktok','instagram','youtube','twitter','linkedin'];
+const PLATFORM_LABELS = {
+  facebook:'Facebook', tiktok:'TikTok', instagram:'Instagram',
+  youtube:'YouTube', twitter:'Twitter/X', linkedin:'LinkedIn'
+};
+const PLATFORM_ICONS = {
+  facebook:'f', tiktok:'tt', instagram:'ig', youtube:'yt', twitter:'tw', linkedin:'li'
+};
+const PLATFORM_COLORS = {
+  facebook:'#1877F2',tiktok:'#E8E8E8',instagram:'#E4405F',
+  youtube:'#FF0000',twitter:'#1DA1F2',linkedin:'#0077B5'
+};
+const INCOME_STREAMS = [
+  'Brand Deals','Digital Products','Affiliate/Commission',
+  'Platform Monetisation','Services'
+];
+const STATUS_BADGE = {
+  Pitched:'badge-blue', Negotiating:'badge-orange',
+  Active:'badge-yellow', Paid:'badge-green', Declined:'badge-red'
+};
+const MILESTONES = [1000,5000,10000,25000,50000,100000,250000,500000,1000000];
+
+// ===== DATA LAYER =====
+function defaultData(){
+  return {
+    followers:{facebook:0,tiktok:0,instagram:0,youtube:0,twitter:0,linkedin:0},
+    followersStartMonth:{facebook:0,tiktok:0,instagram:0,youtube:0,twitter:0,linkedin:0},
+    followerHistory:[],
+    income:[],
+    incomeTargets:{},
+    brandDeals:[],
+    content:[],
+    goals:{followers90day:0},
+    streakStart:new Date().toISOString().split('T')[0],
+    lastSeen:new Date().toISOString().split('T')[0]
+  };
+}
+
+function loadData(){
+  try{
+    const raw = localStorage.getItem(DATA_KEY);
+    if(!raw) return defaultData();
+    const d = JSON.parse(raw);
+    // merge with defaults for new fields
+    const def = defaultData();
+    return Object.assign({},def,d);
+  }catch(e){ return defaultData(); }
+}
+
+function saveData(d){
+  localStorage.setItem(DATA_KEY, JSON.stringify(d));
+}
+
+let DATA = loadData();
+
+// ===== XSS SAFETY =====
+function escHtml(str){
+  if(str===null||str===undefined) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function fmtRand(n){
+  const num = Number(n)||0;
+  if(num>=1000000) return 'R'+(num/1000000).toFixed(1)+'M';
+  if(num>=1000) return 'R'+(num/1000).toFixed(1)+'K';
+  return 'R'+num.toLocaleString('en-ZA',{minimumFractionDigits:0,maximumFractionDigits:2});
+}
+
+function fmtNum(n){
+  const num = Number(n)||0;
+  if(num>=1000000) return (num/1000000).toFixed(2)+'M';
+  if(num>=1000) return (num/1000).toFixed(1)+'K';
+  return num.toLocaleString('en-ZA');
+}
+
+// ===== ROUTING =====
+function init(){
+  checkPaymentReturn();
+  if(localStorage.getItem(UNLOCK_KEY)==='1'){
+    showDash();
+  } else {
+    showGate();
+  }
+}
+
+function showGate(){
+  document.getElementById('s-gate').classList.add('active');
+  document.getElementById('s-dash').classList.remove('active');
+}
+
+function showDash(){
+  document.getElementById('s-gate').classList.remove('active');
+  document.getElementById('s-dash').classList.add('active');
+  updateStreak();
+  renderAll();
+}
+
+// ===== STREAK =====
+function updateStreak(){
+  const today = new Date().toISOString().split('T')[0];
+  if(!DATA.streakStart) DATA.streakStart = today;
+  DATA.lastSeen = today;
+  saveData(DATA);
+
+  const start = new Date(DATA.streakStart);
+  const now   = new Date(today);
+  const days  = Math.max(1, Math.floor((now-start)/(1000*60*60*24))+1);
+  document.getElementById('streak-badge').textContent = '🔥 Day '+days;
+}
+
+// ===== PAYMENT =====
+async function initiatePayment(plan){
+  plan = plan || 'monthly';
+  const email = document.getElementById('gate-email').value.trim();
+  const msgEl = document.getElementById('gate-pay-msg');
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(msgEl) msgEl.textContent = 'Please enter a valid email address.';
+    showToast('Please enter a valid email address','');
+    return;
+  }
+  if(msgEl) msgEl.textContent = '';
+  localStorage.setItem(EMAIL_KEY, email);
+  localStorage.setItem('nochill_dash_plan', plan);
+
+  const btnId = plan === 'annual' ? 'btn-pay-annual' : 'btn-pay-monthly';
+  const btn = document.getElementById(btnId);
+  if(btn){ btn.disabled = true; btn.textContent = 'Connecting to Paystack…'; }
+
+  const amount = plan === 'annual' ? 79900 : 9900; // kobo/cents
+
+  try {
+    const res = await fetch('/api/create-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        amount,
+        plan,
+        tool: 'creator_dashboard',
+        callback_url: window.location.href.split('?')[0]
+      })
+    });
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || 'Payment init failed');
+
+    sessionStorage.setItem('ps_ref',   data.reference);
+    sessionStorage.setItem('ps_email', email);
+    sessionStorage.setItem('ps_plan',  plan);
+
+    window.location.href = data.authorization_url;
+  } catch(err) {
+    console.error('Payment error:', err);
+    if(msgEl) msgEl.textContent = 'Could not start payment — please try again.';
+    if(btn){ btn.disabled = false; btn.textContent = plan === 'annual' ? 'Get Annual — Best Value →' : 'Start tracking today →'; }
+    showToast('Payment failed — please try again','');
+  }
+}
+
+async function checkPaymentReturn(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const refFromUrl = urlParams.get('reference') || urlParams.get('trxref');
+  const ref   = refFromUrl || sessionStorage.getItem('ps_ref');
+  const email = sessionStorage.getItem('ps_email') || localStorage.getItem(EMAIL_KEY) || '';
+  const plan  = sessionStorage.getItem('ps_plan')  || localStorage.getItem('nochill_dash_plan') || 'monthly';
+
+  if(!ref) return;
+
+  // Clean URL
+  if(refFromUrl) window.history.replaceState({}, document.title, window.location.pathname);
+
+  try {
+    const res = await fetch('/api/verify-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reference: ref })
+    });
+    const data = await res.json();
+    if(data.ok){
+      sessionStorage.removeItem('ps_ref');
+      sessionStorage.removeItem('ps_email');
+      sessionStorage.removeItem('ps_plan');
+      localStorage.setItem(UNLOCK_KEY, '1');
+      if(email) localStorage.setItem(EMAIL_KEY, email);
+      localStorage.setItem('nochill_dash_plan', plan);
+
+      // Tag MailerLite
+      const tag = plan === 'annual' ? 'dashboard_annual_r799' : 'dashboard_monthly_r99';
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tags: ['creator_dashboard_subscriber', tag] })
+      }).catch(()=>{});
+
+      showToast('Welcome! Your dashboard is unlocked. 🎉','success');
+    }
+  } catch(err) {
+    console.error('Verify error:', err);
+  }
+}
+
+function tagMailerLite(email, tags){
+  fetch('/api/subscribe', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, tags })
+  }).catch(()=>{});
+}
+
+function unlockDemo(){
+  localStorage.setItem(UNLOCK_KEY,'1');
+  localStorage.setItem(DEMO_KEY,'1');
+  seedDemoData();
+  showDash();
+  showToast('Demo mode — data is sample data only','');
+}
+
+function logout(){
+  if(!confirm('Sign out and return to the gate screen?')) return;
+  localStorage.removeItem(UNLOCK_KEY);
+  localStorage.removeItem(DEMO_KEY);
+  showGate();
+  const btnM = document.getElementById('btn-pay-monthly');
+  const btnA = document.getElementById('btn-pay-annual');
+  if(btnM){ btnM.disabled=false; btnM.textContent='Start tracking today →'; }
+  if(btnA){ btnA.disabled=false; btnA.textContent='Get Annual — Best Value →'; }
+}
+
+// ===== DEMO DATA =====
+function seedDemoData(){
+  const today = new Date();
+  const yyyy  = today.getFullYear();
+  const mm    = String(today.getMonth()+1).padStart(2,'0');
+
+  DATA = defaultData();
+  DATA.followers = {facebook:12400,tiktok:8750,instagram:22100,youtube:5300,twitter:3800,linkedin:1900};
+  DATA.followersStartMonth = {facebook:11800,tiktok:7900,instagram:20500,youtube:4900,twitter:3600,linkedin:1700};
+  DATA.income = [
+    {id:uid(),date:`${yyyy}-${mm}-05`,stream:'Brand Deals',amount:8500,description:'Savanna Cider Instagram campaign'},
+    {id:uid(),date:`${yyyy}-${mm}-10`,stream:'Digital Products',amount:2200,description:'Hooks Generator sales'},
+    {id:uid(),date:`${yyyy}-${mm}-12`,stream:'Affiliate/Commission',amount:750,description:'Amazon affiliate link clicks'},
+    {id:uid(),date:`${yyyy}-${mm}-18`,stream:'Platform Monetisation',amount:430,description:'YouTube ad revenue'},
+    {id:uid(),date:`${yyyy}-${mm}-20`,stream:'Services',amount:3500,description:'UGC package for local brand'},
+    {id:uid(),date:`${yyyy}-01-15`,stream:'Brand Deals',amount:6000,description:'New Year campaign'},
+    {id:uid(),date:`${yyyy}-02-20`,stream:'Digital Products',amount:1800,description:'Rate card calculator'},
+    {id:uid(),date:`${yyyy}-03-10`,stream:'Brand Deals',amount:9000,description:'Q1 ambassador deal'},
+  ];
+  DATA.incomeTargets = {'Brand Deals':10000,'Digital Products':5000,'Affiliate/Commission':2000,'Platform Monetisation':1000,'Services':5000};
+  DATA.brandDeals = [
+    {id:uid(),brand:'Savanna Cider',type:'Sponsored Post',value:8500,status:'Paid',date:`${yyyy}-${mm}-01`,notes:'2x IG posts + 3 stories'},
+    {id:uid(),brand:'Castle Lite',type:'Ambassador',value:15000,status:'Active',date:`${yyyy}-${mm}-05`,notes:'3 month retainer, monthly content'},
+    {id:uid(),brand:'Shoprite',type:'UGC',value:3200,status:'Negotiating',date:`${yyyy}-${mm}-12`,notes:'Awaiting contract'},
+    {id:uid(),brand:'Telkom',type:'Sponsored Post',value:5000,status:'Pitched',date:`${yyyy}-${mm}-15`,notes:'Sent media kit and rate card'},
+    {id:uid(),brand:'Old Mutual',type:'Event',value:2500,status:'Declined',date:`${yyyy}-${mm}-03`,notes:'Budget constraints cited'},
+  ];
+  // Content for next 4 weeks
+  const days = ['Mon','Tue','Wed','Thu','Fri'];
+  const statuses = ['Planned','Drafted','Filmed','Posted'];
+  const topics = ['Behind the scenes','Day in my life','Brand collab reveal','Creator tips thread','Transformation reel','Response to DMs','Weekly vlog','Product review'];
+  const plats = ['Instagram','TikTok','YouTube','Instagram','Twitter/X'];
+  for(let w=0;w<4;w++){
+    for(let d=0;d<5;d++){
+      if(Math.random()>0.4){
+        const dt = new Date(today);
+        dt.setDate(today.getDate() - today.getDay() + 1 + w*7 + d);
+        DATA.content.push({
+          id:uid(),
+          date:dt.toISOString().split('T')[0],
+          platform:plats[d],
+          topic:topics[Math.floor(Math.random()*topics.length)],
+          format:'Reel/Short',
+          status:w===0?statuses[Math.floor(Math.random()*4)]:'Planned'
+        });
+      }
+    }
+  }
+  DATA.goals = {followers90day:80000};
+  saveData(DATA);
+}
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+// ===== TAB SWITCHING =====
+let currentTab = 'overview';
+function switchTab(tab){
+  currentTab = tab;
+  // sidebar
+  document.querySelectorAll('.sb-nav-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.tab===tab);
+  });
+  // mobile nav
+  document.querySelectorAll('.mn-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.tab===tab);
+  });
+  // panels
+  document.querySelectorAll('.tab-panel').forEach(el=>{
+    el.classList.toggle('active', el.id==='tab-'+tab);
+  });
+  // page title
+  const titles = {
+    overview:'Overview', followers:'Follower Tracker',
+    income:'Income Tracker', deals:'Brand Deals',
+    calendar:'Content Calendar', engagement:'Engagement Rate Calculator',
+    bestmonth:'Best Performing Month'
+  };
+  document.getElementById('dash-page-title').textContent = titles[tab]||tab;
+  renderTab(tab);
+}
+
+// ===== GREETING =====
+function setGreeting(){
+  const h = new Date().getHours();
+  const g = h<12?'morning':h<17?'afternoon':'evening';
+  document.getElementById('greeting-text').textContent = `Good ${g}, Creator.`;
+  document.getElementById('greeting-date').textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+// ===== RENDER ALL =====
+function renderAll(){
+  setGreeting();
+  renderTab('overview');
+}
+
+function renderTab(tab){
+  if(tab==='overview')   renderOverview();
+  if(tab==='followers')  renderFollowers();
+  if(tab==='income')     renderIncome();
+  if(tab==='deals')      renderDeals();
+  if(tab==='calendar')   renderCalendar();
+  if(tab==='engagement') renderEngagement();
+  if(tab==='bestmonth')  renderBestMonth();
+}
+
+// ===== OVERVIEW =====
+function renderOverview(){
+  const now   = new Date();
+  const yyyy  = now.getFullYear();
+  const mm    = now.getMonth();
+
+  // Total followers
+  const totalFollowers = PLATFORMS.reduce((s,p)=>s+(Number(DATA.followers[p])||0),0);
+  document.getElementById('ov-total-followers').textContent = fmtNum(totalFollowers);
+
+  // Posts this month
+  const postsThisMonth = DATA.content.filter(c=>{
+    const d=new Date(c.date); return d.getFullYear()===yyyy && d.getMonth()===mm && c.status==='Posted';
+  }).length;
+  document.getElementById('ov-posts-month').textContent = postsThisMonth;
+
+  // Income this month
+  const incomeThisMonth = DATA.income.filter(i=>{
+    const d=new Date(i.date); return d.getFullYear()===yyyy && d.getMonth()===mm;
+  }).reduce((s,i)=>s+Number(i.amount),0);
+  document.getElementById('ov-income-month').textContent = fmtRand(incomeThisMonth);
+
+  // Active deals
+  const activeDeals = DATA.brandDeals.filter(d=>d.status==='Active'||d.status==='Negotiating').length;
+  document.getElementById('ov-active-deals').textContent = activeDeals;
+
+  // This week
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const weekStart= new Date(today); weekStart.setDate(today.getDate()-today.getDay()+1);
+  const weekEnd  = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
+  const weekPosts= DATA.content.filter(c=>{
+    const d=new Date(c.date); return d>=weekStart && d<=weekEnd;
+  });
+  const planned  = weekPosts.length;
+  const posted   = weekPosts.filter(c=>c.status==='Posted').length;
+  document.getElementById('ov-week-planned').textContent = planned;
+  document.getElementById('ov-week-posted').textContent  = posted;
+  document.getElementById('ov-consistency').textContent  = planned>0 ? Math.round(posted/planned*100)+'%' : '—';
+
+  // Income breakdown
+  const breakdown = {};
+  INCOME_STREAMS.forEach(s=>breakdown[s]=0);
+  DATA.income.filter(i=>{
+    const d=new Date(i.date); return d.getFullYear()===yyyy && d.getMonth()===mm;
+  }).forEach(i=>{ breakdown[i.stream]=(breakdown[i.stream]||0)+Number(i.amount); });
+
+  const bEl = document.getElementById('ov-income-breakdown');
+  const bEntries = INCOME_STREAMS.filter(s=>breakdown[s]>0);
+  if(!bEntries.length){
+    bEl.innerHTML='<div class="empty-state" style="padding:16px 0"><div class="es-sub">No income entries yet this month</div></div>';
+  } else {
+    bEl.innerHTML = bEntries.map(s=>`
+      <div class="week-row">
+        <span class="wr-label">${escHtml(s)}</span>
+        <span class="wr-val" style="color:var(--gold)">${fmtRand(breakdown[s])}</span>
+      </div>`).join('');
+  }
+
+  // Follower chart on overview
+  const chartEl = document.getElementById('ov-follower-chart');
+  const followerData = PLATFORMS.map(p=>({label:PLATFORM_LABELS[p],val:Number(DATA.followers[p])||0}));
+  const hasFollowers = followerData.some(f=>f.val>0);
+  if(!hasFollowers){
+    chartEl.innerHTML='<div class="empty-state" style="padding:16px 0"><div class="es-sub">Add follower counts in the Follower Tracker tab</div></div>';
+  } else {
+    chartEl.innerHTML = buildBarChart(followerData,120);
+  }
+}
+
+// ===== FOLLOWERS =====
+function renderFollowers(){
+  const tbody = document.getElementById('follower-table-body');
+  tbody.innerHTML = PLATFORMS.map(p=>{
+    const cur  = Number(DATA.followers[p])||0;
+    const som  = Number(DATA.followersStartMonth[p])||0;
+    const diff = cur - som;
+    const pct  = som>0 ? ((diff/som)*100).toFixed(1)+'%' : '—';
+    const cls  = diff>0?'change-pos':diff<0?'change-neg':'change-zero';
+    const sign = diff>0?'+':'';
+    return `<tr>
+      <td><span class="plat plat-${PLATFORM_ICONS[p]}">${escHtml(PLATFORM_LABELS[p])}</span></td>
+      <td><input class="inline-input" type="number" min="0" value="${escHtml(String(cur))}"
+           oninput="updateFollower('${p}',this.value)" onblur="saveFollowerSnapshot()"></td>
+      <td><input class="inline-input" type="number" min="0" value="${escHtml(String(som))}"
+           oninput="updateFollowerSOM('${p}',this.value)"></td>
+      <td class="${cls}">${sign}${fmtNum(diff)}</td>
+      <td class="${cls}">${sign}${pct}</td>
+    </tr>`;
+  }).join('');
+
+  // Bar chart
+  const followerData = PLATFORMS.map(p=>({label:PLATFORM_LABELS[p],val:Number(DATA.followers[p])||0}));
+  document.getElementById('follower-bar-chart').innerHTML = buildBarChart(followerData,120);
+
+  // Goal
+  const goalVal = Number(DATA.goals.followers90day)||0;
+  const goalInput = document.getElementById('goal-followers-input');
+  if(goalInput && goalVal>0) goalInput.value = goalVal;
+
+  if(goalVal>0){
+    const total = PLATFORMS.reduce((s,p)=>s+(Number(DATA.followers[p])||0),0);
+    const pct   = Math.min(100,Math.round(total/goalVal*100));
+    document.getElementById('goal-progress-wrap').style.display='block';
+    document.getElementById('goal-progress-label').textContent=fmtNum(total)+' / '+fmtNum(goalVal);
+    document.getElementById('goal-progress-pct').textContent=pct+'%';
+    document.getElementById('goal-progress-fill').style.width=pct+'%';
+  } else {
+    document.getElementById('goal-progress-wrap').style.display='none';
+  }
+}
+
+function updateFollower(platform, val){
+  DATA.followers[platform] = Math.max(0,Number(val)||0);
+  saveData(DATA);
+}
+function updateFollowerSOM(platform, val){
+  DATA.followersStartMonth[platform] = Math.max(0,Number(val)||0);
+  saveData(DATA);
+}
+function saveFollowerSnapshot(){ saveData(DATA); }
+
+function saveGoal(){
+  const v = Number(document.getElementById('goal-followers-input').value)||0;
+  DATA.goals.followers90day = v;
+  saveData(DATA);
+  renderFollowers();
+  showToast('Goal saved!','success');
+}
+
+// ===== CSS BAR CHART =====
+function buildBarChart(items, maxH){
+  if(!items.length) return '';
+  const maxVal = Math.max(...items.map(i=>i.val),1);
+  maxH = maxH||100;
+  const bars = items.map(i=>{
+    const h = Math.max(4,Math.round((i.val/maxVal)*maxH));
+    return `<div class="bar-col">
+      <div class="b-bar" style="height:${h}px" data-val="${fmtNum(i.val)}"></div>
+      <div class="b-label">${escHtml(i.label)}</div>
+    </div>`;
+  }).join('');
+  return `<div class="bar-chart"><div class="bar-chart-inner">${bars}</div></div>`;
+}
+
+// ===== INCOME =====
+function renderIncome(){
+  const now  = new Date();
+  const yyyy = now.getFullYear();
+  const mm   = now.getMonth();
+
+  // YTD
+  const ytd = DATA.income.filter(i=>new Date(i.date).getFullYear()===yyyy)
+    .reduce((s,i)=>s+Number(i.amount),0);
+  document.getElementById('income-ytd').textContent = 'R'+ytd.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  // Milestone
+  const nextMs = MILESTONES.find(m=>m>ytd)||MILESTONES[MILESTONES.length-1];
+  const prevMs = MILESTONES.slice().reverse().find(m=>m<=ytd)||0;
+  document.getElementById('income-next-milestone').textContent = 'R'+nextMs.toLocaleString('en-ZA');
+  const pct = prevMs===nextMs?100:Math.round(((ytd-prevMs)/(nextMs-prevMs))*100);
+  document.getElementById('milestone-fill').style.width = Math.min(100,Math.max(0,pct))+'%';
+
+  // Streams table
+  const thisMonthByStream = {};
+  const ytdByStream = {};
+  INCOME_STREAMS.forEach(s=>{ thisMonthByStream[s]=0; ytdByStream[s]=0; });
+  DATA.income.forEach(i=>{
+    const d=new Date(i.date);
+    if(d.getFullYear()===yyyy && d.getMonth()===mm) thisMonthByStream[i.stream]=(thisMonthByStream[i.stream]||0)+Number(i.amount);
+    if(d.getFullYear()===yyyy) ytdByStream[i.stream]=(ytdByStream[i.stream]||0)+Number(i.amount);
+  });
+
+  document.getElementById('income-streams-table').innerHTML = INCOME_STREAMS.map(s=>{
+    const actual  = thisMonthByStream[s]||0;
+    const target  = Number(DATA.incomeTargets[s])||0;
+    const pctW    = target>0?Math.min(100,Math.round(actual/target*100)):0;
+    const ytdS    = ytdByStream[s]||0;
+    return `<tr>
+      <td style="font-weight:600;color:var(--text)">${escHtml(s)}</td>
+      <td style="color:var(--gold);font-weight:700">${fmtRand(actual)}</td>
+      <td>
+        <input class="inline-input" type="number" min="0"
+          value="${escHtml(String(target))}"
+          placeholder="Set target"
+          oninput="updateIncomeTarget('${escHtml(s)}',this.value)"
+          style="width:110px">
+      </td>
+      <td style="min-width:120px">
+        ${target>0?`<div class="progress-bar" style="margin-top:4px"><div class="progress-fill green" style="width:${pctW}%"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:3px">${pctW}%</div>`:'—'}
+      </td>
+      <td style="color:var(--text-dim)">${fmtRand(ytdS)}</td>
+    </tr>`;
+  }).join('');
+
+  // Income log
+  const sorted = [...DATA.income].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const logEl  = document.getElementById('income-log-table');
+  if(!sorted.length){
+    logEl.innerHTML=`<tr><td colspan="5"><div class="empty-state"><div class="es-icon">💸</div><div class="es-title">No income entries yet</div><div class="es-sub">Click "+ Add Entry" to log your first income</div></div></td></tr>`;
+  } else {
+    logEl.innerHTML = sorted.map(i=>`<tr>
+      <td>${escHtml(i.date)}</td>
+      <td><span class="badge badge-blue">${escHtml(i.stream)}</span></td>
+      <td style="color:var(--gold);font-weight:700">${fmtRand(i.amount)}</td>
+      <td>${escHtml(i.description)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteIncome('${escHtml(i.id)}')">✕</button></td>
+    </tr>`).join('');
+  }
+
+  updateIncomeMonthlyGoal();
+}
+
+function updateIncomeMonthlyGoal(){
+  // Show "You need R[X] more to hit your monthly goal" callout
+  const callout  = document.getElementById('income-goal-callout');
+  const textEl   = document.getElementById('income-goal-text');
+  const subEl    = document.getElementById('income-goal-sub');
+  const pctEl    = document.getElementById('income-goal-pct');
+  if(!callout) return;
+
+  // Monthly goal: sum of all per-stream targets
+  const monthlyGoal = Object.values(DATA.incomeTargets||{}).reduce((s,v)=>s+(Number(v)||0),0);
+  if(!monthlyGoal){ callout.style.display='none'; return; }
+
+  const now  = new Date();
+  const yyyy = now.getFullYear();
+  const mm   = now.getMonth();
+  const thisMonthIncome = DATA.income.filter(i=>{
+    const d=new Date(i.date); return d.getFullYear()===yyyy && d.getMonth()===mm;
+  }).reduce((s,i)=>s+Number(i.amount),0);
+
+  const remaining = Math.max(0, monthlyGoal - thisMonthIncome);
+  const pct = Math.min(100, Math.round((thisMonthIncome/monthlyGoal)*100));
+
+  callout.style.display = 'block';
+  if(remaining > 0){
+    textEl.textContent = `You need ${fmtRand(remaining)} more to hit your monthly goal`;
+    if(subEl) subEl.textContent = `${fmtRand(thisMonthIncome)} of ${fmtRand(monthlyGoal)} monthly target earned this month`;
+  } else {
+    textEl.textContent = 'Monthly income goal achieved!';
+    if(subEl) subEl.textContent = `${fmtRand(thisMonthIncome)} earned — target was ${fmtRand(monthlyGoal)}`;
+  }
+  if(pctEl) pctEl.textContent = pct + '%';
+}
+
+function updateIncomeTarget(stream, val){
+  DATA.incomeTargets[stream] = Math.max(0,Number(val)||0);
+  saveData(DATA);
+  updateIncomeMonthlyGoal();
+}
+
+function deleteIncome(id){
+  DATA.income = DATA.income.filter(i=>i.id!==id);
+  saveData(DATA);
+  renderIncome();
+  showToast('Entry deleted','');
+}
+
+// ===== DEALS =====
+function renderDeals(){
+  const total     = DATA.brandDeals.filter(d=>d.status!=='Declined').reduce((s,d)=>s+Number(d.value),0);
+  const won       = DATA.brandDeals.filter(d=>d.status==='Paid'||d.status==='Active');
+  const avgVal    = won.length>0?Math.round(won.reduce((s,d)=>s+Number(d.value),0)/won.length):0;
+  const pitched   = DATA.brandDeals.filter(d=>d.status!=='Declined').length;
+  const wonCount  = won.length;
+  const convRate  = pitched>0?Math.round(wonCount/pitched*100):0;
+
+  document.getElementById('deal-stats-row').innerHTML=`
+    <div class="deal-stat"><div class="ds-val">${fmtRand(total)}</div><div class="ds-label">Total Deal Value</div></div>
+    <div class="deal-stat"><div class="ds-val">${fmtRand(avgVal)}</div><div class="ds-label">Avg Deal Value</div></div>
+    <div class="deal-stat"><div class="ds-val">${convRate}%</div><div class="ds-label">Conversion Rate</div></div>
+  `;
+
+  const tbody = document.getElementById('deals-table-body');
+  if(!DATA.brandDeals.length){
+    tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div class="es-icon">🤝</div><div class="es-title">No deals tracked yet</div><div class="es-sub">Click "+ Add Deal" to start building your brand deal pipeline</div></div></td></tr>`;
+    return;
+  }
+  const sorted = [...DATA.brandDeals].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  tbody.innerHTML = sorted.map(d=>`<tr>
+    <td style="font-weight:600;color:var(--text)">${escHtml(d.brand)}</td>
+    <td>${escHtml(d.type)}</td>
+    <td style="color:var(--gold);font-weight:700">${fmtRand(d.value)}</td>
+    <td><span class="badge ${STATUS_BADGE[d.status]||'badge-blue'}">${escHtml(d.status)}</span></td>
+    <td>${escHtml(d.date)}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(d.notes)}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteDeal('${escHtml(d.id)}')">✕</button></td>
+  </tr>`).join('');
+}
+
+function deleteDeal(id){
+  DATA.brandDeals = DATA.brandDeals.filter(d=>d.id!==id);
+  saveData(DATA);
+  renderDeals();
+  showToast('Deal removed','');
+}
+
+// ===== CALENDAR =====
+function renderCalendar(){
+  const today    = new Date(); today.setHours(0,0,0,0);
+  // Start from Monday this week
+  const startDay = new Date(today);
+  startDay.setDate(today.getDate() - ((today.getDay()+6)%7));
+
+  const days = ['Mon','Tue','Wed','Thu','Fri'];
+
+  // Week header
+  document.getElementById('cal-week-header').innerHTML = days.map(d=>`<span>${d}</span>`).join('');
+
+  let cellsHtml = '';
+  for(let w=0;w<4;w++){
+    for(let di=0;di<5;di++){
+      const cellDate = new Date(startDay);
+      cellDate.setDate(startDay.getDate()+w*7+di);
+      const dateStr  = cellDate.toISOString().split('T')[0];
+      const dayNum   = cellDate.getDate();
+      const monthAb  = cellDate.toLocaleString('en-ZA',{month:'short'});
+
+      const posts = DATA.content.filter(c=>c.date===dateStr);
+      const postsHtml = posts.map(p=>{
+        const sc = 'post-'+p.status.toLowerCase();
+        return `<div class="cell-post ${sc}" title="${escHtml(p.platform+': '+p.topic)}">${escHtml(p.platform.slice(0,2))} · ${escHtml(p.topic.slice(0,18)+(p.topic.length>18?'…':''))}</div>`;
+      }).join('');
+
+      const isToday = dateStr===today.toISOString().split('T')[0];
+      const hasPosts= posts.length>0;
+
+      cellsHtml += `<div class="cal-cell${hasPosts?' has-post':''}"
+        onclick="openContentModalForDate('${dateStr}')"
+        style="${isToday?'border-color:var(--gold)':''}">
+        <div class="cell-date" style="${isToday?'color:var(--gold);font-weight:700':''}">
+          ${dayNum} ${monthAb}
+        </div>
+        ${postsHtml || '<div class="cell-add">+</div>'}
+      </div>`;
+    }
+  }
+  document.getElementById('calendar-grid').innerHTML = cellsHtml;
+}
+
+function openContentModalForDate(dateStr){
+  document.getElementById('content-date').value = dateStr;
+  openModal('modal-content');
+}
+
+// ===== MODALS =====
+function openModal(id){
+  // Set date defaults
+  const today = new Date().toISOString().split('T')[0];
+  if(id==='modal-income'){
+    const el = document.getElementById('income-date');
+    if(el && !el.value) el.value=today;
+  }
+  if(id==='modal-deal'){
+    const el = document.getElementById('deal-date');
+    if(el && !el.value) el.value=today;
+  }
+  if(id==='modal-content'){
+    const el = document.getElementById('content-date');
+    if(el && !el.value) el.value=today;
+  }
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  // clear editing state
+  currentEditId = null;
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click', e=>{
+    if(e.target===overlay) closeModal(overlay.id);
+  });
+});
+
+let currentEditId = null;
+
+// ===== SAVE FUNCTIONS =====
+function saveIncome(){
+  const date   = document.getElementById('income-date').value;
+  const amount = parseFloat(document.getElementById('income-amount').value);
+  const stream = document.getElementById('income-stream').value;
+  const desc   = document.getElementById('income-desc').value.trim();
+  const target = parseFloat(document.getElementById('income-target').value)||0;
+
+  if(!date){ showToast('Please select a date',''); return; }
+  if(!amount||amount<=0){ showToast('Please enter a valid amount',''); return; }
+
+  if(target>0) DATA.incomeTargets[stream]=target;
+
+  DATA.income.push({id:uid(),date,stream,amount,description:desc});
+  saveData(DATA);
+  closeModal('modal-income');
+  // Reset
+  ['income-date','income-amount','income-desc','income-target'].forEach(f=>{ const el=document.getElementById(f); if(el)el.value=''; });
+  renderIncome();
+  showToast('Income entry saved ✓','success');
+}
+
+function saveDeal(){
+  const brand  = document.getElementById('deal-brand').value.trim();
+  const type   = document.getElementById('deal-type').value;
+  const value  = parseFloat(document.getElementById('deal-value').value)||0;
+  const status = document.getElementById('deal-status').value;
+  const date   = document.getElementById('deal-date').value;
+  const notes  = document.getElementById('deal-notes').value.trim();
+
+  if(!brand){ showToast('Please enter a brand name',''); return; }
+
+  DATA.brandDeals.push({id:uid(),brand,type,value,status,date,notes});
+  saveData(DATA);
+  closeModal('modal-deal');
+  ['deal-brand','deal-value','deal-notes','deal-date'].forEach(f=>{ const el=document.getElementById(f); if(el)el.value=''; });
+  renderDeals();
+  showToast('Deal added ✓','success');
+}
+
+function saveContent(){
+  const date     = document.getElementById('content-date').value;
+  const platform = document.getElementById('content-platform').value;
+  const topic    = document.getElementById('content-topic').value.trim();
+  const format   = document.getElementById('content-format').value;
+  const status   = document.getElementById('content-status').value;
+
+  if(!date){ showToast('Please select a date',''); return; }
+  if(!topic){ showToast('Please enter a topic',''); return; }
+
+  DATA.content.push({id:uid(),date,platform,topic,format,status});
+  saveData(DATA);
+  closeModal('modal-content');
+  document.getElementById('content-topic').value='';
+  document.getElementById('content-date').value='';
+  renderCalendar();
+  showToast('Post added to calendar ✓','success');
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast'+(type==='success'?' success':'');
+  // force reflow
+  t.offsetHeight;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ===== KEYBOARD ====
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(m=>closeModal(m.id));
+  }
+});
+
+// ===== ENGAGEMENT RATE =====
+function calcEngRate(){
+  const likes    = parseFloat(document.getElementById('eng-likes').value)    || 0;
+  const comments = parseFloat(document.getElementById('eng-comments').value) || 0;
+  const followers= parseFloat(document.getElementById('eng-followers').value)|| 0;
+  const display  = document.getElementById('eng-rate-display');
+  const label    = document.getElementById('eng-rate-label');
+  if(!display) return;
+  if(followers > 0){
+    const rate = ((likes + comments) / followers * 100).toFixed(2);
+    display.textContent = rate + '%';
+    const r = parseFloat(rate);
+    display.style.color = r >= 6 ? 'var(--gold)' : r >= 3 ? 'var(--green)' : r >= 1 ? 'var(--orange)' : 'var(--red)';
+    label.textContent   = r >= 6 ? 'Excellent performance' : r >= 3 ? 'Good — keep it up' : r >= 1 ? 'Average — room to improve' : 'Low — review your strategy';
+  } else {
+    display.textContent = '—%';
+    display.style.color = 'var(--gold)';
+    if(label) label.textContent = 'Enter values above';
+  }
+}
+
+function logEngRate(){
+  const likes    = parseFloat(document.getElementById('eng-likes').value)    || 0;
+  const comments = parseFloat(document.getElementById('eng-comments').value) || 0;
+  const followers= parseFloat(document.getElementById('eng-followers').value)|| 0;
+  if(!followers){ showToast('Enter follower count first',''); return; }
+  const rate = parseFloat(((likes + comments) / followers * 100).toFixed(2));
+  const date = new Date().toISOString().split('T')[0];
+  if(!DATA.engagementHistory) DATA.engagementHistory = [];
+  DATA.engagementHistory.push({ id:uid(), date, likes, comments, followers, rate, note:'' });
+  saveData(DATA);
+  renderEngagement();
+  showToast('Rate logged: ' + rate + '%','success');
+}
+
+function renderEngagement(){
+  const histTable = document.getElementById('eng-history-table');
+  if(!histTable) return;
+  const history = DATA.engagementHistory || [];
+  if(!history.length){
+    histTable.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="es-icon">📐</div><div class="es-title">No rates logged yet</div><div class="es-sub">Calculate and log engagement rates above</div></div></td></tr>`;
+  } else {
+    const sorted = [...history].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    histTable.innerHTML = sorted.map(e=>{
+      const c = e.rate >= 6 ? 'change-pos' : e.rate >= 1 ? '' : 'change-neg';
+      return `<tr>
+        <td>${escHtml(e.date)}</td>
+        <td>${escHtml(e.note||'—')}</td>
+        <td>${fmtNum(e.likes||0)}</td>
+        <td>${fmtNum(e.comments||0)}</td>
+        <td>${fmtNum(e.followers||0)}</td>
+        <td class="${c}" style="font-weight:700">${e.rate}%</td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteEngRate('${escHtml(e.id)}')">✕</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Update average display
+  const avgDisplay = document.getElementById('eng-avg-display');
+  const avgLabel   = document.getElementById('eng-avg-label');
+  if(avgDisplay && history.length){
+    const avg = (history.reduce((s,e)=>s+e.rate,0)/history.length).toFixed(2);
+    avgDisplay.textContent = avg + '%';
+    if(avgLabel) avgLabel.textContent = 'Average of ' + history.length + ' logged post' + (history.length>1?'s':'');
+  }
+}
+
+function deleteEngRate(id){
+  if(!DATA.engagementHistory) return;
+  DATA.engagementHistory = DATA.engagementHistory.filter(e=>e.id!==id);
+  saveData(DATA);
+  renderEngagement();
+  showToast('Entry removed','');
+}
+
+// ===== BEST MONTH =====
+function renderBestMonth(){
+  const el = document.getElementById('bestmonth-content');
+  if(!el) return;
+
+  const now  = new Date();
+  const yyyy = now.getFullYear();
+
+  // Build monthly income totals from income log
+  const monthlyTotals = {};
+  (DATA.income||[]).forEach(i=>{
+    const d = new Date(i.date);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const label = d.toLocaleDateString('en-ZA',{month:'long',year:'numeric'});
+    if(!monthlyTotals[key]) monthlyTotals[key] = { label, income:0, posts:0 };
+    monthlyTotals[key].income += Number(i.amount);
+  });
+  // Add post counts per month
+  (DATA.content||[]).filter(c=>c.status==='Posted').forEach(c=>{
+    const d = new Date(c.date);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    if(!monthlyTotals[key]) monthlyTotals[key] = { label:d.toLocaleDateString('en-ZA',{month:'long',year:'numeric'}), income:0, posts:0 };
+    monthlyTotals[key].posts++;
+  });
+
+  const months = Object.entries(monthlyTotals);
+
+  if(!months.length){
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">🏆</div><div class="es-title">No data yet</div><div class="es-sub">Log income and content to see your best performing months highlighted here.</div></div>`;
+    return;
+  }
+
+  // Find best income month
+  const bestIncomeEntry = months.reduce((best,[k,v])=> v.income > (best?best[1].income:-1) ? [k,v] : best, null);
+  // Find best content month
+  const bestPostsEntry  = months.reduce((best,[k,v])=> v.posts > (best?best[1].posts:-1) ? [k,v] : best, null);
+
+  // Monthly income bar chart data (last 6 months)
+  const last6 = months.slice(-6).map(([k,v])=>({label:v.label.slice(0,3), val:v.income}));
+
+  el.innerHTML = `
+    <div class="grid-2" style="margin-bottom:24px">
+      <div style="background:linear-gradient(135deg,rgba(212,168,47,0.15),rgba(212,168,47,0.04));border:1px solid rgba(212,168,47,0.35);border-radius:var(--radius);padding:24px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:8px">Best Income Month</div>
+        <div style="font-size:26px;font-weight:800;color:var(--gold);letter-spacing:-1px;margin-bottom:4px">${escHtml(bestIncomeEntry[1].label)}</div>
+        <div style="font-size:20px;font-weight:800;color:var(--text)">${fmtRand(bestIncomeEntry[1].income)}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px">highest earning month on record</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.03));border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius);padding:24px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-bottom:8px">Most Content Posted</div>
+        <div style="font-size:26px;font-weight:800;color:var(--green);letter-spacing:-1px;margin-bottom:4px">${escHtml(bestPostsEntry[1].label)}</div>
+        <div style="font-size:20px;font-weight:800;color:var(--text)">${bestPostsEntry[1].posts} posts</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px">highest content output on record</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Monthly Income — Last 6 Months</div>
+      ${buildBarChart(last6, 120)}
+      ${!last6.length?'<div class="empty-state" style="padding:16px 0"><div class="es-sub">Log income entries to see your chart</div></div>':''}
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">All Monthly Totals</div>
+      <div class="table-wrap" style="border:none">
+        <table>
+          <thead><tr><th>Month</th><th>Income</th><th>Posts</th></tr></thead>
+          <tbody>${months.slice().reverse().map(([k,v])=>`
+            <tr>
+              <td style="font-weight:600;color:var(--text)">${escHtml(v.label)}</td>
+              <td style="color:var(--gold);font-weight:700">${fmtRand(v.income)}</td>
+              <td>${v.posts}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ===== INIT =====
+async function init(){
+  await checkPaymentReturn();
+  if(localStorage.getItem(UNLOCK_KEY)==='1'){
+    showDash();
+  } else {
+    showGate();
+  }
+}
+init();
+</script>
+</body>
+</html>

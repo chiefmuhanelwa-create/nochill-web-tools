@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Idea Engine — Stop Staring at a Blank Screen | NOCHILL</title>
+  <meta name="description" content="Generate 10 platform-perfect content ideas for your niche in 30 seconds. Built for African creators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --primary: #4F46E5;
+      --primary-mid: #6366F1;
+      --primary-bright: #818CF8;
+      --primary-deep: #312E81;
+      --primary-bg: rgba(79,70,229,0.10);
+      --primary-border: rgba(79,70,229,0.35);
+      --orange: #D4541F;
+      --bg: #FAF7F0;
+      --surface: #FFFFFF;
+      --elevated: #F4EFE3;
+      --text-head: #0A0A0A;
+      --text-body: #1F1B16;
+      --text-dim: #5C5448;
+      --text-subtle: #8A8071;
+      --border: rgba(10,10,10,0.10);
+      --border-light: rgba(10,10,10,0.06);
+      --green: #059669;
+      --green-bg: rgba(5,150,105,0.10);
+      --green-border: rgba(5,150,105,0.35);
+      --red: #DC2626;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes card-enter {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes live-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,84,31,0.55); }
+      70%  { box-shadow: 0 0 0 10px rgba(212,84,31,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,84,31,0); }
+    }
+    @keyframes loadingPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
+      50%     { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+    }
+    @keyframes progressAnim {
+      0%  { width: 0%; }
+      20% { width: 15%; }
+      40% { width: 35%; }
+      60% { width: 60%; }
+      80% { width: 82%; }
+      95% { width: 94%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @keyframes stepPulse {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.45; }
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes ideaSlideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250,247,240,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .nav-logo {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text-head);
+      white-space: nowrap;
+    }
+    .nav-logo-accent { color: var(--primary); }
+    .nav-logo-tool {
+      font-weight: 400;
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-back {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.15s, background 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-back:hover { color: var(--text-head); background: var(--elevated); }
+    .nav-back svg { width: 14px; height: 14px; }
+    .nav-back.visible { display: flex; }
+
+    .nav-bank-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+    .nav-bank-btn:hover { background: rgba(79,70,229,0.18); }
+    .nav-bank-btn.visible { display: flex; }
+    .nav-bank-badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 1px 6px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .nx-status-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9A3A12;
+      background: rgba(212,84,31,0.10);
+      border: 1px solid rgba(212,84,31,0.30);
+      white-space: nowrap;
+    }
+    .nx-live-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--orange);
+      animation: live-pulse 1.8s ease-out 3;
+      flex-shrink: 0;
+    }
+
+    /* ─── LAYOUT ─── */
+    .page-wrap { padding-top: 60px; min-height: 100vh; }
+    .screen { display: none; opacity: 0; animation: fadeIn 0.35s ease forwards; }
+    .screen.active { display: block; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── SCREEN 1: INTRO ─── */
+    #s-intro { display: block; opacity: 1; animation: none; }
+
+    .intro-hero {
+      padding: 80px 24px 64px;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-hero::before {
+      content: '';
+      position: absolute;
+      top: 40px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 360px;
+      background: radial-gradient(ellipse at center, rgba(79,70,229,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .intro-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-deep);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .intro-headline {
+      position: relative;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--text-head);
+      margin-bottom: 20px;
+    }
+    .intro-headline .highlight { color: var(--primary); }
+
+    .intro-sub {
+      position: relative;
+      font-size: 17px;
+      color: var(--text-dim);
+      max-width: 500px;
+      margin: 0 auto 16px;
+      line-height: 1.75;
+    }
+    .intro-sub strong { color: var(--text-body); font-weight: 700; }
+
+    .intro-stat-callout {
+      position: relative;
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+      margin-bottom: 36px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    .intro-stat-callout strong { color: var(--primary); font-style: normal; font-weight: 800; }
+
+    .intro-stats {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 12px rgba(10,10,10,0.05);
+    }
+    .intro-stat {
+      flex: 1;
+      padding: 22px 16px;
+      text-align: center;
+      position: relative;
+    }
+    .intro-stat:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--border);
+    }
+    .intro-stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      display: block;
+      letter-spacing: -1px;
+    }
+    .intro-stat-label {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .cta-glow {
+      position: relative;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 16px;
+      border: 1px solid rgba(49,46,129,0.45);
+      border-radius: 10px;
+      padding: 16px 36px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+    }
+    .cta-glow:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20);
+    }
+    .cta-glow svg { width: 18px; height: 18px; }
+
+    .intro-social-proof {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-subtle);
+    }
+    .sp-green { color: var(--green); font-weight: 600; }
+
+    .intro-quote-strip {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+    .section-divider { border-top: 1px solid var(--border-light); margin-bottom: 40px; }
+    .nx-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--primary-deep);
+    }
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .quote-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .quote-text {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .quote-attr {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .quote-card.featured {
+      grid-column: span 2;
+      border-color: var(--primary-border);
+      background: var(--primary-bg);
+    }
+    .quote-card.featured .quote-text { color: var(--text-body); }
+
+    /* ─── NX-CARD ─── */
+    .nx-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s ease, border-color .3s ease, box-shadow .4s ease;
+      animation: card-enter .5s ease both;
+    }
+    .nx-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .nx-card:hover { border-color: var(--primary-border); transform: translateY(-2px); box-shadow: 0 0 20px rgba(79,70,229,0.12), 0 8px 24px -8px rgba(10,10,10,0.08); }
+    .nx-card:hover::before { opacity: 1; }
+
+    /* ─── SCREEN 2: FORM ─── */
+    #s-form { padding: 40px 0 88px; }
+    .form-header { text-align: center; padding: 0 24px; margin-bottom: 36px; }
+    .form-header h2 { font-size: 30px; font-weight: 900; letter-spacing: -1px; color: var(--text-head); margin-bottom: 8px; }
+    .form-header p { font-size: 15px; color: var(--text-dim); }
+
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+    .form-section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--primary-deep);
+      margin-bottom: 10px;
+    }
+    .step-num {
+      width: 22px; height: 22px;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .form-section-hint { font-size: 13px; color: var(--text-subtle); margin-bottom: 14px; line-height: 1.55; }
+    .field-required { color: var(--primary); margin-left: 2px; }
+
+    .nx-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid rgba(10,10,10,0.12);
+      border-radius: 10px;
+      padding: 13px 15px;
+      font-size: 15px;
+      color: var(--text-head);
+      font-family: 'Inter', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .nx-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
+    .nx-input::placeholder { color: var(--text-subtle); }
+    textarea.nx-input { resize: vertical; min-height: 80px; }
+    .char-count { text-align: right; font-size: 12px; color: var(--text-subtle); margin-top: 6px; }
+
+    .niche-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .niche-example {
+      font-size: 12px;
+      color: var(--text-subtle);
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .niche-example:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-bg); }
+
+    .opt-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .opt-pill-wrap input[type="radio"] { display: none; }
+    .opt-pill-wrap label {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+      user-select: none;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .opt-pill-wrap label:hover { border-color: var(--primary-border); color: var(--primary); }
+    .opt-pill-wrap input:checked + label { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
+
+    .checkbox-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .checkbox-pill input[type="checkbox"] { display: none; }
+    .checkbox-pill label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+      user-select: none;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .checkbox-pill label:hover { border-color: var(--primary-border); color: var(--primary); }
+    .checkbox-pill input:checked + label { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
+    .checkbox-pill input:checked + label::before { content: '✓'; font-size: 11px; font-weight: 800; }
+
+    .form-error { color: var(--red); font-size: 13px; font-weight: 500; margin-top: 8px; display: none; }
+    .form-error.visible { display: block; }
+
+    .btn-generate {
+      width: 100%;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      padding: 18px 32px;
+      border-radius: 10px;
+      border: 1px solid rgba(49,46,129,0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .btn-generate:hover { transform: translateY(-3px); box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20); }
+    .btn-generate:active { transform: translateY(0); }
+    .btn-generate svg { width: 20px; height: 20px; }
+    .form-submit-wrap { margin-top: 24px; text-align: center; }
+
+    /* ─── SCREEN 3: LOADING ─── */
+    #s-loading { padding: 100px 24px; text-align: center; }
+    .loading-logo {
+      width: 72px; height: 72px;
+      background: var(--primary-bg);
+      border: 2px solid var(--primary-border);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      animation: loadingPulse 2s ease infinite;
+    }
+    .loading-status { font-size: 18px; font-weight: 700; color: var(--text-head); margin-bottom: 10px; letter-spacing: -0.3px; min-height: 28px; transition: opacity 0.3s; }
+    .loading-sub { font-size: 14px; color: var(--text-subtle); margin-bottom: 40px; }
+    .progress-wrap { max-width: 360px; margin: 0 auto 16px; background: var(--elevated); border: 1px solid var(--border); border-radius: 999px; height: 6px; overflow: hidden; }
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary-bright), var(--primary), var(--primary-bright));
+      background-size: 200% 100%;
+      animation: progressAnim 10s ease forwards, shimmer 1.5s ease infinite;
+      width: 0%;
+    }
+    .loading-steps { display: flex; flex-direction: column; gap: 10px; max-width: 320px; margin: 32px auto 0; text-align: left; }
+    .loading-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-subtle); opacity: 0; transform: translateX(-8px); transition: all 0.3s ease; }
+    .loading-step.visible { opacity: 1; transform: translateX(0); }
+    .loading-step.done { color: var(--green); }
+    .step-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--elevated); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; color: var(--text-subtle); }
+    .loading-step.done .step-icon { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .loading-step.active .step-icon { background: var(--primary-bg); border-color: var(--primary-border); color: var(--primary); animation: stepPulse 1s ease infinite; }
+
+    /* ─── SCREEN 4: RESULTS ─── */
+    #s-results { padding: 40px 0 88px; }
+    .results-header { padding: 0 24px; margin-bottom: 32px; }
+    .results-meta { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--primary); margin-bottom: 8px; }
+    .results-title { font-size: 32px; font-weight: 900; letter-spacing: -1px; color: var(--text-head); margin-bottom: 6px; }
+    .results-topic { font-size: 15px; color: var(--text-dim); }
+    .results-topic strong { color: var(--text-body); font-weight: 600; }
+
+    .ideas-grid { display: grid; gap: 16px; margin-bottom: 48px; }
+
+    /* idea card */
+    .idea-card {
+      background: var(--surface);
+      border: 1px solid rgba(79,70,229,0.20);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .3s ease;
+    }
+    .idea-card.visible { opacity: 1; transform: translateY(0); }
+    .idea-card:hover { border-color: rgba(79,70,229,0.50); transform: translateY(-3px); box-shadow: 0 0 25px rgba(79,70,229,0.20), 0 8px 24px rgba(10,10,10,0.08); }
+    .idea-card::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(180deg, #6366F1, #4F46E5); border-radius: 16px 0 0 16px; }
+    .idea-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(79,70,229,0.45), transparent); opacity: 0; transition: opacity .3s ease; }
+    .idea-card:hover::before { opacity: 1; }
+
+    .idea-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .idea-num { width: 28px; height: 28px; background: var(--primary-bg); border: 1px solid var(--primary-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--primary); flex-shrink: 0; }
+    .idea-top-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .idea-category-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .cat-educate   { background: rgba(5,150,105,0.10); color: #059669; border: 1px solid rgba(5,150,105,0.30); }
+    .cat-inspire   { background: rgba(79,70,229,0.10); color: #4F46E5; border: 1px solid rgba(79,70,229,0.30); }
+    .cat-story     { background: rgba(212,84,31,0.10); color: #D4541F; border: 1px solid rgba(212,84,31,0.30); }
+    .cat-sell      { background: rgba(234,179,8,0.12); color: #b45309; border: 1px solid rgba(234,179,8,0.35); }
+    .cat-engage    { background: rgba(236,72,153,0.10); color: #be185d; border: 1px solid rgba(236,72,153,0.30); }
+
+    .idea-title { font-size: 18px; font-weight: 700; line-height: 1.4; color: var(--text-head); letter-spacing: -0.3px; margin-bottom: 14px; }
+
+    .idea-details { border-top: 1px solid var(--border-light); padding-top: 14px; }
+
+    .idea-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .idea-detail { }
+    .idea-detail-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-subtle); margin-bottom: 4px; }
+    .idea-detail-text { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+
+    .idea-hook-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--text-body);
+      font-weight: 500;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    .idea-hook-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--primary); margin-bottom: 6px; }
+
+    .idea-outline-list {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .idea-outline-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.55;
+      padding: 6px 10px;
+      background: var(--bg);
+      border-radius: 6px;
+    }
+    .idea-outline-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .idea-why {
+      background: var(--elevated);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .idea-why-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-subtle); margin-bottom: 5px; }
+
+    .idea-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-bg);
+      border: 1px solid rgba(79,70,229,0.25);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-copy:hover { background: rgba(79,70,229,0.15); transform: scale(1.04); }
+    .btn-copy.copied { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .btn-copy svg { width: 14px; height: 14px; }
+
+    .btn-save {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-save:hover { border-color: var(--primary-border); color: var(--primary); }
+    .btn-save.saved { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .btn-save svg { width: 14px; height: 14px; }
+
+    /* ─── EMAIL CAPTURE ─── */
+    .email-capture {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(10,10,10,0.04);
+    }
+    .email-capture-badge { display: inline-block; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 999px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
+    .email-capture h3 { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: var(--text-head); margin-bottom: 8px; }
+    .email-capture p { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.6; }
+    .email-form { display: grid; gap: 10px; max-width: 420px; margin: 0 auto; }
+    .email-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-email-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: 1px solid rgba(49,46,129,0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      transition: all .2s;
+    }
+    .btn-email-submit:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .btn-email-submit.success { background: var(--green); border-color: transparent; pointer-events: none; box-shadow: none; }
+    .email-message { font-size: 13px; margin-top: 10px; font-weight: 500; min-height: 20px; }
+    .email-message.success { color: var(--green); }
+    .email-message.error   { color: var(--red); }
+
+    /* ─── UPSELL BOX ─── */
+    .upsell-box {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid var(--primary-border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .upsell-box-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--primary); margin-bottom: 12px; }
+    .upsell-box h3 { font-size: 20px; font-weight: 800; color: var(--text-head); margin-bottom: 8px; letter-spacing: -0.4px; }
+    .upsell-box p { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .upsell-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .upsell-btn-primary { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81); color: #fff; font-weight: 800; font-size: 14px; padding: 13px 24px; border-radius: 9px; text-decoration: none; border: 1px solid rgba(49,46,129,0.45); box-shadow: 0 0 16px rgba(79,70,229,0.25); transition: transform .2s, box-shadow .2s; font-family: 'Inter', sans-serif; cursor: pointer; }
+    .upsell-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .upsell-btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); font-weight: 600; font-size: 13px; padding: 13px 20px; border-radius: 9px; text-decoration: none; border: 1px solid var(--border); transition: all .2s; font-family: 'Inter', sans-serif; }
+    .upsell-btn-ghost:hover { color: var(--text-head); border-color: var(--primary-border); }
+
+    /* ─── RESULTS FOOTER ─── */
+    .results-footer { text-align: center; }
+    .btn-new-ideas {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-new-ideas:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-bg); }
+    .btn-new-ideas svg { width: 16px; height: 16px; }
+
+    /* ─── PAYWALL SCREEN ─── */
+    #s-paywall { padding: 60px 0 88px; }
+    .paywall-card {
+      background: linear-gradient(135deg, var(--elevated), var(--bg));
+      border: 1px solid rgba(79,70,229,0.30);
+      border-radius: 20px;
+      padding: 44px 40px;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .paywall-card::before { content: ''; position: absolute; inset: -1px; border-radius: 21px; background: linear-gradient(180deg, rgba(79,70,229,0.18) 0%, rgba(79,70,229,0.04) 40%, transparent 100%); z-index: -1; }
+    .paywall-icon { width: 64px; height: 64px; background: var(--primary-bg); border: 1px solid var(--primary-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 26px; }
+    .paywall-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--primary); margin-bottom: 12px; }
+    .paywall-card h2 { font-size: 28px; font-weight: 900; letter-spacing: -1px; color: var(--text-head); margin-bottom: 12px; line-height: 1.2; }
+    .paywall-card > p { font-size: 15px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.7; }
+
+    .paywall-benefits {
+      text-align: left;
+      margin-bottom: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .paywall-benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+      padding: 7px 0;
+    }
+    .paywall-benefit:not(:last-child) { border-bottom: 1px solid var(--border-light); }
+    .benefit-check { color: var(--green); font-size: 14px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
+    .paywall-sub-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; text-align: left; margin-bottom: 12px; }
+    .paywall-sub-card-title { font-size: 13px; font-weight: 700; color: var(--text-head); margin-bottom: 4px; }
+    .paywall-sub-card-desc { font-size: 12px; color: var(--text-subtle); margin-bottom: 16px; line-height: 1.5; }
+    .paywall-input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .paywall-input { flex: 1; min-width: 200px; background: var(--bg); border: 1px solid rgba(10,10,10,0.12); border-radius: 9px; padding: 11px 14px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text-head); outline: none; transition: border-color .2s, box-shadow .2s; }
+    .paywall-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.10); }
+    .paywall-input::placeholder { color: var(--text-subtle); }
+    .paywall-btn-primary { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; padding: 11px 20px; border-radius: 9px; cursor: pointer; white-space: nowrap; border: 1px solid rgba(49,46,129,0.45); box-shadow: 0 0 16px rgba(79,70,229,0.25); transition: all .2s; }
+    .paywall-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .paywall-btn-ghost { background: transparent; border: 1px solid var(--primary-border); border-radius: 9px; color: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; padding: 11px 20px; cursor: pointer; white-space: nowrap; transition: all .2s; }
+    .paywall-btn-ghost:hover { background: var(--primary-bg); }
+    .paywall-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+    .paywall-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .paywall-divider-text { font-size: 12px; color: var(--text-subtle); font-weight: 600; white-space: nowrap; }
+    .paywall-msg { font-size: 13px; margin-top: 10px; display: none; }
+    .paywall-back { margin-top: 20px; background: none; border: none; color: var(--text-subtle); font-family: 'Inter', sans-serif; font-size: 13px; cursor: pointer; text-decoration: underline; padding: 8px; transition: color .15s; }
+    .paywall-back:hover { color: var(--text-dim); }
+
+    /* ─── IDEA BANK MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    @media (min-width: 601px) { .modal-overlay.open { align-items: center; } }
+    .modal-box {
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 680px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -4px 40px rgba(10,10,10,0.20);
+    }
+    @media (min-width: 601px) { .modal-box { border-radius: 20px; max-height: 80vh; } }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .modal-title { font-size: 18px; font-weight: 800; color: var(--text-head); letter-spacing: -0.4px; }
+    .modal-close { width: 32px; height: 32px; background: var(--elevated); border: none; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .15s; }
+    .modal-close:hover { background: var(--border); color: var(--text-head); }
+    .modal-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    .modal-empty { text-align: center; padding: 60px 24px; color: var(--text-subtle); }
+    .modal-empty-icon { font-size: 40px; margin-bottom: 16px; }
+    .modal-empty p { font-size: 14px; line-height: 1.6; }
+
+    .bank-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .bank-item.used { opacity: 0.55; }
+    .bank-item-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .bank-item-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary); }
+    .bank-item-platform { font-size: 10px; color: var(--text-subtle); font-weight: 600; }
+    .bank-item-used-badge { font-size: 10px; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 4px; padding: 1px 7px; font-weight: 700; }
+    .bank-item-title { font-size: 14px; font-weight: 600; color: var(--text-head); line-height: 1.4; margin-bottom: 8px; }
+    .bank-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .bank-action {
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      padding: 5px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      color: var(--text-dim);
+      transition: all .15s;
+    }
+    .bank-action:hover { border-color: var(--primary-border); color: var(--primary); }
+    .bank-action.danger:hover { border-color: rgba(220,38,38,0.4); color: var(--red); }
+    .bank-action.mark-used { color: var(--green); border-color: var(--green-border); }
+
+    /* ─── MISC ─── */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .intro-headline { letter-spacing: -1.5px; }
+      .intro-stats { flex-direction: column; }
+      .intro-stat:not(:last-child)::after { right: 20%; left: 20%; top: auto; bottom: 0; width: auto; height: 1px; }
+      .quotes-grid { grid-template-columns: 1fr; }
+      .quote-card.featured { grid-column: span 1; }
+      .email-row { grid-template-columns: 1fr; }
+      .paywall-card { padding: 32px 20px; }
+      .nx-input, select.nx-input, textarea.nx-input, .paywall-input { font-size: 16px; }
+      .opt-pill-wrap label { padding: 11px 16px; min-height: 44px; white-space: normal; }
+      .checkbox-pill label { padding: 11px 14px; min-height: 44px; white-space: normal; }
+      .nav { padding: 0 12px; gap: 6px; }
+      .nav-logo-tool { display: none; }
+      .nx-status-live { padding: 5px 8px; font-size: 10px; letter-spacing: 0.10em; }
+      .paywall-input-row { flex-direction: column; }
+      .paywall-input { min-width: unset; width: 100%; }
+      .paywall-btn-primary, .paywall-btn-ghost { width: 100%; justify-content: center; white-space: normal; }
+      .idea-row { grid-template-columns: 1fr; }
+      .upsell-actions { flex-direction: column; align-items: stretch; }
+      .upsell-btn-primary, .upsell-btn-ghost { justify-content: center; text-align: center; }
+      .email-capture { padding: 28px 20px; }
+      .container, .container-wide { padding: 0 16px; }
+      .results-title { font-size: 26px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      NO<span class="nav-logo-accent">CHILL</span><span class="nav-logo-tool">Ideas</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-back" id="nav-back" onclick="goBackToForm()" aria-label="Back to form">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back
+      </button>
+      <button class="nav-bank-btn" id="nav-bank-btn" onclick="openIdeaBank()" aria-label="Open Idea Bank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        My Idea Bank
+        <span class="nav-bank-badge" id="bank-count-badge">0</span>
+      </button>
+      <div class="nx-status-live">
+        <span class="nx-live-dot"></span>
+        Free Tool
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- ══════════════════════════════════════
+         SCREEN 1: INTRO
+    ══════════════════════════════════════ -->
+    <div id="s-intro" class="screen active">
+      <div class="intro-hero">
+        <div class="intro-badge">
+          <span class="nx-live-dot"></span>
+          5 Free Idea Sets — No Card Needed
+        </div>
+        <h1 class="intro-headline">
+          Content Idea<br>
+          <span class="highlight">Engine</span>
+        </h1>
+        <p class="intro-sub">
+          Stop staring at a blank screen. Generate <strong>10 platform-perfect content ideas</strong> for your niche in 30 seconds.
+        </p>
+        <div class="intro-stat-callout">
+          <strong>70.8%</strong> of African creators struggle with knowing what to post. This fixes that.
+        </div>
+        <div class="intro-stats">
+          <div class="intro-stat">
+            <span class="intro-stat-num">1,643</span>
+            <div class="intro-stat-label">Creators Surveyed</div>
+          </div>
+          <div class="intro-stat">
+            <span class="intro-stat-num">10</span>
+            <div class="intro-stat-label">Ideas Per Session</div>
+          </div>
+          <div class="intro-stat">
+            <span class="intro-stat-num">5</span>
+            <div class="intro-stat-label">Content Categories</div>
+          </div>
+        </div>
+        <button class="cta-glow" onclick="showScreen('s-form')">
+          Generate My Ideas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+        <p class="intro-social-proof">
+          <span class="sp-green">Free to use.</span> No sign-up required to generate.
+        </p>
+      </div>
+
+      <div class="intro-quote-strip">
+        <div class="section-divider"></div>
+        <p class="nx-label" style="text-align:center; margin-bottom:20px;">What African Creators Actually Say</p>
+        <div class="quotes-grid">
+          <div class="quote-card featured">
+            <div class="quote-text">"In 2014 I started with a R6,000 phone and no system. The ideas I posted were random. When I built a system for content ideas — 780K followers followed."</div>
+            <div class="quote-attr">— Ndivhuwo, @nochill_god</div>
+          </div>
+          <div class="quote-card">
+            <div class="quote-text">"I am failing to come up with ideas. I post and nothing happens. I don't know what to do anymore."</div>
+            <div class="quote-attr">— Survey response, 2024</div>
+          </div>
+          <div class="quote-card">
+            <div class="quote-text">"I have deactivated all my social media accounts due to a lack of inspiration. I need something that tells me what to post every day."</div>
+            <div class="quote-attr">— Andiswa Tau, creator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 2: FORM
+    ══════════════════════════════════════ -->
+    <div id="s-form" class="screen">
+      <div class="container">
+        <div class="form-header">
+          <h2>Tell Us About Your Content</h2>
+          <p>The more specific you are, the better your 10 ideas.</p>
+        </div>
+
+        <form id="idea-form" novalidate>
+
+          <!-- 1. Niche -->
+          <div class="form-section nx-card" style="animation-delay:.05s">
+            <div class="form-section-label">
+              <span class="step-num">1</span>
+              Your Niche / Topic <span class="field-required">*</span>
+            </div>
+            <p class="form-section-hint">What do you create content about? Be specific — "personal finance for Black women in SA" beats "finance".</p>
+            <input
+              type="text"
+              id="f-niche"
+              class="nx-input"
+              placeholder="e.g. Side hustle income for SA millennials"
+              maxlength="150"
+              required
+            >
+            <div class="form-error" id="err-niche">Please enter your niche to continue.</div>
+            <div class="niche-examples">
+              <span class="niche-example" onclick="fillNiche('Making money from content')">Making money from content</span>
+              <span class="niche-example" onclick="fillNiche('Personal finance')">Personal finance</span>
+              <span class="niche-example" onclick="fillNiche('Fitness &amp; health')">Fitness &amp; health</span>
+              <span class="niche-example" onclick="fillNiche('Parenting')">Parenting</span>
+              <span class="niche-example" onclick="fillNiche('Faith &amp; spirituality')">Faith &amp; spirituality</span>
+              <span class="niche-example" onclick="fillNiche('Fashion &amp; style')">Fashion &amp; style</span>
+            </div>
+          </div>
+
+          <!-- 2. Platform -->
+          <div class="form-section nx-card" style="animation-delay:.10s">
+            <div class="form-section-label">
+              <span class="step-num">2</span>
+              Platform
+            </div>
+            <p class="form-section-hint">Where will this content live? We tailor formats and ideas to each platform.</p>
+            <div class="opt-pills" role="radiogroup" aria-label="Platform">
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-facebook" value="Facebook" checked>
+                <label for="p-facebook">Facebook</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-tiktok" value="TikTok">
+                <label for="p-tiktok">TikTok</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-instagram" value="Instagram">
+                <label for="p-instagram">Instagram</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="platform" id="p-youtube" value="YouTube">
+                <label for="p-youtube">YouTube</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Audience -->
+          <div class="form-section nx-card" style="animation-delay:.15s">
+            <div class="form-section-label">
+              <span class="step-num">3</span>
+              Your Audience <span class="field-required">*</span>
+            </div>
+            <p class="form-section-hint">Describe your audience in 1 sentence. Who are they? What do they want? What are they struggling with?</p>
+            <textarea
+              id="f-audience"
+              class="nx-input"
+              placeholder="e.g. South African women aged 25–40 who want to earn online but don't know where to start"
+              maxlength="150"
+              oninput="updateAudienceCount(this)"
+              required
+            ></textarea>
+            <div class="char-count"><span id="audience-count">0</span> / 150</div>
+            <div class="form-error" id="err-audience">Please describe your audience to continue.</div>
+          </div>
+
+          <!-- 4. Content Goals -->
+          <div class="form-section nx-card" style="animation-delay:.20s">
+            <div class="form-section-label">
+              <span class="step-num">4</span>
+              Content Goals <span class="field-required">*</span>
+            </div>
+            <p class="form-section-hint">What do you want your content to do? Pick all that apply — we'll mix them across your 10 ideas.</p>
+            <div class="checkbox-pills" role="group" aria-label="Content goals">
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-grow" value="Grow followers" checked>
+                <label for="g-grow">Grow followers</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-edu" value="Educate" checked>
+                <label for="g-edu">Educate</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-sell" value="Sell product">
+                <label for="g-sell">Sell product</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-trust" value="Build trust" checked>
+                <label for="g-trust">Build trust</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-viral" value="Go viral">
+                <label for="g-viral">Go viral</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" id="g-comments" value="Get comments">
+                <label for="g-comments">Get comments</label>
+              </div>
+            </div>
+            <div class="form-error" id="err-goals">Select at least one goal.</div>
+          </div>
+
+          <!-- 5. Post Frequency -->
+          <div class="form-section nx-card" style="animation-delay:.25s">
+            <div class="form-section-label">
+              <span class="step-num">5</span>
+              How Often Do You Post?
+            </div>
+            <p class="form-section-hint">This helps us know whether to suggest batch-friendly ideas or quick daily formats.</p>
+            <div class="opt-pills" role="radiogroup" aria-label="Post frequency">
+              <div class="opt-pill-wrap">
+                <input type="radio" name="frequency" id="f-daily" value="Daily" checked>
+                <label for="f-daily">Daily</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="frequency" id="f-35" value="3-5x per week">
+                <label for="f-35">3–5x / week</label>
+              </div>
+              <div class="opt-pill-wrap">
+                <input type="radio" name="frequency" id="f-12" value="1-2x per week">
+                <label for="f-12">1–2x / week</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-submit-wrap">
+            <button type="button" class="btn-generate" onclick="generateIdeas()">
+              Generate My 10 Ideas
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+            <div id="usage-badge" style="margin-top:12px; text-align:center; font-size:12px; font-weight:600; color:var(--text-subtle);"></div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 3: LOADING
+    ══════════════════════════════════════ -->
+    <div id="s-loading" class="screen">
+      <div class="loading-logo">💡</div>
+      <div class="loading-status" id="loading-status">Scanning your niche...</div>
+      <div class="loading-sub">Generating 10 tailored ideas — about 10 seconds</div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="loading-steps">
+        <div class="loading-step" id="lstep-1">
+          <div class="step-icon">1</div>
+          <span>Scanning your niche &amp; audience</span>
+        </div>
+        <div class="loading-step" id="lstep-2">
+          <div class="step-icon">2</div>
+          <span>Mapping platform formats</span>
+        </div>
+        <div class="loading-step" id="lstep-3">
+          <div class="step-icon">3</div>
+          <span>Crafting hooks for each idea</span>
+        </div>
+        <div class="loading-step" id="lstep-4">
+          <div class="step-icon">4</div>
+          <span>Adding African creator context</span>
+        </div>
+        <div class="loading-step" id="lstep-5">
+          <div class="step-icon">5</div>
+          <span>Finalising 10 ideas across 5 categories</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 4: RESULTS
+    ══════════════════════════════════════ -->
+    <div id="s-results" class="screen">
+      <div class="container-wide">
+
+        <div class="results-header">
+          <div class="results-meta">10 Content Ideas Generated</div>
+          <h2 class="results-title">Your Platform-Perfect Ideas</h2>
+          <p class="results-topic">For: <strong id="results-niche-label"></strong> on <strong id="results-platform-label"></strong></p>
+        </div>
+
+        <div class="ideas-grid" id="ideas-grid">
+          <!-- Idea cards injected here -->
+        </div>
+
+        <!-- Email capture -->
+        <div class="email-capture">
+          <div class="email-capture-badge">Free Bonus</div>
+          <h3>Save These Ideas + Get Our Creator Toolkit</h3>
+          <p>Drop your email and we'll send your ideas to your inbox — plus the NOCHILL Creator Starter Kit with hooks, content templates, and the monetisation guide.</p>
+          <form class="email-form" id="email-form" onsubmit="submitEmail(event)">
+            <div class="email-row">
+              <input type="text" id="e-name" class="nx-input" placeholder="Your first name" required>
+              <input type="email" id="e-email" class="nx-input" placeholder="your@email.com" required>
+            </div>
+            <button type="submit" class="btn-email-submit" id="email-submit-btn">
+              Send My Ideas
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+            <div class="email-message" id="email-message"></div>
+          </form>
+        </div>
+
+        <!-- UPSELL -->
+        <div class="upsell-box">
+          <div class="upsell-box-label">Next Step</div>
+          <h3>Ideas without a system disappear. Build the system.</h3>
+          <p>You now have 10 ideas. <em>The Influencer's Code</em> gives you the complete content operating system — the hook bank, the PAIDS income framework, and the exact playbook Ndivhuwo used to reach 780K followers while earning R300K/month from content.</p>
+          <div class="upsell-actions">
+            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-btn-primary">
+              Get The Influencer's Code — R299 →
+            </a>
+            <a href="https://contentcreatorhub.online" target="_blank" class="upsell-btn-ghost">
+              Browse all products
+            </a>
+          </div>
+        </div>
+
+        <div class="results-footer">
+          <button class="btn-new-ideas" onclick="goBackToForm()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 .49-3.8"/>
+            </svg>
+            Generate New Ideas
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 5: PAYWALL
+    ══════════════════════════════════════ -->
+    <div id="s-paywall" class="screen">
+      <div class="container">
+        <div class="paywall-card">
+          <div class="paywall-icon">💡</div>
+          <div class="paywall-label">5 Free Idea Sets Used</div>
+          <h2>You've used your 5 free idea sets.</h2>
+          <p>Subscribe for R79/month — unlimited idea generation for any niche or platform.</p>
+
+          <div class="paywall-benefits">
+            <div class="paywall-benefit"><span class="benefit-check">✓</span> Unlimited idea generation — any niche, any day</div>
+            <div class="paywall-benefit"><span class="benefit-check">✓</span> 10 ideas per session across 5 content categories</div>
+            <div class="paywall-benefit"><span class="benefit-check">✓</span> Built-in hooks + format suggestions for every idea</div>
+            <div class="paywall-benefit"><span class="benefit-check">✓</span> Permanent Idea Bank — save, organise, track</div>
+            <div class="paywall-benefit"><span class="benefit-check">✓</span> New idea frameworks added monthly</div>
+          </div>
+
+          <!-- Paystack subscribe -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Subscribe with Paystack — R79/month</p>
+            <p class="paywall-sub-card-desc">Card, bank transfer, USSD — all African payment methods supported. Cancel any time.</p>
+            <div class="paywall-input-row" id="paystack-form">
+              <input type="email" id="paystack-email" placeholder="your@email.com" class="paywall-input">
+              <button onclick="startPaystackPayment()" id="paystack-btn" class="paywall-btn-primary">
+                Subscribe — R79/mo →
+              </button>
+            </div>
+            <div id="paystack-msg" class="paywall-msg"></div>
+          </div>
+
+          <div class="paywall-divider">
+            <div class="paywall-divider-line"></div>
+            <span class="paywall-divider-text">or get 3 more free</span>
+            <div class="paywall-divider-line"></div>
+          </div>
+
+          <!-- Email for more free uses -->
+          <div class="paywall-sub-card">
+            <p class="paywall-sub-card-title">Drop your email — get 3 more idea sets free</p>
+            <p class="paywall-sub-card-desc">We'll also send creator resources and content tips. Unsubscribe any time.</p>
+            <div class="paywall-input-row" id="paywall-email-form">
+              <input type="email" id="paywall-email" placeholder="your@email.com" class="paywall-input">
+              <button onclick="paywallEmailSubmit()" class="paywall-btn-ghost">Get 3 More Free</button>
+            </div>
+            <div id="paywall-email-msg" class="paywall-msg"></div>
+          </div>
+
+          <button onclick="showScreen('s-form')" class="paywall-back">← Back to form</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <!-- ══════════════════════════════════════
+       IDEA BANK MODAL
+  ══════════════════════════════════════ -->
+  <div class="modal-overlay" id="bank-modal" onclick="closeBankOnOverlay(event)" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title-text">My Idea Bank <span id="bank-count-text" style="font-size:14px; color:var(--text-subtle); font-weight:500;"></span></div>
+        <button class="modal-close" onclick="closeIdeaBank()" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="bank-modal-body">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── STATE ───────────────────────────────────────────────────────────────
+    let currentFormValues = {};
+    let loadingStepTimers = [];
+    let loadingTimer = null;
+
+    // ─── USAGE TRACKING ──────────────────────────────────────────────────────
+    const USAGE_KEY  = 'nochill_ideas_used';
+    const UNLOCK_KEY = 'nochill_ideas_unlocked';
+    const BANK_KEY   = 'nochill_ideas_bank';
+    const FREE_LIMIT = 5;
+
+    function getUsage()   { return parseInt(localStorage.getItem(USAGE_KEY) || '0', 10); }
+    function isUnlocked() { return localStorage.getItem(UNLOCK_KEY) === '1'; }
+    function incrementUsage() { localStorage.setItem(USAGE_KEY, getUsage() + 1); updateUsageBadge(); }
+    function unlockUsage()    { localStorage.setItem(UNLOCK_KEY, '1'); updateUsageBadge(); }
+
+    function updateUsageBadge() {
+      const el = document.getElementById('usage-badge');
+      if (!el) return;
+      if (isUnlocked()) { el.innerHTML = '<span style="color:var(--green);">✓ Unlimited generations active</span>'; return; }
+      const used = getUsage();
+      const rem  = Math.max(0, FREE_LIMIT - used);
+      const color = rem > 2 ? 'var(--green)' : rem > 0 ? 'var(--primary)' : 'var(--red)';
+      el.innerHTML = `<span style="color:${color};">${rem} of ${FREE_LIMIT} free idea set${rem !== 1 ? 's' : ''} remaining</span>`;
+    }
+
+    // ─── IDEA BANK ────────────────────────────────────────────────────────────
+    function getBank() {
+      try { return JSON.parse(localStorage.getItem(BANK_KEY) || '[]'); } catch(e) { return []; }
+    }
+    function saveBank(bank) {
+      localStorage.setItem(BANK_KEY, JSON.stringify(bank));
+      updateBankBadge();
+    }
+    function updateBankBadge() {
+      const bank = getBank();
+      const badge = document.getElementById('bank-count-badge');
+      const bankBtn = document.getElementById('nav-bank-btn');
+      if (badge) badge.textContent = bank.length;
+      if (bankBtn) {
+        if (bank.length > 0) bankBtn.classList.add('visible');
+        else bankBtn.classList.remove('visible');
+      }
+    }
+    function saveIdea(idea, platform, niche) {
+      const bank = getBank();
+      const entry = {
+        id: Date.now() + Math.random(),
+        savedAt: new Date().toISOString(),
+        niche,
+        platform,
+        title: idea.title,
+        hook: idea.hook_line || idea.hook || '',
+        format: idea.format || 'Video Reel',
+        category: idea.category || 'Educate',
+        hook_type_label: idea.hook_type_label || '',
+        series_label: idea.series_label || '',
+        bank_type: idea.bank_type || '',
+        used: false
+      };
+      bank.unshift(entry);
+      saveBank(bank);
+      return entry;
+    }
+    function deleteFromBank(id) {
+      const bank = getBank().filter(i => String(i.id) !== String(id));
+      saveBank(bank);
+    }
+    function markUsedInBank(id) {
+      const bank = getBank().map(i => String(i.id) === String(id) ? { ...i, used: !i.used } : i);
+      saveBank(bank);
+    }
+
+    function openIdeaBank() {
+      renderBankModal();
+      document.getElementById('bank-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeIdeaBank() {
+      document.getElementById('bank-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeBankOnOverlay(e) {
+      if (e.target === document.getElementById('bank-modal')) closeIdeaBank();
+    }
+
+    function renderBankModal() {
+      const bank = getBank();
+      const body = document.getElementById('bank-modal-body');
+      const countEl = document.getElementById('bank-count-text');
+      countEl.textContent = bank.length ? `(${bank.length} saved)` : '';
+
+      if (bank.length === 0) {
+        body.innerHTML = `
+          <div class="modal-empty">
+            <div class="modal-empty-icon">💡</div>
+            <p>No saved ideas yet.<br>Generate ideas and hit <strong>Save Idea</strong> on any card to bank it here.</p>
+          </div>`;
+        return;
+      }
+
+      body.innerHTML = bank.map(item => `
+        <div class="bank-item ${item.used ? 'used' : ''}" id="bank-item-${item.id.toString().replace('.','_')}">
+          <div class="bank-item-meta">
+            <span class="bank-item-cat">${escHtml(item.category || 'Idea')}</span>
+            ${item.hook_type_label ? `<span class="bank-item-cat" style="background:rgba(212,84,31,0.10);color:#9A3A12;border-color:rgba(212,84,31,0.30)">${escHtml(item.hook_type_label)}</span>` : ''}
+            <span class="bank-item-platform">${escHtml(item.platform || '')}</span>
+            ${item.used ? '<span class="bank-item-used-badge">Used</span>' : ''}
+          </div>
+          <div class="bank-item-title">${escHtml(item.title)}</div>
+          ${item.hook ? `<div style="font-size:12px; color:var(--text-subtle); font-style:italic; margin-bottom:8px;">"${escHtml(item.hook)}"</div>` : ''}
+          ${item.series_label ? `<div style="font-size:11px; color:#5C5448; margin-bottom:8px;">Series: ${escHtml(item.series_label)}</div>` : ''}
+          <div class="bank-item-actions">
+            <button class="bank-action mark-used" onclick="toggleBankUsed('${item.id}')">
+              ${item.used ? '↩ Mark unused' : '✓ Mark used'}
+            </button>
+            <button class="bank-action" onclick="copyText('${escHtml(item.hook || item.title).replace(/'/g,"\\'")}', this)">Copy hook</button>
+            <button class="bank-action danger" onclick="removeBankItem('${item.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleBankUsed(id) {
+      markUsedInBank(id);
+      renderBankModal();
+      updateBankBadge();
+    }
+    function removeBankItem(id) {
+      deleteFromBank(id);
+      renderBankModal();
+      updateBankBadge();
+    }
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      });
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = orig; }, 1800);
+    }
+
+    // ─── SCREEN NAVIGATION ───────────────────────────────────────────────────
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+        s.style.opacity = '0';
+      });
+      const target = document.getElementById(id);
+      target.style.display = 'block';
+      target.classList.add('active');
+      void target.offsetWidth;
+      target.style.opacity = '';
+
+      const backBtn = document.getElementById('nav-back');
+      if (id === 's-intro') backBtn.classList.remove('visible');
+      else backBtn.classList.add('visible');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBackToForm() {
+      clearLoadingTimers();
+      showScreen('s-form');
+    }
+
+    // ─── FORM UTILITIES ───────────────────────────────────────────────────────
+    function updateAudienceCount(el) {
+      document.getElementById('audience-count').textContent = el.value.length;
+    }
+    function fillNiche(text) {
+      const el = document.getElementById('f-niche');
+      // decode HTML entities
+      const ta = document.createElement('textarea');
+      ta.innerHTML = text;
+      el.value = ta.value;
+      el.focus();
+      document.getElementById('err-niche').classList.remove('visible');
+    }
+
+    function getFormValues() {
+      const niche = document.getElementById('f-niche').value.trim();
+      const platform = document.querySelector('input[name="platform"]:checked')?.value || 'Facebook';
+      const audience = document.getElementById('f-audience').value.trim();
+      const goalCheckboxes = document.querySelectorAll('.checkbox-pill input[type="checkbox"]:checked');
+      const goals = Array.from(goalCheckboxes).map(cb => cb.value);
+      const frequency = document.querySelector('input[name="frequency"]:checked')?.value || 'Daily';
+      return { niche, platform, audience, goals, frequency };
+    }
+
+    function validateForm(values) {
+      let valid = true;
+
+      const nicheErr = document.getElementById('err-niche');
+      if (!values.niche) {
+        nicheErr.classList.add('visible');
+        document.getElementById('f-niche').focus();
+        valid = false;
+      } else nicheErr.classList.remove('visible');
+
+      const audienceErr = document.getElementById('err-audience');
+      if (!values.audience) {
+        audienceErr.classList.add('visible');
+        if (valid) document.getElementById('f-audience').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        valid = false;
+      } else audienceErr.classList.remove('visible');
+
+      const goalsErr = document.getElementById('err-goals');
+      if (values.goals.length === 0) {
+        goalsErr.classList.add('visible');
+        if (valid) goalsErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        valid = false;
+      } else goalsErr.classList.remove('visible');
+
+      return valid;
+    }
+
+    // ─── LOADING ANIMATION ────────────────────────────────────────────────────
+    const loadingMessages = [
+      'Scanning your niche & audience...',
+      'Mapping platform formats...',
+      'Crafting hooks for each idea...',
+      'Adding African creator context...',
+      'Finalising 10 ideas across 5 categories...'
+    ];
+
+    function clearLoadingTimers() {
+      if (loadingTimer) clearInterval(loadingTimer);
+      loadingStepTimers.forEach(t => clearTimeout(t));
+      loadingStepTimers = [];
+    }
+
+    function startLoadingAnimation() {
+      const statusEl = document.getElementById('loading-status');
+      const steps = document.querySelectorAll('.loading-step');
+      steps.forEach((s, i) => {
+        s.classList.remove('visible', 'active', 'done');
+        s.querySelector('.step-icon').textContent = i + 1;
+      });
+      const bar = document.getElementById('progress-bar');
+      bar.style.animation = 'none';
+      void bar.offsetWidth;
+      bar.style.animation = 'progressAnim 10s ease forwards, shimmer 1.5s ease infinite';
+
+      const stepDelays = [300, 1400, 2800, 4400, 6200];
+      stepDelays.forEach((delay, i) => {
+        const t = setTimeout(() => {
+          if (i > 0) {
+            steps[i-1].classList.remove('active');
+            steps[i-1].classList.add('done');
+            steps[i-1].querySelector('.step-icon').textContent = '✓';
+          }
+          steps[i].classList.add('visible', 'active');
+          statusEl.style.opacity = '0';
+          setTimeout(() => {
+            statusEl.textContent = loadingMessages[i];
+            statusEl.style.opacity = '1';
+          }, 150);
+        }, delay);
+        loadingStepTimers.push(t);
+      });
+    }
+
+    // ─── FALLBACK IDEAS ───────────────────────────────────────────────────────
+    // Built from real African creator viral data: 1M–101M views
+    function buildFallbackIdeas(niche, platform) {
+      const n = niche || 'your niche';
+      const p = platform || 'Facebook';
+      return [
+        {
+          category: 'Educate',
+          hook_type: 'CURIOSITY GAP',
+          hook_type_label: 'Curiosity Gap',
+          series: 'WHAT THEY DON\'T TELL YOU',
+          series_label: 'What They Don\'t Tell You',
+          bank_type: 'Pattern Interrupt',
+          title: `The one thing brands check before they DM any creator`,
+          hook: `The one thing brands check before they DM any creator — and most of you don't have it turned on.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Open with the hook — pause before the reveal',
+            `Show your ${p} profile settings screen`,
+            'Point to the exact setting brands look for',
+            'Explain what brands do when it\'s missing',
+            'Tell them to fix it before they close the app'
+          ],
+          platform_tip: `Film your screen with a screen recording + voiceover. Feels authentic — exactly what gets shared on ${p}.`,
+          cta: 'Follow me for more brand deal secrets — I drop one every week.',
+          why: `Curiosity gap hooks drive 101M+ views on similar African creator content. Teasing the specific info without giving it away forces viewers to watch until the end. Proven to outperform "tips" titles 4:1 on click-through.`
+        },
+        {
+          category: 'Educate',
+          hook_type: 'COMPARISON HOOK',
+          hook_type_label: 'Comparison Hook',
+          series: 'TOOL TUESDAY',
+          series_label: 'Tool Tuesday',
+          bank_type: 'Versus Hook',
+          title: `FREE tools vs PAID tools: what actually works for African creators`,
+          hook: `I'm going to show you a FREE tool and a PAID tool doing the same thing — and you'll be surprised which one wins.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Name the task: editing, captions, thumbnails, scheduling',
+            'Show the free tool — be honest about limits',
+            'Show the paid alternative doing the same thing',
+            'Give your honest verdict with a real reason',
+            'Drop the free tool name in the caption so people save it'
+          ],
+          platform_tip: `On ${p}: split-screen works great for comparisons. Side-by-side edit shows both tools clearly. This format gets saves and shares.`,
+          cta: 'Save this video and try the free tool TODAY. Come back and tell me what happened.',
+          why: `FREE vs PAID comparison content hits 58.6M views. It works because it removes the number-one excuse: most beginners say they can\'t afford tools. This proves them wrong.`
+        },
+        {
+          category: 'Educate',
+          hook_type: 'FOMO HOOK',
+          hook_type_label: 'FOMO Hook',
+          series: 'THE STRUGGLE IS REAL',
+          series_label: 'The Struggle Is Real',
+          bank_type: 'Pattern Interrupt',
+          title: `STOP posting before you do this one thing`,
+          hook: `STOP. Do not post your next piece of content until you do this one thing first.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Open with STOP — big energy, direct to camera',
+            'Name the specific thing they need to check or turn on',
+            'Show exactly HOW to do it (screen share or demo)',
+            'Explain what happens when you DON\'T do this',
+            'Promise a follow-up with more creator tips'
+          ],
+          platform_tip: `Face to camera with direct eye contact. No fancy editing needed — the STOP hook does the work. Point to the camera when you say STOP.`,
+          cta: 'Tag a creator friend who needs to see this before they post again.',
+          why: `FOMO hooks (Never post without...) hit 51.8M views. The pattern interrupt STOP stops the scroll instantly, especially on ${p} where people are moving fast.`
+        },
+        {
+          category: 'Story',
+          hook_type: 'RELATABLE PROBLEM + SOLUTION',
+          hook_type_label: 'Relatable Problem + Solution',
+          series: 'THE STRUGGLE IS REAL',
+          series_label: 'The Struggle Is Real',
+          bank_type: 'Problem-Solution',
+          title: `POV: You post daily but your views keep dropping`,
+          hook: `POV: You've been posting every day for 3 months. Your views are still under 500. Here's the real reason — and it's not your content quality.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Open with the relatable POV — let it land for 2 seconds',
+            'Validate the frustration: "You\'re doing everything right on the surface..."',
+            'Reveal the real problem (algorithm, niche, posting time, or format)',
+            'Give 2–3 specific fixes they can do TODAY',
+            'End with a result: "After I fixed this, my views went from X to Y"'
+          ],
+          platform_tip: `Text overlay with the POV while you talk to camera. Show your own analytics if comfortable — it builds trust fast on ${p}.`,
+          cta: 'Save this. Apply step 2 first — it\'s the one most people skip.',
+          why: `1.9M views on "I don\'t know how to grow my account" style content. Mirrors the exact words creators say to themselves at 11pm when they check their analytics. Deep relatability = shares.`
+        },
+        {
+          category: 'Story',
+          hook_type: 'STORY PROMISE',
+          hook_type_label: 'Story Promise',
+          series: 'ANATOMY OF A SALE',
+          series_label: 'Anatomy of a Sale',
+          bank_type: 'Story Promise',
+          title: `How I got my first paid brand deal (nobody told me this)`,
+          hook: `I want to tell you exactly how I got my first brand deal — because no one told me this when I was starting out, and I wasted 8 months doing it the wrong way.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Set the scene: what you were doing before the first deal',
+            'The moment you realised you were doing it wrong',
+            'The specific thing you changed — be exact with numbers',
+            'What happened after: first deal, the amount, the brand',
+            'The one thing they should do TODAY to replicate it'
+          ],
+          platform_tip: `Sit-down, direct to camera, natural lighting. Don\'t over-edit this one — authenticity is the hook on ${p}.`,
+          cta: 'Follow me — I share what actually works for African creators trying to monetise.',
+          why: `Story Promise ("How I went from X to Y") consistently performs across African creator content. Vulnerability + concrete outcome. The "8 months wasted" detail makes it specific and credible.`
+        },
+        {
+          category: 'Educate',
+          hook_type: 'SHOCK FACTOR',
+          hook_type_label: 'Shock Factor',
+          series: 'WHAT THEY DON\'T TELL YOU',
+          series_label: 'What They Don\'t Tell You',
+          bank_type: 'Contrarian',
+          title: `Stop using hashtags for better reach (here\'s proof)`,
+          hook: `I stopped using hashtags completely for 30 days. My reach went up. Here is exactly what happened.`,
+          format: 'Video Reel',
+          content_outline: [
+            'State the contrarian claim with your specific result',
+            'Show the before (with hashtags) vs after (without) in your analytics',
+            'Explain the actual mechanism: why the platform changed how it reads hashtags',
+            'Give them the alternative strategy that replaced hashtags',
+            'Show the new result numbers'
+          ],
+          platform_tip: `Show real analytics screenshots. Blur your follower count if needed but keep the reach/impressions visible — that\'s the proof that makes this credible on ${p}.`,
+          cta: 'Try it for 2 weeks. Come back and tell me if it worked for you.',
+          why: `Shock factor / counter-intuitive content hits 6.9M views. Challenging conventional advice forces people to stop and reconsider. The specific 30-day test frame makes the claim testable and trustworthy.`
+        },
+        {
+          category: 'Inspire',
+          hook_type: 'PERSPECTIVE SHIFT',
+          hook_type_label: 'Perspective Shift',
+          series: 'FROM SLEEPING IN BATHROOMS TO...',
+          series_label: 'From Sleeping in Bathrooms To...',
+          bank_type: 'Transformation',
+          title: `100 views is not nothing — let me show you what it actually is`,
+          hook: `You got 100 views on your last video. I know you\'re disappointed. But let me show you what 100 views actually looks like in real life.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Start by acknowledging the feeling (100 views feels bad)',
+            'The reframe: 100 views = 100 real human beings who chose to watch you',
+            'Visualise it — a packed church, a full taxi rank, a school hall',
+            'Show what Ndivhuwo earned when he had 100 engaged followers vs 100K passive ones',
+            'End with the call to think in terms of quality, not quantity'
+          ],
+          platform_tip: `This works especially well on ${p} as a text post or short video. The visualisation hook (100 people = a full room) is the core — spend time on that visual.`,
+          cta: 'Stop looking at the number. Start looking at who\'s in the room.',
+          why: `Perspective shift content showing 100 views as 100 real people hit 1.6M views. It reframes failure as foundation — the most-shared emotional arc for beginning creators.`
+        },
+        {
+          category: 'Educate',
+          hook_type: 'AUTHORITY + VALUE',
+          hook_type_label: 'Authority + Value',
+          series: 'ANATOMY OF A SALE',
+          series_label: 'Anatomy of a Sale',
+          bank_type: 'Social Proof',
+          title: `What I charge for content (and why most creators charge too little)`,
+          hook: `As a content creator, I charge from R2,000 to R50,000 per campaign. Let me explain exactly why — and how you can charge more too.`,
+          format: 'Video Reel',
+          content_outline: [
+            'State your rate range upfront — don\'t hide it',
+            'Break down the 3 things that determine your rate: reach, engagement, niche value',
+            'Show the math: R2,000 campaign vs R50,000 campaign — what\'s different',
+            'The one thing most creators skip that keeps their rates low',
+            'Tell them exactly what to say when a brand asks "what do you charge?"'
+          ],
+          platform_tip: `On ${p}: authority content with real numbers builds trust fast. Use a rate card visual or write the numbers on screen while you explain.`,
+          cta: 'Follow me for part 2: the exact script for negotiating with brands.',
+          why: `Authority + Value content (as a social media manager I charge from R... to R...) hits 1.2M views. SA audiences trust receipts. Real numbers remove doubt and position you as the expert.`
+        },
+        {
+          category: 'Educate',
+          hook_type: 'TREND + LIST',
+          hook_type_label: 'Trend + List',
+          series: 'TOOL TUESDAY',
+          series_label: 'Tool Tuesday',
+          bank_type: 'List/Number',
+          title: `5 free tools every African creator needs in 2025`,
+          hook: `5 tools every African creator needs in 2025 — I\'m writing them on this paper right now so you can screenshot it.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Write the tools on paper or a whiteboard as you list them',
+            'For each tool: name it, show it, and give one specific use case',
+            'Include at least 2 tools they\'ve never heard of',
+            'Rate each one out of 10 for ease of use',
+            'Tell them which one to start with TODAY'
+          ],
+          platform_tip: `The printed/written list format is proven — "Viral reel tools for 2025 with printed paper list" hit 830K views. Film it portrait. The handwriting adds authenticity.`,
+          cta: 'Save this video. Install tool #3 first — it will save you 2 hours a week.',
+          why: `Trend + List content with a physical list hit 830K views. The act of writing it builds suspense and makes it screenshot-worthy. Lists are the most-saved format on ${p} and TikTok.`
+        },
+        {
+          category: 'Inspire',
+          hook_type: 'SOCIAL PROOF + TEASER',
+          hook_type_label: 'Social Proof + Teaser',
+          series: 'KINGDOM BUSINESS',
+          series_label: 'Kingdom Business',
+          bank_type: 'Social Proof',
+          title: `This video got millions of views — let me show you the formula`,
+          hook: `This video got millions of views. The creator had under 5,000 followers. Now let me show you exactly what they did and how you can copy the formula.`,
+          format: 'Video Reel',
+          content_outline: [
+            'Show the viral video clip or screenshot the view count',
+            'Break down the hook word for word — what made the first 3 seconds work',
+            'Identify the format: talking head, text overlay, tutorial, etc.',
+            'Extract the 3 replicable elements: hook type, structure, CTA',
+            'Show them how to adapt the same formula to their own niche'
+          ],
+          platform_tip: `On ${p}: react + breakdown content performs well. Use the "Let me show you" teaser frame to keep them watching through the explanation.`,
+          cta: 'Try this formula on your next post. Screenshot your results and tag me.',
+          why: `Social Proof + Teaser ("This video got millions of views, now let me show you how") hit 1M views. Borrowing the credibility of existing viral content while teaching the formula is one of the most shareable creator formats.`
+        }
+      ];
+    }
+
+    // ─── MAIN GENERATE FUNCTION ───────────────────────────────────────────────
+    async function generateIdeas() {
+      const values = getFormValues();
+      if (!validateForm(values)) return;
+
+      if (!isUnlocked() && getUsage() >= FREE_LIMIT) {
+        showScreen('s-paywall');
+        return;
+      }
+      incrementUsage();
+
+      currentFormValues = values;
+      showScreen('s-loading');
+      clearLoadingTimers();
+      startLoadingAnimation();
+
+      // Map legacy form fields to new API contract
+      const apiPayload = {
+        platform: values.platform,
+        niche: values.niche,
+        challenge: (values.goals && values.goals.length > 0) ? values.goals[0] : 'finding content ideas',
+        goal: (values.goals && values.goals.length > 1) ? values.goals.join(', ') : (values.goals && values.goals[0]) || 'grow followers and monetise',
+        contentType: 'educational and entertaining',
+        audience: values.audience || ''
+      };
+
+      try {
+        const response = await fetch('/api/ideas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(apiPayload)
+        });
+        const data = await response.json();
+        await new Promise(r => setTimeout(r, 1200));
+
+        if (data.ok && Array.isArray(data.ideas) && data.ideas.length > 0) {
+          renderResults(data.ideas, values);
+        } else {
+          renderResults(buildFallbackIdeas(values.niche, values.platform), values);
+        }
+      } catch (err) {
+        await new Promise(r => setTimeout(r, 1200));
+        renderResults(buildFallbackIdeas(values.niche, values.platform), values);
+      }
+    }
+
+    // ─── RENDER RESULTS ───────────────────────────────────────────────────────
+    const CATEGORY_CLASSES = {
+      'Educate': 'cat-educate',
+      'Inspire': 'cat-inspire',
+      'Story':   'cat-story',
+      'Sell':    'cat-sell',
+      'Engage':  'cat-engage'
+    };
+
+    function getCatClass(cat) {
+      return CATEGORY_CLASSES[cat] || 'cat-inspire';
+    }
+
+    function renderResults(ideas, values) {
+      document.getElementById('results-niche-label').textContent = values.niche;
+      document.getElementById('results-platform-label').textContent = values.platform;
+
+      const grid = document.getElementById('ideas-grid');
+      grid.innerHTML = '';
+
+      ideas.forEach((idea, i) => {
+        const catClass = getCatClass(idea.category);
+        const card = document.createElement('div');
+        card.className = 'idea-card';
+        card.dataset.ideaId = i;
+
+        // Support both legacy 'hook' field and new 'hook_line' field
+        const hookText = idea.hook_line || idea.hook || '';
+        const whyText  = idea.why_works || idea.why || '';
+
+        // Build content outline if present
+        const outlineHtml = Array.isArray(idea.content_outline) && idea.content_outline.length > 0
+          ? `<div class="idea-why-label" style="margin-top:10px">Content outline</div>
+             <ul class="idea-outline-list">${idea.content_outline.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>`
+          : '';
+
+        // Build extra meta tags for hook type and series
+        const hookTypeBadge = idea.hook_type_label
+          ? `<span class="idea-category-badge" style="background:rgba(212,84,31,0.10);color:#9A3A12;border:1px solid rgba(212,84,31,0.30)">${escHtml(idea.hook_type_label)}</span>`
+          : '';
+        const seriesBadge = idea.series_label
+          ? `<span class="idea-category-badge" style="background:rgba(79,70,229,0.08);color:#312E81;border:1px solid rgba(79,70,229,0.22)">${escHtml(idea.series_label)}</span>`
+          : '';
+
+        // Platform tip and CTA
+        const platformTipHtml = idea.platform_tip
+          ? `<div class="idea-why-label" style="margin-top:10px">Platform tip</div><div class="idea-why" style="font-size:12px">${escHtml(idea.platform_tip)}</div>`
+          : '';
+        const ctaHtml = idea.cta
+          ? `<div class="idea-why-label" style="margin-top:10px">End with this CTA</div><div class="idea-why" style="font-size:12px;font-style:italic">"${escHtml(idea.cta)}"</div>`
+          : '';
+
+        card.innerHTML = `
+          <div class="idea-card-top">
+            <div class="idea-num">${i + 1}</div>
+            <div class="idea-top-right">
+              ${hookTypeBadge}
+              ${seriesBadge}
+              <span class="idea-category-badge ${catClass}">${escHtml(idea.category || 'Idea')}</span>
+            </div>
+          </div>
+          <div class="idea-title">${escHtml(idea.title)}</div>
+          <div class="idea-details">
+            <div class="idea-hook-label">Opening hook line — say this first</div>
+            <div class="idea-hook-box">"${escHtml(hookText)}"</div>
+            <div class="idea-row">
+              <div class="idea-detail">
+                <div class="idea-detail-label">Format</div>
+                <div class="idea-detail-text">${escHtml(idea.format || 'Video Reel')}</div>
+              </div>
+              <div class="idea-detail">
+                <div class="idea-detail-label">Hook Bank Type</div>
+                <div class="idea-detail-text">${escHtml(idea.bank_type || idea.hook_type_label || idea.category || 'Pattern Interrupt')}</div>
+              </div>
+            </div>
+            ${whyText ? `
+            <div class="idea-why-label">Why this will work</div>
+            <div class="idea-why">${escHtml(whyText)}</div>
+            ` : ''}
+            ${outlineHtml}
+            ${platformTipHtml}
+            ${ctaHtml}
+            <div class="idea-actions">
+              <button class="btn-copy" onclick="copyIdeaHook(this, ${JSON.stringify(hookText)})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copy Hook
+              </button>
+              <button class="btn-save" onclick="handleSaveIdea(this, ${i})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Save Idea
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        setTimeout(() => card.classList.add('visible'), i * 80);
+      });
+
+      // Store rendered ideas for save functionality
+      window.__lastIdeas  = ideas;
+      window.__lastValues = values;
+
+      // Reset email form
+      resetEmailForm();
+
+      showScreen('s-results');
+      document.getElementById('nav-bank-btn').classList.toggle('visible', getBank().length > 0);
+    }
+
+    function handleSaveIdea(btn, index) {
+      const idea    = window.__lastIdeas[index];
+      const values  = window.__lastValues;
+      if (!idea) return;
+
+      if (btn.classList.contains('saved')) {
+        // Deselect: ideally remove last-saved matching title, but simplify to toggle state only
+        btn.classList.remove('saved');
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Idea`;
+        return;
+      }
+
+      saveIdea(idea, values.platform, values.niche);
+      btn.classList.add('saved');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Saved!`;
+      updateBankBadge();
+      document.getElementById('nav-bank-btn').classList.add('visible');
+
+      // Revert label after delay but keep saved state
+      setTimeout(() => {
+        if (btn.classList.contains('saved')) {
+          btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Saved`;
+        }
+      }, 2000);
+    }
+
+    // ─── COPY HOOK ─────────────────────────────────────────────────────────────
+    function copyIdeaHook(btn, text) {
+      const copyFn = () => {
+        const original = btn.innerHTML;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 2200);
+      };
+      navigator.clipboard.writeText(text).then(copyFn).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        copyFn();
+      });
+    }
+
+    // ─── EMAIL SUBMIT ─────────────────────────────────────────────────────────
+    function resetEmailForm() {
+      const msgEl = document.getElementById('email-message');
+      if (msgEl) { msgEl.textContent = ''; msgEl.className = 'email-message'; }
+      const btn = document.getElementById('email-submit-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('success');
+        btn.innerHTML = `Send My Ideas <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
+      }
+      const form = document.getElementById('email-form');
+      if (form) form.reset();
+    }
+
+    async function submitEmail(e) {
+      e.preventDefault();
+      const name  = document.getElementById('e-name').value.trim();
+      const email = document.getElementById('e-email').value.trim();
+      const msgEl = document.getElementById('email-message');
+      const btn   = document.getElementById('email-submit-btn');
+
+      if (!name || !email) {
+        msgEl.textContent = 'Please fill in both fields.';
+        msgEl.className = 'email-message error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 0.8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending...`;
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, tags: ['ideas_tool_lead'] })
+        });
+        const resData = await res.json().catch(() => ({}));
+
+        if (resData.already) {
+          msgEl.textContent = `You're already subscribed — check your inbox!`;
+          msgEl.className = 'email-message success';
+          btn.innerHTML = '✓ Already subscribed';
+          btn.classList.add('success');
+          unlockUsage();
+        } else if (res.ok || resData.ok) {
+          msgEl.textContent = `Done! Check your inbox, ${escHtml(name)}.`;
+          msgEl.className = 'email-message success';
+          btn.innerHTML = '✓ Sent!';
+          btn.classList.add('success');
+          unlockUsage();
+        } else {
+          throw new Error(resData.error || 'Submission failed');
+        }
+      } catch (err) {
+        msgEl.textContent = `Something went wrong. Email us: chiefmuhanelwa@gmail.com`;
+        msgEl.className = 'email-message error';
+        btn.disabled = false;
+        btn.innerHTML = `Try Again`;
+      }
+    }
+
+    // ─── PAYSTACK PAYMENT ────────────────────────────────────────────────────
+    async function startPaystackPayment() {
+      const email = document.getElementById('paystack-email').value.trim();
+      const msgEl = document.getElementById('paystack-msg');
+      const btn   = document.getElementById('paystack-btn');
+
+      if (!email || !email.includes('@')) {
+        msgEl.textContent = 'Please enter a valid email to continue.';
+        msgEl.style.color = 'var(--red)';
+        msgEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Opening payment…';
+      msgEl.textContent = 'Connecting to Paystack…';
+      msgEl.style.color = 'var(--text-subtle)';
+      msgEl.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/create-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, amount: 7900 })
+        });
+        const data = await res.json();
+
+        if (!data.ok) throw new Error(data.error || 'Payment init failed');
+
+        localStorage.setItem('nochill_ideas_ps_ref', data.reference);
+        localStorage.setItem('nochill_ideas_ps_email', email);
+        window.location.href = data.authorization_url;
+
+      } catch (err) {
+        msgEl.textContent = `Error: ${escHtml(err.message)}. Try again or email chiefmuhanelwa@gmail.com`;
+        msgEl.style.color = 'var(--red)';
+        btn.disabled = false;
+        btn.textContent = 'Subscribe — R79/mo →';
+      }
+    }
+
+    // ─── VERIFY PAYMENT ON RETURN ────────────────────────────────────────────
+    async function checkPaymentReturn() {
+      const params        = new URLSearchParams(window.location.search);
+      const refFromUrl    = params.get('reference') || params.get('trxref');
+      const refFromStorage = localStorage.getItem('nochill_ideas_ps_ref');
+      const reference     = refFromUrl || refFromStorage;
+
+      if (!reference) return;
+
+      if (refFromUrl) window.history.replaceState({}, document.title, window.location.pathname);
+
+      try {
+        const res  = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          localStorage.removeItem('nochill_ideas_ps_ref');
+          const email = data.email || localStorage.getItem('nochill_ideas_ps_email') || '';
+          localStorage.removeItem('nochill_ideas_ps_email');
+          unlockUsage();
+
+          if (email) {
+            fetch('/api/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, tags: ['ideas_subscriber', 'paid_r79'] })
+            }).catch(() => {});
+          }
+
+          showScreen('s-paywall');
+          const container = document.querySelector('#s-paywall .container');
+          container.innerHTML = `
+            <div style="text-align:center; max-width:480px; margin:0 auto; padding:60px 24px;">
+              <div style="width:64px;height:64px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:26px;">✓</div>
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--green);margin-bottom:12px;">Payment Confirmed</div>
+              <h2 style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text-head);margin-bottom:12px;">Unlimited ideas unlocked.</h2>
+              <p style="font-size:15px;color:var(--text-dim);margin-bottom:36px;line-height:1.7;">You now have unlimited access to the Content Idea Engine. Go fill your content calendar.</p>
+              <button onclick="showScreen('s-form'); updateUsageBadge();" class="cta-glow" style="margin:0 auto;">Start Generating →</button>
+            </div>
+          `;
+          setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 3500);
+        }
+      } catch(e) { /* silently ignore */ }
+    }
+
+    // ─── PAYWALL EMAIL HANDLER ────────────────────────────────────────────────
+    async function paywallEmailSubmit() {
+      const email = document.getElementById('paywall-email').value.trim();
+      const msgEl = document.getElementById('paywall-email-msg');
+      if (!email || !email.includes('@')) {
+        msgEl.textContent = 'Please enter a valid email.';
+        msgEl.style.color = 'var(--red)';
+        msgEl.style.display = 'block';
+        return;
+      }
+      msgEl.textContent = 'Adding you...';
+      msgEl.style.color = 'var(--text-subtle)';
+      msgEl.style.display = 'block';
+      try {
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, tags: ['ideas_paywall_unlock'] })
+        });
+      } catch(e) { /* non-blocking */ }
+      // Extend free usage by 3
+      const current = getUsage();
+      localStorage.setItem(USAGE_KEY, Math.max(0, current - 3));
+      updateUsageBadge();
+      msgEl.textContent = '✓ Unlocked! Redirecting you...';
+      msgEl.style.color = 'var(--green)';
+      document.getElementById('paywall-email-form').style.display = 'none';
+      setTimeout(() => { showScreen('s-form'); updateUsageBadge(); }, 1500);
+    }
+
+    // ─── HELPERS ──────────────────────────────────────────────────────────────
+    function escHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    document.getElementById('s-intro').style.display = 'block';
+    document.getElementById('s-intro').style.opacity = '1';
+    updateUsageBadge();
+    updateBankBadge();
+    checkPaymentReturn();
+
+    // Keyboard: close modal on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeIdeaBank();
+    });
+  </script>
+
+</body>
+</html>
