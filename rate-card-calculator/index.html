@@ -1363,7 +1363,7 @@ Range     = Final × 0.85 → Final × 1.15
       <h3 style="font-size:20px; font-weight:800; color:var(--text-heading); margin-bottom:8px; letter-spacing:-0.5px;">You know your rate. Now learn how to get it paid.</h3>
       <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">Most creators know what to charge — they just don't know how to pitch it. <em>From Freebies to Paid</em> teaches you how to find brand deals, write the pitch, and stop taking protein bars as payment.</p>
       <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:480px; margin:0 auto;">
-        <a href="https://contentcreatorhub.online/products/from-freebies-to-paid" target="_blank" class="cta-glow" style="width:auto; flex:1; min-width:200px;">From Freebies to Paid — R299 →</a>
+        <a href="https://contentcreatorhub.online/products/stop-freezing-when-a-brand-messages-you" target="_blank" class="cta-glow" style="width:auto; flex:1; min-width:200px;">Stop Freezing When a Brand Contacts You — R99 →</a>
         <a href="https://contentcreatorhub.online" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-weight:600; font-size:13px; padding:13px 20px; border-radius:9px; text-decoration:none; border:1px solid var(--border); transition:all 0.15s; flex:1; min-width:160px; justify-content:center;" onmouseover="this.style.color='var(--text-heading)'; this.style.borderColor='var(--primary-border)'" onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">Browse all products</a>
       </div>
     </div>
@@ -1520,11 +1520,11 @@ function fmtNum(n) {
   return Math.round(n).toLocaleString('en-ZA');
 }
 function parseFmt(str) {
-  return parseFloat(String(str).replace(/,/g, '')) || 0;
+  return parseFloat(String(str).replace(/[,\s ]/g, '')) || 0;
 }
 function formatInput(el) {
   const raw = parseFmt(el.value);
-  if (raw > 0) el.value = raw.toLocaleString('en-ZA');
+  if (raw > 0) el.value = raw.toLocaleString('en-US');
 }
 
 function getTier(followers) {
@@ -1870,10 +1870,10 @@ function buildAddonCards() {
   const wrap = document.getElementById('addon-cards');
   Object.entries(ADDONS).forEach(([key, addon]) => {
     const pct = Math.round((addon.mult - 1) * 100);
-    const div = document.createElement('label');
+    const div = document.createElement('div');
     div.className = 'checkbox-card';
     div.innerHTML = `
-      <input type="checkbox" value="${key}">
+      <input type="checkbox" value="${key}" style="display:none;">
       <div class="checkbox-card-mult">+${pct}%</div>
       <div class="checkbox-card-label">${addon.label}</div>
       <div class="checkbox-card-desc">${addon.desc}</div>
