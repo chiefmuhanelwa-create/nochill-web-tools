@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   if (!email) return res.status(400).json({ error: 'Email required' });
 
   const PLAN_CODE    = 'PLN_ympikrhxsznbpio'; // Content Idea Engine Unlimited — R49/month
-  const CALLBACK_URL = 'https://nochill-content-idea-engine.vercel.app/';
+  const CALLBACK_URL = 'https://nochill-content-ideas.vercel.app/';
 
   try {
     const response = await fetch('https://api.paystack.co/transaction/initialize', {

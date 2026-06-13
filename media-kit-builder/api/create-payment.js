@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email required' });
 
-  const CALLBACK_URL = 'https://nochill-media-kit-builder.vercel.app/';
+  const CALLBACK_URL = 'https://nochill-media-kit.vercel.app/';
 
   try {
     const response = await fetch('https://api.paystack.co/transaction/initialize', {

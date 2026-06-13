@@ -11,22 +11,22 @@
   <style>
     /* ─── DESIGN TOKENS ─── */
     :root {
-      --primary: #4F46E5;
-      --primary-mid: #6366F1;
-      --primary-bright: #818CF8;
-      --primary-deep: #312E81;
-      --primary-bg: rgba(79,70,229,0.10);
-      --primary-border: rgba(79,70,229,0.35);
+      --primary: #C9A84C;
+      --primary-mid: #D4B26A;
+      --primary-bright: #E2C67A;
+      --primary-deep: #8B6914;
+      --primary-bg: rgba(201,168,76,0.10);
+      --primary-border: rgba(201,168,76,0.35);
       --orange: #D4541F;
-      --bg: #FAF7F0;
+      --bg: #FFFFFF;
       --surface: #FFFFFF;
-      --elevated: #F4EFE3;
-      --text-head: #0A0A0A;
-      --text-body: #1F1B16;
-      --text-dim: #5C5448;
-      --text-subtle: #8A8071;
-      --border: rgba(10,10,10,0.10);
-      --border-light: rgba(10,10,10,0.06);
+      --elevated: #F5F5F5;
+      --text-head: #111111;
+      --text-body: #222222;
+      --text-dim: #444444;
+      --text-subtle: #888888;
+      --border: rgba(0,0,0,0.10);
+      --border-light: rgba(0,0,0,0.06);
       --green: #059669;
       --green-bg: rgba(5,150,105,0.10);
       --green-border: rgba(5,150,105,0.35);
@@ -321,25 +321,25 @@
 
     .cta-glow {
       position: relative;
-      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
-      color: #FFFFFF;
+      background: #111111;
+      color: #C9A84C;
       font-weight: 700;
       font-size: 16px;
-      border: 1px solid rgba(49,46,129,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       border-radius: 10px;
       padding: 16px 36px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       transition: transform .25s ease, box-shadow .25s ease;
       font-family: 'Inter', sans-serif;
       text-decoration: none;
     }
     .cta-glow:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     }
     .cta-glow svg { width: 18px; height: 18px; }
 
@@ -543,24 +543,24 @@
 
     .btn-generate {
       width: 100%;
-      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
-      color: #FFFFFF;
+      background: #111111;
+      color: #C9A84C;
       font-family: 'Inter', sans-serif;
       font-size: 17px;
       font-weight: 800;
       padding: 18px 32px;
       border-radius: 10px;
-      border: 1px solid rgba(49,46,129,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       letter-spacing: -0.3px;
-      box-shadow: 0 0 20px rgba(79,70,229,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       transition: transform .25s ease, box-shadow .25s ease;
     }
-    .btn-generate:hover { transform: translateY(-3px); box-shadow: 0 0 35px rgba(79,70,229,0.55), 0 10px 28px rgba(10,10,10,0.20); }
+    .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .btn-generate:active { transform: translateY(0); }
     .btn-generate svg { width: 20px; height: 20px; }
     .form-submit-wrap { margin-top: 24px; text-align: center; }
@@ -768,24 +768,24 @@
     .email-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .btn-email-submit {
       width: 100%;
-      background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81);
-      color: #fff;
+      background: #111111;
+      color: #C9A84C;
       font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 700;
       padding: 14px 24px;
       border-radius: 10px;
-      border: 1px solid rgba(49,46,129,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 0 16px rgba(79,70,229,0.25);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       transition: all .2s;
     }
-    .btn-email-submit:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
-    .btn-email-submit.success { background: var(--green); border-color: transparent; pointer-events: none; box-shadow: none; }
+    .btn-email-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .btn-email-submit.success { background: var(--green); color: #fff; border-color: transparent; pointer-events: none; box-shadow: none; }
     .email-message { font-size: 13px; margin-top: 10px; font-weight: 500; min-height: 20px; }
     .email-message.success { color: var(--green); }
     .email-message.error   { color: var(--red); }
@@ -803,8 +803,8 @@
     .upsell-box h3 { font-size: 20px; font-weight: 800; color: var(--text-head); margin-bottom: 8px; letter-spacing: -0.4px; }
     .upsell-box p { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
     .upsell-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .upsell-btn-primary { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81); color: #fff; font-weight: 800; font-size: 14px; padding: 13px 24px; border-radius: 9px; text-decoration: none; border: 1px solid rgba(49,46,129,0.45); box-shadow: 0 0 16px rgba(79,70,229,0.25); transition: transform .2s, box-shadow .2s; font-family: 'Inter', sans-serif; cursor: pointer; }
-    .upsell-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .upsell-btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #111111; color: #C9A84C; font-weight: 800; font-size: 14px; padding: 13px 24px; border-radius: 9px; text-decoration: none; border: 1px solid rgba(0,0,0,0.80); box-shadow: 0 4px 16px rgba(0,0,0,0.15); transition: transform .2s, box-shadow .2s; font-family: 'Inter', sans-serif; cursor: pointer; }
+    .upsell-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .upsell-btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); font-weight: 600; font-size: 13px; padding: 13px 20px; border-radius: 9px; text-decoration: none; border: 1px solid var(--border); transition: all .2s; font-family: 'Inter', sans-serif; }
     .upsell-btn-ghost:hover { color: var(--text-head); border-color: var(--primary-border); }
 
@@ -874,8 +874,8 @@
     .paywall-input { flex: 1; min-width: 200px; background: var(--bg); border: 1px solid rgba(10,10,10,0.12); border-radius: 9px; padding: 11px 14px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text-head); outline: none; transition: border-color .2s, box-shadow .2s; }
     .paywall-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.10); }
     .paywall-input::placeholder { color: var(--text-subtle); }
-    .paywall-btn-primary { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366F1, #4F46E5 60%, #312E81); color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; padding: 11px 20px; border-radius: 9px; cursor: pointer; white-space: nowrap; border: 1px solid rgba(49,46,129,0.45); box-shadow: 0 0 16px rgba(79,70,229,0.25); transition: all .2s; }
-    .paywall-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(79,70,229,0.45); }
+    .paywall-btn-primary { display: flex; align-items: center; gap: 8px; background: #111111; color: #C9A84C; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; padding: 11px 20px; border-radius: 9px; cursor: pointer; white-space: nowrap; border: 1px solid rgba(0,0,0,0.80); box-shadow: 0 4px 16px rgba(0,0,0,0.15); transition: all .2s; }
+    .paywall-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .paywall-btn-ghost { background: transparent; border: 1px solid var(--primary-border); border-radius: 9px; color: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; padding: 11px 20px; cursor: pointer; white-space: nowrap; transition: all .2s; }
     .paywall-btn-ghost:hover { background: var(--primary-bg); }
     .paywall-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
@@ -1317,15 +1317,15 @@
 
         <!-- UPSELL -->
         <div class="upsell-box">
-          <div class="upsell-box-label">Next Step</div>
-          <h3>Ideas without a system disappear. Build the system.</h3>
-          <p>You now have 10 ideas. <em>The Influencer's Code</em> gives you the complete content operating system — the hook bank, the PAIDS income framework, and the exact playbook Ndivhuwo used to reach 780K followers while earning R300K/month from content.</p>
+          <div class="upsell-box-label">Your next step</div>
+          <h3>You have 10 ideas. Now build a system that turns them into income.</h3>
+          <p>Ideas tell you what to post. The <em>SEEDS Pipeline</em> shows you how to turn every post into money — stranger to paying customer, step by step. Includes 50 ready-to-use content ideas, the full posting framework, and 3 content calendars. R149.</p>
           <div class="upsell-actions">
-            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-btn-primary">
-              Get The Influencer's Code — R299 →
+            <a href="https://contentcreatorhub.online/products/what-to-post-seeds-content-pipeline" target="_blank" class="upsell-btn-primary">
+              Get the SEEDS Pipeline — R149 →
             </a>
-            <a href="https://contentcreatorhub.online" target="_blank" class="upsell-btn-ghost">
-              Browse all products
+            <a href="https://contentcreatorhub.online/products/the-influencers-code" target="_blank" class="upsell-btn-ghost">
+              The Influencer's Code — R299
             </a>
           </div>
         </div>
@@ -1407,6 +1407,9 @@
       <div class="modal-header">
         <div class="modal-title" id="modal-title-text">My Idea Bank <span id="bank-count-text" style="font-size:14px; color:var(--text-subtle); font-weight:500;"></span></div>
         <button class="modal-close" onclick="closeIdeaBank()" aria-label="Close">✕</button>
+      </div>
+      <div style="font-size:11px;color:var(--text-subtle);background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 20px;">
+        💾 Ideas are saved to this browser only. Don't clear your browser data or you'll lose them.
       </div>
       <div class="modal-body" id="bank-modal-body">
         <!-- Populated by JS -->
@@ -1982,7 +1985,7 @@
 
         // Build content outline if present
         const outlineHtml = Array.isArray(idea.content_outline) && idea.content_outline.length > 0
-          ? `<div class="idea-why-label" style="margin-top:10px">Content outline</div>
+          ? `<div style="margin-top:10px"><span style="display:inline-block;background:rgba(201,168,76,0.15);color:#7A5F18;border:1px solid rgba(201,168,76,0.3);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.05em;margin-bottom:6px;">9-STEP FORMULA</span></div>
              <ul class="idea-outline-list">${idea.content_outline.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>`
           : '';
 

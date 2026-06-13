@@ -12,21 +12,21 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary: #059669;
-      --primary-mid: #10B981;
-      --primary-bright: #34D399;
-      --primary-deep: #064E3B;
-      --primary-bg: rgba(5,150,105,0.10);
-      --primary-border: rgba(5,150,105,0.35);
+      --primary: #C9A84C;
+      --primary-mid: #D4B26A;
+      --primary-bright: #E2C67A;
+      --primary-deep: #8B6914;
+      --primary-bg: rgba(201,168,76,0.10);
+      --primary-border: rgba(201,168,76,0.35);
       --orange: #D4541F;
-      --bg: #FAF7F0;
+      --bg: #FFFFFF;
       --surface: #FFFFFF;
-      --elevated: #F4EFE3;
-      --text-heading: #0A0A0A;
-      --text-body: #1F1B16;
-      --text-dim: #5C5448;
-      --text-subtle: #8A8071;
-      --border: rgba(10,10,10,0.10);
+      --elevated: #F5F5F5;
+      --text-heading: #111111;
+      --text-body: #222222;
+      --text-dim: #444444;
+      --text-subtle: #888888;
+      --border: rgba(0,0,0,0.10);
       --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
@@ -152,16 +152,16 @@
 
     /* ── CTA GLOW ────────────────────────────────────────────── */
     .cta-glow {
-      background: linear-gradient(135deg, #10B981, #059669 60%, #064E3B);
-      color: #FFFFFF;
+      background: #111111;
+      color: #C9A84C;
       font-weight: 700;
       font-size: 15px;
-      border: 1px solid rgba(6,78,59,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       border-radius: 10px;
       padding: 14px 28px;
       cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px;
-      box-shadow: 0 0 20px rgba(5,150,105,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       transition: transform .25s ease, box-shadow .25s ease;
       font-family: var(--font);
       width: 100%;
@@ -169,8 +169,8 @@
       text-decoration: none;
     }
     .cta-glow:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 35px rgba(5,150,105,0.55), 0 10px 28px rgba(10,10,10,0.20);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     }
 
     /* ── NX CARD ─────────────────────────────────────────────── */
@@ -191,7 +191,7 @@
       opacity: 0;
       transition: opacity .3s ease;
     }
-    .nx-card:hover { border-color: var(--primary-border); transform: translateY(-3px); box-shadow: 0 0 30px rgba(5,150,105,0.15), 0 12px 32px -8px rgba(10,10,10,0.10); }
+    .nx-card:hover { border-color: var(--primary-border); transform: translateY(-3px); box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 12px 32px -8px rgba(0,0,0,0.10); }
     .nx-card:hover::before { opacity: 1; }
 
     /* ── PLATFORM CARD (selector style) ─────────────────────── */
@@ -205,7 +205,7 @@
       text-align: center;
     }
     .platform-selector-card:hover { border-color: var(--primary-border); transform: translateY(-2px); }
-    .platform-selector-card.sel { border-color: var(--primary); background: var(--primary-bg); box-shadow: 0 0 20px rgba(5,150,105,0.18); }
+    .platform-selector-card.sel { border-color: var(--primary); background: var(--primary-bg); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
 
     /* ── RANGE SLIDER ─────────────────────────────────────────── */
     input[type=range] {
@@ -301,12 +301,12 @@
       text-decoration: none;
     }
     .btn-primary {
-      background: linear-gradient(135deg, #10B981, #059669 60%, #064E3B);
-      color: #fff;
-      border: 1px solid rgba(6,78,59,0.45);
-      box-shadow: 0 0 20px rgba(5,150,105,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      background: #111111;
+      color: #C9A84C;
+      border: 1px solid rgba(0,0,0,0.80);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 35px rgba(5,150,105,0.50), 0 10px 28px rgba(10,10,10,0.18); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .btn-outline {
       background: transparent;
       color: var(--primary);
@@ -1340,31 +1340,31 @@ Range     = Final × 0.85 → Final × 1.15
 
     <!-- EMAIL CAPTURE -->
     <div class="email-capture">
-      <h3>Save Your Rate Card + Get Brand Templates</h3>
-      <p>Get your personalised rate card as a PDF, plus email scripts to pitch brands confidently.</p>
+      <h3>Get Brand Outreach Scripts Sent to Your Inbox</h3>
+      <p>Drop your email and we'll send you 5 brand DM reply templates — plus a copy of your rate card summary. Print or save using the button below.</p>
       <div class="email-form" id="email-form">
         <div class="email-form-row">
           <input class="nx-input" type="text" id="cap-name" placeholder="Your first name" style="flex:1;">
           <input class="nx-input" type="email" id="cap-email" placeholder="your@email.com" style="flex:2;">
         </div>
         <button class="cta-glow" onclick="submitEmail()">
-          Send Me My Rate Card PDF →
+          Send Me the Brand Scripts →
         </button>
         <p style="font-size:0.75rem; color:var(--text-subtle); text-align:center; margin-top:0.25rem;">No spam. Unsubscribe any time.</p>
       </div>
       <div class="email-success" id="email-success">
-        <span>✅</span> Done! Check your inbox for your rate card and brand outreach templates.
+        <span>✅</span> Done — brand scripts are on their way. Use the Print button below to save your rate card now.
       </div>
     </div>
 
     <!-- UPSELL LADDER -->
-    <div style="background:linear-gradient(135deg, var(--elevated), var(--bg)); border:1px solid var(--primary-border); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center; margin-top:24px;">
+    <div style="background:var(--elevated); border:1px solid var(--primary-border); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center; margin-top:24px;">
       <div class="nx-label" style="margin-bottom:12px;">Your next move</div>
-      <h3 style="font-size:20px; font-weight:800; color:var(--text-heading); margin-bottom:8px; letter-spacing:-0.5px;">You have your rate. Now learn how to hold it when a brand pushes back.</h3>
-      <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">A brand just DM'd you. You have your number. Now what do you say? <em>Stop Freezing When a Brand Contacts You</em> gives you 5 ready-made WhatsApp replies for any brand DM — so you never undersell, panic-price, or go quiet again.</p>
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:480px; margin:0 auto;">
-        <a href="https://contentcreatorhub.online/products/stop-freezing-when-a-brand-messages-you" target="_blank" class="cta-glow" style="width:auto; flex:1; min-width:200px;">Stop Freezing When a Brand Contacts You — R99 →</a>
-        <a href="https://contentcreatorhub.online" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-weight:600; font-size:13px; padding:13px 20px; border-radius:9px; text-decoration:none; border:1px solid var(--border); transition:all 0.15s; flex:1; min-width:160px; justify-content:center;" onmouseover="this.style.color='var(--text-heading)'; this.style.borderColor='var(--primary-border)'" onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">Browse all products</a>
+      <h3 style="font-size:20px; font-weight:800; color:var(--text-heading); margin-bottom:8px; letter-spacing:-0.5px;">You have your rate. Now get the script that closes the deal.</h3>
+      <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">Knowing your number is step one. The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto;">
+        <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="width:auto; flex:1; min-width:220px;">Get the Brand Deal Pitch Script — R149 →</a>
+        <a href="https://contentcreatorhub.online/products/stop-freezing-when-a-brand-messages-you" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-weight:600; font-size:13px; padding:13px 20px; border-radius:9px; text-decoration:none; border:1px solid var(--border); transition:all 0.15s; flex:1; min-width:160px; justify-content:center;" onmouseover="this.style.color='var(--text-heading)'; this.style.borderColor='var(--primary-border)'" onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">Stop Freezing When a Brand DMs You — R99</a>
       </div>
     </div>
 
@@ -1465,34 +1465,37 @@ const AFRICAN_CURRENCIES = {
   XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍' },
 };
 
-let liveRates      = { ZAR: 16.33, USD: 1 }; // fallback until API loads
+let liveRates      = { ZAR: 18.50, USD: 1 }; // fallback until API loads
 let selectedCurrency = 'ZAR';
 let rateLastUpdated  = null;
+let rateIsLive       = false;
 
 async function fetchLiveRates() {
   try {
     const res  = await fetch('https://open.er-api.com/v6/latest/USD');
     const data = await res.json();
     if (data && data.rates) {
-      liveRates      = data.rates;
+      liveRates       = data.rates;
       rateLastUpdated = new Date(data.time_last_update_utc);
+      rateIsLive      = true;
       updateRateBadge();
     }
-  } catch(e) { /* use fallback */ }
+  } catch(e) { /* use fallback — already shown */ }
 }
 
 function updateRateBadge() {
   const el = document.getElementById('rate-badge');
   if (!el) return;
   const cur  = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
-  const rate = (liveRates[selectedCurrency] || liveRates.ZAR || 16.33);
-  const zarRate = liveRates.ZAR || 16.33;
-  const ts   = rateLastUpdated ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' }) : 'loading...';
-  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-subtle); font-size:0.85em">Updated ${ts}</span>`;
+  const rate = (liveRates[selectedCurrency] || liveRates.ZAR || 18.50);
+  const ts   = rateIsLive && rateLastUpdated
+    ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' })
+    : 'Approx. — live rates loading';
+  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-subtle); font-size:0.85em">${ts}</span>`;
 }
 
 function zarToSelected(zarAmount) {
-  const zarPerUSD = liveRates.ZAR || 16.33;
+  const zarPerUSD = liveRates.ZAR || 18.50;
   const selPerUSD = liveRates[selectedCurrency] || zarPerUSD;
   return zarAmount * (selPerUSD / zarPerUSD);
 }
@@ -1513,7 +1516,7 @@ function fmtZAR(n) {
   return fmtLocal(n);
 }
 function fmtUSD(n) {
-  const zarPerUSD = liveRates.ZAR || 16.33;
+  const zarPerUSD = liveRates.ZAR || 18.50;
   return '≈ $' + Math.round(n / zarPerUSD).toLocaleString('en-US');
 }
 function fmtNum(n) {
@@ -2263,7 +2266,19 @@ function init() {
   buildContentTypeCards();
   buildAddonCards();
   addPlatformCard();
-  fetchLiveRates(); // Pull live exchange rates on load
+  updateRateBadge(); // Show fallback immediately
+  fetchLiveRates();  // Then replace with live rates when available
+
+  // Pre-fill email capture for email list subscribers (?email=xxx)
+  const params = new URLSearchParams(window.location.search);
+  const emailParam = params.get('email');
+  const nameParam  = params.get('name') || params.get('first_name');
+  if (emailParam && emailParam.includes('@')) {
+    const emailEl = document.getElementById('cap-email');
+    const nameEl  = document.getElementById('cap-name');
+    if (emailEl) emailEl.value = emailParam;
+    if (nameEl && nameParam) nameEl.value = nameParam;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);

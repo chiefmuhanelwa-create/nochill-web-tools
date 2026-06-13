@@ -1,9 +1,23 @@
+const _rl = new Map();
+const RL_MAX = 20;
+const RL_WIN = 3600000;
+function _ip(req) { return ((req.headers['x-forwarded-for']||'').split(',')[0].trim()||req.headers['x-real-ip']||'unknown'); }
+function _check(ip) {
+  const now = Date.now();
+  if (_rl.size > 500) { for (const [k,v] of _rl) if (now > v.r) _rl.delete(k); }
+  const e = _rl.get(ip);
+  if (!e || now > e.r) { _rl.set(ip, { c: 1, r: now + RL_WIN }); return true; }
+  if (e.c >= RL_MAX) return false;
+  e.c++; return true;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!_check(_ip(req))) return res.status(429).json({ ok: false, error: 'Too many requests — try again in an hour.' });
 
   const { platform, challenge, contentType, niche, goal } = req.body;
   if (!platform) return res.status(400).json({ error: 'Platform required' });
@@ -69,19 +83,32 @@ Return ONLY valid JSON — no markdown, no explanation:
       "series_label": "What They Don't Tell You",
       "bank_type": "Pattern Interrupt",
       "why_works": "One punchy sentence on the psychology. Reference real view counts where relevant.",
-      "content_outline": ["Step 1 of the content", "Step 2", "Step 3 — the payoff"],
+      "content_outline": [
+        "Step 1 — HOOK: The exact opening line (2-5 seconds). Scroll-stopper. R×A×C×U^B scored.",
+        "Step 2 — INTRODUCE: One credibility sentence + one proof number. No CV listing — one number earns the right to continue.",
+        "Step 3 — PROBLEM: 1-2 specific pain points named out loud. YOU format. Attack the system, never the person.",
+        "Step 4 — REHOOK: Tension-building sentence that teases what's coming. NEVER 'stay with me'. Example: 'But what happened next is the part nobody talks about...'",
+        "Step 5 — STORY: One micro-story with Before → After → Number (exact rands, followers, or days). Must mirror Step 3's pain.",
+        "Step 6 — REHOOK: Second retention spike teasing the solution. Example: 'So I built a system. And this is it.'",
+        "Step 7 — SOLUTION: The framework or teaching point. Numbered steps or named system. Actionable today without buying anything.",
+        "Step 8 — COST: One sentence showing consequence of not acting — implicit, never preachy. Shadow fear felt, not named.",
+        "Step 9 — CTA: Single action only. Comment [keyword] / Save this / Follow for next episode. One action, not three."
+      ],
       "platform_tip": "Specific tip for the requested platform",
       "cta": "What to say or put in caption at the end"
     }
   ]
 }
 
-Generate exactly 5 ideas. Each idea must:
+Generate exactly 10 ideas. Each idea must:
 - Use a different hook type from the list above
 - Belong to a different content series
 - Have a hook_line that starts the content (the actual first spoken/written line)
 - Be achievable by a beginner with a phone
-- Feel genuinely African, not a copy of Western templates`;
+- Feel genuinely African, not a copy of Western templates
+- Have content_outline with exactly 9 items following the 9-step formula above
+- Step 4 and Step 6 rehooks must be specific tension sentences (NEVER "stay with me")
+- Step 5 story must include a real number (rands, followers, days, percentage)`;
 
   const userMsg = `Generate content ideas for: Platform="${platform}", Biggest Challenge="${challenge || 'finding content ideas'}", Content Type="${contentType || 'educational'}", Niche="${niche || 'content creation'}", Goal="${goal || 'grow followers and monetise'}"`;
 
@@ -95,7 +122,7 @@ Generate exactly 5 ideas. Each idea must:
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 3000,
+        max_tokens: 5000,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMsg }]
       })

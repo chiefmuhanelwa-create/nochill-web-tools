@@ -11,25 +11,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Tool accent — Rose/Crimson */
-      --primary: #E11D48;
-      --primary-mid: #F43F5E;
-      --primary-bright: #FB7185;
-      --primary-deep: #881337;
-      --primary-bg: rgba(225,29,72,0.10);
-      --primary-border: rgba(225,29,72,0.35);
+      /* NOCHILL Brand */
+      --primary: #C9A84C;
+      --primary-mid: #D4B26A;
+      --primary-bright: #E2C67A;
+      --primary-deep: #8B6914;
+      --primary-bg: rgba(201,168,76,0.10);
+      --primary-border: rgba(201,168,76,0.35);
       --orange: #D4541F;
 
       /* Base */
-      --bg: #FAF7F0;
+      --bg: #FFFFFF;
       --surface: #FFFFFF;
-      --elevated: #F4EFE3;
-      --text-h: #0A0A0A;
-      --text-b: #1F1B16;
-      --text-dim: #5C5448;
-      --text-sub: #8A8071;
-      --border: rgba(10,10,10,0.10);
-      --border-md: rgba(10,10,10,0.15);
+      --elevated: #F5F5F5;
+      --text-h: #111111;
+      --text-b: #222222;
+      --text-dim: #444444;
+      --text-sub: #888888;
+      --border: rgba(0,0,0,0.10);
+      --border-md: rgba(0,0,0,0.15);
       --red: #EF4444;
 
       --font: 'Inter', system-ui, -apple-system, sans-serif;
@@ -52,7 +52,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(250,247,240,0.92);
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
@@ -91,24 +91,24 @@
 
     /* ─── BUTTONS ─────────────────────────────────────── */
     .cta-glow {
-      background: linear-gradient(135deg, #F43F5E, #E11D48 60%, #881337);
-      color: #FFFFFF;
+      background: #111111;
+      color: #C9A84C;
       font-weight: 700;
       font-size: 15px;
-      border: 1px solid rgba(136,19,55,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       border-radius: 10px;
       padding: 14px 28px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 0 20px rgba(225,29,72,0.30), 0 4px 16px rgba(10,10,10,0.12);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       transition: transform .25s ease, box-shadow .25s ease;
       font-family: var(--font);
     }
     .cta-glow:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 35px rgba(225,29,72,0.55), 0 10px 28px rgba(10,10,10,0.20);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     }
     .cta-glow:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
@@ -524,16 +524,16 @@
 
     /* Photo upload */
     .photo-upload-area {
-      border: 2px dashed rgba(225,29,72,0.22);
+      border: 2px dashed var(--border-md);
       border-radius: 10px;
       padding: 20px;
       text-align: center;
       cursor: pointer;
       transition: border-color .15s, background .15s;
-      background: rgba(225,29,72,0.03);
+      background: var(--elevated);
       position: relative;
     }
-    .photo-upload-area:hover { border-color: var(--primary-border); background: rgba(225,29,72,0.06); }
+    .photo-upload-area:hover { border-color: var(--primary-border); background: var(--primary-bg); }
     .photo-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
     .photo-upload-preview { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px; display: none; }
     .photo-upload-icon { font-size: 22px; margin-bottom: 6px; }
@@ -642,19 +642,19 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #F43F5E, #E11D48 60%, #881337);
-      color: #FFFFFF;
+      background: #111111;
+      color: #C9A84C;
       font-family: var(--font);
       font-size: 13px;
       font-weight: 700;
       padding: 10px 20px;
       border-radius: 8px;
-      border: 1px solid rgba(136,19,55,0.45);
+      border: 1px solid rgba(0,0,0,0.80);
       cursor: pointer;
       transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 0 16px rgba(225,29,72,0.25), 0 4px 12px rgba(10,10,10,0.10);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
-    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(225,29,72,0.45), 0 8px 20px rgba(10,10,10,0.16); }
+    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.20); }
     .download-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     /* Preview header */
@@ -1254,6 +1254,14 @@
       <div style="padding:20px 24px; border-top:1px solid var(--border);">
         <button class="cta-glow" style="width:100%; justify-content:center;" onclick="downloadPDF()">⬇ Download PDF</button>
         <p style="font-size:11px; color:var(--text-sub); margin-top:10px; text-align:center;">Opens your browser's print dialog. Select "Save as PDF" and set Margins to "None".</p>
+      </div>
+
+      <!-- UPSELL AFTER DOWNLOAD -->
+      <div style="padding:16px 24px 20px; border-top:1px solid var(--border); background:var(--primary-bg);">
+        <p style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.18em; color:var(--primary-deep); margin-bottom:8px;">Your next step</p>
+        <p style="font-size:13px; font-weight:800; color:var(--text-h); margin-bottom:4px; letter-spacing:-0.3px;">You have the kit. Now get the pitch.</p>
+        <p style="font-size:12px; color:var(--text-dim); margin-bottom:12px; line-height:1.5;">Brands want to see a media kit. But they sign the deal when the pitch lands right. The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts to reach out AND respond when they contact you. R149.</p>
+        <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="font-size:13px; padding:11px 18px; width:100%; justify-content:center; box-sizing:border-box; display:inline-flex;">Get the Brand Deal Pitch Script — R149 →</a>
       </div>
 
       <!-- COMPLETENESS -->
@@ -2166,6 +2174,21 @@
   }
 
   // ─── INIT ─────────────────────────────────────────────────────────────────
+  // Auto-bypass email gate for email list subscribers (?email=xxx)
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    if (emailParam && emailParam.includes('@')) {
+      localStorage.setItem('nochill_mk_email', emailParam);
+      if (!localStorage.getItem('nochill_mk_unlocked')) {
+        localStorage.setItem('nochill_mk_unlocked', '1');
+        fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: emailParam, tags: ['media_kit_email_list'] }) }).catch(()=>{});
+      }
+    }
+    if (localStorage.getItem('nochill_mk_unlocked') === '1') {
+      showScreen('s-builder');
+    }
+  })();
   checkPaymentReturn();
 
   // Initialize platform list
