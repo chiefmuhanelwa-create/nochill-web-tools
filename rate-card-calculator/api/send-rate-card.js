@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -30,31 +32,27 @@ export default async function handler(req, res) {
   `;
 
   try {
-    // Send via ZeptoMail (Zoho transactional email)
-    const emailRes = await fetch('https://api.zeptomail.com/v1.1/email/attachments', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Zoho-enczapikey ${process.env.ZEPTOMAIL_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        from: { address: 'hello@contentcreatorhub.online', name: 'NOCHILL Rate Calculator' },
-        to: [{ email_address: { address: email, name: displayName } }],
-        subject: `${displayName} — your creator rate card is ready`,
-        htmlbody: emailHtml,
-        attachments: [{
-          name: filename,
-          content: pdfBase64,
-          mime_type: 'application/pdf'
-        }]
-      })
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.zoho.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.ZOHO_EMAIL,
+        pass: process.env.ZOHO_APP_PASSWORD
+      }
     });
 
-    if (!emailRes.ok) {
-      const errData = await emailRes.json().catch(() => ({}));
-      throw new Error(errData.message || errData.error || `ZeptoMail error ${emailRes.status}`);
-    }
+    await transporter.sendMail({
+      from: `"NOCHILL Rate Calculator" <${process.env.ZOHO_EMAIL}>`,
+      to: email,
+      subject: `${displayName} — your creator rate card is ready`,
+      html: emailHtml,
+      attachments: [{
+        filename,
+        content: Buffer.from(pdfBase64, 'base64'),
+        contentType: 'application/pdf'
+      }]
+    });
 
     // Subscribe to MailerLite (non-blocking)
     fetch('https://connect.mailerlite.com/api/subscribers', {
