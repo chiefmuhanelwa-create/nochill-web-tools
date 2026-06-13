@@ -1045,6 +1045,19 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    @media print {
+      body * { visibility: hidden; }
+      #s-results, #s-results * { visibility: visible; }
+      #s-results { position: absolute; top: 0; left: 0; width: 100%; padding: 0; }
+      .container { max-width: 100%; padding: 24px 32px; }
+      .topbar, .progress-track, #results-upsell, .action-row { display: none !important; }
+      .accordion-body { display: block !important; }
+      .screen { animation: none !important; }
+      body { background: #fff !important; }
+      .accordion { border: 1px solid #ddd !important; }
+      .rate-cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
   </style>
 </head>
 <body>
@@ -1338,34 +1351,12 @@ Range     = Final × 0.85 → Final × 1.15
       <div class="tip-cards" id="r-tips"></div>
     </div>
 
-    <!-- EMAIL CAPTURE -->
-    <div class="email-capture">
-      <h3>Get Brand Outreach Scripts Sent to Your Inbox</h3>
-      <p>Drop your email and we'll send you 5 brand DM reply templates — plus a copy of your rate card summary. Print or save using the button below.</p>
-      <div class="email-form" id="email-form">
-        <div class="email-form-row">
-          <input class="nx-input" type="text" id="cap-name" placeholder="Your first name" style="flex:1;">
-          <input class="nx-input" type="email" id="cap-email" placeholder="your@email.com" style="flex:2;">
-        </div>
-        <button class="cta-glow" onclick="submitEmail()">
-          Send Me the Brand Scripts →
-        </button>
-        <p style="font-size:0.75rem; color:var(--text-subtle); text-align:center; margin-top:0.25rem;">No spam. Unsubscribe any time.</p>
-      </div>
-      <div class="email-success" id="email-success">
-        <span>✅</span> Done — brand scripts are on their way. Use the Print button below to save your rate card now.
-      </div>
-    </div>
-
-    <!-- UPSELL LADDER -->
-    <div style="background:var(--elevated); border:1px solid var(--primary-border); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center; margin-top:24px;">
+    <!-- UPSELL -->
+    <div id="results-upsell" style="background:var(--elevated); border:1px solid var(--primary-border); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center; margin-top:24px;">
       <div class="nx-label" style="margin-bottom:12px;">Your next move</div>
       <h3 style="font-size:20px; font-weight:800; color:var(--text-heading); margin-bottom:8px; letter-spacing:-0.5px;">You have your rate. Now get the script that closes the deal.</h3>
       <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">Knowing your number is step one. The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</p>
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto;">
-        <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="width:auto; flex:1; min-width:220px;">Get the Brand Deal Pitch Script — R149 →</a>
-        <a href="https://contentcreatorhub.online/products/stop-freezing-when-a-brand-messages-you" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-weight:600; font-size:13px; padding:13px 20px; border-radius:9px; text-decoration:none; border:1px solid var(--border); transition:all 0.15s; flex:1; min-width:160px; justify-content:center;" onmouseover="this.style.color='var(--text-heading)'; this.style.borderColor='var(--primary-border)'" onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">Stop Freezing When a Brand DMs You — R99</a>
-      </div>
+      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
     </div>
 
     <!-- ACTIONS -->
