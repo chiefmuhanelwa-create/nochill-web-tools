@@ -7,7 +7,7 @@
   <meta name="description" content="The only African influencer rate calculator backed by real 2024 SA CPM data. Know your worth. Charge what you're worth.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;700;800;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1359,10 +1359,118 @@ Range     = Final × 0.85 → Final × 1.15
       <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
     </div>
 
+    <!-- EMAIL DELIVERY -->
+    <div style="background:var(--elevated); border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:16px;">
+      <div class="nx-label" style="margin-bottom:8px;">Get your rate card delivered</div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px; line-height:1.6;">We'll email you a branded PDF you can attach to any brand pitch — no printing, no saving, just forward it.</p>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input class="nx-input" type="text" id="send-name" placeholder="Your name" style="flex:1; min-width:140px;">
+          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com" style="flex:2; min-width:200px;">
+        </div>
+        <input class="nx-input" type="text" id="send-brand" placeholder="Brand or campaign name (optional — personalises the PDF)">
+      </div>
+      <button class="cta-glow" onclick="sendRateCard()" id="send-rc-btn" style="width:100%; justify-content:center;">Send My Rate Card PDF →</button>
+      <div id="send-rc-msg" style="display:none; margin-top:12px; font-size:13px; text-align:center; line-height:1.6;"></div>
+    </div>
+
     <!-- ACTIONS -->
     <div class="action-row">
       <button class="btn btn-ghost" onclick="recalculate()">← Recalculate</button>
-      <button class="btn btn-outline" onclick="window.print()">🖨️ Print Rate Card</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PDF TEMPLATE — matches product kit style (Montserrat/Lato, charcoal/gold)
+     Captured by html2canvas → jsPDF → emailed via ZeptoMail
+══════════════════════════════════════════════ -->
+<div id="rc-pdf" style="position:fixed; top:0; left:0; width:794px; height:1123px; z-index:-999; opacity:0; pointer-events:none; overflow:hidden; background:#1C1C1C;">
+  <!-- Gold top stripe -->
+  <div style="background:#C9A84C; height:6px; width:794px;"></div>
+
+  <!-- Page content -->
+  <div style="padding:52px 64px 40px; height:1117px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+    <!-- Eyebrow + name -->
+    <div style="margin-bottom:28px;">
+      <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(201,168,76,0.6); margin-bottom:14px;">Creator Rate Card &nbsp;·&nbsp; NOCHILL</div>
+      <div id="pdf-creator-name" style="font-family:'Montserrat',sans-serif; font-size:44px; font-weight:900; color:#C9A84C; letter-spacing:0.02em; text-transform:uppercase; line-height:1; margin-bottom:10px;"></div>
+      <div id="pdf-platform" style="font-family:'Lato',sans-serif; font-size:13px; color:rgba(255,255,255,0.45); font-weight:400;"></div>
+    </div>
+
+    <!-- Tier + ER row -->
+    <div style="display:flex; gap:16px; margin-bottom:28px; align-items:stretch;">
+      <div style="border:1.5px solid rgba(201,168,76,0.35); border-radius:8px; padding:16px 22px; flex-shrink:0; text-align:center;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(201,168,76,0.5); margin-bottom:8px;">Creator Tier</div>
+        <div id="pdf-tier" style="font-family:'Montserrat',sans-serif; font-size:15px; font-weight:800; color:#C9A84C;"></div>
+      </div>
+      <div style="border:1.5px solid rgba(201,168,76,0.35); border-radius:8px; padding:16px 22px; flex-shrink:0; text-align:center;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(201,168,76,0.5); margin-bottom:8px;">Engagement Rate</div>
+        <div id="pdf-er" style="font-family:'Montserrat',sans-serif; font-size:24px; font-weight:900; color:#C9A84C; letter-spacing:-0.5px;"></div>
+        <div id="pdf-er-label" style="font-family:'Lato',sans-serif; font-size:10px; color:rgba(255,255,255,0.35); margin-top:4px;"></div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:16px 20px; flex:1; font-family:'Lato',sans-serif; font-size:12px; color:rgba(255,255,255,0.3); line-height:1.9;">
+        SA average: <span style="color:rgba(201,168,76,0.8);">3.39%</span><br>
+        Global average: 1.49%<br>
+        Your ER is your leverage.<br>Brands pay for engaged audiences.
+      </div>
+    </div>
+
+    <!-- Gold rule -->
+    <div style="width:100%; height:1px; background:rgba(201,168,76,0.2); margin-bottom:26px;"></div>
+
+    <!-- Rates label -->
+    <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(201,168,76,0.5); margin-bottom:14px;">Your Rates</div>
+
+    <!-- 3 rate boxes -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:28px;">
+      <div style="background:#252525; border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:24px 18px; text-align:center;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:12px;">Floor Rate</div>
+        <div id="pdf-floor" style="font-family:'Montserrat',sans-serif; font-size:24px; font-weight:900; color:#FFFFFF; letter-spacing:-0.5px;"></div>
+        <div style="font-family:'Lato',sans-serif; font-size:11px; color:rgba(255,255,255,0.25); margin-top:8px;">Minimum — never go below this</div>
+      </div>
+      <div style="background:rgba(201,168,76,0.10); border:1.5px solid rgba(201,168,76,0.45); border-radius:8px; padding:24px 18px; text-align:center; position:relative;">
+        <div style="position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:#C9A84C; color:#1C1C1C; font-family:'Montserrat',sans-serif; font-size:8px; font-weight:800; padding:3px 14px; border-radius:0 0 6px 6px; text-transform:uppercase; letter-spacing:0.12em; white-space:nowrap;">RECOMMENDED</div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(201,168,76,0.7); margin-bottom:12px; margin-top:6px;">Standard Rate</div>
+        <div id="pdf-standard" style="font-family:'Montserrat',sans-serif; font-size:32px; font-weight:900; color:#C9A84C; letter-spacing:-0.5px;"></div>
+        <div style="font-family:'Lato',sans-serif; font-size:11px; color:rgba(201,168,76,0.5); margin-top:8px;">Quote this first</div>
+      </div>
+      <div style="background:#252525; border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:24px 18px; text-align:center;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:12px;">Premium Rate</div>
+        <div id="pdf-ceiling" style="font-family:'Montserrat',sans-serif; font-size:24px; font-weight:900; color:#FFFFFF; letter-spacing:-0.5px;"></div>
+        <div style="font-family:'Lato',sans-serif; font-size:11px; color:rgba(255,255,255,0.25); margin-top:8px;">Exclusivity &amp; usage rights</div>
+      </div>
+    </div>
+
+    <!-- Gold rule -->
+    <div style="width:100%; height:1px; background:rgba(201,168,76,0.2); margin-bottom:24px;"></div>
+
+    <!-- Details 2-col -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-bottom:auto;">
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:rgba(201,168,76,0.5); margin-bottom:12px;">Rate Basis</div>
+        <table style="width:100%; border-collapse:collapse; font-family:'Lato',sans-serif; font-size:12px;">
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">CPM Rate</td><td id="pdf-cpm-rate" style="color:#FFFFFF; font-weight:700; text-align:right;"></td></tr>
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">CPE Rate</td><td id="pdf-cpe-rate" style="color:#FFFFFF; font-weight:700; text-align:right;"></td></tr>
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">Followers</td><td id="pdf-followers" style="color:#FFFFFF; font-weight:700; text-align:right;"></td></tr>
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">Add-ons</td><td id="pdf-addons" style="color:#FFFFFF; font-weight:700; text-align:right;"></td></tr>
+        </table>
+      </div>
+      <div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:rgba(201,168,76,0.5); margin-bottom:12px;">Document Info</div>
+        <table style="width:100%; border-collapse:collapse; font-family:'Lato',sans-serif; font-size:12px;">
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">Prepared</td><td id="pdf-date" style="color:#FFFFFF; font-weight:700; text-align:right;"></td></tr>
+          <tr id="pdf-brand-row" style="display:none;"><td style="color:rgba(255,255,255,0.3); padding:5px 0;">Prepared for</td><td id="pdf-brand" style="color:#C9A84C; font-weight:700; text-align:right;"></td></tr>
+          <tr><td style="color:rgba(255,255,255,0.3); padding:5px 0;">Data</td><td style="color:#FFFFFF; font-weight:700; text-align:right;">2024 SA CPM</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top:1px solid rgba(201,168,76,0.15); padding-top:16px; display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
+      <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; color:rgba(201,168,76,0.4); text-transform:uppercase;">contentcreatorhub.online &nbsp;·&nbsp; @nochill_god</div>
+      <div style="font-family:'Lato',sans-serif; font-size:10px; color:rgba(255,255,255,0.15);">NOCHILL Rate Calculator</div>
     </div>
   </div>
 </div>
@@ -2260,15 +2368,120 @@ function init() {
   updateRateBadge(); // Show fallback immediately
   fetchLiveRates();  // Then replace with live rates when available
 
-  // Pre-fill email capture for email list subscribers (?email=xxx)
+  // Pre-fill send form for email list subscribers (?email=xxx&name=xxx)
   const params = new URLSearchParams(window.location.search);
   const emailParam = params.get('email');
   const nameParam  = params.get('name') || params.get('first_name');
   if (emailParam && emailParam.includes('@')) {
-    const emailEl = document.getElementById('cap-email');
-    const nameEl  = document.getElementById('cap-name');
+    const emailEl = document.getElementById('send-email');
+    const nameEl  = document.getElementById('send-name');
     if (emailEl) emailEl.value = emailParam;
     if (nameEl && nameParam) nameEl.value = nameParam;
+  }
+}
+
+/* ── PDF GENERATION & EMAIL DELIVERY ─────────────────────── */
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+function showSendMsg(text, color) {
+  const el = document.getElementById('send-rc-msg');
+  el.innerHTML = text;
+  el.style.color = color;
+  el.style.display = 'block';
+}
+
+function fmtRC(n) { return 'R ' + Math.round(n).toLocaleString('en-ZA'); }
+
+function populatePDF(name, brand) {
+  const R = calcResults;
+  if (!R) return;
+  document.getElementById('pdf-creator-name').textContent = name || 'Creator';
+  document.getElementById('pdf-platform').textContent = `${R.p.name} · ${R.niche} · ${R.ct.label}`;
+  document.getElementById('pdf-tier').textContent = R.tier.label;
+  document.getElementById('pdf-er').textContent = R.er.toFixed(2) + '%';
+  document.getElementById('pdf-er-label').textContent = R.cpeTierData.label;
+  document.getElementById('pdf-floor').textContent = fmtRC(R.range_low);
+  document.getElementById('pdf-standard').textContent = fmtRC(R.recommended);
+  document.getElementById('pdf-ceiling').textContent = fmtRC(R.range_high);
+  document.getElementById('pdf-cpm-rate').textContent = fmtRC(R.price_cpm_final);
+  document.getElementById('pdf-cpe-rate').textContent = fmtRC(R.price_cpe_final);
+  document.getElementById('pdf-followers').textContent = fmtNum(R.d.followers);
+  document.getElementById('pdf-addons').textContent = `×${R.premiumMult.toFixed(2)}`;
+  document.getElementById('pdf-date').textContent = new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' });
+  const brandRow = document.getElementById('pdf-brand-row');
+  if (brand) {
+    document.getElementById('pdf-brand').textContent = brand;
+    brandRow.style.display = 'table-row';
+  } else {
+    brandRow.style.display = 'none';
+  }
+}
+
+async function sendRateCard() {
+  const name  = (document.getElementById('send-name').value || '').trim();
+  const email = (document.getElementById('send-email').value || '').trim();
+  const brand = (document.getElementById('send-brand').value || '').trim();
+  const btn   = document.getElementById('send-rc-btn');
+
+  if (!name) { showSendMsg('Please enter your name.', '#EF4444'); return; }
+  if (!email || !email.includes('@')) { showSendMsg('Please enter a valid email address.', '#EF4444'); return; }
+  if (!calcResults) { showSendMsg('Please calculate your rate first.', '#EF4444'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Building your rate card…';
+  showSendMsg('Generating your PDF…', '#888');
+
+  try {
+    await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+
+    populatePDF(name, brand);
+
+    const pdfEl = document.getElementById('rc-pdf');
+    pdfEl.style.opacity = '1';
+    pdfEl.style.zIndex = '9999';
+    // Wait for Montserrat/Lato to load (same approach as build_pdf.py)
+    await document.fonts.ready;
+    await new Promise(r => setTimeout(r, 600));
+
+    showSendMsg('Rendering…', '#888');
+    const canvas = await html2canvas(pdfEl, { scale: 2, useCORS: true, backgroundColor: '#0A0A0A', logging: false });
+
+    pdfEl.style.opacity = '0';
+    pdfEl.style.zIndex = '-999';
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const imgH = (canvas.height * pw) / canvas.width;
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, pw, Math.min(imgH, ph));
+    const pdfBase64 = pdf.output('datauristring').split(',')[1];
+
+    showSendMsg('Sending to your inbox…', '#888');
+    const res = await fetch('/api/send-rate-card', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, brand, pdfBase64 })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Send failed');
+
+    btn.textContent = '✓ Rate Card Sent!';
+    showSendMsg(`✅ Check <strong>${email}</strong> — your rate card is on its way. Forward the PDF directly to any brand pitch email.`, '#059669');
+
+  } catch (err) {
+    console.error('sendRateCard error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Send My Rate Card PDF →';
+    showSendMsg('Something went wrong — please try again.', '#EF4444');
   }
 }
 
