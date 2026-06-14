@@ -235,14 +235,18 @@
     .bar-fill  { height:100%;border-radius:100px;transition:width 1s ease .3s; }
     .bar-value { font-size:.72rem;font-weight:700;width:80px;flex-shrink:0; }
 
-    .upsell-card  { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;text-align:center;box-shadow:var(--shadow-card); }
-    .upsell-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:.55rem; }
-    .upsell-heading { font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--fg);margin-bottom:.5rem; }
-    .upsell-body    { font-size:.82rem;color:var(--fg-muted);margin-bottom:1.1rem;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7; }
-
-    .email-card { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;box-shadow:var(--shadow-card); }
-    .email-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:.4rem; }
-    .email-body   { font-size:.82rem;color:var(--fg-muted);margin-bottom:1rem;line-height:1.65; }
+    /* BRIGHT CTA CARDS */
+    .cta-bright-green { background:linear-gradient(135deg,rgba(48,160,84,.09),rgba(48,160,84,.04));border:2px solid var(--accent);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(48,160,84,.15); }
+    .cta-bright-blue  { background:linear-gradient(135deg,rgba(26,76,110,.08),rgba(26,76,110,.03));border:2px solid var(--primary);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;box-shadow:0 4px 20px rgba(26,76,110,.12); }
+    .cta-eyebrow-green { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem; }
+    .cta-eyebrow-blue  { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:.5rem; }
+    .cta-heading { font-family:var(--font-head);font-size:1.15rem;font-weight:700;color:var(--fg);margin-bottom:.5rem; }
+    .cta-body    { font-size:.875rem;color:var(--fg-muted);line-height:1.7;margin-bottom:1rem; }
+    .cta-price-row { display:flex;align-items:baseline;gap:.75rem;margin-bottom:1.1rem; }
+    .cta-price     { font-size:1.6rem;font-weight:900;color:var(--accent); }
+    .cta-price-note { font-size:.78rem;color:var(--fg-muted); }
+    .cta-btn-green { width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:1rem 1.5rem;border-radius:var(--r-input);background:var(--accent);color:#fff;font-family:var(--font);font-weight:700;font-size:1rem;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(48,160,84,.40);transition:all .2s;text-decoration:none; }
+    .cta-btn-green:hover { background:#268f47;transform:translateY(-1px);box-shadow:0 8px 26px rgba(48,160,84,.50); }
     .email-fields { display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem; }
     .email-row    { display:flex;gap:.65rem;flex-wrap:wrap; }
     .email-row .nx-input { flex:1;min-width:140px; }
@@ -331,10 +335,10 @@
       .neg-inner-label { font-size:.68rem; }
       .insights-card { padding:1.1rem; }
       .insight-item { font-size:.82rem; }
-      .upsell-card { padding:1.25rem; }
-      .upsell-heading { font-size:1rem; }
-      .upsell-body { font-size:.82rem; }
-      .email-card { padding:1.25rem; }
+      .cta-bright-green, .cta-bright-blue { padding:1.25rem; }
+      .cta-heading { font-size:1rem; }
+      .cta-body { font-size:.85rem; }
+      .cta-price { font-size:1.4rem; }
       .email-row { flex-direction:column; }
       .email-row .nx-input { min-width:0; }
       .breakdown-body { padding:.9rem 1rem; }
@@ -639,6 +643,32 @@ Range     = Total × 0.85  →  Total × 1.15</div>
     <div class="metrics-grid" id="r-metrics"></div>
     <div class="method-grid"  id="r-methods"></div>
     <div id="r-negotiation"></div>
+
+    <!-- ── CTAs — immediately after negotiation ── -->
+    <div class="cta-bright-blue">
+      <div class="cta-eyebrow-blue">📄 Get your rate card</div>
+      <div class="cta-heading">Send yourself the branded PDF</div>
+      <div class="cta-body">Forward it directly to any brand — a professional PDF with your rates, stats, and terms. No screenshotting needed.</div>
+      <div class="email-fields">
+        <div class="email-row">
+          <input class="nx-input" type="text"  id="send-name"  placeholder="Your name">
+          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com">
+        </div>
+        <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional)">
+        <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — e.g. @nochill_god)">
+      </div>
+      <button class="cta-full" onclick="sendRateCard()" id="send-rc-btn" style="background:var(--primary);box-shadow:0 4px 18px rgba(26,76,110,.40);font-size:1rem;min-height:52px;">Send My Rate Card PDF →</button>
+      <div id="send-rc-msg" style="display:none;margin-top:.75rem;font-size:.82rem;text-align:center;line-height:1.65;"></div>
+    </div>
+
+    <div class="cta-bright-green">
+      <div class="cta-eyebrow-green">⚡ Your next move</div>
+      <div class="cta-heading">You have your rate. Now get the script that closes the deal.</div>
+      <div class="cta-body">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price.</div>
+      <div class="cta-price-row"><span class="cta-price">R149</span><span class="cta-price-note">One-time · Instant download</span></div>
+      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-btn-green">Get the Brand Deal Pitch Script — R149 →</a>
+    </div>
+
     <div id="r-insights"></div>
 
     <div class="section-card" style="margin-bottom:1rem;">
@@ -653,36 +683,15 @@ Range     = Total × 0.85  →  Total × 1.15</div>
       <span id="bd-btn-label">View Calculation Details</span> <span id="bd-btn-arrow">▾</span>
     </button>
     <div id="r-breakdown" style="display:none;"></div>
-
-    <div class="upsell-card">
-      <div class="upsell-eyebrow">Your next move</div>
-      <div class="upsell-heading">You have your rate. Now get the script that closes the deal.</div>
-      <div class="upsell-body">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</div>
-      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-full" style="max-width:420px;margin:0 auto;display:flex;text-decoration:none;">Get the Brand Deal Pitch Script — R149 →</a>
-    </div>
-
-    <div class="email-card">
-      <div class="email-eyebrow">Get your rate card delivered</div>
-      <h3 style="margin-bottom:.5rem;">Send yourself the branded PDF</h3>
-      <div class="email-body">Forward it directly to any brand — a professional PDF with your rates, stats, and terms. No screenshotting needed.</div>
-      <div class="email-fields">
-        <div class="email-row">
-          <input class="nx-input" type="text"  id="send-name"  placeholder="Your name">
-          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com">
-        </div>
-        <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional)">
-        <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — e.g. @nochill_god)">
-      </div>
-      <button class="cta-full" onclick="sendRateCard()" id="send-rc-btn">Send My Rate Card PDF →</button>
-      <div id="send-rc-msg" style="display:none;margin-top:.75rem;font-size:.82rem;text-align:center;line-height:1.65;"></div>
-    </div>
   </div>
 </div>
 
-<footer style="border-top:1px solid var(--border);background:var(--card);padding:1.5rem;margin-top:0;">
-  <div style="max-width:760px;margin:0 auto;text-align:center;font-size:.75rem;color:var(--fg-muted);">
-    <p>Based on Aspire 2024–2025, SA Influencer Benchmark Report &amp; global industry standards.</p>
-    <p style="margin-top:.25rem;">Prices in ZAR · contentcreatorhub.online · @nochill_god</p>
+<footer style="border-top:2px solid var(--border);background:var(--card);padding:1.75rem 1.25rem;margin-top:0;">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--fg);margin-bottom:.3rem;letter-spacing:.02em;">NOCHILL PTY LTD</div>
+    <div style="font-size:.78rem;color:var(--fg-muted);margin-bottom:.5rem;">Reg. 2016/507839/07 &nbsp;·&nbsp; <a href="mailto:info@nochill.co.za" style="color:var(--primary);text-decoration:none;font-weight:600;">info@nochill.co.za</a></div>
+    <div style="width:36px;height:1.5px;background:var(--border);margin:.6rem auto;"></div>
+    <div style="font-size:.72rem;color:var(--fg-muted);line-height:1.7;">Based on Aspire 2024–2025 SA Influencer Benchmark Report &amp; global industry standards.&nbsp; Prices in ZAR.</div>
   </div>
 </footer>
 
