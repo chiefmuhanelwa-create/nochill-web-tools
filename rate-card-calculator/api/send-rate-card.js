@@ -236,6 +236,10 @@ export default async function handler(req, res) {
 
   const { name, email, brand, rateData } = req.body;
   if (!email || !rateData) return res.status(400).json({ ok: false, error: 'Email and rate data required' });
+  if (!process.env.ZOHO_EMAIL || !process.env.ZOHO_APP_PASSWORD) {
+    console.error('Missing ZOHO_EMAIL or ZOHO_APP_PASSWORD env vars');
+    return res.status(500).json({ ok: false, error: 'Email service not configured — env vars missing.' });
+  }
 
   const displayName = name || 'Creator';
   const filename = `rate-card-${(name || 'creator').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}.pdf`;
@@ -265,10 +269,13 @@ export default async function handler(req, res) {
       host: 'smtp.zoho.com',
       port: 465,
       secure: true,
+      authMethod: 'LOGIN',
       auth: {
+        type: 'login',
         user: process.env.ZOHO_EMAIL,
         pass: process.env.ZOHO_APP_PASSWORD
-      }
+      },
+      tls: { rejectUnauthorized: false }
     });
 
     await transporter.sendMail({
