@@ -1,9 +1,23 @@
+const _rl = new Map();
+const RL_MAX = 20;
+const RL_WIN = 3600000;
+function _ip(req) { return ((req.headers['x-forwarded-for']||'').split(',')[0].trim()||req.headers['x-real-ip']||'unknown'); }
+function _check(ip) {
+  const now = Date.now();
+  if (_rl.size > 500) { for (const [k,v] of _rl) if (now > v.r) _rl.delete(k); }
+  const e = _rl.get(ip);
+  if (!e || now > e.r) { _rl.set(ip, { c: 1, r: now + RL_WIN }); return true; }
+  if (e.c >= RL_MAX) return false;
+  e.c++; return true;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!_check(_ip(req))) return res.status(429).json({ ok: false, error: 'Too many requests — try again in an hour.' });
 
   const { topic, niche, platform, hookTypes, awarenessLevel, goal, contentType, uniqueAngle } = req.body;
   if (!topic) return res.status(400).json({ error: 'Topic required' });

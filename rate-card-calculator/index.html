@@ -1381,98 +1381,6 @@ Range     = Final × 0.85 → Final × 1.15
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     PDF TEMPLATE — matches product kit style (Montserrat/Lato, charcoal/gold)
-     Captured by html2canvas → jsPDF → emailed via ZeptoMail
-══════════════════════════════════════════════ -->
-<div id="rc-pdf" style="position:fixed; top:0; left:0; width:794px; height:1123px; z-index:-999; opacity:0; pointer-events:none; overflow:hidden; background:#F8F8F8;">
-  <!-- Gold top stripe + dark header band -->
-  <div style="background:#1C1C1C; height:88px; width:794px; display:flex; align-items:center; padding:0 64px; justify-content:space-between;">
-    <div>
-      <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(201,168,76,0.6); margin-bottom:6px;">Creator Rate Card &nbsp;·&nbsp; NOCHILL</div>
-      <div id="pdf-creator-name" style="font-family:'Montserrat',sans-serif; font-size:28px; font-weight:900; color:#FFFFFF; letter-spacing:0.04em; text-transform:uppercase; line-height:1;"></div>
-    </div>
-    <div style="text-align:right;">
-      <div id="pdf-tier" style="font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; color:#C9A84C; letter-spacing:0.12em; text-transform:uppercase;"></div>
-      <div id="pdf-platform" style="font-family:'Lato',sans-serif; font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;"></div>
-    </div>
-  </div>
-  <div style="background:#C9A84C; height:4px; width:794px;"></div>
-
-  <!-- Page content -->
-  <div style="padding:36px 64px 32px; height:1031px; box-sizing:border-box; display:flex; flex-direction:column; background:#F8F8F8;">
-
-    <!-- ER row -->
-    <div style="display:flex; gap:14px; margin-bottom:28px;">
-      <div style="background:#FFFFFF; border:1px solid #E0E0E0; border-radius:8px; padding:16px 24px; flex-shrink:0; text-align:center;">
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:#999; margin-bottom:6px;">Engagement Rate</div>
-        <div id="pdf-er" style="font-family:'Montserrat',sans-serif; font-size:26px; font-weight:900; color:#C9A84C; letter-spacing:-0.5px;"></div>
-        <div id="pdf-er-label" style="font-family:'Lato',sans-serif; font-size:10px; color:#888; margin-top:3px;"></div>
-      </div>
-      <div style="background:#FFFFFF; border:1px solid #E0E0E0; border-radius:8px; padding:16px 20px; flex:1; font-family:'Lato',sans-serif; font-size:12px; color:#888; line-height:1.9;">
-        SA average: <strong style="color:#1C1C1C;">3.39%</strong><br>
-        Global average: 1.49%<br>
-        Your engagement rate is your negotiation leverage.<br>Brands pay more for audiences that actually engage.
-      </div>
-    </div>
-
-    <!-- Gold rule -->
-    <div style="width:100%; height:2px; background:#C9A84C; opacity:0.25; margin-bottom:22px;"></div>
-
-    <!-- Rates label -->
-    <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:#999; margin-bottom:12px;">Your Rates — Backed by 2024 SA CPM Data</div>
-
-    <!-- 3 rate boxes -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:26px;">
-      <div style="background:#FFFFFF; border:1px solid #E0E0E0; border-radius:8px; padding:22px 16px; text-align:center;">
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#999; margin-bottom:10px;">Floor Rate</div>
-        <div id="pdf-floor" style="font-family:'Montserrat',sans-serif; font-size:24px; font-weight:900; color:#1C1C1C; letter-spacing:-0.5px;"></div>
-        <div style="font-family:'Lato',sans-serif; font-size:11px; color:#AAA; margin-top:6px;">Minimum — never go below</div>
-      </div>
-      <div style="background:#FDF8EE; border:2px solid #C9A84C; border-radius:8px; padding:22px 16px; text-align:center; position:relative;">
-        <div style="position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:#C9A84C; color:#1C1C1C; font-family:'Montserrat',sans-serif; font-size:8px; font-weight:800; padding:3px 14px; border-radius:0 0 6px 6px; text-transform:uppercase; letter-spacing:0.12em; white-space:nowrap;">RECOMMENDED</div>
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#C9A84C; margin-bottom:10px; margin-top:6px;">Standard Rate</div>
-        <div id="pdf-standard" style="font-family:'Montserrat',sans-serif; font-size:32px; font-weight:900; color:#1C1C1C; letter-spacing:-0.5px;"></div>
-        <div style="font-family:'Lato',sans-serif; font-size:11px; color:#B89040; margin-top:6px;">Quote this first</div>
-      </div>
-      <div style="background:#FFFFFF; border:1px solid #E0E0E0; border-radius:8px; padding:22px 16px; text-align:center;">
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#999; margin-bottom:10px;">Premium Rate</div>
-        <div id="pdf-ceiling" style="font-family:'Montserrat',sans-serif; font-size:24px; font-weight:900; color:#1C1C1C; letter-spacing:-0.5px;"></div>
-        <div style="font-family:'Lato',sans-serif; font-size:11px; color:#AAA; margin-top:6px;">Exclusivity &amp; usage rights</div>
-      </div>
-    </div>
-
-    <!-- Rule -->
-    <div style="width:100%; height:1px; background:#E0E0E0; margin-bottom:22px;"></div>
-
-    <!-- Details 2-col -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-bottom:auto;">
-      <div>
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#C9A84C; margin-bottom:12px;">Rate Basis</div>
-        <table style="width:100%; border-collapse:collapse; font-family:'Lato',sans-serif; font-size:12px;">
-          <tr style="border-bottom:1px solid #F0F0F0;"><td style="color:#888; padding:6px 0;">CPM Rate</td><td id="pdf-cpm-rate" style="color:#1C1C1C; font-weight:700; text-align:right;"></td></tr>
-          <tr style="border-bottom:1px solid #F0F0F0;"><td style="color:#888; padding:6px 0;">CPE Rate</td><td id="pdf-cpe-rate" style="color:#1C1C1C; font-weight:700; text-align:right;"></td></tr>
-          <tr style="border-bottom:1px solid #F0F0F0;"><td style="color:#888; padding:6px 0;">Followers</td><td id="pdf-followers" style="color:#1C1C1C; font-weight:700; text-align:right;"></td></tr>
-          <tr><td style="color:#888; padding:6px 0;">Add-ons Multiplier</td><td id="pdf-addons" style="color:#1C1C1C; font-weight:700; text-align:right;"></td></tr>
-        </table>
-      </div>
-      <div>
-        <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#C9A84C; margin-bottom:12px;">Document Info</div>
-        <table style="width:100%; border-collapse:collapse; font-family:'Lato',sans-serif; font-size:12px;">
-          <tr style="border-bottom:1px solid #F0F0F0;"><td style="color:#888; padding:6px 0;">Prepared</td><td id="pdf-date" style="color:#1C1C1C; font-weight:700; text-align:right;"></td></tr>
-          <tr id="pdf-brand-row" style="display:none; border-bottom:1px solid #F0F0F0;"><td style="color:#888; padding:6px 0;">Prepared for</td><td id="pdf-brand" style="color:#C9A84C; font-weight:700; text-align:right;"></td></tr>
-          <tr><td style="color:#888; padding:6px 0;">Data source</td><td style="color:#1C1C1C; font-weight:700; text-align:right;">2024 SA CPM Rates</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div style="border-top:2px solid #C9A84C; padding-top:14px; display:flex; justify-content:space-between; align-items:center; margin-top:24px; opacity:0.6;">
-      <div style="font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; color:#1C1C1C; text-transform:uppercase;">contentcreatorhub.online &nbsp;·&nbsp; @nochill_god</div>
-      <div style="font-family:'Lato',sans-serif; font-size:10px; color:#888;">NOCHILL Rate Calculator</div>
-    </div>
-  </div>
-</div>
 
 <!-- ══════════════════════════════════════════════
      JAVASCRIPT — PRESERVED EXACTLY
@@ -2379,16 +2287,7 @@ function init() {
   }
 }
 
-/* ── PDF GENERATION & EMAIL DELIVERY ─────────────────────── */
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
-    const s = document.createElement('script');
-    s.src = src; s.onload = resolve; s.onerror = reject;
-    document.head.appendChild(s);
-  });
-}
-
+/* ── EMAIL DELIVERY ─────────────────────── */
 function showSendMsg(text, color) {
   const el = document.getElementById('send-rc-msg');
   el.innerHTML = text;
@@ -2396,32 +2295,6 @@ function showSendMsg(text, color) {
   el.style.display = 'block';
 }
 
-function fmtRC(n) { return 'R ' + Math.round(n).toLocaleString('en-ZA'); }
-
-function populatePDF(name, brand) {
-  const R = calcResults;
-  if (!R) return;
-  document.getElementById('pdf-creator-name').textContent = name || 'Creator';
-  document.getElementById('pdf-platform').textContent = `${R.p.name} · ${R.niche} · ${R.ct.label}`;
-  document.getElementById('pdf-tier').textContent = R.tier.label;
-  document.getElementById('pdf-er').textContent = R.er.toFixed(2) + '%';
-  document.getElementById('pdf-er-label').textContent = R.cpeTierData.label;
-  document.getElementById('pdf-floor').textContent = fmtRC(R.range_low);
-  document.getElementById('pdf-standard').textContent = fmtRC(R.recommended);
-  document.getElementById('pdf-ceiling').textContent = fmtRC(R.range_high);
-  document.getElementById('pdf-cpm-rate').textContent = fmtRC(R.price_cpm_final);
-  document.getElementById('pdf-cpe-rate').textContent = fmtRC(R.price_cpe_final);
-  document.getElementById('pdf-followers').textContent = fmtNum(R.d.followers);
-  document.getElementById('pdf-addons').textContent = `×${R.premiumMult.toFixed(2)}`;
-  document.getElementById('pdf-date').textContent = new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' });
-  const brandRow = document.getElementById('pdf-brand-row');
-  if (brand) {
-    document.getElementById('pdf-brand').textContent = brand;
-    brandRow.style.display = 'table-row';
-  } else {
-    brandRow.style.display = 'none';
-  }
-}
 
 async function sendRateCard() {
   const name  = (document.getElementById('send-name').value || '').trim();
@@ -2434,41 +2307,34 @@ async function sendRateCard() {
   if (!calcResults) { showSendMsg('Please calculate your rate first.', '#EF4444'); return; }
 
   btn.disabled = true;
-  btn.textContent = 'Building your rate card…';
-  showSendMsg('Generating your PDF…', '#888');
+  btn.textContent = 'Sending your rate card…';
+  showSendMsg('Building and sending your PDF…', '#888');
 
   try {
-    await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-
-    populatePDF(name, brand);
-
-    const pdfEl = document.getElementById('rc-pdf');
-    pdfEl.style.opacity = '1';
-    pdfEl.style.zIndex = '9999';
-    // Wait for Montserrat/Lato to load (same approach as build_pdf.py)
-    await document.fonts.ready;
-    await new Promise(r => setTimeout(r, 600));
-
-    showSendMsg('Rendering…', '#888');
-    const canvas = await html2canvas(pdfEl, { scale: 2, useCORS: true, backgroundColor: '#F8F8F8', logging: false });
-
-    pdfEl.style.opacity = '0';
-    pdfEl.style.zIndex = '-999';
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const pw = pdf.internal.pageSize.getWidth();
-    const ph = pdf.internal.pageSize.getHeight();
-    const imgH = (canvas.height * pw) / canvas.width;
-    pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, pw, Math.min(imgH, ph));
-    const pdfBase64 = pdf.output('datauristring').split(',')[1];
+    const R = calcResults;
+    const zar = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+    const rateData = {
+      creatorName: name,
+      platform: `${R.p.name} · ${R.niche} · ${R.ct.label}`,
+      tier: R.tier.label,
+      er: R.er.toFixed(2),
+      erLabel: R.cpeTierData.label,
+      floor: zar(R.range_low),
+      standard: zar(R.recommended),
+      ceiling: zar(R.range_high),
+      cpmRate: zar(R.price_cpm_final),
+      cpeRate: zar(R.price_cpe_final),
+      followers: fmtNum(R.d.followers),
+      addonsMult: `×${R.premiumMult.toFixed(2)}`,
+      date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
+      brand: brand || ''
+    };
 
     showSendMsg('Sending to your inbox…', '#888');
     const res = await fetch('/api/send-rate-card', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, brand, pdfBase64 })
+      body: JSON.stringify({ name, email, brand, rateData })
     });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Send failed');

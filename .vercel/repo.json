@@ -1,0 +1,10 @@
+{
+  "orgId": "team_TDW1zaytVp7rzLNhTV27d4Tr",
+  "projects": [
+    { "id": "prj_9YoJvYALWZCDlhdVh2GhR6RXrjpT", "name": "nochill-niche-quiz", "directory": "niche-clarity-quiz" },
+    { "id": "prj_yvQjLrGnsIQvNJeXysU8bVNX5hIc", "name": "nochill-hooks-generator", "directory": "hooks-generator" },
+    { "id": "prj_CPHQIwi0DPSrY9jq6Aym5iJ9PSrw", "name": "nochill-rate-card", "directory": "rate-card-calculator" },
+    { "id": "prj_Sxin9W7MYpFoTe9yTp9ydiUYrB3z", "name": "nochill-income-matcher", "directory": "income-stream-matcher" },
+    { "id": "prj_w3sxwoHaXAVLdUyMwSlUCQCTCjXS", "name": "nochill-media-kit", "directory": "media-kit-builder" }
+  ]
+}

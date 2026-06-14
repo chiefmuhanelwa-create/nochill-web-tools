@@ -880,11 +880,14 @@
     document.getElementById('invoice-date').value = today.toISOString().split('T')[0];
     calcDueDate();
 
-    // Generate invoice number
+    // Generate auto-incrementing invoice number (persisted in localStorage)
     const y = today.getFullYear();
     const m = String(today.getMonth()+1).padStart(2,'0');
-    const rand = String(Math.floor(Math.random()*900)+100);
-    document.getElementById('invoice-number').value = `INV-${y}${m}-${rand}`;
+    const INV_SEQ_KEY = 'nochill_inv_seq';
+    const lastSeq = parseInt(localStorage.getItem(INV_SEQ_KEY) || '0', 10);
+    const nextSeq = lastSeq + 1;
+    localStorage.setItem(INV_SEQ_KEY, String(nextSeq));
+    document.getElementById('invoice-number').value = `INV-${y}${m}-${String(nextSeq).padStart(3,'0')}`;
 
     // Load saved details
     loadDetails();

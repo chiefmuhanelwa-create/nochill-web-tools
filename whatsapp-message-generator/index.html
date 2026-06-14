@@ -1131,10 +1131,10 @@
       return;
     }
 
-    const used     = localStorage.getItem(USAGE_KEY);
+    const used     = parseInt(localStorage.getItem(USAGE_KEY) || '0', 10);
     const unlocked = localStorage.getItem(UNLOCK_KEY);
 
-    if (used && !unlocked) {
+    if (used >= 3 && !unlocked) {
       document.getElementById('email-gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
       showScreen('s-results');
       return;
@@ -1166,7 +1166,8 @@
       renderResults(buildFallbackMessages(values));
     }
 
-    localStorage.setItem(USAGE_KEY, '1');
+    const prevUsed = parseInt(localStorage.getItem(USAGE_KEY) || '0', 10);
+    localStorage.setItem(USAGE_KEY, String(prevUsed + 1));
   }
 
   function renderResults(messages) {
