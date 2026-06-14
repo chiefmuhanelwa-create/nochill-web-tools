@@ -3,36 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stop Getting Ghosted by Brands — Media Kit Builder | NOCHILL</title>
-  <meta name="description" content="Build a stunning, agency-ready media kit in 30 minutes. Professional enough for global brands, built for African creators.">
+  <title>Media Kit Pro — Build an Agency-Ready Media Kit | NOCHILL PTY LTD</title>
+  <meta name="description" content="Build a professional, agency-ready media kit in 10 minutes. Free browser preview. R49 for a branded PDF emailed to your inbox.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* NOCHILL Brand */
-      --primary: #C9A84C;
-      --primary-mid: #D4B26A;
-      --primary-bright: #E2C67A;
-      --primary-deep: #8B6914;
-      --primary-bg: rgba(201,168,76,0.10);
-      --primary-border: rgba(201,168,76,0.35);
+      /* Media Kit Pro — navy/green */
+      --primary: #1a4c6e;
+      --primary-mid: #2a6496;
+      --primary-bright: #3a84c6;
+      --primary-deep: #134266;
+      --primary-bg: rgba(26,76,110,0.08);
+      --primary-border: rgba(26,76,110,0.25);
+      --accent: #30a054;
+      --accent-bg: rgba(48,160,84,0.08);
+      --accent-border: rgba(48,160,84,0.25);
       --orange: #D4541F;
 
       /* Base */
-      --bg: #FFFFFF;
-      --surface: #FFFFFF;
-      --elevated: #F5F5F5;
-      --text-h: #111111;
-      --text-b: #222222;
-      --text-dim: #444444;
-      --text-sub: #888888;
+      --bg: #f3f5f7;
+      --surface: #ffffff;
+      --elevated: #edf0f3;
+      --text-h: #111827;
+      --text-b: #1f2937;
+      --text-dim: #4b5563;
+      --text-sub: #6b7280;
       --border: rgba(0,0,0,0.10);
-      --border-md: rgba(0,0,0,0.15);
+      --border-md: rgba(0,0,0,0.16);
       --red: #EF4444;
 
       --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-head: 'Space Grotesk', var(--font);
       --radius: 16px;
       --radius-sm: 10px;
       --radius-xs: 6px;
@@ -91,24 +95,24 @@
 
     /* ─── BUTTONS ─────────────────────────────────────── */
     .cta-glow {
-      background: #111111;
-      color: #C9A84C;
+      background: var(--primary);
+      color: #fff;
       font-weight: 700;
       font-size: 15px;
-      border: 1px solid rgba(0,0,0,0.80);
+      border: none;
       border-radius: 10px;
       padding: 14px 28px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 16px rgba(26,76,110,0.35);
       transition: transform .25s ease, box-shadow .25s ease;
       font-family: var(--font);
     }
     .cta-glow:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 24px rgba(26,76,110,0.45);
     }
     .cta-glow:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
@@ -462,18 +466,18 @@
       align-items: center;
       gap: 4px;
       padding: 4px 10px;
-      background: rgba(201,166,70,0.1);
-      border: 1px solid rgba(201,166,70,0.35);
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
-      color: #b8943a;
+      color: var(--primary);
       cursor: pointer;
       transition: background 0.2s;
       font-family: inherit;
       white-space: nowrap;
     }
-    .ai-suggest-btn:hover { background: rgba(201,166,70,0.18); }
+    .ai-suggest-btn:hover { background: rgba(26,76,110,0.14); }
     .ai-suggest-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .ai-suggest-msg {
       font-size: 11px;
@@ -635,26 +639,26 @@
     }
     .completeness-label { font-size: 11px; color: var(--text-sub); margin-bottom: 7px; display: flex; justify-content: space-between; }
     .completeness-track { height: 4px; background: rgba(10,10,10,0.08); border-radius: 2px; }
-    .completeness-fill { height: 100%; background: linear-gradient(to right, var(--primary-mid), var(--primary)); border-radius: 2px; transition: width 0.4s; }
+    .completeness-fill { height: 100%; background: linear-gradient(to right, var(--primary), var(--accent)); border-radius: 2px; transition: width 0.4s; }
 
     /* Download button */
     .download-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #111111;
-      color: #C9A84C;
+      background: var(--primary);
+      color: #fff;
       font-family: var(--font);
       font-size: 13px;
       font-weight: 700;
       padding: 10px 20px;
       border-radius: 8px;
-      border: 1px solid rgba(0,0,0,0.80);
+      border: none;
       cursor: pointer;
       transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 12px rgba(26,76,110,0.30);
     }
-    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.20); }
+    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,76,110,0.40); }
     .download-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     /* Preview header */
@@ -816,6 +820,39 @@
       }
     }
 
+    /* ─── MK CTA CARDS ──────────────────────────────────── */
+    .mk-cta-blue {
+      background: linear-gradient(135deg,rgba(26,76,110,.09),rgba(26,76,110,.04));
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 20px rgba(26,76,110,.12);
+    }
+    .mk-cta-green {
+      background: linear-gradient(135deg,rgba(48,160,84,.09),rgba(48,160,84,.04));
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(48,160,84,.15);
+    }
+    .mk-cta-eyebrow { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:5px; }
+    .mk-cta-heading { font-size:14px; font-weight:800; color:var(--text-h); margin-bottom:3px; letter-spacing:-0.3px; }
+    .mk-cta-price  { font-size:16px; font-weight:900; color:var(--accent); margin-bottom:3px; }
+    .mk-cta-desc   { font-size:12px; color:var(--text-dim); margin-bottom:10px; line-height:1.5; }
+    .mk-btn-blue, .mk-btn-green {
+      width:100%; display:flex; align-items:center; justify-content:center;
+      padding:.7rem 1rem; border-radius:8px; color:#fff;
+      font-weight:700; font-size:.875rem; border:none; cursor:pointer;
+      transition:all .2s; font-family:var(--font); min-height:44px;
+    }
+    .mk-btn-blue  { background:var(--primary); box-shadow:0 4px 12px rgba(26,76,110,.35); }
+    .mk-btn-green { background:var(--accent);  box-shadow:0 4px 12px rgba(48,160,84,.40); }
+    .mk-btn-blue:hover  { transform:translateY(-1px); box-shadow:0 6px 18px rgba(26,76,110,.45); }
+    .mk-btn-green:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(48,160,84,.50); }
+    .mk-btn-blue:disabled, .mk-btn-green:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .mk-pdf-msg { font-size:12px; margin-top:8px; line-height:1.5; display:none; }
+
     /* ─── SERVICES SECTION ───────────────────────────────── */
     .services-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
     .services-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -854,10 +891,13 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-brand">NOCHILL</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="nav-brand" style="font-family:var(--font-head);">MEDIA KIT PRO</div>
+    <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(48,160,84,0.12);border:1px solid rgba(48,160,84,0.30);color:var(--accent);letter-spacing:0.08em;">NOCHILL PTY LTD</span>
+  </div>
   <div class="nav-right">
     <span class="nav-save-indicator" id="save-indicator"></span>
-    <a href="https://nochill-rate-card.vercel.app" class="nav-pill">Rate Card</a>
+    <a href="https://nochill-rate-card.vercel.app" class="nav-pill">Rate Card Calculator</a>
   </div>
 </nav>
 
@@ -867,8 +907,8 @@
 <div id="s-intro" class="screen active">
   <div class="intro-wrap">
     <div class="intro-left">
-      <div class="eyebrow">Media Kit Builder</div>
-      <h1 class="intro-headline">Brands Ghosted You.<br><span>Your Media Kit Is Why.</span></h1>
+      <div class="eyebrow">Media Kit Pro — By NOCHILL PTY LTD</div>
+      <h1 class="intro-headline" style="font-family:var(--font-head);">Brands Ghosted You.<br><span>Your Media Kit Is Why.</span></h1>
       <p class="intro-sub">Agencies see hundreds of creator kits every week. Most get deleted in 4 seconds — wrong format, missing stats, amateur design. Build yours in 10 minutes. Agency-grade. Your first kit is free.</p>
 
       <div class="value-list">
@@ -880,8 +920,8 @@
       </div>
 
       <div class="intro-cta-row">
-        <button class="cta-glow" onclick="showScreen('s-email-gate'); window.scrollTo({top:0,behavior:'smooth'})">Build My Free Media Kit →</button>
-        <p class="intro-guarantee">Free. Drop your email and build your first kit instantly.</p>
+        <button class="cta-glow" onclick="showScreen('s-builder'); window.scrollTo({top:0,behavior:'smooth'})">Build My Media Kit — Free →</button>
+        <p class="intro-guarantee">Free to build. Free browser preview. R49 to get a professional PDF emailed to your inbox.</p>
       </div>
 
       <div class="intro-status">
@@ -932,41 +972,9 @@
   </div>
 </div>
 
-<!-- ─── EMAIL GATE (Free first kit) ──────────────────────────────────────────── -->
-<div id="s-email-gate" class="screen">
-  <div class="payment-wrap">
-    <div class="payment-card">
-      <div class="payment-icon">🎯</div>
-      <h2 class="payment-title">Your first media kit is free.</h2>
-      <p class="payment-sub">Drop your email and you'll be taken straight to the builder. No card required. Your kit is yours forever.</p>
-      <div class="payment-features">
-        <div class="payment-feature"><div class="payment-feature-dot"></div>Agency-grade 4-page layout</div>
-        <div class="payment-feature"><div class="payment-feature-dot"></div>Upload photo, logos, stats, testimonials</div>
-        <div class="payment-feature"><div class="payment-feature-dot"></div>Live preview as you build</div>
-        <div class="payment-feature"><div class="payment-feature-dot"></div>Download as PDF — yours forever</div>
-      </div>
-      <input type="email" id="gate-email" class="payment-input" placeholder="your@email.com">
-      <button class="cta-glow" style="width:100%; justify-content:center;" onclick="startEmailGate()">Start Building — Free →</button>
-      <div id="gate-msg" class="payment-msg"></div>
-      <p class="payment-guarantee">We'll also send you 30 bonus caption templates and SA creator resources. Unsubscribe any time.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ─── PAYMENT (R49.99 for second kit) ─────────────────────────────────────── -->
-<div id="s-payment" class="screen">
-  <div class="payment-wrap">
-    <div class="payment-card">
-      <div class="payment-icon">💎</div>
-      <h2 class="payment-title">Build another kit — R49.99</h2>
-      <p class="payment-sub">Your second media kit is R49.99 — one-time. This unlocks a fresh builder session. Your current kit is still saved.</p>
-      <input type="email" id="payment-email" class="payment-input" placeholder="your@email.com">
-      <button class="cta-glow" style="width:100%; justify-content:center;" onclick="startPayment()">Pay R49.99 with Paystack →</button>
-      <div id="payment-msg" class="payment-msg"></div>
-      <p class="payment-guarantee">🔒 Secured by Paystack. Card, EFT, or USSD accepted.</p>
-    </div>
-  </div>
-</div>
+<!-- ─── (legacy screens removed) ─────────────────────────────────────────────── -->
+<div id="s-email-gate" class="screen"></div>
+<div id="s-payment" class="screen"></div>
 
 <!-- ─── BUILDER ─────────────────────────────────────────────────────────────── -->
 <div id="s-builder" class="screen">
@@ -1250,18 +1258,26 @@
         </div>
       </div>
 
-      <!-- DOWNLOAD BUTTON -->
-      <div style="padding:20px 24px; border-top:1px solid var(--border);">
-        <button class="cta-glow" style="width:100%; justify-content:center;" onclick="downloadPDF()">⬇ Download PDF</button>
-        <p style="font-size:11px; color:var(--text-sub); margin-top:10px; text-align:center;">Opens your browser's print dialog. Select "Save as PDF" and set Margins to "None".</p>
-      </div>
+      <!-- CTA CARDS -->
+      <div style="padding:16px 24px 8px; border-top:1px solid var(--border);">
+        <!-- Blue: browser PDF (free) -->
+        <div class="mk-cta-blue">
+          <div class="mk-cta-eyebrow" style="color:var(--primary);">📄 Free preview</div>
+          <div class="mk-cta-heading">Download a browser PDF</div>
+          <div class="mk-cta-desc">Opens print dialog. Set margins to "None" and select "Save as PDF".</div>
+          <button class="mk-btn-blue" onclick="downloadPDF()">⬇ Download Browser PDF →</button>
+        </div>
 
-      <!-- UPSELL AFTER DOWNLOAD -->
-      <div style="padding:16px 24px 20px; border-top:1px solid var(--border); background:var(--primary-bg);">
-        <p style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.18em; color:var(--primary-deep); margin-bottom:8px;">Your next step</p>
-        <p style="font-size:13px; font-weight:800; color:var(--text-h); margin-bottom:4px; letter-spacing:-0.3px;">You have the kit. Now get the pitch.</p>
-        <p style="font-size:12px; color:var(--text-dim); margin-bottom:12px; line-height:1.5;">Brands want to see a media kit. But they sign the deal when the pitch lands right. The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts to reach out AND respond when they contact you. R149.</p>
-        <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="font-size:13px; padding:11px 18px; width:100%; justify-content:center; box-sizing:border-box; display:inline-flex;">Get the Brand Deal Pitch Script — R149 →</a>
+        <!-- Green: email PDF (R49) -->
+        <div class="mk-cta-green">
+          <div class="mk-cta-eyebrow" style="color:var(--accent);">⚡ Professional PDF</div>
+          <div class="mk-cta-heading">Email me the branded PDF</div>
+          <div class="mk-cta-price">R49 <span style="font-size:12px;font-weight:500;color:var(--text-dim);">· one-time · instant delivery</span></div>
+          <div class="mk-cta-desc">NOCHILL PTY LTD branded PDF — send it directly to agencies and brands. Secured by Paystack.</div>
+          <input type="email" id="mk-pdf-email" class="payment-input" placeholder="your@email.com" style="margin-bottom:10px;font-size:16px;background:var(--surface);">
+          <button class="mk-btn-green" id="mk-pdf-btn" onclick="initMediaKitPayment()">Pay R49 — Get PDF by Email →</button>
+          <div class="mk-pdf-msg" id="mk-pdf-msg"></div>
+        </div>
       </div>
 
       <!-- COMPLETENESS -->
@@ -1430,8 +1446,8 @@
               </div>
               <div class="kit-footer">
                 <div class="kit-footer-badge">
-                  <div class="kit-footer-logo">NOCHILL</div>
-                  <div class="kit-footer-tagline">Built with NOCHILL Media Kit Builder</div>
+                  <div class="kit-footer-logo">NOCHILL PTY LTD</div>
+                  <div class="kit-footer-tagline">Generated by Media Kit Pro · info@nochill.co.za</div>
                 </div>
                 <div class="kit-agency-badge">✓ Agency Ready</div>
               </div>
@@ -1444,6 +1460,16 @@
 </div>
 
 </div><!-- /page-wrap -->
+
+<footer style="border-top:2px solid var(--border);background:var(--surface);padding:1.5rem 1.25rem;margin-top:0;">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--text-h);">NOCHILL PTY LTD</div>
+    <div style="font-size:.78rem;color:var(--text-sub);margin-top:4px;">
+      Reg. 2016/507839/07 &nbsp;·&nbsp; <a href="mailto:info@nochill.co.za" style="color:var(--primary);font-weight:600;">info@nochill.co.za</a>
+    </div>
+    <div style="font-size:.72rem;color:var(--text-sub);margin-top:4px;">Media Kit Pro — built for African creators.</div>
+  </div>
+</footer>
 
 <script>
   // ─── CONSTANTS ────────────────────────────────────────────────────────────
@@ -1541,30 +1567,131 @@
     const reference = refFromUrl || refFromStorage;
     if (!reference) return;
     if (refFromUrl) window.history.replaceState({}, document.title, window.location.pathname);
+
+    const msgEl = document.getElementById('mk-pdf-msg');
+    const btn   = document.getElementById('mk-pdf-btn');
+    if (msgEl) { msgEl.textContent = 'Verifying payment…'; msgEl.style.color = 'var(--text-sub)'; msgEl.style.display = 'block'; }
+
     try {
-      const res = await fetch('/api/verify-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reference })
-      });
+      const res  = await fetch('/api/verify-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ reference }) });
       const data = await res.json();
       if (data.ok) {
         localStorage.removeItem('nochill_mk_ref');
         const email = data.email || localStorage.getItem('nochill_mk_email') || '';
-        localStorage.removeItem('nochill_mk_email');
-        localStorage.setItem('nochill_mk_unlocked', '1');
-        if (email) {
+
+        let kitData;
+        try {
+          const snap = localStorage.getItem('nochill_mk_data_snapshot');
+          kitData = snap ? JSON.parse(snap) : JSON.parse(localStorage.getItem('nochill_mk_data') || '{}');
+        } catch(e) { kitData = {}; }
+        localStorage.removeItem('nochill_mk_data_snapshot');
+
+        if (email && kitData) {
+          if (msgEl) { msgEl.textContent = 'Generating your PDF…'; msgEl.style.display = 'block'; }
           try {
-            await fetch('/api/subscribe', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, tags: ['media_kit_paid_r99'] })
-            });
-          } catch(e) {}
+            const pdfRes  = await fetch('/api/send-media-kit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, kitData }) });
+            const pdfData = await pdfRes.json();
+            if (pdfData.ok) {
+              if (msgEl) { msgEl.textContent = `✓ PDF sent to ${email} — check your inbox!`; msgEl.style.color = 'var(--accent)'; }
+              if (btn)   { btn.textContent = '✓ PDF Sent — Check Your Inbox'; btn.disabled = true; }
+            } else {
+              if (msgEl) { msgEl.textContent = 'PDF delivery failed. Email info@nochill.co.za for support.'; msgEl.style.color = 'var(--red)'; }
+            }
+          } catch(e) {
+            if (msgEl) { msgEl.textContent = 'Connection error. Email info@nochill.co.za'; msgEl.style.color = 'var(--red)'; }
+          }
         }
-        showScreen('s-builder');
+        localStorage.removeItem('nochill_mk_email');
       }
     } catch(e) {}
+  }
+
+  // ─── GET KIT DATA (serialise form for PDF API) ────────────────────────────
+  function getKitData() {
+    const rates = [];
+    document.querySelectorAll('#rates-list .rate-item').forEach(item => {
+      const inputs = item.querySelectorAll('.field-input');
+      const type  = inputs[0]?.value || '';
+      const price = inputs[1]?.value || '';
+      if (type && price) rates.push({ type, price });
+    });
+    const testimonials = [];
+    document.querySelectorAll('#testimonials-list .testimonial-item').forEach(item => {
+      const inputs = item.querySelectorAll('.field-input');
+      const ta    = item.querySelector('textarea');
+      const name  = inputs[0]?.value || '';
+      const role  = inputs[1]?.value || '';
+      const quote = ta?.value || '';
+      if (name && quote) testimonials.push({ name, role, quote });
+    });
+    const pillars = [];
+    document.querySelectorAll('#pillars-list .testimonial-item').forEach(item => {
+      const inp  = item.querySelector('input');
+      const ta   = item.querySelector('textarea');
+      const name = inp?.value || '';
+      const desc = ta?.value  || '';
+      if (name) pillars.push({ name, desc });
+    });
+    const locations = [];
+    document.querySelectorAll('#locations-list .field-row-2col').forEach(row => {
+      const inputs = row.querySelectorAll('.field-input');
+      const loc = inputs[0]?.value || '';
+      const pct = inputs[1]?.value || '';
+      if (loc && pct) locations.push({ loc, pct });
+    });
+    return {
+      name: v('f-name'), handle: v('f-handle'), tagline: v('f-tagline'),
+      bio: v('f-bio'), location: v('f-location'), niches: v('f-niches'),
+      email: v('c-email'), website: v('c-website'), whatsapp: v('c-whatsapp'),
+      instagram: v('c-instagram'), booking: v('c-booking'), responseTime: v('c-response-time'),
+      brandNames: v('brand-names'),
+      platforms: platformData,
+      ages: {
+        '13': document.getElementById('age-13')?.value||'0',
+        '18': document.getElementById('age-18')?.value||'0',
+        '25': document.getElementById('age-25')?.value||'0',
+        '35': document.getElementById('age-35')?.value||'0',
+        '45': document.getElementById('age-45')?.value||'0',
+        '55': document.getElementById('age-55')?.value||'0',
+      },
+      gender: {
+        f: document.getElementById('gender-f')?.value||'0',
+        m: document.getElementById('gender-m')?.value||'0',
+        o: document.getElementById('gender-o')?.value||'0',
+      },
+      photo: profilePhotoSrc,
+      logos: logoSrcs,
+      rates, testimonials, pillars, locations,
+      services: servicesData, addOns: addOnsData,
+      targetAudience: v('f-target-audience'), usps: v('f-usps'),
+      transformation: v('f-transformation'), marketOpp: v('f-market-opp'),
+      painPoints: v('f-pain-points'), pricingRationale: v('f-pricing-rationale'),
+    };
+  }
+
+  // ─── INITIATE MEDIA KIT PAYMENT ───────────────────────────────────────────
+  async function initMediaKitPayment() {
+    const email = document.getElementById('mk-pdf-email')?.value?.trim();
+    const msgEl = document.getElementById('mk-pdf-msg');
+    const btn   = document.getElementById('mk-pdf-btn');
+    if (!email || !email.includes('@')) {
+      if (msgEl) { msgEl.textContent = 'Please enter a valid email to continue.'; msgEl.style.color = 'var(--red)'; msgEl.style.display = 'block'; }
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = 'Connecting to Paystack…'; }
+    if (msgEl) { msgEl.textContent = 'Opening Paystack…'; msgEl.style.color = 'var(--text-sub)'; msgEl.style.display = 'block'; }
+    try {
+      const res  = await fetch('/api/create-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, type: 'media_kit' }) });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Payment init failed');
+      localStorage.setItem('nochill_mk_ref', data.reference);
+      localStorage.setItem('nochill_mk_email', email);
+      localStorage.setItem('nochill_mk_data_snapshot', JSON.stringify(getKitData()));
+      window.location.href = data.authorization_url;
+    } catch(err) {
+      if (msgEl) { msgEl.textContent = `Error: ${err.message}`; msgEl.style.color = 'var(--red)'; msgEl.style.display = 'block'; }
+      if (btn)   { btn.disabled = false; btn.textContent = 'Pay R49 — Get PDF by Email →'; }
+    }
   }
 
   // ─── SERVICES & ADD-ONS MANAGEMENT ───────────────────────────────────────
@@ -2174,22 +2301,22 @@
   }
 
   // ─── INIT ─────────────────────────────────────────────────────────────────
-  // Auto-bypass email gate for email list subscribers (?email=xxx)
   (function() {
-    const params = new URLSearchParams(window.location.search);
+    const params   = new URLSearchParams(window.location.search);
+    const hasRef   = params.get('reference') || params.get('trxref') || localStorage.getItem('nochill_mk_ref');
     const emailParam = params.get('email');
+    // Handle direct email link subscribers
     if (emailParam && emailParam.includes('@')) {
       localStorage.setItem('nochill_mk_email', emailParam);
-      if (!localStorage.getItem('nochill_mk_unlocked')) {
-        localStorage.setItem('nochill_mk_unlocked', '1');
-        fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: emailParam, tags: ['media_kit_email_list'] }) }).catch(()=>{});
-      }
+      fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: emailParam, tags: ['media_kit_email_list'] }) }).catch(()=>{});
     }
-    if (localStorage.getItem('nochill_mk_unlocked') === '1') {
+    if (hasRef) {
+      // Returning from Paystack — go to builder and send PDF
       showScreen('s-builder');
+      checkPaymentReturn();
     }
+    // Otherwise: stay on intro screen (default active)
   })();
-  checkPaymentReturn();
 
   // Initialize platform list
   if (platformData.length === 0) {

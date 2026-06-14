@@ -1,3 +1,11 @@
 {
-    "version": 2
+    "version": 2,
+    "functions": {
+        "api/send-media-kit.js": {
+            "maxDuration": 60
+        },
+        "api/suggest.js": {
+            "maxDuration": 30
+        }
+    }
 }
