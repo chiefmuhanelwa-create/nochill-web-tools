@@ -3,548 +3,374 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stop Undercharging — SA Creator Rate Card Calculator | NOCHILL</title>
-  <meta name="description" content="The only African influencer rate calculator backed by real 2024 SA CPM data. Know your worth. Charge what you're worth.">
+  <title>SA Creator Rate Card Calculator | RateCard Pro</title>
+  <meta name="description" content="Professional influencer pricing backed by real 2024-25 SA CPM data. Know your worth. Charge what you're worth.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:        #C9A84C;
-      --gold-mid:    #D4B26A;
-      --gold-deep:   #8B6914;
-      --gold-bg:     rgba(201,168,76,0.10);
-      --gold-border: rgba(201,168,76,0.28);
-      --dark:        #111111;
-      --charcoal:    #1C1C1C;
-      --text-h:      #111111;
-      --text-b:      #333333;
-      --text-dim:    #555555;
-      --text-muted:  #888888;
-      --white75:     rgba(255,255,255,0.75);
-      --white88:     rgba(255,255,255,0.88);
-      --border-lt:   rgba(0,0,0,0.08);
-      --border-md:   rgba(0,0,0,0.14);
-      --shadow-card: 0 4px 24px -4px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-gold: 0 0 0 3px rgba(201,168,76,0.22);
-      --r-xl:        20px;
-      --r-lg:        14px;
-      --r-md:        10px;
-      --font:        'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-head:   'Montserrat', 'Inter', sans-serif;
+      --primary:          #1a4c6e;
+      --primary-hover:    #163f5c;
+      --primary-light:    rgba(26,76,110,0.08);
+      --primary-border:   rgba(26,76,110,0.20);
+      --secondary:        #2a6b96;
+      --secondary-light:  rgba(42,107,150,0.08);
+      --secondary-border: rgba(42,107,150,0.25);
+      --accent:           #30a054;
+      --accent-light:     rgba(48,160,84,0.08);
+      --accent-border:    rgba(48,160,84,0.30);
+      --amber-dark:       #92400e;
+      --amber-bg:         #fffbeb;
+      --amber-border:     rgba(245,158,11,0.35);
+      --destructive:      #dc2626;
+      --bg:               #f3f5f7;
+      --card:             #ffffff;
+      --border:           #dde2e8;
+      --muted:            #eaeef2;
+      --fg:               #0d2d45;
+      --fg-dim:           #2d4a5e;
+      --fg-muted:         #6b7a8d;
+      --r-card:           16px;
+      --r-input:          10px;
+      --shadow-card:      0 4px 6px -1px rgba(26,76,110,0.06), 0 2px 4px -2px rgba(26,76,110,0.06);
+      --shadow-elevated:  0 10px 25px -5px rgba(26,76,110,0.10), 0 8px 10px -6px rgba(26,76,110,0.06);
+      --font:             'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-head:        'Space Grotesk', 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--font);
-      color: var(--text-b);
+      background: var(--bg);
+      color: var(--fg-dim);
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* ── ANIMATED BACKGROUND ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: -2;
-      background: linear-gradient(135deg, #FBF8EF 0%, #F5EDD6 40%, #ECE2C1 75%, #E6DAAF 100%);
-    }
-    .bg-blob {
-      position: fixed; border-radius: 50%;
-      filter: blur(90px); pointer-events: none; z-index: -1;
-      animation: bgFloat 28s ease-in-out infinite;
-    }
-    .bg-blob-1 { width:700px; height:700px; top:-250px; left:-200px; background:rgba(201,168,76,0.15); animation-delay:0s; }
-    .bg-blob-2 { width:520px; height:520px; top:45%; right:-220px; background:rgba(201,168,76,0.09); animation-delay:-9s; }
-    .bg-blob-3 { width:460px; height:460px; bottom:-80px; left:30%; background:rgba(139,105,20,0.07); animation-delay:-18s; }
-
-    @keyframes bgFloat {
-      0%,100% { transform: translateY(0) scale(1); }
-      33%      { transform: translateY(-40px) scale(1.03); }
-      66%      { transform: translateY(28px) scale(0.97); }
-    }
-    @keyframes slideUp  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
-    @keyframes countUp  { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+    @keyframes slideUp  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
     @keyframes spin     { to { transform:rotate(360deg); } }
-    @keyframes liveDot  {
-      0%   { box-shadow:0 0 0 0 rgba(201,168,76,0.6); }
-      70%  { box-shadow:0 0 0 8px rgba(201,168,76,0); }
-      100% { box-shadow:0 0 0 0 rgba(201,168,76,0); }
-    }
-
-    /* ── GLASS SYSTEM ── */
-    .glass {
-      background: var(--white75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transform: translateZ(0);
-    }
-    .glass-strong {
-      background: var(--white88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transform: translateZ(0);
-    }
-    .floating {
-      transition: transform 0.22s ease-out, box-shadow 0.22s ease-out;
-      will-change: auto;
-    }
-    .floating:hover {
-      transform: translateY(-2px) translateZ(0);
-      box-shadow: 0 10px 36px -8px rgba(0,0,0,0.18);
-    }
-    @media (max-width:767px) { .floating:hover { transform: none; } }
+    @keyframes pulseDot { 0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.4);} 50%{box-shadow:0 0 0 6px rgba(48,160,84,0);} }
+    @keyframes countUpAnim { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes pulseAccent { 0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.3);} 50%{box-shadow:0 0 0 8px rgba(48,160,84,0);} }
 
     /* ── LAYOUT ── */
-    .container { max-width:860px; margin:0 auto; padding:0 1.25rem; }
-    .screen { display:none; min-height:100vh; padding:2rem 0 6rem; animation:slideUp 0.35s ease both; }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 1.25rem; }
+    .screen    { display:none; min-height:100vh; padding:2rem 0 6rem; animation:slideUp 0.3s ease both; }
     .screen.active { display:block; }
 
     /* ── TOPBAR ── */
     .topbar {
       position:sticky; top:0; z-index:100;
-      border-bottom:1px solid rgba(201,168,76,0.20);
-      padding:0.85rem 1.25rem;
-      box-shadow:0 1px 12px rgba(0,0,0,0.06);
+      background:var(--card); border-bottom:1px solid var(--border);
+      padding:0.75rem 1.25rem; box-shadow:0 1px 4px rgba(0,0,0,0.05);
     }
-    .topbar-inner { max-width:860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .logo {
-      font-family:var(--font-head); font-weight:900; font-size:1rem;
-      color:var(--gold-deep); letter-spacing:0.06em; text-transform:uppercase;
-    }
-    .logo span { color:var(--text-muted); font-weight:400; font-family:var(--font); font-size:0.9em; }
+    .topbar-inner { max-width:880px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .logo-group  { display:flex; align-items:center; gap:0.75rem; }
+    .logo-icon   { width:36px; height:36px; flex-shrink:0; background:var(--primary); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem; }
+    .logo-title  { font-family:var(--font-head); font-weight:700; font-size:1.1rem; color:var(--fg); line-height:1.2; }
+    .logo-sub    { font-size:0.72rem; color:var(--fg-muted); display:none; }
+    @media(min-width:480px){ .logo-sub{display:block;} }
     .topbar-right { display:flex; align-items:center; gap:12px; }
 
-    /* ── STEP INDICATOR ── */
+    /* Step indicator */
     .step-indicator { display:flex; gap:5px; align-items:center; }
-    .step-seg { height:4px; width:32px; border-radius:2px; background:rgba(0,0,0,0.12); transition:background 0.3s; }
-    .step-seg.done    { background:var(--gold); }
-    .step-seg.current { background:var(--gold-deep); }
+    .step-seg { height:4px; width:28px; border-radius:2px; background:var(--border); transition:background .3s; }
+    .step-seg.done    { background:var(--primary); }
+    .step-seg.current { background:var(--secondary); }
 
-    /* ── LIVE BADGE ── */
-    .nx-status-live {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:5px 11px; border-radius:999px;
-      background:var(--gold-bg); border:1px solid var(--gold-border);
-      font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
-      color:var(--gold-deep);
-    }
-    .nx-live-dot {
-      width:7px; height:7px; border-radius:50%;
-      background:var(--gold); flex-shrink:0;
-      animation:liveDot 1.8s ease-out 4;
-    }
+    /* Live badge */
+    .nx-status-live { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px; background:var(--accent-light); border:1px solid var(--accent-border); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+    .nx-live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0; animation:pulseDot 2s ease-out infinite; }
 
     /* ── SECTION CARD ── */
-    .section-card {
-      border-radius:var(--r-xl);
-      border:1px solid rgba(201,168,76,0.22);
-      box-shadow:var(--shadow-card);
-      overflow:hidden; margin-bottom:1.2rem;
-    }
-    .card-header {
-      display:flex; align-items:center; gap:0.65rem;
-      padding:1rem 1.4rem;
-      border-bottom:1px solid rgba(255,255,255,0.65);
-      background:rgba(255,255,255,0.5);
-    }
-    .card-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; background:var(--gold); }
-    .card-dot.blue  { background:#6366F1; }
-    .card-dot.green { background:#10B981; }
-    .card-dot.amber { background:#F59E0B; }
-    .card-header-title { font-weight:700; font-size:0.95rem; color:var(--text-h); }
-    .card-header-sub   { font-size:0.78rem; color:var(--text-muted); margin-left:auto; }
-    .card-body { padding:1.4rem; }
+    .section-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); box-shadow:var(--shadow-card); overflow:hidden; margin-bottom:1.25rem; }
+    .card-header  { display:flex; align-items:center; gap:.65rem; padding:1rem 1.5rem; background:var(--muted); border-bottom:1px solid var(--border); }
+    .card-dot     { width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--primary); }
+    .card-dot.blue  { background:var(--secondary); }
+    .card-dot.green { background:var(--accent); }
+    .card-dot.amber { background:#f59e0b; }
+    .card-header-title { font-weight:700; font-size:.875rem; color:var(--fg); }
+    .card-header-sub   { font-size:.75rem; color:var(--fg-muted); margin-left:auto; }
+    .card-body { padding:1.5rem; }
 
     /* ── TYPOGRAPHY ── */
-    h1 { font-family:var(--font-head); font-size:clamp(1.9rem,5vw,3rem); font-weight:900; line-height:1.1; color:var(--text-h); }
-    h2 { font-family:var(--font-head); font-size:clamp(1.25rem,3vw,1.7rem); font-weight:800; color:var(--text-h); }
-    h3 { font-size:1.05rem; font-weight:700; color:var(--text-h); }
-    p  { color:var(--text-dim); }
+    h1 { font-family:var(--font-head); font-size:clamp(1.75rem,5vw,2.75rem); font-weight:700; line-height:1.15; color:var(--fg); }
+    h2 { font-family:var(--font-head); font-size:clamp(1.2rem,3vw,1.6rem); font-weight:700; color:var(--fg); }
+    h3 { font-size:1rem; font-weight:700; color:var(--fg); }
+    p  { color:var(--fg-muted); }
 
     /* ── EYEBROW ── */
-    .eyebrow {
-      display:inline-flex; align-items:center; gap:0.5rem;
-      background:var(--gold-bg); border:1px solid var(--gold-border);
-      border-radius:999px; padding:0.3rem 0.9rem;
-      font-size:0.78rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
-      color:var(--gold-deep); margin-bottom:1.25rem;
-    }
+    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; background:var(--primary-light); border:1px solid var(--primary-border); border-radius:999px; padding:.3rem .9rem; font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--primary); margin-bottom:1rem; }
 
     /* ── TRUST BADGES ── */
-    .trust-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:0.6rem; margin-bottom:2rem; }
-    .trust-badge {
-      background:var(--white88); border:1px solid var(--border-lt);
-      border-radius:999px; padding:0.42rem 1rem;
-      font-size:0.8rem; font-weight:600; color:var(--text-dim);
-      display:flex; align-items:center; gap:0.4rem;
-      box-shadow:0 1px 4px rgba(0,0,0,0.06);
-    }
-    .trust-badge .chk { color:var(--gold); }
+    .trust-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:.5rem; margin-bottom:1.75rem; }
+    .trust-badge  { background:var(--card); border:1px solid var(--border); border-radius:999px; padding:.4rem .9rem; font-size:.78rem; font-weight:600; color:var(--fg-dim); display:flex; align-items:center; gap:.4rem; }
+    .trust-badge .chk { color:var(--accent); }
 
-    /* ── PRIMARY CTA BUTTON ── */
-    .cta-glow {
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:14px 28px; border-radius:12px;
-      background:linear-gradient(135deg, var(--dark) 0%, var(--charcoal) 100%);
-      color:var(--gold);
-      font-family:var(--font); font-weight:700; font-size:15px;
-      border:none; cursor:pointer; text-decoration:none;
-      box-shadow:0 4px 16px rgba(0,0,0,0.20);
-      transition:transform 0.2s ease, box-shadow 0.2s ease;
-      width:100%; letter-spacing:0.01em;
-    }
-    .cta-glow:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.28); }
-    .cta-glow:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
+    /* ── DISCLAIMER ── */
+    .disclaimer-banner { display:flex; gap:.9rem; align-items:flex-start; background:var(--amber-bg); border:1px solid var(--amber-border); border-radius:var(--r-card); padding:1.1rem 1.25rem; margin-bottom:1.5rem; }
+    .disclaimer-icon   { width:38px; height:38px; flex-shrink:0; background:rgba(245,158,11,.12); border:1px solid var(--amber-border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+    .disclaimer-title  { font-size:.875rem; font-weight:700; color:var(--fg); margin-bottom:.25rem; }
+    .disclaimer-text   { font-size:.82rem; color:var(--amber-dark); line-height:1.55; }
 
-    /* ── NAV BUTTONS ── */
-    .btn {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:0.85rem 1.5rem; border-radius:10px;
-      font-family:var(--font); font-weight:700; font-size:0.9rem;
-      cursor:pointer; border:none; transition:all 0.2s; text-decoration:none;
-    }
-    .btn-primary { background:var(--dark); color:var(--gold); border:1px solid rgba(0,0,0,0.8); box-shadow:0 4px 16px rgba(0,0,0,0.15); }
-    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.25); }
-    .btn-ghost { background:rgba(255,255,255,0.7); color:var(--text-dim); border:1px solid var(--border-md); }
-    .btn-ghost:hover { background:rgba(255,255,255,0.9); color:var(--text-h); }
-    .btn-danger-outline { background:transparent; color:#DC2626; border:1.5px solid rgba(239,68,68,0.35); padding:0.4rem 0.75rem; font-size:0.78rem; }
-    .btn-danger-outline:hover { background:rgba(239,68,68,0.08); }
-    .btn-outline-sm {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:10px 16px; border-radius:10px;
-      background:rgba(255,255,255,0.7); border:1.5px solid var(--gold-border);
-      font-family:var(--font); font-weight:600; font-size:14px; color:var(--gold-deep);
-      cursor:pointer; transition:all 0.2s; width:100%; justify-content:center;
-    }
-    .btn-outline-sm:hover { background:var(--gold-bg); }
+    /* ── INFO BANNER ── */
+    .info-banner      { display:flex; gap:.7rem; align-items:flex-start; background:var(--secondary-light); border:1px solid var(--secondary-border); border-radius:10px; padding:.85rem 1rem; font-size:.835rem; color:var(--fg-dim); margin-bottom:1.25rem; }
+    .info-banner-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
+
+    /* ── BUTTONS ── */
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:.8rem 1.35rem; border-radius:var(--r-input); font-family:var(--font); font-weight:700; font-size:.875rem; cursor:pointer; transition:all .2s; text-decoration:none; border:none; }
+    .btn-primary { background:var(--primary); color:#fff; box-shadow:0 4px 12px rgba(26,76,110,.22); }
+    .btn-primary:hover { background:var(--primary-hover); box-shadow:0 6px 20px rgba(26,76,110,.30); transform:translateY(-1px); }
+    .btn-ghost  { background:var(--card); color:var(--fg-dim); border:1px solid var(--border) !important; }
+    .btn-ghost:hover { background:var(--muted); color:var(--fg); }
+    .btn-danger-outline { background:transparent; color:#dc2626; border:1.5px solid rgba(220,38,38,.30) !important; padding:.38rem .75rem; font-size:.78rem; border-radius:8px; }
+    .btn-danger-outline:hover { background:rgba(220,38,38,.06); }
+    .btn-outline-sm { display:inline-flex; align-items:center; gap:6px; padding:.65rem 1rem; border-radius:var(--r-input); background:var(--card); border:1px solid var(--border); font-family:var(--font); font-weight:600; font-size:.84rem; color:var(--fg-dim); cursor:pointer; transition:all .2s; width:100%; justify-content:center; }
+    .btn-outline-sm:hover { background:var(--muted); color:var(--fg); }
     .btn-full { width:100%; justify-content:center; }
 
+    .cta-glow { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:.875rem 1.5rem; border-radius:var(--r-input); background:var(--primary); color:#fff; font-family:var(--font); font-weight:700; font-size:.9375rem; border:none; cursor:pointer; text-decoration:none; box-shadow:0 4px 16px rgba(26,76,110,.28); transition:all .2s; width:100%; letter-spacing:.01em; }
+    .cta-glow:hover    { background:var(--primary-hover); transform:translateY(-1px); box-shadow:0 8px 24px rgba(26,76,110,.35); }
+    .cta-glow:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
     /* ── INPUTS ── */
-    .nx-input, .form-input, .form-select {
-      width:100%;
-      background:rgba(255,255,255,0.85);
-      border:1.5px solid rgba(201,168,76,0.25);
-      border-radius:var(--r-md); padding:12px 14px;
-      font-size:16px; color:var(--text-h); font-family:var(--font);
-      transition:border-color 0.2s, box-shadow 0.2s;
-      outline:none; -webkit-appearance:none; appearance:none;
-    }
-    .nx-input:focus, .form-input:focus, .form-select:focus {
-      border-color:var(--gold); box-shadow:var(--shadow-gold);
-      background:rgba(255,255,255,0.96);
-    }
-    .nx-input::placeholder, .form-input::placeholder { color:#BCBCBC; }
-    .form-input.error { border-color:#EF4444; }
+    .nx-input, .form-input, .form-select { width:100%; background:var(--card); border:1px solid var(--border); border-radius:var(--r-input); padding:.75rem 1rem; font-size:.875rem; color:var(--fg); font-family:var(--font); transition:border-color .2s, box-shadow .2s; outline:none; -webkit-appearance:none; appearance:none; }
+    .nx-input:focus, .form-input:focus, .form-select:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
+    .nx-input:hover:not(:focus), .form-input:hover:not(:focus), .form-select:hover:not(:focus) { border-color:rgba(26,76,110,.4); }
+    .nx-input::placeholder, .form-input::placeholder { color:#a0aab4; }
+    .form-input.error { border-color:var(--destructive); }
+    .form-select { cursor:pointer; }
     .form-select option { background:#fff; }
 
     /* ── FORM ELEMENTS ── */
     .form-group { margin-bottom:1rem; }
-    .form-label {
-      display:flex; align-items:center; gap:0.4rem;
-      font-size:0.87rem; font-weight:700; color:var(--text-h); margin-bottom:0.45rem;
-    }
-    .info-icon {
-      width:15px; height:15px; border-radius:50%;
-      background:rgba(255,255,255,0.8); border:1px solid var(--border-md);
-      color:var(--text-muted); font-size:0.6rem; font-weight:700;
-      display:inline-flex; align-items:center; justify-content:center;
-      cursor:help; flex-shrink:0; position:relative;
-    }
-    .info-icon:hover .tooltip { display:block; }
-    .tooltip {
-      display:none; position:absolute; bottom:calc(100% + 8px); left:50%;
-      transform:translateX(-50%);
-      background:var(--dark); color:#fff;
-      font-size:0.75rem; font-weight:400;
-      padding:0.55rem 0.75rem; border-radius:8px;
-      width:210px; z-index:999; line-height:1.5; white-space:normal;
-    }
-    .tooltip::after {
-      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-      border:5px solid transparent; border-top-color:var(--dark);
-    }
-    .form-hint  { font-size:0.76rem; color:var(--text-muted); margin-top:0.3rem; }
-    .form-error { font-size:0.76rem; color:#EF4444; margin-top:0.3rem; display:none; }
+    .form-label { display:flex; align-items:center; gap:.4rem; font-size:.875rem; font-weight:600; color:var(--fg); margin-bottom:.4rem; }
+    .form-hint  { font-size:.75rem; color:var(--fg-muted); margin-top:.3rem; }
+    .form-error { font-size:.75rem; color:var(--destructive); margin-top:.3rem; display:none; }
     .form-error.visible { display:block; }
+    .info-icon  { width:14px; height:14px; border-radius:50%; background:var(--muted); border:1px solid var(--border); color:var(--fg-muted); font-size:.6rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; cursor:help; flex-shrink:0; position:relative; }
+    .info-icon:hover .tooltip { display:block; }
+    .tooltip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--fg); color:#fff; font-size:.73rem; font-weight:400; padding:.5rem .7rem; border-radius:8px; width:210px; z-index:999; line-height:1.5; white-space:normal; }
+    .tooltip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--fg); }
 
-    .input-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-    .input-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; }
-    @media (max-width:600px) { .input-grid-2 { grid-template-columns:1fr; } .input-grid-3 { grid-template-columns:1fr 1fr; } }
-    @media (max-width:420px) { .input-grid-3 { grid-template-columns:1fr; } }
+    .input-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+    .input-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.75rem; }
+    @media(max-width:600px){ .input-grid-2{grid-template-columns:1fr;} .input-grid-3{grid-template-columns:1fr 1fr;} }
+    @media(max-width:420px){ .input-grid-3{grid-template-columns:1fr;} }
 
     .niche-select-wrap { position:relative; }
-    .niche-select-wrap::after { content:'▾'; position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; }
+    .niche-select-wrap::after { content:'▾'; position:absolute; right:.9rem; top:50%; transform:translateY(-50%); color:var(--fg-muted); pointer-events:none; }
 
-    /* ── PLATFORM CARDS (JS-generated) ── */
-    .platform-card {
-      background:var(--white88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-      border:1px solid rgba(201,168,76,0.22); border-radius:var(--r-xl);
-      padding:1.4rem; margin-bottom:1.1rem;
-      animation:slideUp 0.3s ease both; box-shadow:var(--shadow-card);
-    }
-    .platform-card-header {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:1.2rem; padding-bottom:1rem;
-      border-bottom:1px solid rgba(201,168,76,0.18);
-    }
-    .platform-title { font-weight:700; font-size:1rem; color:var(--text-h); }
+    /* ── CURRENCY ── */
+    .currency-row { display:flex; align-items:flex-end; gap:1rem; flex-wrap:wrap; }
+    .currency-select-wrap { flex:1; min-width:200px; }
+    .currency-select-wrap label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); margin-bottom:6px; }
+    .rate-badge { background:var(--muted); border:1px solid var(--border); border-radius:var(--r-input); padding:.75rem 1rem; font-size:.8rem; font-weight:600; color:var(--fg); white-space:nowrap; min-width:180px; }
+    @media(max-width:600px){ .currency-row{flex-direction:column;} .rate-badge,.currency-select-wrap{width:100%;min-width:unset;} }
 
-    /* ── ER DISPLAY (JS-generated) ── */
-    .er-display {
-      background:var(--gold-bg); border:1px solid var(--gold-border);
-      border-radius:var(--r-md); padding:0.85rem 1rem; margin-top:0.75rem;
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;
-    }
-    .er-value-block { display:flex; align-items:center; gap:0.5rem; }
-    .er-label   { font-size:0.78rem; color:var(--text-muted); }
-    .er-number  { font-size:1.25rem; font-weight:800; color:var(--text-h); }
-    .er-tier-pill { padding:0.18rem 0.55rem; border-radius:100px; font-size:0.72rem; font-weight:700; }
-    .er-formula { font-size:0.7rem; color:var(--text-muted); }
-    .er-benchmark { font-size:0.72rem; color:var(--text-muted); margin-top:0.2rem; }
+    /* ── PLATFORM CARD ── */
+    .platform-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1rem; animation:slideUp .3s ease both; box-shadow:var(--shadow-card); }
+    .platform-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; padding-bottom:1rem; border-bottom:1px solid var(--border); }
+    .platform-title { font-weight:700; font-size:1rem; color:var(--fg); }
+    .platform-cpm-note { background:var(--secondary-light); border-left:3px solid var(--secondary); border-radius:0 8px 8px 0; padding:.55rem .8rem; font-size:.78rem; color:var(--fg-dim); margin-top:.7rem; }
+    .platform-note-banner { background:var(--secondary-light); border:1px solid var(--secondary-border); border-radius:8px; padding:.65rem .9rem; font-size:.8rem; color:var(--secondary); margin-bottom:1rem; display:flex; gap:.5rem; }
 
-    .platform-cpm-note {
-      background:rgba(255,255,255,0.6); border-radius:8px;
-      padding:0.55rem 0.8rem; font-size:0.76rem; color:var(--text-dim);
-      margin-top:0.7rem; border-left:3px solid var(--gold);
-    }
+    /* ── ER DISPLAY ── */
+    .er-display { background:var(--primary-light); border:1px solid var(--primary-border); border-radius:var(--r-input); padding:.85rem 1rem; margin-top:.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
+    .er-value-block { display:flex; align-items:center; gap:.5rem; }
+    .er-label   { font-size:.75rem; color:var(--fg-muted); }
+    .er-number  { font-size:1.2rem; font-weight:800; color:var(--fg); }
+    .er-tier-pill { padding:.15rem .5rem; border-radius:100px; font-size:.7rem; font-weight:700; }
+    .er-formula { font-size:.7rem; color:var(--fg-muted); }
+    .er-benchmark { font-size:.7rem; color:var(--fg-muted); margin-top:.15rem; }
+    .warn-badge { display:inline-flex; align-items:center; gap:.35rem; background:rgba(220,38,38,.07); border:1px solid rgba(220,38,38,.22); border-radius:6px; padding:.25rem .5rem; font-size:.72rem; color:#b91c1c; margin-top:.3rem; }
 
-    /* ── RADIO CARDS (JS-generated) ── */
-    .radio-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:0.7rem; margin-top:0.5rem; }
-    .radio-card {
-      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
-      border-radius:var(--r-lg); padding:1rem; cursor:pointer; transition:all 0.2s; position:relative;
-    }
-    .radio-card:hover { border-color:var(--gold-border); background:rgba(255,255,255,0.88); }
-    .radio-card.selected { border-color:var(--gold); background:var(--gold-bg); box-shadow:0 0 0 3px rgba(201,168,76,0.14); }
+    /* ── RADIO CARDS ── */
+    .radio-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem; margin-top:.5rem; }
+    .radio-card  { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:1rem; cursor:pointer; transition:all .2s; position:relative; }
+    .radio-card:hover   { border-color:rgba(26,76,110,.4); background:var(--primary-light); }
+    .radio-card.selected{ border-color:rgba(26,76,110,.55); background:var(--primary-light); box-shadow:0 0 0 3px rgba(26,76,110,.08); }
     .radio-card input[type="radio"] { display:none; }
-    .radio-card-icon  { font-size:1.5rem; margin-bottom:0.4rem; }
-    .radio-card-label { font-size:0.85rem; font-weight:700; color:var(--text-h); margin-bottom:0.2rem; }
-    .radio-card-note  { font-size:0.7rem; color:var(--text-muted); line-height:1.4; }
-    .radio-card-mult  {
-      position:absolute; top:0.55rem; right:0.55rem;
-      background:var(--gold-bg); color:var(--gold-deep);
-      border-radius:5px; padding:0.12rem 0.35rem; font-size:0.68rem; font-weight:700;
-    }
+    .radio-card-icon  { font-size:1.4rem; margin-bottom:.4rem; }
+    .radio-card-label { font-size:.83rem; font-weight:700; color:var(--fg); margin-bottom:.2rem; }
+    .radio-card.selected .radio-card-label { color:var(--primary); }
+    .radio-card-note  { font-size:.68rem; color:var(--fg-muted); line-height:1.4; }
+    .radio-card-mult  { position:absolute; top:.5rem; right:.5rem; background:var(--primary-light); color:var(--primary); border-radius:5px; padding:.1rem .3rem; font-size:.67rem; font-weight:700; }
 
-    /* ── CHECKBOX CARDS (JS-generated) ── */
-    .checkbox-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(195px,1fr)); gap:0.7rem; margin-top:0.5rem; }
-    .checkbox-card {
-      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
-      border-radius:var(--r-lg); padding:1rem; cursor:pointer; transition:all 0.2s; position:relative;
-    }
-    .checkbox-card:hover { border-color:var(--gold-border); }
-    .checkbox-card.selected { border-color:var(--gold); background:var(--gold-bg); }
+    /* ── CHECKBOX CARDS ── */
+    .checkbox-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:.7rem; margin-top:.5rem; }
+    .checkbox-card  { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:1rem; cursor:pointer; transition:all .2s; position:relative; }
+    .checkbox-card:hover   { border-color:rgba(26,76,110,.4); }
+    .checkbox-card.selected{ border-color:rgba(26,76,110,.55); background:var(--primary-light); }
     .checkbox-card input[type="checkbox"] { display:none; }
-    .checkbox-card-label { font-size:0.85rem; font-weight:700; color:var(--text-h); margin-bottom:0.25rem; }
-    .checkbox-card-desc  { font-size:0.72rem; color:var(--text-muted); line-height:1.4; padding-right:1.5rem; }
-    .checkbox-card-mult  {
-      position:absolute; top:0.55rem; right:0.55rem;
-      background:var(--gold-bg); color:var(--gold-deep);
-      border-radius:5px; padding:0.12rem 0.35rem; font-size:0.68rem; font-weight:700;
-    }
-    .checkbox-tick {
-      position:absolute; bottom:0.6rem; right:0.6rem;
-      width:17px; height:17px; border:2px solid var(--border-md);
-      border-radius:4px; display:flex; align-items:center; justify-content:center; transition:all 0.2s;
-    }
-    .checkbox-card.selected .checkbox-tick { background:var(--gold); border-color:var(--gold); }
-    .checkbox-tick-inner { display:none; font-size:0.6rem; color:#fff; }
+    .checkbox-card-label { font-size:.83rem; font-weight:700; color:var(--fg); margin-bottom:.25rem; }
+    .checkbox-card-desc  { font-size:.7rem; color:var(--fg-muted); line-height:1.4; padding-right:1.5rem; }
+    .checkbox-card-mult  { position:absolute; top:.5rem; right:.5rem; background:var(--primary-light); color:var(--primary); border-radius:5px; padding:.1rem .3rem; font-size:.67rem; font-weight:700; }
+    .checkbox-tick       { position:absolute; bottom:.6rem; right:.6rem; width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .checkbox-card.selected .checkbox-tick { background:var(--primary); border-color:var(--primary); }
+    .checkbox-tick-inner { display:none; font-size:.58rem; color:#fff; }
     .checkbox-card.selected .checkbox-tick-inner { display:block; }
 
     /* ── ACCORDION ── */
-    .accordion { border:1px solid rgba(201,168,76,0.2); border-radius:var(--r-lg); overflow:hidden; background:rgba(255,255,255,0.5); }
-    .accordion-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:1rem 1.25rem; cursor:pointer;
-      background:rgba(255,255,255,0.6); user-select:none; transition:background 0.2s;
-    }
-    .accordion-header:hover { background:rgba(255,255,255,0.85); }
-    .accordion-title { font-weight:700; font-size:0.92rem; color:var(--text-h); }
-    .accordion-arrow { font-size:0.8rem; color:var(--text-muted); transition:transform 0.3s; }
+    .accordion { border:1px solid var(--border); border-radius:var(--r-card); overflow:hidden; background:var(--card); }
+    .accordion-header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; cursor:pointer; background:var(--card); user-select:none; transition:background .2s; }
+    .accordion-header:hover { background:var(--muted); }
+    .accordion-title { font-weight:700; font-size:.875rem; color:var(--fg); }
+    .accordion-arrow { font-size:.8rem; color:var(--fg-muted); transition:transform .3s; }
     .accordion-arrow.open { transform:rotate(180deg); }
-    .accordion-body { display:none; padding:1.25rem; background:rgba(255,255,255,0.4); border-top:1px solid rgba(201,168,76,0.15); animation:slideUp 0.25s ease both; }
+    .accordion-body { display:none; padding:1.25rem; background:var(--card); border-top:1px solid var(--border); animation:slideUp .2s ease both; }
     .accordion-body.open { display:block; }
 
-    /* ── INFO BANNER ── */
-    .info-banner {
-      display:flex; gap:0.7rem; align-items:flex-start;
-      background:rgba(255,255,255,0.70); border:1px solid rgba(201,168,76,0.25);
-      border-radius:var(--r-md); padding:0.85rem 1rem;
-      font-size:0.85rem; color:var(--text-dim); margin-bottom:1.25rem;
-    }
-    .info-banner-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
-
-    /* ── CURRENCY ROW ── */
-    .currency-row { display:flex; align-items:flex-end; gap:12px; margin-bottom:0; flex-wrap:wrap; }
-    .currency-select-wrap { flex:1; min-width:200px; }
-    .currency-select-wrap label {
-      display:block; font-size:11px; font-weight:700; text-transform:uppercase;
-      letter-spacing:0.1em; color:var(--text-muted); margin-bottom:6px;
-    }
-    .rate-badge {
-      background:rgba(255,255,255,0.85); border:1px solid var(--border-lt);
-      border-radius:9px; padding:12px 14px; font-size:13px; font-weight:600; color:var(--text-h);
-      white-space:nowrap; min-width:180px;
-    }
-    @media (max-width:600px) { .currency-row { flex-direction:column; } .rate-badge,.currency-select-wrap { width:100%; min-width:unset; } }
-
-    /* ── PLATFORM NOTE BANNER ── */
-    .platform-note-banner {
-      background:rgba(255,255,255,0.65); border:1px solid var(--gold-border);
-      border-radius:var(--r-md); padding:0.75rem 1rem;
-      font-size:0.82rem; color:var(--gold-deep);
-      margin-bottom:1rem; display:flex; gap:0.5rem;
-    }
+    /* ── SECTION HEADER ── */
+    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+    .section-step   { font-size:.72rem; font-weight:600; color:var(--fg-muted); background:var(--card); border:1px solid var(--border); border-radius:100px; padding:.22rem .65rem; }
 
     /* ── BOTTOM NAV ── */
     .bottom-nav { display:flex; justify-content:space-between; align-items:center; padding-top:1.75rem; gap:1rem; flex-wrap:wrap; }
-    @media (max-width:500px) { .bottom-nav { flex-direction:column; } .bottom-nav .btn,.bottom-nav button { width:100%; justify-content:center; } }
+    @media(max-width:500px){ .bottom-nav{flex-direction:column;} .bottom-nav .btn,.bottom-nav button{width:100%;justify-content:center;} }
 
-    /* ── SECTION HEADER ── */
-    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
-    .section-step { font-size:0.76rem; font-weight:600; color:var(--text-muted); background:rgba(255,255,255,0.7); border:1px solid var(--border-lt); border-radius:100px; padding:0.22rem 0.65rem; }
-
-    /* ── INTRO SCREEN ── */
-    #s-intro { text-align:center; padding-top:4rem; }
-    .intro-visual {
-      background:rgba(255,255,255,0.75); border:1px solid var(--border-lt);
-      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-      border-radius:var(--r-xl); padding:1.5rem;
-      max-width:560px; margin:0 auto 3rem; text-align:left;
-      box-shadow:0 4px 24px rgba(0,0,0,0.07);
-    }
-    .intro-visual-title { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); margin-bottom:1rem; }
-    .sample-rate-row { display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid var(--border-lt); }
-    .sample-rate-row:last-child { border-bottom:none; }
-    .sample-rate-niche { font-size:0.87rem; color:var(--text-dim); }
-    .sample-rate-value { font-size:0.92rem; font-weight:700; color:var(--gold-deep); }
-
-    /* ── RESULTS ── */
-    .results-tier-block { text-align:center; padding:1.75rem; border:1px solid var(--border-lt); border-radius:var(--r-xl); margin-bottom:1.1rem; }
-    .tier-badge-big { display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1rem; border-radius:100px; font-size:0.88rem; font-weight:800; letter-spacing:0.04em; margin-bottom:0.6rem; }
-    .tier-range { font-size:0.82rem; color:var(--text-muted); }
-
-    .er-result-block { text-align:center; padding:1.5rem; border:1px solid var(--border-lt); border-radius:var(--r-xl); margin-bottom:1.1rem; }
-    .er-result-number { font-size:2.8rem; font-weight:900; }
-    .er-result-label  { font-size:0.95rem; color:var(--text-dim); margin:0.25rem 0; }
-    .er-result-bench  { font-size:0.82rem; color:var(--text-muted); }
-
-    .rate-cards-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.9rem; margin-bottom:1.1rem; }
-    @media (max-width:640px) { .rate-cards-grid { grid-template-columns:1fr; } }
-    .rate-card {
-      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
-      border-radius:var(--r-lg); padding:1.25rem; text-align:center;
-      animation:slideUp 0.4s ease both;
-    }
-    .rate-card:nth-child(1) { animation-delay:0ms; }
-    .rate-card:nth-child(2) { animation-delay:120ms; }
-    .rate-card:nth-child(3) { animation-delay:240ms; }
-    .rate-card.recommended { border-color:var(--gold); background:var(--gold-bg); position:relative; overflow:hidden; }
-    .rate-card-tag {
-      position:absolute; top:0; left:0; right:0;
-      background:linear-gradient(90deg,var(--gold-mid),var(--gold));
-      color:#fff; font-size:0.7rem; font-weight:800; letter-spacing:0.1em;
-      padding:0.28rem; text-transform:uppercase;
-    }
-    .rate-card-body { padding-top:0.4rem; }
-    .rate-card.recommended .rate-card-body { padding-top:1.1rem; }
-    .rate-card-type { font-size:0.72rem; color:var(--text-muted); margin-bottom:0.5rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
-    .rate-card-zar  { font-size:1.9rem; font-weight:900; color:var(--text-h); }
-    .rate-card-usd  { font-size:0.76rem; color:var(--text-muted); margin-top:0.2rem; }
-    .rate-card-sub  { font-size:0.74rem; color:var(--text-muted); margin-top:0.5rem; line-height:1.4; }
-    .recommended .rate-card-zar { color:var(--gold-deep); font-size:2.2rem; }
-
-    .price-range-block {
-      border:1px solid var(--border-lt); border-radius:var(--r-lg);
-      padding:1.1rem 1.3rem; display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:0.75rem; margin-bottom:1.1rem;
-    }
-    .price-range-label  { font-size:0.82rem; color:var(--text-muted); font-weight:600; }
-    .price-range-values { font-size:1rem; font-weight:700; color:var(--text-h); }
-    .price-range-hint   { font-size:0.74rem; color:var(--text-muted); margin-top:0.2rem; }
-
-    .results-section-label { font-size:0.74rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); margin-bottom:0.8rem; padding-bottom:0.45rem; border-bottom:1px solid var(--border-lt); }
-
-    /* ── BREAKDOWN ── */
-    .breakdown-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13.5px; }
-    .breakdown-row:last-child { border:none; }
-    .breakdown-key { color:var(--text-dim); font-weight:500; }
-    .breakdown-val { font-weight:700; color:var(--text-h); }
-    .breakdown-val.accent { color:var(--gold-deep); }
-
-    /* ── BAR CHART ── */
-    .bar-chart { margin:0.75rem 0; }
-    .bar-row { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.7rem; }
-    .bar-label { font-size:0.78rem; color:var(--text-muted); width:100px; flex-shrink:0; text-align:right; }
-    .bar-track { flex:1; height:9px; background:rgba(0,0,0,0.08); border-radius:100px; overflow:hidden; }
-    .bar-fill  { height:100%; border-radius:100px; transition:width 1s ease 0.3s; }
-    .bar-value { font-size:0.78rem; font-weight:700; width:75px; flex-shrink:0; }
-
-    /* ── TIP CARDS ── */
-    .tip-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:0.75rem; margin-top:0.75rem; }
-    .tip-card { background:rgba(255,255,255,0.75); border:1px solid var(--border-lt); border-radius:var(--r-lg); padding:1rem; font-size:0.83rem; color:var(--text-dim); line-height:1.5; }
-    .tip-card-icon { font-size:1.2rem; margin-bottom:0.4rem; }
-
-    /* ── WARN BADGE ── */
-    .warn-badge { display:inline-flex; align-items:center; gap:0.35rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:0.28rem 0.55rem; font-size:0.73rem; color:#B91C1C; margin-top:0.3rem; }
-
-    /* ── EDU CONTENT ── */
-    .formula-box { background:rgba(255,255,255,0.6); border:1px solid var(--gold-border); border-radius:8px; padding:0.75rem 1rem; font-family:monospace; font-size:0.8rem; color:var(--gold-deep); margin:0.75rem 0; line-height:1.8; }
-    .edu-definition { margin-bottom:0.9rem; }
-    .edu-definition dt { font-weight:700; color:var(--text-h); margin-bottom:0.25rem; font-size:0.9rem; }
-    .edu-definition dd { font-size:0.83rem; color:var(--text-muted); line-height:1.6; margin-left:0; }
+    /* ── EDU ── */
+    .formula-box { background:var(--muted); border:1px solid var(--border); border-radius:8px; padding:.75rem 1rem; font-family:monospace; font-size:.78rem; color:var(--secondary); margin:.75rem 0; line-height:1.8; }
+    .edu-definition { margin-bottom:.9rem; }
+    .edu-definition dt { font-weight:700; color:var(--fg); margin-bottom:.25rem; font-size:.875rem; }
+    .edu-definition dd { font-size:.8rem; color:var(--fg-muted); line-height:1.6; margin-left:0; }
 
     /* ── LOADING ── */
     #s-loading { display:none; align-items:center; justify-content:center; flex-direction:column; gap:1.5rem; min-height:80vh; }
     #s-loading.active { display:flex; }
-    .loader-ring { width:68px; height:68px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.85s linear infinite; }
-    .loader-text { font-size:1.05rem; font-weight:700; color:var(--text-h); text-align:center; }
-    .loader-sub  { font-size:0.83rem; color:var(--text-muted); text-align:center; }
-    .progress-bar-wrap { width:260px; height:5px; background:rgba(0,0,0,0.10); border-radius:100px; overflow:hidden; }
-    .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--gold-mid),var(--gold)); border-radius:100px; width:0%; transition:width 1.5s ease; }
+    .loader-ring { width:64px; height:64px; border:3px solid var(--border); border-top-color:var(--primary); border-radius:50%; animation:spin .85s linear infinite; }
+    .loader-text { font-family:var(--font-head); font-size:1rem; font-weight:700; color:var(--fg); text-align:center; }
+    .loader-sub  { font-size:.82rem; color:var(--fg-muted); text-align:center; }
+    .progress-bar-wrap { width:240px; height:4px; background:var(--border); border-radius:100px; overflow:hidden; }
+    .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--secondary),var(--primary)); border-radius:100px; width:0%; transition:width 1.5s ease; }
 
-    /* ── ACTION ROW ── */
-    .action-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-top:1.5rem; }
-    @media (max-width:480px) { .action-row { flex-direction:column; } .action-row .btn { width:100%; justify-content:center; } }
+    /* ── INTRO ── */
+    #s-intro { text-align:center; padding-top:3rem; }
+    .intro-visual { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.5rem; max-width:540px; margin:0 auto 2.5rem; text-align:left; box-shadow:var(--shadow-card); }
+    .intro-visual-title { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:1rem; }
+    .sample-rate-row { display:flex; align-items:center; justify-content:space-between; padding:.55rem 0; border-bottom:1px solid var(--border); }
+    .sample-rate-row:last-child { border-bottom:none; }
+    .sample-rate-niche { font-size:.85rem; color:var(--fg-dim); }
+    .sample-rate-value { font-size:.875rem; font-weight:700; color:var(--primary); }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width:5px; }
+    /* ── RESULTS ── */
+    .results-hero-card { border:2px solid var(--accent-border); border-radius:var(--r-card); background:var(--card); padding:1.75rem; margin-bottom:1.25rem; box-shadow:var(--shadow-elevated); animation:countUpAnim .4s ease both; }
+    .results-hero-badge { display:inline-flex; align-items:center; gap:.4rem; background:var(--accent-light); border:1px solid var(--accent-border); border-radius:999px; padding:.28rem .75rem; font-size:.72rem; font-weight:700; color:var(--accent); margin-bottom:1rem; }
+    .results-hero-heading { font-size:.875rem; font-weight:700; color:var(--fg); margin-bottom:.15rem; }
+    .results-hero-sub     { font-size:.8rem; color:var(--fg-muted); }
+    .results-hero-row     { display:flex; align-items:baseline; justify-content:space-between; padding:.55rem 0; }
+    .results-hero-row-label { font-size:.875rem; font-weight:600; color:var(--fg-muted); display:flex; align-items:center; gap:.4rem; }
+    .results-hero-row-value { font-size:1.3rem; font-weight:800; color:var(--fg); }
+    .results-hero-divider   { border-top:1px solid var(--accent-border); margin:.35rem 0; }
+    .results-hero-total     { font-size:clamp(2rem,5vw,2.75rem); font-weight:900; color:var(--accent); animation:pulseAccent 2s ease-in-out infinite; }
+    .results-hero-usd       { font-size:.82rem; color:var(--fg-muted); margin-top:.3rem; }
+    .results-hero-range     { margin-top:1.1rem; padding:1rem; background:var(--muted); border-radius:10px; border:1px solid rgba(48,160,84,.2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
+    .results-hero-range-label  { font-size:.8rem; font-weight:600; color:var(--fg-muted); }
+    .results-hero-range-values { font-size:.95rem; font-weight:700; color:var(--fg); }
+
+    .results-metrics-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
+    @media(max-width:460px){ .results-metrics-grid{grid-template-columns:1fr;} }
+    .results-metric-card  { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.25rem; box-shadow:var(--shadow-card); }
+    .results-metric-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:.75rem; display:flex; align-items:center; gap:.4rem; }
+    .results-metric-value { font-size:1.85rem; font-weight:900; color:var(--fg); margin-bottom:.3rem; }
+    .results-metric-tier  { font-size:1.1rem; font-weight:900; color:var(--fg); margin-bottom:.3rem; line-height:1.2; }
+    .results-metric-sub   { font-size:.75rem; color:var(--fg-muted); font-weight:600; }
+
+    .results-method-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
+    @media(max-width:460px){ .results-method-grid{grid-template-columns:1fr;} }
+    .results-method-card { background:var(--card); border-radius:var(--r-card); padding:1.25rem; box-shadow:var(--shadow-card); }
+    .results-method-card.cpm-card { border:1px solid var(--secondary-border); }
+    .results-method-card.cpe-card { border:1px solid var(--primary-border); }
+    .results-method-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.65rem; }
+    .results-method-label.cpm { color:var(--secondary); }
+    .results-method-label.cpe { color:var(--primary); }
+    .results-method-value { font-size:1.4rem; font-weight:800; color:var(--fg); }
+    .results-method-sub   { font-size:.72rem; margin-top:.5rem; }
+    .results-method-sub.cpm { color:var(--secondary); }
+    .results-method-sub.cpe { color:var(--primary); }
+
+    /* Negotiation */
+    .results-negotiation-card { background:var(--card); border:1px solid var(--amber-border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
+    .results-negotiation-header { display:flex; align-items:center; gap:.6rem; margin-bottom:1.25rem; }
+    .results-negotiation-title  { font-size:.875rem; font-weight:700; color:var(--fg); }
+    .negotiation-inner-card { border-radius:10px; padding:1rem; margin-bottom:.75rem; }
+    .negotiation-inner-card:last-child { margin-bottom:0; }
+    .negotiation-inner-card.quote { background:var(--amber-bg); border:1px solid rgba(245,158,11,.28); }
+    .negotiation-inner-card.floor { background:var(--card); border:1px solid rgba(245,158,11,.2); }
+    .negotiation-inner-label { font-size:.68rem; font-weight:700; color:var(--amber-dark); text-transform:uppercase; letter-spacing:.08em; margin-bottom:.4rem; }
+    .negotiation-inner-value { font-size:1.4rem; font-weight:800; color:#78350f; }
+    .negotiation-inner-sub   { font-size:.72rem; color:var(--amber-dark); margin-top:.3rem; }
+
+    /* Insights */
+    .results-insights-card { background:var(--card); border:1px solid var(--secondary-border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
+    .results-insights-header { display:flex; align-items:center; gap:.6rem; margin-bottom:1rem; }
+    .results-insights-title  { font-size:.875rem; font-weight:700; color:var(--fg); }
+    .insight-item { display:flex; align-items:flex-start; gap:.75rem; padding:.55rem 0; font-size:.835rem; color:var(--fg-muted); line-height:1.55; border-bottom:1px solid var(--border); }
+    .insight-item:last-child { border-bottom:none; }
+    .insight-dot  { width:6px; height:6px; border-radius:50%; background:var(--secondary); flex-shrink:0; margin-top:.5rem; }
+
+    /* Breakdown toggle */
+    .breakdown-toggle-btn { width:100%; display:flex; align-items:center; justify-content:center; gap:.5rem; padding:1rem; border-radius:var(--r-card); background:var(--card); border:1px solid var(--border); color:var(--fg); font-weight:700; font-size:.875rem; cursor:pointer; transition:background .2s; margin-bottom:1rem; font-family:var(--font); }
+    .breakdown-toggle-btn:hover { background:var(--muted); }
+
+    /* Breakdown content cards */
+    .breakdown-section-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); overflow:hidden; margin-bottom:1rem; box-shadow:var(--shadow-card); }
+    .breakdown-section-hdr  { padding:1rem 1.5rem; background:var(--muted); border-bottom:1px solid var(--border); font-size:.875rem; font-weight:700; color:var(--fg); }
+    .breakdown-section-body { padding:1.25rem 1.5rem; }
+    .breakdown-row { display:flex; justify-content:space-between; align-items:center; padding:.55rem 0; border-bottom:1px solid rgba(0,0,0,.04); font-size:.82rem; }
+    .breakdown-row:last-child { border:none; }
+    .breakdown-key { color:var(--fg-muted); font-weight:500; }
+    .breakdown-val { font-weight:700; color:var(--fg); }
+    .breakdown-val.accent { color:var(--secondary); }
+
+    /* Bar chart */
+    .bar-chart { margin:.75rem 0; }
+    .bar-row   { display:flex; align-items:center; gap:.7rem; margin-bottom:.7rem; }
+    .bar-label { font-size:.75rem; color:var(--fg-muted); width:90px; flex-shrink:0; text-align:right; }
+    .bar-track { flex:1; height:8px; background:var(--muted); border-radius:100px; overflow:hidden; }
+    .bar-fill  { height:100%; border-radius:100px; transition:width 1s ease .3s; }
+    .bar-value { font-size:.75rem; font-weight:700; width:80px; flex-shrink:0; }
+
+    /* Upsell + email blocks */
+    .results-upsell-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:2rem; margin-bottom:1.25rem; text-align:center; box-shadow:var(--shadow-card); }
+    .results-upsell-eyebrow { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--primary); margin-bottom:.65rem; }
+    .results-upsell-heading { font-family:var(--font-head); font-size:1.1rem; font-weight:700; color:var(--fg); margin-bottom:.6rem; letter-spacing:-.2px; }
+    .results-upsell-body    { font-size:.86rem; color:var(--fg-muted); margin-bottom:1.25rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7; }
+    .results-email-card     { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.75rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
+    .results-email-eyebrow  { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:.5rem; }
+    .results-email-body     { font-size:.85rem; color:var(--fg-muted); margin-bottom:1.25rem; line-height:1.65; }
+
+    .action-row { display:flex; gap:1rem; padding-top:.5rem; }
+    @media(max-width:480px){ .action-row{flex-direction:column;} .action-row .btn{width:100%;justify-content:center;} }
+
+    /* Benchmark label */
+    .results-section-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:.75rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
+
+    ::-webkit-scrollbar { width:4px; }
     ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.3); border-radius:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-    /* ── PRINT ── */
-    @media print {
-      .topbar,.bg-blob,#results-upsell,.action-row { display:none !important; }
-      body::before { display:none; }
-      .glass,.glass-strong { background:#fff !important; backdrop-filter:none !important; }
-      .accordion-body { display:block !important; }
-    }
-
-    /* ── REDUCED MOTION ── */
-    @media (prefers-reduced-motion:reduce) {
-      *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
-    }
+    @media print { .topbar{display:none!important;} body{background:#fff;} }
+    @media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
   </style>
 </head>
 <body>
 
-<!-- BACKGROUND BLOBS -->
-<div class="bg-blob bg-blob-1"></div>
-<div class="bg-blob bg-blob-2"></div>
-<div class="bg-blob bg-blob-3"></div>
-
 <!-- TOP BAR -->
-<header class="topbar glass">
+<header class="topbar">
   <div class="topbar-inner">
-    <div class="logo">NOCHILL <span>/ Rate Calculator</span></div>
+    <div class="logo-group">
+      <div class="logo-icon">📊</div>
+      <div>
+        <div class="logo-title">RateCard Pro</div>
+        <div class="logo-sub">SA Influencer Pricing Calculator</div>
+      </div>
+    </div>
     <div class="topbar-right">
       <div class="step-indicator" id="step-indicator" style="display:none;">
         <div class="step-seg" id="seg-1"></div>
@@ -553,40 +379,45 @@
       </div>
       <div class="nx-status-live">
         <span class="nx-live-dot"></span>
-        2024 SA Data
+        2024-25 Data
       </div>
     </div>
   </div>
 </header>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 1: INTRO
-══════════════════════════════════════════════ -->
+<!-- ══════════════ SCREEN 1: INTRO ══════════════ -->
 <div class="screen active" id="s-intro">
-  <div class="container">
+  <div class="container" style="text-align:center; padding-top:3rem;">
 
-    <div class="eyebrow">🇿🇦 South African Creator Tool</div>
+    <div class="disclaimer-banner" style="text-align:left; max-width:640px; margin:0 auto 1.75rem;">
+      <div class="disclaimer-icon">ℹ️</div>
+      <div>
+        <div class="disclaimer-title">Professional Estimates</div>
+        <div class="disclaimer-text">Rates are professional estimates based on verified SA market data (2024–25). Use them as your negotiation baseline — not your ceiling.</div>
+      </div>
+    </div>
 
-    <h1 style="margin-bottom:0.9rem;">
+    <div class="eyebrow">✨ Powered by Market Intelligence</div>
+    <h1 style="margin-bottom:.75rem;">
       Stop Guessing.<br>
-      <span style="color:var(--gold-deep);">Start Charging.</span>
+      <span style="color:var(--primary);">Start Charging.</span>
     </h1>
-    <p style="font-size:1.05rem; max-width:560px; margin:0 auto 1.75rem; line-height:1.7;">
-      Most African creators are undercharging — or getting paid in protein bars.
+    <p style="font-size:1rem; max-width:560px; margin:0 auto 1.75rem; line-height:1.75;">
+      Most African creators are undercharging — or getting paid in product.
       A brand's first offer is almost never their real budget.
-      This tool gives you your floor rate and your ceiling, backed by real SA 2024 data.
-      <strong style="color:var(--text-h);">Your number. In Rands.</strong>
+      Get your floor rate and ceiling, backed by real SA data.
+      <strong style="color:var(--fg);">Your number. In Rands.</strong>
     </p>
 
     <div class="trust-badges">
-      <div class="trust-badge"><span class="chk">✓</span> 2024 SA CPM Data</div>
+      <div class="trust-badge"><span class="chk">✓</span> 2024-25 SA CPM Data</div>
       <div class="trust-badge"><span class="chk">✓</span> 7 Platforms</div>
       <div class="trust-badge"><span class="chk">✓</span> 20 Niches</div>
       <div class="trust-badge"><span class="chk">✓</span> Reach + Engagement</div>
       <div class="trust-badge"><span class="chk">✓</span> Free PDF Rate Card</div>
     </div>
 
-    <div style="max-width:360px; margin:0 auto 2.5rem;">
+    <div style="max-width:380px; margin:0 auto 2.5rem;">
       <button class="cta-glow" onclick="goTo('s-platforms')">Calculate My Rate →</button>
     </div>
 
@@ -600,22 +431,44 @@
       <div class="sample-rate-row"><span class="sample-rate-niche">Lifestyle</span><span class="sample-rate-value">R218 CPM</span></div>
     </div>
 
+    <!-- How It Works -->
+    <div style="margin-top:1rem; max-width:700px; margin-left:auto; margin-right:auto;">
+      <h2 style="margin-bottom:.75rem;">How We Calculate Your Rates</h2>
+      <p style="margin-bottom:1.5rem; font-size:.875rem;">Industry-standard pricing methods calibrated for the South African influencer market.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; text-align:left;">
+        <div class="section-card" style="margin-bottom:0;">
+          <div class="card-body">
+            <div style="width:48px; height:48px; border-radius:10px; background:var(--secondary-light); border:1px solid var(--secondary-border); display:flex; align-items:center; justify-content:center; font-size:1.25rem; margin-bottom:1rem;">👁️</div>
+            <h3 style="margin-bottom:.5rem;">CPM Method</h3>
+            <p style="font-size:.82rem; margin-bottom:1rem;">Cost Per Mille — what brands pay per 1,000 views. Best for awareness campaigns.</p>
+            <div style="display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; font-weight:700; color:var(--secondary); background:var(--secondary-light); padding:.3rem .7rem; border-radius:8px;">✓ Reach-based pricing</div>
+          </div>
+        </div>
+        <div class="section-card" style="margin-bottom:0;">
+          <div class="card-body">
+            <div style="width:48px; height:48px; border-radius:10px; background:var(--primary-light); border:1px solid var(--primary-border); display:flex; align-items:center; justify-content:center; font-size:1.25rem; margin-bottom:1rem;">🎯</div>
+            <h3 style="margin-bottom:.5rem;">CPE Method</h3>
+            <p style="font-size:.82rem; margin-bottom:1rem;">Cost Per Engagement — based on likes, comments, shares. Best for conversion campaigns.</p>
+            <div style="display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; font-weight:700; color:var(--primary); background:var(--primary-light); padding:.3rem .7rem; border-radius:8px;">✓ Engagement-based pricing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 2: PLATFORMS
-══════════════════════════════════════════════ -->
+<!-- ══════════════ SCREEN 2: PLATFORMS ══════════════ -->
 <div class="screen" id="s-platforms">
   <div class="container">
 
     <div class="section-header">
-      <h2>Step 1: <span style="color:var(--gold-deep);">Your Platforms &amp; Stats</span></h2>
+      <h2>Step 1: <span style="color:var(--primary);">Your Platforms &amp; Stats</span></h2>
       <span class="section-step">1 of 3</span>
     </div>
 
     <!-- CURRENCY -->
-    <div class="section-card glass-strong floating">
+    <div class="section-card">
       <div class="card-header">
         <div class="card-dot amber"></div>
         <span class="card-header-title">Currency &amp; Region</span>
@@ -650,14 +503,14 @@
 
     <div class="info-banner">
       <span class="info-banner-icon">💡</span>
-      <span>Enter your <strong>real stats</strong>. The more accurate your inputs, the more accurate your rate. Brands will verify — do not inflate your numbers. Honest data = credible rates.</span>
+      <span>Enter your <strong>real stats</strong>. The more accurate your inputs, the more accurate your rate. Brands will verify — do not inflate your numbers.</span>
     </div>
 
     <div id="platforms-container"></div>
 
     <div class="platform-note-banner">
       <span>ℹ️</span>
-      <span>If you're on multiple platforms, add them all. Your <strong>primary platform</strong> (highest follower count) drives the main rate. Others provide context.</span>
+      <span>On multiple platforms? Add them all. Your <strong>primary platform</strong> (highest follower count) drives the main rate.</span>
     </div>
 
     <button class="btn-outline-sm" id="add-platform-btn" onclick="addPlatformCard()" style="margin-bottom:1.5rem;">
@@ -671,19 +524,17 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 3: CONTENT
-══════════════════════════════════════════════ -->
+<!-- ══════════════ SCREEN 3: CONTENT ══════════════ -->
 <div class="screen" id="s-content">
   <div class="container">
 
     <div class="section-header">
-      <h2>Step 2: <span style="color:var(--gold-deep);">Content &amp; Deal Details</span></h2>
+      <h2>Step 2: <span style="color:var(--primary);">Content &amp; Deal Details</span></h2>
       <span class="section-step">2 of 3</span>
     </div>
 
     <!-- NICHE -->
-    <div class="section-card glass-strong floating">
+    <div class="section-card">
       <div class="card-header">
         <div class="card-dot"></div>
         <span class="card-header-title">Your Niche</span>
@@ -695,13 +546,13 @@
             <option value="">— Select your niche —</option>
           </select>
         </div>
-        <div id="niche-cpm-display" class="platform-cpm-note" style="display:none; margin-top:0.75rem;"></div>
-        <p class="form-hint" style="margin-top:0.5rem;">Finance and business niches command 2–3× higher rates than lifestyle. Pick the one that best describes your content.</p>
+        <div id="niche-cpm-display" class="platform-cpm-note" style="display:none; margin-top:.75rem;"></div>
+        <p class="form-hint" style="margin-top:.5rem;">Finance and business niches command 2–3× higher rates than lifestyle. Pick the one that best describes your content.</p>
       </div>
     </div>
 
     <!-- CONTENT TYPE -->
-    <div class="section-card glass-strong floating">
+    <div class="section-card">
       <div class="card-header">
         <div class="card-dot blue"></div>
         <span class="card-header-title">Content Type</span>
@@ -713,7 +564,7 @@
     </div>
 
     <!-- ADD-ONS -->
-    <div class="section-card glass-strong floating">
+    <div class="section-card">
       <div class="card-header">
         <div class="card-dot green"></div>
         <span class="card-header-title">Premium Add-ons</span>
@@ -721,11 +572,11 @@
       </div>
       <div class="card-body">
         <div class="checkbox-cards" id="addon-cards"></div>
-        <p class="form-hint" style="margin-top:0.75rem;">Usage rights and exclusivity are standard industry add-ons. If a brand can run ads using your content — charge for it.</p>
+        <p class="form-hint" style="margin-top:.75rem;">Usage rights and exclusivity are standard industry add-ons. If a brand can run ads using your content — charge for it.</p>
       </div>
     </div>
 
-    <!-- EDUCATION ACCORDION -->
+    <!-- EDUCATION -->
     <div class="accordion" style="margin-bottom:1.5rem;">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         <span class="accordion-title">📊 How is your rate calculated?</span>
@@ -743,7 +594,7 @@
           </div>
           <div class="edu-definition">
             <dt>Why we use MAX(CPM, CPE)</dt>
-            <dd>Your rate is the <strong style="color:var(--gold-deep);">higher of the two</strong>. This protects your maximum value whether a brand values reach or engagement.</dd>
+            <dd>Your rate is the <strong style="color:var(--primary);">higher of the two</strong>. This protects your maximum value whether a brand values reach or engagement.</dd>
           </div>
         </dl>
         <div class="formula-box">
@@ -752,9 +603,7 @@ CPE Rate = cpe_zar × platform_cpe_mult × (avg_likes + avg_comments + avg_share
 Final     = MAX(CPM Rate, CPE Rate) × premium_multiplier<br>
 Range     = Final × 0.85 → Final × 1.15
         </div>
-        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">
-          SA ER benchmark: <strong style="color:var(--gold-deep);">3.39%</strong> average (global: 1.49%). Most SA creators fall in the "High" or "Premium" CPE tier.
-        </p>
+        <p style="font-size:.8rem; color:var(--fg-muted); margin-top:.5rem;">SA ER benchmark: <strong style="color:var(--primary);">3.39%</strong> average (global: 1.49%). Most SA creators fall in the "High" or "Premium" CPE tier.</p>
       </div>
     </div>
 
@@ -765,13 +614,11 @@ Range     = Final × 0.85 → Final × 1.15
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     LOADING
-══════════════════════════════════════════════ -->
+<!-- ══════════════ LOADING ══════════════ -->
 <div id="s-loading">
   <div class="loader-ring"></div>
   <div>
-    <div class="loader-text">Crunching SA 2024 CPM data...</div>
+    <div class="loader-text">Crunching SA 2024-25 CPM data...</div>
     <div class="loader-sub" id="loader-step-text">Applying niche multipliers</div>
   </div>
   <div class="progress-bar-wrap">
@@ -779,41 +626,32 @@ Range     = Final × 0.85 → Final × 1.15
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 4: RESULTS
-══════════════════════════════════════════════ -->
+<!-- ══════════════ SCREEN 4: RESULTS ══════════════ -->
 <div class="screen" id="s-results">
   <div class="container">
 
     <div class="section-header">
-      <h2>Your Rate Card <span style="color:var(--gold-deep);">Results</span></h2>
-      <span class="section-step">Step 3 of 3</span>
+      <h2>Your Rate Card <span style="color:var(--primary);">Results</span></h2>
+      <span class="section-step">3 of 3</span>
     </div>
 
-    <!-- TIER -->
-    <div class="results-tier-block glass-strong floating" id="r-tier-block"></div>
+    <!-- Hero: filled by renderResults -->
+    <div id="r-tier-block"></div>
 
-    <!-- ER -->
-    <div class="er-result-block glass-strong floating" id="r-er-block"></div>
+    <!-- Metrics grid: filled by renderResults -->
+    <div id="r-er-block"></div>
 
-    <!-- RATE CARDS -->
-    <div class="results-section-label">Your Rate</div>
-    <div class="rate-cards-grid" id="r-rate-cards"></div>
+    <!-- CPM vs CPE grid: filled by renderResults -->
+    <div id="r-rate-cards"></div>
 
-    <!-- PRICE RANGE -->
-    <div class="price-range-block glass-strong" id="r-price-range"></div>
+    <!-- Price range: hidden (info moved to hero card) -->
+    <div id="r-price-range" style="display:none;"></div>
 
-    <!-- BREAKDOWN -->
-    <div class="accordion" style="margin-bottom:1.1rem;">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span class="accordion-title">🔢 Full Rate Breakdown</span>
-        <span class="accordion-arrow">▾</span>
-      </div>
-      <div class="accordion-body" id="r-breakdown-body"></div>
-    </div>
+    <!-- Negotiation: filled by renderResults -->
+    <div id="r-negotiation"></div>
 
-    <!-- BENCHMARK -->
-    <div class="accordion" style="margin-bottom:1.1rem;">
+    <!-- Benchmark Accordion -->
+    <div class="accordion" style="margin-bottom:1.25rem;">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         <span class="accordion-title">📈 SA vs Global Benchmark</span>
         <span class="accordion-arrow">▾</span>
@@ -821,28 +659,34 @@ Range     = Final × 0.85 → Final × 1.15
       <div class="accordion-body" id="r-benchmark-body"></div>
     </div>
 
-    <!-- NEGOTIATION TIPS -->
-    <div style="margin-bottom:1.25rem;">
-      <div class="results-section-label">Negotiation Intelligence</div>
-      <div class="tip-cards" id="r-tips"></div>
-    </div>
+    <!-- Strategic insights: filled by renderResults -->
+    <div id="r-tips"></div>
 
-    <!-- UPSELL -->
-    <div id="results-upsell" style="background:rgba(255,255,255,0.82); border:1px solid var(--gold-border); border-radius:var(--r-xl); padding:2rem; margin-bottom:1.25rem; text-align:center; backdrop-filter:blur(10px); box-shadow:var(--shadow-card);">
-      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:0.75rem;">Your next move</div>
-      <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-h); margin-bottom:0.6rem; letter-spacing:-0.3px;">You have your rate. Now get the script that closes the deal.</h3>
-      <p style="font-size:0.88rem; color:var(--text-dim); margin-bottom:1.25rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</p>
+    <!-- Breakdown toggle -->
+    <button class="breakdown-toggle-btn" id="breakdown-toggle-btn" onclick="toggleBreakdown()">
+      <span id="breakdown-btn-label">View Calculation Details</span>
+      <span id="breakdown-btn-arrow">▾</span>
+    </button>
+
+    <!-- Breakdown content: filled by renderResults, toggled -->
+    <div id="r-breakdown-wrap" style="display:none;"></div>
+
+    <!-- Upsell -->
+    <div class="results-upsell-card" id="results-upsell">
+      <div class="results-upsell-eyebrow">Your next move</div>
+      <div class="results-upsell-heading">You have your rate. Now get the script that closes the deal.</div>
+      <div class="results-upsell-body">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</div>
       <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="max-width:420px; display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
     </div>
 
-    <!-- EMAIL DELIVERY -->
-    <div style="background:rgba(255,255,255,0.82); border:1px solid var(--gold-border); border-radius:var(--r-xl); padding:1.75rem; margin-bottom:1.25rem; backdrop-filter:blur(10px); box-shadow:var(--shadow-card);">
-      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:0.6rem;">Get your rate card delivered</div>
-      <p style="font-size:0.87rem; color:var(--text-dim); margin-bottom:1.25rem; line-height:1.65;">We'll email you a branded PDF you can forward directly to any brand — just attach and send. No saving, no screenshotting.</p>
+    <!-- Email Delivery -->
+    <div class="results-email-card">
+      <div class="results-email-eyebrow">Get your rate card delivered</div>
+      <div class="results-email-body">We'll email you a branded PDF you can forward directly to any brand — just attach and send. No saving, no screenshotting.</div>
       <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input class="nx-input" type="text"  id="send-name"   placeholder="Your name"           style="flex:1; min-width:140px;">
-          <input class="nx-input" type="email" id="send-email"  placeholder="your@email.com"       style="flex:2; min-width:200px;">
+          <input class="nx-input" type="text"  id="send-name"  placeholder="Your name"        style="flex:1; min-width:140px;">
+          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com"   style="flex:2; min-width:200px;">
         </div>
         <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional — personalises the PDF)">
         <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — shown on PDF, e.g. @nochill_god)">
@@ -851,7 +695,7 @@ Range     = Final × 0.85 → Final × 1.15
       <div id="send-rc-msg" style="display:none; margin-top:12px; font-size:13px; text-align:center; line-height:1.6;"></div>
     </div>
 
-    <!-- ACTIONS -->
+    <!-- Actions -->
     <div class="action-row">
       <button class="btn btn-ghost" onclick="recalculate()">← Recalculate</button>
     </div>
@@ -859,9 +703,13 @@ Range     = Final × 0.85 → Final × 1.15
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     JAVASCRIPT — PRESERVED EXACTLY
-══════════════════════════════════════════════ -->
+<footer style="border-top:1px solid var(--border); background:var(--card); padding:1.5rem; margin-top:0;">
+  <div style="max-width:880px; margin:0 auto; text-align:center; font-size:.78rem; color:var(--fg-muted);">
+    <p>Based on Aspire 2024–2025, SA Influencer Benchmark Report &amp; global industry standards.</p>
+    <p style="margin-top:.25rem;">Prices in ZAR (South African Rand) · contentcreatorhub.online · @nochill_god</p>
+  </div>
+</footer>
+
 <script>
 'use strict';
 
@@ -890,13 +738,13 @@ const NICHE_CPM = {
 };
 
 const PLATFORM = {
-  instagram: { cpm_mult: 1.00, cpe_mult: 1.00, er_formula: 'views',      name: 'Instagram',   icon: '📸', note: 'Gold standard for brand partnerships. Highest CPM baseline.' },
-  tiktok:    { cpm_mult: 0.80, cpe_mult: 0.40, er_formula: 'views',      name: 'TikTok',      icon: '🎵', note: 'Lower CPM due to high volume but growing fast. CPE is lower due to volume of interactions.' },
-  youtube:   { cpm_mult: 1.80, cpe_mult: 0.25, er_formula: 'views',      name: 'YouTube',     icon: '▶️', note: 'Highest CPM — long-form content commands premium. Brands pay for intent.' },
-  facebook:  { cpm_mult: 0.90, cpe_mult: 4.70, er_formula: 'reach',      name: 'Facebook',    icon: '👥', note: 'Low CPM but exceptional CPE — Facebook interactions drive high conversions.' },
+  instagram: { cpm_mult: 1.00, cpe_mult: 1.00, er_formula: 'views',       name: 'Instagram',  icon: '📸', note: 'Gold standard for brand partnerships. Highest CPM baseline.' },
+  tiktok:    { cpm_mult: 0.80, cpe_mult: 0.40, er_formula: 'views',       name: 'TikTok',     icon: '🎵', note: 'Lower CPM due to high volume but growing fast. CPE is lower due to volume of interactions.' },
+  youtube:   { cpm_mult: 1.80, cpe_mult: 0.25, er_formula: 'views',       name: 'YouTube',    icon: '▶️', note: 'Highest CPM — long-form content commands premium. Brands pay for intent.' },
+  facebook:  { cpm_mult: 0.90, cpe_mult: 4.70, er_formula: 'reach',       name: 'Facebook',   icon: '👥', note: 'Low CPM but exceptional CPE — Facebook interactions drive high conversions.' },
   linkedin:  { cpm_mult: 1.50, cpe_mult: 1.20, er_formula: 'impressions', name: 'LinkedIn',   icon: '💼', note: 'Professional audience commands 50% premium. B2B brands pay top rates.' },
   twitter_x: { cpm_mult: 0.60, cpe_mult: 0.70, er_formula: 'impressions', name: 'X (Twitter)',icon: '🐦', note: 'Lower CPM but high real-time reach. News/finance brands active here.' },
-  pinterest: { cpm_mult: 0.70, cpe_mult: 0.60, er_formula: 'views',      name: 'Pinterest',   icon: '📌', note: 'Strong for lifestyle, food, and DIY niches. Purchase-intent platform.' }
+  pinterest: { cpm_mult: 0.70, cpe_mult: 0.60, er_formula: 'views',       name: 'Pinterest',  icon: '📌', note: 'Strong for lifestyle, food, and DIY niches. Purchase-intent platform.' }
 };
 
 const TIER = {
@@ -908,11 +756,11 @@ const TIER = {
 };
 
 const CONTENT_TYPE = {
-  static:     { mult: 1.00, label: 'Static Post (Photo)',      icon: '🖼️', note: 'Single image. Baseline rate.' },
-  carousel:   { mult: 1.25, label: 'Carousel (Multi-image)',   icon: '🎴', note: '25% premium — higher engagement, more time invested.' },
-  story:      { mult: 0.50, label: 'Stories (24h)',            icon: '⭕', note: '50% of base rate — ephemeral, lower production.' },
-  reel_short: { mult: 1.68, label: 'Reel / Short Video',       icon: '🎬', note: '68% premium — SA data shows reels cost R7,335 vs R4,354 for static.' },
-  long_video: { mult: 2.50, label: 'Long Video (5min+)',       icon: '🎥', note: '2.5× premium — highest production value, longest shelf life.' }
+  static:     { mult: 1.00, label: 'Static Post (Photo)',    icon: '🖼️', note: 'Single image. Baseline rate.' },
+  carousel:   { mult: 1.25, label: 'Carousel (Multi-image)', icon: '🎴', note: '25% premium — higher engagement, more time invested.' },
+  story:      { mult: 0.50, label: 'Stories (24h)',          icon: '⭕', note: '50% of base rate — ephemeral, lower production.' },
+  reel_short: { mult: 1.68, label: 'Reel / Short Video',     icon: '🎬', note: '68% premium — SA data shows reels cost R7,335 vs R4,354 for static.' },
+  long_video: { mult: 2.50, label: 'Long Video (5min+)',     icon: '🎥', note: '2.5× premium — highest production value, longest shelf life.' }
 };
 
 const CPE_TIER = [
@@ -924,14 +772,14 @@ const CPE_TIER = [
 ];
 
 const ADDONS = {
-  usage_rights:       { mult: 1.35, label: 'Usage Rights',         desc: 'Brand can repurpose your content for paid ads and marketing materials' },
-  exclusivity_30:     { mult: 1.25, label: 'Exclusivity (30 days)',desc: 'You will not promote competing brands for 30 days' },
-  exclusivity_90:     { mult: 1.50, label: 'Exclusivity (90 days)',desc: 'You will not promote competing brands for 90 days' },
-  rush_delivery:      { mult: 1.20, label: 'Rush Delivery (48h)',  desc: 'Content delivered within 48 hours of brief' },
-  unlimited_revisions:{ mult: 1.15, label: 'Unlimited Revisions',  desc: 'Standard is 2 rounds of revisions — this covers unlimited' }
+  usage_rights:        { mult: 1.35, label: 'Usage Rights',          desc: 'Brand can repurpose your content for paid ads and marketing materials' },
+  exclusivity_30:      { mult: 1.25, label: 'Exclusivity (30 days)', desc: 'You will not promote competing brands for 30 days' },
+  exclusivity_90:      { mult: 1.50, label: 'Exclusivity (90 days)', desc: 'You will not promote competing brands for 90 days' },
+  rush_delivery:       { mult: 1.20, label: 'Rush Delivery (48h)',   desc: 'Content delivered within 48 hours of brief' },
+  unlimited_revisions: { mult: 1.15, label: 'Unlimited Revisions',   desc: 'Standard is 2 rounds of revisions — this covers unlimited' }
 };
 
-/* ── LIVE EXCHANGE RATES ─────────────────────────────────── */
+/* ── LIVE EXCHANGE RATES ── */
 const AFRICAN_CURRENCIES = {
   ZAR: { name: 'South Africa', symbol: 'R',    flag: '🇿🇦' },
   NGN: { name: 'Nigeria',      symbol: '₦',    flag: '🇳🇬' },
@@ -945,10 +793,10 @@ const AFRICAN_CURRENCIES = {
   BWP: { name: 'Botswana',     symbol: 'P',    flag: '🇧🇼' },
   NAD: { name: 'Namibia',      symbol: 'N$',   flag: '🇳🇦' },
   ZMW: { name: 'Zambia',       symbol: 'ZK',   flag: '🇿🇲' },
-  XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍' },
+  XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍'  },
 };
 
-let liveRates      = { ZAR: 18.50, USD: 1 };
+let liveRates       = { ZAR: 18.50, USD: 1 };
 let selectedCurrency = 'ZAR';
 let rateLastUpdated  = null;
 let rateIsLive       = false;
@@ -974,7 +822,7 @@ function updateRateBadge() {
   const ts   = rateIsLive && rateLastUpdated
     ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' })
     : 'Approx. — live rates loading';
-  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-muted); font-size:0.85em">${ts}</span>`;
+  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--fg-muted); font-size:.85em">${ts}</span>`;
 }
 
 function zarToSelected(zarAmount) {
@@ -983,12 +831,13 @@ function zarToSelected(zarAmount) {
   return zarAmount * (selPerUSD / zarPerUSD);
 }
 
-/* ── STATE ──────────────────────────────────────────────── */
+/* ── STATE ── */
 let platformCards = [];
 let cardCounter   = 0;
 let calcResults   = null;
+let breakdownOpen = false;
 
-/* ── HELPERS ────────────────────────────────────────────── */
+/* ── HELPERS ── */
 function fmtLocal(n) {
   if (isNaN(n) || n === null) return '0';
   const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
@@ -1024,15 +873,12 @@ function calcER(followers, views, likes, comments, shares, platformKey) {
   return (interactions / base) * 100;
 }
 
-/* ── SCREEN NAVIGATION ──────────────────────────────────── */
+/* ── SCREEN NAVIGATION ── */
 function goTo(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s-loading').classList.remove('active');
   const el = document.getElementById(screenId);
-  if (el) {
-    el.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  if (el) { el.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   updateStepIndicator(screenId);
 }
 
@@ -1048,7 +894,7 @@ function updateStepIndicator(screenId) {
   });
 }
 
-/* ── PLATFORM CARDS ─────────────────────────────────────── */
+/* ── PLATFORM CARDS ── */
 function addPlatformCard(prefill) {
   const id = ++cardCounter;
   const container = document.getElementById('platforms-container');
@@ -1071,7 +917,7 @@ function addPlatformCard(prefill) {
         Platform
         <div class="info-icon">i<div class="tooltip">Different platforms have different CPM values. YouTube has the highest CPM multiplier (1.8×); TikTok is lower (0.8×) due to volume.</div></div>
       </div>
-      <div class="niche-select-wrap" style="position:relative;">
+      <div class="niche-select-wrap">
         <select class="nx-input" id="pf-platform-${id}" onchange="onPlatformChange(${id})">
           ${platformOptions}
         </select>
@@ -1082,7 +928,7 @@ function addPlatformCard(prefill) {
       <div class="form-group">
         <div class="form-label">
           Followers / Subscribers
-          <div class="info-icon">i<div class="tooltip">Your total follower count on this platform. This determines your influencer tier (Nano/Micro/Mid/Macro/Mega).</div></div>
+          <div class="info-icon">i<div class="tooltip">Your total follower count on this platform. Determines your influencer tier (Nano/Micro/Mid/Macro/Mega).</div></div>
         </div>
         <input class="nx-input" type="text" id="pf-followers-${id}" placeholder="e.g. 50,000"
           oninput="formatInput(this); updateER(${id})" onblur="validateCard(${id})">
@@ -1091,7 +937,7 @@ function addPlatformCard(prefill) {
       <div class="form-group">
         <div class="form-label">
           Avg Views Per Post
-          <div class="info-icon">i<div class="tooltip">Your average view count per post over your last 10-20 posts. Use Insights/Analytics to get this number.</div></div>
+          <div class="info-icon">i<div class="tooltip">Your average view count per post over your last 10–20 posts. Use Insights/Analytics to get this number.</div></div>
         </div>
         <input class="nx-input" type="text" id="pf-views-${id}" placeholder="e.g. 12,000"
           oninput="formatInput(this); updateER(${id})" onblur="validateCard(${id})">
@@ -1103,7 +949,7 @@ function addPlatformCard(prefill) {
       <div class="form-group">
         <div class="form-label">
           Avg Likes
-          <div class="info-icon">i<div class="tooltip">Average likes per post. Use your last 10 posts to calculate this. Likes are the most common engagement signal.</div></div>
+          <div class="info-icon">i<div class="tooltip">Average likes per post. Use your last 10 posts to calculate this.</div></div>
         </div>
         <input class="nx-input" type="text" id="pf-likes-${id}" placeholder="e.g. 800"
           oninput="formatInput(this); updateER(${id})">
@@ -1111,7 +957,7 @@ function addPlatformCard(prefill) {
       <div class="form-group">
         <div class="form-label">
           Avg Comments
-          <div class="info-icon">i<div class="tooltip">Average comments per post. Comments signal high intent and quality engagement — brands love this metric.</div></div>
+          <div class="info-icon">i<div class="tooltip">Average comments per post. Comments signal high intent — brands love this metric.</div></div>
         </div>
         <input class="nx-input" type="text" id="pf-comments-${id}" placeholder="e.g. 45"
           oninput="formatInput(this); updateER(${id})">
@@ -1119,7 +965,7 @@ function addPlatformCard(prefill) {
       <div class="form-group">
         <div class="form-label">
           Avg Shares / Saves
-          <div class="info-icon">i<div class="tooltip">Shares and saves indicate your content resonates deeply. On Instagram, saves are a strong signal the algorithm rewards.</div></div>
+          <div class="info-icon">i<div class="tooltip">Shares and saves indicate your content resonates deeply. On Instagram, saves are a strong algorithm signal.</div></div>
         </div>
         <input class="nx-input" type="text" id="pf-shares-${id}" placeholder="e.g. 60"
           oninput="formatInput(this); updateER(${id})">
@@ -1145,24 +991,17 @@ function addPlatformCard(prefill) {
   platformCards.push(id);
 
   if (prefill) {
-    if (prefill.platform) {
-      document.getElementById('pf-platform-' + id).value = prefill.platform;
-      onPlatformChange(id);
-    }
+    if (prefill.platform) { document.getElementById('pf-platform-' + id).value = prefill.platform; onPlatformChange(id); }
     ['followers','views','likes','comments','shares'].forEach(f => {
       if (prefill[f] !== undefined) {
         const el = document.getElementById('pf-' + f + '-' + id);
-        if (el) {
-          el.value = prefill[f] > 0 ? parseFmt(prefill[f]).toLocaleString('en-ZA') : '';
-        }
+        if (el) el.value = prefill[f] > 0 ? parseFmt(prefill[f]).toLocaleString('en-ZA') : '';
       }
     });
     updateER(id);
   }
 
-  if (platformCards.length >= 7) {
-    document.getElementById('add-platform-btn').style.display = 'none';
-  }
+  if (platformCards.length >= 7) document.getElementById('add-platform-btn').style.display = 'none';
 }
 
 function removePlatformCard(id) {
@@ -1186,85 +1025,55 @@ function onPlatformChange(id) {
 
 function updateER(id) {
   const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
-  const followers = get('followers');
-  const views     = get('views');
-  const likes     = get('likes');
-  const comments  = get('comments');
-  const shares    = get('shares');
+  const followers = get('followers'), views = get('views');
+  const likes = get('likes'), comments = get('comments'), shares = get('shares');
   const platformKey = document.getElementById('pf-platform-' + id)?.value || 'instagram';
   const p = PLATFORM[platformKey];
-
   const display = document.getElementById('er-display-' + id);
   if (followers <= 0 || views <= 0) { display.style.display = 'none'; return; }
-
   display.style.display = 'flex';
-
   const er = calcER(followers, views, likes, comments, shares, platformKey);
   const cpeTier = getCpeTier(er);
-
   const erNumEl   = document.getElementById('er-num-' + id);
   const erPillEl  = document.getElementById('er-pill-' + id);
   const erFormEl  = document.getElementById('er-formula-' + id);
   const erBenchEl = document.getElementById('er-bench-' + id);
-
   erNumEl.textContent = er.toFixed(2) + '%';
   erNumEl.style.color = cpeTier.color;
-
   erPillEl.textContent = cpeTier.label;
   erPillEl.style.background = cpeTier.color + '22';
   erPillEl.style.color = cpeTier.color;
   erPillEl.style.border = '1px solid ' + cpeTier.color + '55';
-
   const base = (p.er_formula === 'views') ? 'views' : (p.er_formula === 'reach' ? 'reach' : 'impressions');
   erFormEl.textContent = `(${fmtNum(likes)} likes + ${fmtNum(comments)} comments + ${fmtNum(shares)} shares) ÷ ${fmtNum(p.er_formula === 'views' ? views : followers)} ${base} × 100`;
-
   const SA_AVG = 3.39;
   const diff = er - SA_AVG;
-  const diffText = diff >= 0
-    ? `+${Math.abs(diff).toFixed(2)}% above SA average`
-    : `${Math.abs(diff).toFixed(2)}% below SA average`;
-  erBenchEl.innerHTML = `SA average: <strong style="color:var(--gold)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp; <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">${diffText}</span>`;
-
+  const diffText = diff >= 0 ? `+${Math.abs(diff).toFixed(2)}% above SA average` : `${Math.abs(diff).toFixed(2)}% below SA average`;
+  erBenchEl.innerHTML = `SA average: <strong style="color:var(--primary)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp; <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">${diffText}</span>`;
   validateCard(id);
 }
 
 function validateCard(id) {
   const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
-  const followers = get('followers');
-  const views     = get('views');
-  const likes     = get('likes');
-  const comments  = get('comments');
-  const shares    = get('shares');
+  const followers = get('followers'), views = get('views');
+  const likes = get('likes'), comments = get('comments'), shares = get('shares');
   const platformKey = document.getElementById('pf-platform-' + id)?.value || 'instagram';
-
   const er = calcER(followers, views, likes, comments, shares, platformKey);
-
   const errFollowers = document.getElementById('err-followers-' + id);
   const errViews     = document.getElementById('err-views-' + id);
-
   if (followers > 0 && followers < 1000) {
     errFollowers.textContent = '⚠️ Below Nano tier (1,000 minimum). Brands typically require at least 1k followers.';
     errFollowers.classList.add('visible');
-  } else {
-    errFollowers.classList.remove('visible');
-  }
-
+  } else { errFollowers.classList.remove('visible'); }
   if (views > followers * 2) {
     errViews.textContent = '⚠️ Views exceed 2× your followers — please double-check this figure.';
     errViews.classList.add('visible');
-  } else {
-    errViews.classList.remove('visible');
-  }
-
+  } else { errViews.classList.remove('visible'); }
   if (er > 15 && followers > 0) {
     const erDisplay = document.getElementById('er-display-' + id);
     if (erDisplay) {
       let warn = erDisplay.querySelector('.er-warn');
-      if (!warn) {
-        warn = document.createElement('div');
-        warn.className = 'warn-badge er-warn';
-        erDisplay.appendChild(warn);
-      }
+      if (!warn) { warn = document.createElement('div'); warn.className = 'warn-badge er-warn'; erDisplay.appendChild(warn); }
       warn.innerHTML = '⚠️ ER above 15% — verify your inputs. This may indicate inflated numbers.';
     }
   } else {
@@ -1274,14 +1083,10 @@ function validateCard(id) {
 }
 
 function getPrimaryPlatformData() {
-  let primary = null;
-  let maxFollowers = 0;
+  let primary = null, maxFollowers = 0;
   for (const id of platformCards) {
     const followers = parseFmt(document.getElementById('pf-followers-' + id)?.value || '0');
-    if (followers > maxFollowers) {
-      maxFollowers = followers;
-      primary = id;
-    }
+    if (followers > maxFollowers) { maxFollowers = followers; primary = id; }
   }
   if (!primary && platformCards.length > 0) primary = platformCards[0];
   return primary;
@@ -1291,15 +1096,12 @@ function getCardData(id) {
   const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
   return {
     platform:  document.getElementById('pf-platform-' + id)?.value || 'instagram',
-    followers: get('followers'),
-    views:     get('views'),
-    likes:     get('likes'),
-    comments:  get('comments'),
-    shares:    get('shares'),
+    followers: get('followers'), views: get('views'),
+    likes: get('likes'), comments: get('comments'), shares: get('shares'),
   };
 }
 
-/* ── CONTENT SCREEN SETUP ───────────────────────────────── */
+/* ── CONTENT SCREEN SETUP ── */
 function buildNicheSelect() {
   const sel = document.getElementById('niche-select');
   const sorted = Object.entries(NICHE_CPM).sort((a,b) => b[1].cpm - a[1].cpm);
@@ -1314,10 +1116,8 @@ function buildNicheSelect() {
     const disp  = document.getElementById('niche-cpm-display');
     if (niche) {
       disp.style.display = 'block';
-      disp.innerHTML = `<strong style="color:var(--gold-deep)">R${niche.cpm.toFixed(2)}/1000 views</strong> (${niche.global_cpm} global) — ${niche.notes}`;
-    } else {
-      disp.style.display = 'none';
-    }
+      disp.innerHTML = `<strong style="color:var(--primary)">R${niche.cpm.toFixed(2)}/1000 views</strong> (${niche.global_cpm} global) — ${niche.notes}`;
+    } else { disp.style.display = 'none'; }
   });
 }
 
@@ -1356,21 +1156,18 @@ function buildAddonCards() {
     `;
     div.addEventListener('click', () => {
       div.classList.toggle('selected');
-      const cb = div.querySelector('input[type="checkbox"]');
-      cb.checked = div.classList.contains('selected');
+      div.querySelector('input[type="checkbox"]').checked = div.classList.contains('selected');
     });
     wrap.appendChild(div);
   });
 }
 
-/* ── NAVIGATION GUARDS ──────────────────────────────────── */
+/* ── NAVIGATION GUARDS ── */
 function goToContent() {
   const primaryId = getPrimaryPlatformData();
   if (!primaryId) { alert('Please add at least one platform.'); return; }
   const d = getCardData(primaryId);
-  if (!d.followers || !d.views) {
-    alert('Please enter your followers and average views for at least one platform.'); return;
-  }
+  if (!d.followers || !d.views) { alert('Please enter your followers and average views for at least one platform.'); return; }
   goTo('s-content');
 }
 
@@ -1382,27 +1179,19 @@ function goToCalculate() {
   runCalculation();
 }
 
-/* ── CALCULATION ─────────────────────────────────────────── */
+/* ── CALCULATION ── */
 function runCalculation() {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const loader = document.getElementById('s-loading');
   loader.classList.add('active');
-
   const steps = ['Applying niche multipliers...', 'Calculating CPM rate...', 'Calculating CPE rate...', 'Comparing to SA benchmarks...', 'Generating your rate card...'];
   let stepIdx = 0;
   const stepEl = document.getElementById('loader-step-text');
   const fill   = document.getElementById('progress-fill');
-
   const stepInterval = setInterval(() => {
-    if (stepIdx < steps.length) {
-      stepEl.textContent = steps[stepIdx];
-      fill.style.width = ((stepIdx + 1) / steps.length * 100) + '%';
-      stepIdx++;
-    } else {
-      clearInterval(stepInterval);
-    }
+    if (stepIdx < steps.length) { stepEl.textContent = steps[stepIdx]; fill.style.width = ((stepIdx + 1) / steps.length * 100) + '%'; stepIdx++; }
+    else clearInterval(stepInterval);
   }, 300);
-
   setTimeout(() => {
     clearInterval(stepInterval);
     calcResults = computeResults();
@@ -1421,242 +1210,226 @@ function computeResults() {
   const ctKey = document.querySelector('input[name="content-type"]:checked').value;
   const ct = CONTENT_TYPE[ctKey];
   const p = PLATFORM[d.platform];
-
   const tier = getTier(d.followers) || { key: 'nano', ...TIER.nano };
   const er = calcER(d.followers, d.views, d.likes, d.comments, d.shares, d.platform);
   const cpeTierData = getCpeTier(er);
-
   const adjustedCPM = nicheCPM.cpm * tier.mult * p.cpm_mult * ct.mult;
-  const price_cpm = (adjustedCPM / 1000) * d.views;
-
+  const price_cpm   = (adjustedCPM / 1000) * d.views;
   const adjustedCPE = cpeTierData.cpe_zar * p.cpe_mult;
-  const price_cpe = adjustedCPE * (d.likes + d.comments + d.shares);
-
+  const price_cpe   = adjustedCPE * (d.likes + d.comments + d.shares);
   const selectedAddons = [];
-  document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked').forEach(cb => {
-    selectedAddons.push(cb.value);
-  });
+  document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked').forEach(cb => selectedAddons.push(cb.value));
   let premiumMult = 1;
-  selectedAddons.forEach(key => {
-    if (ADDONS[key]) premiumMult *= ADDONS[key].mult;
-  });
-
+  selectedAddons.forEach(key => { if (ADDONS[key]) premiumMult *= ADDONS[key].mult; });
   const price_cpm_final = price_cpm * premiumMult;
   const price_cpe_final = price_cpe * premiumMult;
   const recommended = Math.max(price_cpm_final, price_cpe_final);
   const range_low   = recommended * 0.85;
   const range_high  = recommended * 1.15;
-
   const saAvgRate    = (nicheCPM.cpm / 1000) * d.views;
   const globalAvgRate = saAvgRate / 1.8;
-
-  return {
-    d, niche, nicheCPM, ctKey, ct, p, tier, er, cpeTierData,
-    adjustedCPM, price_cpm, price_cpe,
-    price_cpm_final, price_cpe_final,
-    premiumMult, selectedAddons,
-    recommended, range_low, range_high,
-    saAvgRate, globalAvgRate,
-    adjustedCPE
-  };
+  return { d, niche, nicheCPM, ctKey, ct, p, tier, er, cpeTierData, adjustedCPM, price_cpm, price_cpe, price_cpm_final, price_cpe_final, premiumMult, selectedAddons, recommended, range_low, range_high, saAvgRate, globalAvgRate, adjustedCPE };
 }
 
-/* ── RENDER RESULTS ─────────────────────────────────────── */
+/* ── RENDER RESULTS ── */
 function renderResults() {
   const R = calcResults;
 
-  // 1. Tier block
+  // 1. Hero card
   const tierEl = document.getElementById('r-tier-block');
+  tierEl.className = 'results-hero-card';
   tierEl.innerHTML = `
-    <div class="tier-badge-big" style="background:${R.tier.badge}22; color:${R.tier.badge}; border:1.5px solid ${R.tier.badge}55;">
-      ★ ${R.tier.label}
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;">
+      <div>
+        <div class="results-hero-badge">✓ Your Professional Quote</div>
+        <div class="results-hero-heading">Total Rate Card</div>
+        <div class="results-hero-sub">${R.p.name} · ${R.niche} · ${R.ct.label}</div>
+      </div>
+      <div style="width:52px;height:52px;flex-shrink:0;border-radius:12px;background:var(--accent-light);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">💰</div>
     </div>
-    <div class="tier-range">${fmtNum(R.tier.min)} – ${R.tier.max === Infinity ? '1M+' : fmtNum(R.tier.max)} followers</div>
-    <div style="margin-top:0.75rem; font-size:0.88rem; color:var(--text-muted)">
-      Platform: <strong style="color:var(--text-h)">${R.p.icon} ${R.p.name}</strong> &nbsp;|&nbsp;
-      Niche: <strong style="color:var(--gold-deep)">${R.niche}</strong> &nbsp;|&nbsp;
-      Content: <strong style="color:var(--text-h)">${R.ct.icon} ${R.ct.label}</strong>
+    <div>
+      <div class="results-hero-row">
+        <span class="results-hero-row-label">Sponsorship Rate</span>
+        <span class="results-hero-row-value">${fmtZAR(R.recommended)}</span>
+      </div>
+      <div class="results-hero-divider"></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;padding:.75rem 0 .5rem;">
+        <span style="font-size:1rem;font-weight:700;color:var(--fg);">Your Rate</span>
+        <div style="text-align:right;">
+          <div class="results-hero-total" id="rc-rec">R 0</div>
+          <div class="results-hero-usd">${fmtUSD(R.recommended)}</div>
+        </div>
+      </div>
+    </div>
+    <div class="results-hero-range">
+      <span class="results-hero-range-label">Market Range (±15%)</span>
+      <span class="results-hero-range-values">${fmtZAR(R.range_low)} — ${fmtZAR(R.range_high)}</span>
     </div>
   `;
 
-  // 2. ER block
+  // 2. Metrics grid
   const erEl = document.getElementById('r-er-block');
+  erEl.className = 'results-metrics-grid';
   const diff = R.er - 3.39;
   erEl.innerHTML = `
-    <div class="er-result-number" style="color:${R.cpeTierData.color}">${R.er.toFixed(2)}%</div>
-    <div class="er-result-label">
-      Engagement Rate &nbsp;
-      <span style="background:${R.cpeTierData.color}22; color:${R.cpeTierData.color}; padding:0.2rem 0.6rem; border-radius:100px; font-size:0.85rem; font-weight:700;">${R.cpeTierData.label}</span>
+    <div class="results-metric-card">
+      <div class="results-metric-label">📈 Engagement</div>
+      <div class="results-metric-value" style="color:${R.cpeTierData.color}">${R.er.toFixed(2)}%</div>
+      <div class="results-metric-sub">${R.cpeTierData.label} · SA avg 3.39%</div>
     </div>
-    <div class="er-result-bench">
-      SA average: <strong style="color:var(--gold-deep)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp;
-      <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">
-        ${diff >= 0 ? '+' : ''}${diff.toFixed(2)}% vs SA average
-      </span>
+    <div class="results-metric-card">
+      <div class="results-metric-label">👥 Tier</div>
+      <div class="results-metric-tier">${R.tier.label}</div>
+      <div class="results-metric-sub">${fmtNum(R.d.followers)} followers</div>
     </div>
   `;
 
-  // 3. Rate cards
+  // 3. CPM vs CPE grid
   const rcEl = document.getElementById('r-rate-cards');
-  rcEl.innerHTML = '';
-
-  const cpmCard = document.createElement('div');
-  cpmCard.className = 'rate-card glass';
-  cpmCard.innerHTML = `
-    <div class="rate-card-body">
-      <div class="rate-card-type">CPM-Based Rate</div>
-      <div class="rate-card-zar" id="rc-cpm">R 0</div>
-      <div class="rate-card-usd">${fmtUSD(R.price_cpm_final)}</div>
-      <div class="rate-card-sub">Based on your reach &amp; views. Use when pitching awareness campaigns.</div>
+  rcEl.className = 'results-method-grid';
+  rcEl.innerHTML = `
+    <div class="results-method-card cpm-card">
+      <div class="results-method-label cpm">CPM Method</div>
+      <div class="results-method-value" id="rc-cpm">${fmtZAR(R.price_cpm_final)}</div>
+      <div class="results-method-sub cpm">${fmtNum(R.d.views)} views</div>
+    </div>
+    <div class="results-method-card cpe-card">
+      <div class="results-method-label cpe">CPE Method</div>
+      <div class="results-method-value" id="rc-cpe">${fmtZAR(R.price_cpe_final)}</div>
+      <div class="results-method-sub cpe">${fmtNum(R.d.likes + R.d.comments + R.d.shares)} interactions</div>
     </div>
   `;
 
-  const recCard = document.createElement('div');
-  recCard.className = 'rate-card recommended glass-strong';
-  recCard.innerHTML = `
-    <div class="rate-card-tag">RECOMMENDED RATE</div>
-    <div class="rate-card-body">
-      <div class="rate-card-type">MAX(CPM, CPE)</div>
-      <div class="rate-card-zar" id="rc-rec">R 0</div>
-      <div class="rate-card-usd">${fmtUSD(R.recommended)}</div>
-      <div class="rate-card-sub">The higher of CPM &amp; CPE — this protects your maximum value every time.</div>
-    </div>
-  `;
-
-  const cpeCard = document.createElement('div');
-  cpeCard.className = 'rate-card glass';
-  cpeCard.innerHTML = `
-    <div class="rate-card-body">
-      <div class="rate-card-type">CPE-Based Rate</div>
-      <div class="rate-card-zar" id="rc-cpe">R 0</div>
-      <div class="rate-card-usd">${fmtUSD(R.price_cpe_final)}</div>
-      <div class="rate-card-sub">Based on your engagement. Use when pitching performance campaigns.</div>
-    </div>
-  `;
-
-  rcEl.appendChild(cpmCard);
-  rcEl.appendChild(recCard);
-  rcEl.appendChild(cpeCard);
-
+  // Animate
   setTimeout(() => {
-    countUpZAR(document.getElementById('rc-cpm'), R.price_cpm_final, 1200);
     countUpZAR(document.getElementById('rc-rec'), R.recommended, 1400);
-    countUpZAR(document.getElementById('rc-cpe'), R.price_cpe_final, 1200);
+    countUpZAR(document.getElementById('rc-cpm'), R.price_cpm_final, 1000);
+    countUpZAR(document.getElementById('rc-cpe'), R.price_cpe_final, 1000);
   }, 100);
 
-  // 4. Price range
-  const prEl = document.getElementById('r-price-range');
-  prEl.innerHTML = `
-    <div>
-      <div class="price-range-label">Acceptable Negotiation Range (±15%)</div>
-      <div class="price-range-hint">Never go below the low end. The high end is for repeat brands or urgent deals.</div>
-    </div>
-    <div style="text-align:right;">
-      <div class="price-range-values">${fmtZAR(R.range_low)} – ${fmtZAR(R.range_high)}</div>
-      <div style="font-size:0.78rem; color:var(--text-muted);">${fmtUSD(R.range_low)} – ${fmtUSD(R.range_high)}</div>
+  // 4. Negotiation
+  const negEl = document.getElementById('r-negotiation');
+  negEl.innerHTML = `
+    <div class="results-negotiation-card">
+      <div class="results-negotiation-header">
+        <span style="font-size:1.1rem;">✨</span>
+        <span class="results-negotiation-title">Negotiation Strategy</span>
+      </div>
+      <div class="negotiation-inner-card quote">
+        <div class="negotiation-inner-label">Initial Quote</div>
+        <div class="negotiation-inner-value">${fmtZAR(R.recommended * 1.05)}</div>
+        <div class="negotiation-inner-sub">Start here · 5% above your calculated rate</div>
+      </div>
+      <div class="negotiation-inner-card floor">
+        <div class="negotiation-inner-label">Minimum Floor</div>
+        <div class="negotiation-inner-value">${fmtZAR(R.range_low)}</div>
+        <div class="negotiation-inner-sub">Don't go below this</div>
+      </div>
     </div>
   `;
 
-  // 5. Breakdown
-  const bdEl = document.getElementById('r-breakdown-body');
+  // 5. Benchmark
+  const bmEl = document.getElementById('r-benchmark-body');
+  const maxVal = Math.max(R.recommended, R.saAvgRate, R.globalAvgRate) * 1.1;
+  const yourPct = (R.recommended   / maxVal * 100).toFixed(1);
+  const saPct   = (R.saAvgRate     / maxVal * 100).toFixed(1);
+  const glbPct  = (R.globalAvgRate / maxVal * 100).toFixed(1);
+  bmEl.innerHTML = `
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Your Rate</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--accent);" data-target="${yourPct}"></div></div><div class="bar-value" style="color:var(--accent)">${fmtZAR(R.recommended)}</div></div>
+      <div class="bar-row"><div class="bar-label">SA Average</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--secondary);" data-target="${saPct}"></div></div><div class="bar-value" style="color:var(--secondary)">${fmtZAR(R.saAvgRate)}</div></div>
+      <div class="bar-row"><div class="bar-label">Global Avg</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--fg-muted);" data-target="${glbPct}"></div></div><div class="bar-value" style="color:var(--fg-muted)">${fmtZAR(R.globalAvgRate)}</div></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--fg-muted);margin-top:.75rem;">SA creators average <strong style="color:var(--primary)">3.39% ER</strong> vs 1.49% globally — this engagement premium is your competitive advantage.</p>
+  `;
+  setTimeout(() => { document.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.target + '%'; }); }, 300);
+
+  // 6. Strategic insights
+  const tipsEl = document.getElementById('r-tips');
+  const tips = [];
+  if (R.er > 3.39) {
+    tips.push(`Your ER of ${R.er.toFixed(2)}% is above the SA average of 3.39%. Lead with this in negotiations — it's your strongest card. Say: "My audience engages ${((R.er/3.39)*100-100).toFixed(0)}% more than the SA average."`);
+  } else {
+    tips.push(`Your ER of ${R.er.toFixed(2)}% is below the SA average. Strengthen it by posting consistently and engaging with comments within the first hour.`);
+  }
+  if (R.price_cpm_final > R.price_cpe_final * 1.2) {
+    tips.push(`Your CPM rate (${fmtZAR(R.price_cpm_final)}) significantly outperforms your CPE rate. Quote CPM to brands running awareness campaigns.`);
+  } else if (R.price_cpe_final > R.price_cpm_final * 1.2) {
+    tips.push(`Your CPE rate (${fmtZAR(R.price_cpe_final)}) significantly outperforms your CPM rate. Quote CPE to performance-focused brands.`);
+  } else {
+    tips.push(`Your CPM and CPE rates are well-balanced. You offer both reach and engagement value — a strong position for brand negotiations.`);
+  }
+  if (R.premiumMult > 1) {
+    const pct = Math.round((R.premiumMult - 1) * 100);
+    tips.push(`You've included premium add-ons adding +${pct}% to your base rate. Always justify these in your rate card deck.`);
+  } else {
+    tips.push(`You haven't added any premium add-ons. If the brand will use your content in paid ads (usage rights) or needs exclusivity, charge an additional 25–50%.`);
+  }
+  tipsEl.innerHTML = `
+    <div class="results-insights-card">
+      <div class="results-insights-header">
+        <span style="font-size:1.1rem;">✨</span>
+        <span class="results-insights-title">Strategic Insights</span>
+      </div>
+      ${tips.map(t => `<div class="insight-item"><div class="insight-dot"></div><span>${t}</span></div>`).join('')}
+    </div>
+  `;
+
+  // 7. Breakdown content
+  const cpmWinner = R.price_cpm_final >= R.price_cpe_final;
   const addonsText = R.selectedAddons.length > 0
     ? R.selectedAddons.map(k => `${ADDONS[k].label} (+${Math.round((ADDONS[k].mult-1)*100)}%)`).join(', ')
     : 'None selected';
-  const cpmWinner = R.price_cpm_final >= R.price_cpe_final;
-
-  bdEl.innerHTML = `
-    <div class="breakdown-row"><span class="breakdown-key">Base niche CPM (${R.niche})</span><span class="breakdown-val">R ${R.nicheCPM.cpm.toFixed(2)} / 1000 views</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Tier multiplier (${R.tier.label})</span><span class="breakdown-val">×${R.tier.mult.toFixed(2)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Platform multiplier (${R.p.name})</span><span class="breakdown-val">×${R.p.cpm_mult.toFixed(2)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Content multiplier (${R.ct.label})</span><span class="breakdown-val">×${R.ct.mult.toFixed(2)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Adjusted CPM</span><span class="breakdown-val">R ${R.adjustedCPM.toFixed(2)} / 1000 views</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Avg views per post</span><span class="breakdown-val">${fmtNum(R.d.views)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong>CPM Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">CPE tier (${R.cpeTierData.label} — ER: ${R.er.toFixed(2)}%)</span><span class="breakdown-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} per engagement</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Platform CPE multiplier (${R.p.name})</span><span class="breakdown-val">×${R.p.cpe_mult.toFixed(2)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Adjusted CPE</span><span class="breakdown-val">R ${R.adjustedCPE.toFixed(2)} per engagement</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Total interactions (likes + comments + shares)</span><span class="breakdown-val">${fmtNum(R.d.likes + R.d.comments + R.d.shares)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong>CPE Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Premium add-ons</span><span class="breakdown-val">${addonsText}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key">Combined add-ons multiplier</span><span class="breakdown-val">×${R.premiumMult.toFixed(2)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong>Final CPM Rate</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm_final)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong>Final CPE Rate</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe_final)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong style="color:var(--gold-deep)">Recommended = MAX(CPM, CPE)</strong></span><span class="breakdown-val accent"><strong>${fmtZAR(R.recommended)}</strong> ${cpmWinner ? '← CPM wins' : '← CPE wins'}</span></div>
-  `;
-
-  // 6. Benchmark
-  const bmEl = document.getElementById('r-benchmark-body');
-  const maxVal = Math.max(R.recommended, R.saAvgRate, R.globalAvgRate) * 1.1;
-  const yourPct  = (R.recommended  / maxVal * 100).toFixed(1);
-  const saPct    = (R.saAvgRate    / maxVal * 100).toFixed(1);
-  const glbPct   = (R.globalAvgRate/ maxVal * 100).toFixed(1);
-
-  bmEl.innerHTML = `
-    <div class="bar-chart">
-      <div class="bar-row">
-        <div class="bar-label">Your Rate</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%; background:var(--gold);" data-target="${yourPct}"></div></div>
-        <div class="bar-value" style="color:var(--gold-deep)">${fmtZAR(R.recommended)}</div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">SA Average</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%; background:#10B981;" data-target="${saPct}"></div></div>
-        <div class="bar-value" style="color:#10B981">${fmtZAR(R.saAvgRate)}</div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Global Avg</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%; background:#3B82F6;" data-target="${glbPct}"></div></div>
-        <div class="bar-value" style="color:#60A5FA">${fmtZAR(R.globalAvgRate)}</div>
+  const bdWrap = document.getElementById('r-breakdown-wrap');
+  bdWrap.innerHTML = `
+    <div class="breakdown-section-card">
+      <div class="breakdown-section-hdr">CPM Calculation</div>
+      <div class="breakdown-section-body">
+        <div class="breakdown-row"><span class="breakdown-key">Base niche CPM (${R.niche})</span><span class="breakdown-val">R ${R.nicheCPM.cpm.toFixed(2)} / 1000 views</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Tier multiplier (${R.tier.label})</span><span class="breakdown-val">×${R.tier.mult.toFixed(2)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Platform multiplier (${R.p.name})</span><span class="breakdown-val">×${R.p.cpm_mult.toFixed(2)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Content multiplier (${R.ct.label})</span><span class="breakdown-val">×${R.ct.mult.toFixed(2)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Adjusted CPM</span><span class="breakdown-val">R ${R.adjustedCPM.toFixed(2)} / 1000 views</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Avg views per post</span><span class="breakdown-val">${fmtNum(R.d.views)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key"><strong>CPM Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm)}</span></div>
       </div>
     </div>
-    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.75rem;">
-      SA creators average <strong style="color:var(--gold-deep)">3.39% ER</strong> vs 1.49% globally — this engagement premium is your competitive advantage over international influencers.
-    </p>
-    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">
-      <em>Note: SA Average is the raw CPM-based rate for your niche &amp; views. Global average uses a conservative 55% haircut (reflecting weaker USD purchasing power parity for SA brands).</em>
-    </p>
-  `;
-
-  setTimeout(() => {
-    document.querySelectorAll('.bar-fill').forEach(b => {
-      b.style.width = b.dataset.target + '%';
-    });
-  }, 300);
-
-  // 7. Negotiation tips
-  const tipsEl = document.getElementById('r-tips');
-  const tips = [];
-
-  if (R.er > 3.39) {
-    tips.push({ icon: '💪', text: `Your ER of ${R.er.toFixed(2)}% is above the SA average of 3.39%. Lead with this in negotiations — it's your strongest card. Say: "My audience engages ${((R.er/3.39)*100 - 100).toFixed(0)}% more than the SA average."` });
-  } else {
-    tips.push({ icon: '📈', text: `Your ER of ${R.er.toFixed(2)}% is below the SA average. Strengthen it by posting more consistently and engaging with comments within the first hour of publishing.` });
-  }
-
-  if (R.price_cpm_final > R.price_cpe_final * 1.2) {
-    tips.push({ icon: '👁️', text: `Your CPM rate (${fmtZAR(R.price_cpm_final)}) significantly outperforms your CPE rate. Quote the CPM rate to brands running awareness campaigns — they're paying for reach.` });
-  } else if (R.price_cpe_final > R.price_cpm_final * 1.2) {
-    tips.push({ icon: '🎯', text: `Your CPE rate (${fmtZAR(R.price_cpe_final)}) significantly outperforms your CPM rate. Quote the CPE rate to performance-focused brands — they pay for conversions, not just eyeballs.` });
-  } else {
-    tips.push({ icon: '⚖️', text: `Your CPM and CPE rates are well-balanced. This means you offer both reach and engagement value — a strong position for brand negotiations.` });
-  }
-
-  if (R.premiumMult > 1) {
-    const pct = Math.round((R.premiumMult - 1) * 100);
-    tips.push({ icon: '📝', text: `You've included premium add-ons adding +${pct}% to your base rate. Always justify these in your rate card deck — brands need to understand what they're paying for.` });
-  } else {
-    tips.push({ icon: '💡', text: `You haven't added any premium add-ons. If the brand will use your content in paid ads (usage rights) or needs exclusivity, charge an additional 25–50% on top of your base rate.` });
-  }
-
-  tipsEl.innerHTML = tips.map(t => `
-    <div class="tip-card">
-      <div class="tip-card-icon">${t.icon}</div>
-      ${t.text}
+    <div class="breakdown-section-card">
+      <div class="breakdown-section-hdr">CPE Calculation</div>
+      <div class="breakdown-section-body">
+        <div class="breakdown-row"><span class="breakdown-key">Engagement Rate</span><span class="breakdown-val">${R.er.toFixed(2)}%</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">CPE tier (${R.cpeTierData.label})</span><span class="breakdown-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} per engagement</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Platform CPE multiplier</span><span class="breakdown-val">×${R.p.cpe_mult.toFixed(2)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Adjusted CPE</span><span class="breakdown-val">R ${R.adjustedCPE.toFixed(2)} per engagement</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Total interactions</span><span class="breakdown-val">${fmtNum(R.d.likes + R.d.comments + R.d.shares)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key"><strong>CPE Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe)}</span></div>
+      </div>
     </div>
-  `).join('');
+    <div class="breakdown-section-card">
+      <div class="breakdown-section-hdr">Final Price</div>
+      <div class="breakdown-section-body">
+        <div class="breakdown-row"><span class="breakdown-key">Premium add-ons</span><span class="breakdown-val">${addonsText}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Combined add-ons multiplier</span><span class="breakdown-val">×${R.premiumMult.toFixed(2)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Final CPM Rate</span><span class="breakdown-val accent">${fmtZAR(R.price_cpm_final)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key">Final CPE Rate</span><span class="breakdown-val accent">${fmtZAR(R.price_cpe_final)}</span></div>
+        <div class="breakdown-row"><span class="breakdown-key"><strong>Recommended = MAX(CPM, CPE)</strong></span><span class="breakdown-val accent"><strong>${fmtZAR(R.recommended)}</strong> ${cpmWinner ? '← CPM wins' : '← CPE wins'}</span></div>
+      </div>
+    </div>
+  `;
 }
 
-/* ── ANIMATIONS ──────────────────────────────────────────── */
+/* ── BREAKDOWN TOGGLE ── */
+function toggleBreakdown() {
+  breakdownOpen = !breakdownOpen;
+  const wrap  = document.getElementById('r-breakdown-wrap');
+  const label = document.getElementById('breakdown-btn-label');
+  const arrow = document.getElementById('breakdown-btn-arrow');
+  wrap.style.display  = breakdownOpen ? 'block' : 'none';
+  label.textContent   = breakdownOpen ? 'Hide Calculation Details' : 'View Calculation Details';
+  arrow.textContent   = breakdownOpen ? '▴' : '▾';
+}
+
+/* ── ANIMATIONS ── */
 function countUpZAR(el, zarTarget, duration) {
   if (!el) return;
   const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
@@ -1673,7 +1446,7 @@ function countUpZAR(el, zarTarget, duration) {
   requestAnimationFrame(tick);
 }
 
-/* ── ACCORDION ───────────────────────────────────────────── */
+/* ── ACCORDION ── */
 function toggleAccordion(header) {
   const body  = header.nextElementSibling;
   const arrow = header.querySelector('.accordion-arrow');
@@ -1682,19 +1455,17 @@ function toggleAccordion(header) {
   arrow.classList.toggle('open', !isOpen);
 }
 
-/* ── RECALCULATE ─────────────────────────────────────────── */
-function recalculate() {
-  goTo('s-platforms');
-}
+/* ── RECALCULATE ── */
+function recalculate() { goTo('s-platforms'); }
 
-/* ── CURRENCY CHANGE ─────────────────────────────────────── */
+/* ── CURRENCY CHANGE ── */
 function onCurrencyChange(code) {
   selectedCurrency = code;
   updateRateBadge();
   if (calcResults) renderResults();
 }
 
-/* ── INIT ────────────────────────────────────────────────── */
+/* ── INIT ── */
 function init() {
   buildNicheSelect();
   buildContentTypeCards();
@@ -1702,8 +1473,7 @@ function init() {
   addPlatformCard();
   updateRateBadge();
   fetchLiveRates();
-
-  const params = new URLSearchParams(window.location.search);
+  const params    = new URLSearchParams(window.location.search);
   const emailParam = params.get('email');
   const nameParam  = params.get('name') || params.get('first_name');
   if (emailParam && emailParam.includes('@')) {
@@ -1714,12 +1484,10 @@ function init() {
   }
 }
 
-/* ── EMAIL DELIVERY ─────────────────────────────────────── */
+/* ── EMAIL DELIVERY ── */
 function showSendMsg(text, color) {
   const el = document.getElementById('send-rc-msg');
-  el.innerHTML = text;
-  el.style.color = color;
-  el.style.display = 'block';
+  el.innerHTML = text; el.style.color = color; el.style.display = 'block';
 }
 
 async function sendRateCard() {
@@ -1727,15 +1495,12 @@ async function sendRateCard() {
   const email = (document.getElementById('send-email').value || '').trim();
   const brand = (document.getElementById('send-brand').value || '').trim();
   const btn   = document.getElementById('send-rc-btn');
-
   if (!name)  { showSendMsg('Please enter your name.', '#EF4444'); return; }
   if (!email || !email.includes('@')) { showSendMsg('Please enter a valid email address.', '#EF4444'); return; }
   if (!calcResults) { showSendMsg('Please calculate your rate first.', '#EF4444'); return; }
-
   btn.disabled = true;
   btn.textContent = 'Sending your rate card…';
   showSendMsg('Building and sending your PDF…', '#888');
-
   try {
     const R = calcResults;
     const zar = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
@@ -1754,21 +1519,13 @@ async function sendRateCard() {
       brand: brand || '',
       handle: handle
     };
-
     showSendMsg('Sending to your inbox…', '#888');
-    const res = await fetch('/api/send-rate-card', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, brand, rateData })
-    });
+    const res = await fetch('/api/send-rate-card', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, brand, rateData }) });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Send failed');
-
     btn.textContent = '✓ Rate Card Sent!';
     showSendMsg(`✅ Check <strong>${email}</strong> — your rate card is on its way. Forward the PDF directly to any brand pitch email.`, '#059669');
-
   } catch (err) {
-    console.error('sendRateCard error:', err);
     btn.disabled = false;
     btn.textContent = 'Send My Rate Card PDF →';
     showSendMsg(`❌ ${err.message || 'Send failed — try again.'}`, '#EF4444');
