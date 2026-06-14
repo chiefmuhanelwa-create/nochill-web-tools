@@ -7,1066 +7,545 @@
   <meta name="description" content="The only African influencer rate calculator backed by real 2024 SA CPM data. Know your worth. Charge what you're worth.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;700;800;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
+    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary: #C9A84C;
-      --primary-mid: #D4B26A;
-      --primary-bright: #E2C67A;
-      --primary-deep: #8B6914;
-      --primary-bg: rgba(201,168,76,0.10);
-      --primary-border: rgba(201,168,76,0.35);
-      --orange: #D4541F;
-      --bg: #FFFFFF;
-      --surface: #FFFFFF;
-      --elevated: #F5F5F5;
-      --text-heading: #111111;
-      --text-body: #222222;
-      --text-dim: #444444;
-      --text-subtle: #888888;
-      --border: rgba(0,0,0,0.10);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --gold:        #C9A84C;
+      --gold-mid:    #D4B26A;
+      --gold-deep:   #8B6914;
+      --gold-bg:     rgba(201,168,76,0.10);
+      --gold-border: rgba(201,168,76,0.28);
+      --dark:        #111111;
+      --charcoal:    #1C1C1C;
+      --text-h:      #111111;
+      --text-b:      #333333;
+      --text-dim:    #555555;
+      --text-muted:  #888888;
+      --white75:     rgba(255,255,255,0.75);
+      --white88:     rgba(255,255,255,0.88);
+      --border-lt:   rgba(0,0,0,0.08);
+      --border-md:   rgba(0,0,0,0.14);
+      --shadow-card: 0 4px 24px -4px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-gold: 0 0 0 3px rgba(201,168,76,0.22);
+      --r-xl:        20px;
+      --r-lg:        14px;
+      --r-md:        10px;
+      --font:        'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-head:   'Montserrat', 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--font);
-      background: var(--bg);
-      color: var(--text-body);
+      color: var(--text-b);
       min-height: 100vh;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* ── KEYFRAMES ─────────────────────────────────────────── */
-    @keyframes card-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(212,84,31,0.55); } 70% { box-shadow: 0 0 0 10px rgba(212,84,31,0); } 100% { box-shadow: 0 0 0 0 rgba(212,84,31,0); } }
-    @keyframes screenIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes countUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    /* ── ANIMATED BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -2;
+      background: linear-gradient(135deg, #FBF8EF 0%, #F5EDD6 40%, #ECE2C1 75%, #E6DAAF 100%);
+    }
+    .bg-blob {
+      position: fixed; border-radius: 50%;
+      filter: blur(90px); pointer-events: none; z-index: -1;
+      animation: bgFloat 28s ease-in-out infinite;
+    }
+    .bg-blob-1 { width:700px; height:700px; top:-250px; left:-200px; background:rgba(201,168,76,0.15); animation-delay:0s; }
+    .bg-blob-2 { width:520px; height:520px; top:45%; right:-220px; background:rgba(201,168,76,0.09); animation-delay:-9s; }
+    .bg-blob-3 { width:460px; height:460px; bottom:-80px; left:30%; background:rgba(139,105,20,0.07); animation-delay:-18s; }
 
-    /* ── TYPOGRAPHY ─────────────────────────────────────────── */
-    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--text-heading); }
-    h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; color: var(--text-heading); }
-    h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); }
-    p  { font-size: 1rem; color: var(--text-dim); }
-
-    .accent { color: var(--primary); }
-    .muted  { color: var(--text-subtle); }
-    .small  { font-size: 0.8rem; }
-
-    /* ── LAYOUT ──────────────────────────────────────────────── */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
+    @keyframes bgFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      33%      { transform: translateY(-40px) scale(1.03); }
+      66%      { transform: translateY(28px) scale(0.97); }
+    }
+    @keyframes slideUp  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+    @keyframes countUp  { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+    @keyframes spin     { to { transform:rotate(360deg); } }
+    @keyframes liveDot  {
+      0%   { box-shadow:0 0 0 0 rgba(201,168,76,0.6); }
+      70%  { box-shadow:0 0 0 8px rgba(201,168,76,0); }
+      100% { box-shadow:0 0 0 0 rgba(201,168,76,0); }
     }
 
-    .screen {
-      display: none;
-      min-height: 100vh;
-      padding: 2rem 0 5rem;
-      animation: screenIn 0.4s ease both;
-    }
-    .screen.active { display: block; }
-
-    /* ── TOPBAR ──────────────────────────────────────────────── */
-    .topbar {
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 0.9rem 1.25rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    /* ── GLASS SYSTEM ── */
+    .glass {
+      background: var(--white75);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+      transform: translateZ(0);
     }
-    .topbar-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+    .glass-strong {
+      background: var(--white88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transform: translateZ(0);
     }
+    .floating {
+      transition: transform 0.22s ease-out, box-shadow 0.22s ease-out;
+      will-change: auto;
+    }
+    .floating:hover {
+      transform: translateY(-2px) translateZ(0);
+      box-shadow: 0 10px 36px -8px rgba(0,0,0,0.18);
+    }
+    @media (max-width:767px) { .floating:hover { transform: none; } }
+
+    /* ── LAYOUT ── */
+    .container { max-width:860px; margin:0 auto; padding:0 1.25rem; }
+    .screen { display:none; min-height:100vh; padding:2rem 0 6rem; animation:slideUp 0.35s ease both; }
+    .screen.active { display:block; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position:sticky; top:0; z-index:100;
+      border-bottom:1px solid rgba(201,168,76,0.20);
+      padding:0.85rem 1.25rem;
+      box-shadow:0 1px 12px rgba(0,0,0,0.06);
+    }
+    .topbar-inner { max-width:860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
     .logo {
-      font-weight: 900;
-      font-size: 1rem;
-      letter-spacing: 0.08em;
-      color: var(--primary-deep);
-      text-transform: uppercase;
+      font-family:var(--font-head); font-weight:900; font-size:1rem;
+      color:var(--gold-deep); letter-spacing:0.06em; text-transform:uppercase;
     }
-    .logo span { color: var(--text-subtle); font-weight: 500; }
+    .logo span { color:var(--text-muted); font-weight:400; font-family:var(--font); font-size:0.9em; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
 
-    .step-indicator {
-      display: flex;
-      gap: 0.4rem;
-      align-items: center;
-    }
-    .step-seg {
-      height: 4px;
-      width: 36px;
-      border-radius: 2px;
-      background: var(--border);
-      transition: background 0.3s;
-    }
-    .step-seg.done    { background: var(--primary); }
-    .step-seg.current { background: var(--orange); }
+    /* ── STEP INDICATOR ── */
+    .step-indicator { display:flex; gap:5px; align-items:center; }
+    .step-seg { height:4px; width:32px; border-radius:2px; background:rgba(0,0,0,0.12); transition:background 0.3s; }
+    .step-seg.done    { background:var(--gold); }
+    .step-seg.current { background:var(--gold-deep); }
 
-    /* ── NX STATUS LIVE ──────────────────────────────────────── */
+    /* ── LIVE BADGE ── */
     .nx-status-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #9A3A12;
-      background: rgba(212,84,31,0.10);
-      border: 1px solid rgba(212,84,31,0.30);
+      display:inline-flex; align-items:center; gap:6px;
+      padding:5px 11px; border-radius:999px;
+      background:var(--gold-bg); border:1px solid var(--gold-border);
+      font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;
+      color:var(--gold-deep);
     }
     .nx-live-dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 999px;
-      background: var(--orange);
-      animation: live-pulse 1.8s ease-out 3;
+      width:7px; height:7px; border-radius:50%;
+      background:var(--gold); flex-shrink:0;
+      animation:liveDot 1.8s ease-out 4;
     }
 
-    /* ── NX LABEL ────────────────────────────────────────────── */
-    .nx-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--primary-deep);
+    /* ── SECTION CARD ── */
+    .section-card {
+      border-radius:var(--r-xl);
+      border:1px solid rgba(201,168,76,0.22);
+      box-shadow:var(--shadow-card);
+      overflow:hidden; margin-bottom:1.2rem;
+    }
+    .card-header {
+      display:flex; align-items:center; gap:0.65rem;
+      padding:1rem 1.4rem;
+      border-bottom:1px solid rgba(255,255,255,0.65);
+      background:rgba(255,255,255,0.5);
+    }
+    .card-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; background:var(--gold); }
+    .card-dot.blue  { background:#6366F1; }
+    .card-dot.green { background:#10B981; }
+    .card-dot.amber { background:#F59E0B; }
+    .card-header-title { font-weight:700; font-size:0.95rem; color:var(--text-h); }
+    .card-header-sub   { font-size:0.78rem; color:var(--text-muted); margin-left:auto; }
+    .card-body { padding:1.4rem; }
+
+    /* ── TYPOGRAPHY ── */
+    h1 { font-family:var(--font-head); font-size:clamp(1.9rem,5vw,3rem); font-weight:900; line-height:1.1; color:var(--text-h); }
+    h2 { font-family:var(--font-head); font-size:clamp(1.25rem,3vw,1.7rem); font-weight:800; color:var(--text-h); }
+    h3 { font-size:1.05rem; font-weight:700; color:var(--text-h); }
+    p  { color:var(--text-dim); }
+
+    /* ── EYEBROW ── */
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      background:var(--gold-bg); border:1px solid var(--gold-border);
+      border-radius:999px; padding:0.3rem 0.9rem;
+      font-size:0.78rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+      color:var(--gold-deep); margin-bottom:1.25rem;
     }
 
-    /* ── CTA GLOW ────────────────────────────────────────────── */
+    /* ── TRUST BADGES ── */
+    .trust-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:0.6rem; margin-bottom:2rem; }
+    .trust-badge {
+      background:var(--white88); border:1px solid var(--border-lt);
+      border-radius:999px; padding:0.42rem 1rem;
+      font-size:0.8rem; font-weight:600; color:var(--text-dim);
+      display:flex; align-items:center; gap:0.4rem;
+      box-shadow:0 1px 4px rgba(0,0,0,0.06);
+    }
+    .trust-badge .chk { color:var(--gold); }
+
+    /* ── PRIMARY CTA BUTTON ── */
     .cta-glow {
-      background: #111111;
-      color: #C9A84C;
-      font-weight: 700;
-      font-size: 15px;
-      border: 1px solid rgba(0,0,0,0.80);
-      border-radius: 10px;
-      padding: 14px 28px;
-      cursor: pointer;
-      display: inline-flex; align-items: center; gap: 8px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-      transition: transform .25s ease, box-shadow .25s ease;
-      font-family: var(--font);
-      width: 100%;
-      justify-content: center;
-      text-decoration: none;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:14px 28px; border-radius:12px;
+      background:linear-gradient(135deg, var(--dark) 0%, var(--charcoal) 100%);
+      color:var(--gold);
+      font-family:var(--font); font-weight:700; font-size:15px;
+      border:none; cursor:pointer; text-decoration:none;
+      box-shadow:0 4px 16px rgba(0,0,0,0.20);
+      transition:transform 0.2s ease, box-shadow 0.2s ease;
+      width:100%; letter-spacing:0.01em;
     }
-    .cta-glow:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    }
+    .cta-glow:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.28); }
+    .cta-glow:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
 
-    /* ── NX CARD ─────────────────────────────────────────────── */
-    .nx-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      transition: transform .3s ease, border-color .3s ease, box-shadow .4s ease;
+    /* ── NAV BUTTONS ── */
+    .btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:0.85rem 1.5rem; border-radius:10px;
+      font-family:var(--font); font-weight:700; font-size:0.9rem;
+      cursor:pointer; border:none; transition:all 0.2s; text-decoration:none;
     }
-    .nx-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      opacity: 0;
-      transition: opacity .3s ease;
+    .btn-primary { background:var(--dark); color:var(--gold); border:1px solid rgba(0,0,0,0.8); box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.25); }
+    .btn-ghost { background:rgba(255,255,255,0.7); color:var(--text-dim); border:1px solid var(--border-md); }
+    .btn-ghost:hover { background:rgba(255,255,255,0.9); color:var(--text-h); }
+    .btn-danger-outline { background:transparent; color:#DC2626; border:1.5px solid rgba(239,68,68,0.35); padding:0.4rem 0.75rem; font-size:0.78rem; }
+    .btn-danger-outline:hover { background:rgba(239,68,68,0.08); }
+    .btn-outline-sm {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:10px 16px; border-radius:10px;
+      background:rgba(255,255,255,0.7); border:1.5px solid var(--gold-border);
+      font-family:var(--font); font-weight:600; font-size:14px; color:var(--gold-deep);
+      cursor:pointer; transition:all 0.2s; width:100%; justify-content:center;
     }
-    .nx-card:hover { border-color: var(--primary-border); transform: translateY(-3px); box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 12px 32px -8px rgba(0,0,0,0.10); }
-    .nx-card:hover::before { opacity: 1; }
+    .btn-outline-sm:hover { background:var(--gold-bg); }
+    .btn-full { width:100%; justify-content:center; }
 
-    /* ── PLATFORM CARD (selector style) ─────────────────────── */
-    .platform-selector-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all .2s ease;
-      text-align: center;
-    }
-    .platform-selector-card:hover { border-color: var(--primary-border); transform: translateY(-2px); }
-    .platform-selector-card.sel { border-color: var(--primary); background: var(--primary-bg); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
-
-    /* ── RANGE SLIDER ─────────────────────────────────────────── */
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 6px;
-      border-radius: 3px;
-      background: rgba(10,10,10,0.10);
-      outline: none;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--primary);
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(5,150,105,0.40);
-      transition: transform .2s, box-shadow .2s;
-    }
-    input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 18px rgba(5,150,105,0.60);
-    }
-
-    /* ── RATE DISPLAY ─────────────────────────────────────────── */
-    .rate-display {
-      background: linear-gradient(135deg, var(--elevated), var(--bg));
-      border: 1px solid rgba(5,150,105,0.25);
-      border-radius: 16px;
-      padding: 28px;
-      text-align: center;
-    }
-    .rate-amount {
-      font-size: clamp(40px,8vw,72px);
-      font-weight: 900;
-      color: var(--primary);
-      letter-spacing: -3px;
-      line-height: 1;
-    }
-    .rate-amount.count-anim { animation: countUp .4s ease both; }
-    .rate-label { font-size: 13px; color: var(--text-dim); font-weight: 500; margin-top: 6px; }
-
-    /* ── BREAKDOWN ROW ─────────────────────────────────────────── */
-    .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(10,10,10,0.08);
-      font-size: 14px;
-    }
-    .breakdown-row:last-child { border: none; }
-    .breakdown-key   { color: var(--text-dim); font-weight: 500; }
-    .breakdown-val   { font-weight: 700; color: var(--text-heading); }
-    .breakdown-val.accent { color: var(--primary); }
-
-    /* ── NX INPUT ─────────────────────────────────────────────── */
+    /* ── INPUTS ── */
     .nx-input, .form-input, .form-select {
-      width: 100%;
-      background: var(--surface);
-      border: 1.5px solid #CCCCCC;
-      border-radius: 10px;
-      padding: 13px 15px;
-      font-size: 15px;
-      color: var(--text-heading);
-      font-family: var(--font);
-      transition: border-color .2s, box-shadow .2s;
-      outline: none;
-      -webkit-appearance: none;
-      appearance: none;
+      width:100%;
+      background:rgba(255,255,255,0.85);
+      border:1.5px solid rgba(201,168,76,0.25);
+      border-radius:var(--r-md); padding:12px 14px;
+      font-size:16px; color:var(--text-h); font-family:var(--font);
+      transition:border-color 0.2s, box-shadow 0.2s;
+      outline:none; -webkit-appearance:none; appearance:none;
     }
     .nx-input:focus, .form-input:focus, .form-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.18);
+      border-color:var(--gold); box-shadow:var(--shadow-gold);
+      background:rgba(255,255,255,0.96);
     }
-    .nx-input::placeholder, .form-input::placeholder { color: #AAAAAA; }
-    .form-input.error { border-color: #EF4444; }
-    .form-select option { background: #fff; }
+    .nx-input::placeholder, .form-input::placeholder { color:#BCBCBC; }
+    .form-input.error { border-color:#EF4444; }
+    .form-select option { background:#fff; }
 
-    /* ── BUTTONS ─────────────────────────────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.75rem;
-      border-radius: 10px;
-      font-family: var(--font);
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
-    .btn-primary {
-      background: #111111;
-      color: #C9A84C;
-      border: 1px solid rgba(0,0,0,0.80);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
-    .btn-outline {
-      background: transparent;
-      color: var(--primary);
-      border: 1.5px solid var(--primary-border);
-    }
-    .btn-outline:hover { background: var(--primary-bg); }
-    .btn-ghost {
-      background: var(--elevated);
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { background: #EAE4D7; color: var(--text-heading); }
-    .btn-danger-outline {
-      background: transparent;
-      color: #EF4444;
-      border: 1.5px solid rgba(239,68,68,0.4);
-      padding: 0.4rem 0.75rem;
-      font-size: 0.78rem;
-    }
-    .btn-danger-outline:hover { background: rgba(239,68,68,0.08); }
-    .btn-full { width: 100%; justify-content: center; }
-
-    /* ── FORM ELEMENTS ───────────────────────────────────────── */
-    .form-group { margin-bottom: 1rem; }
+    /* ── FORM ELEMENTS ── */
+    .form-group { margin-bottom:1rem; }
     .form-label {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-heading);
-      margin-bottom: 0.55rem;
+      display:flex; align-items:center; gap:0.4rem;
+      font-size:0.87rem; font-weight:700; color:var(--text-h); margin-bottom:0.45rem;
     }
     .info-icon {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: var(--elevated);
-      color: var(--text-subtle);
-      font-size: 0.65rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: help;
-      flex-shrink: 0;
-      position: relative;
-      border: 1px solid var(--border);
+      width:15px; height:15px; border-radius:50%;
+      background:rgba(255,255,255,0.8); border:1px solid var(--border-md);
+      color:var(--text-muted); font-size:0.6rem; font-weight:700;
+      display:inline-flex; align-items:center; justify-content:center;
+      cursor:help; flex-shrink:0; position:relative;
     }
-    .info-icon:hover .tooltip { display: block; }
+    .info-icon:hover .tooltip { display:block; }
     .tooltip {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--text-heading);
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 400;
-      padding: 0.6rem 0.8rem;
-      border-radius: 8px;
-      width: 220px;
-      z-index: 999;
-      line-height: 1.5;
-      white-space: normal;
+      display:none; position:absolute; bottom:calc(100% + 8px); left:50%;
+      transform:translateX(-50%);
+      background:var(--dark); color:#fff;
+      font-size:0.75rem; font-weight:400;
+      padding:0.55rem 0.75rem; border-radius:8px;
+      width:210px; z-index:999; line-height:1.5; white-space:normal;
     }
     .tooltip::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--text-heading);
+      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+      border:5px solid transparent; border-top-color:var(--dark);
     }
+    .form-hint  { font-size:0.76rem; color:var(--text-muted); margin-top:0.3rem; }
+    .form-error { font-size:0.76rem; color:#EF4444; margin-top:0.3rem; display:none; }
+    .form-error.visible { display:block; }
 
-    .input-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-    .input-grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-    }
-    @media (max-width: 600px) {
-      .input-grid-2, .input-grid-3 { grid-template-columns: 1fr 1fr; }
-    }
+    .input-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+    .input-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; }
+    @media (max-width:600px) { .input-grid-2 { grid-template-columns:1fr; } .input-grid-3 { grid-template-columns:1fr 1fr; } }
+    @media (max-width:420px) { .input-grid-3 { grid-template-columns:1fr; } }
 
-    .form-hint  { font-size: 0.78rem; color: var(--text-subtle); margin-top: 0.3rem; }
-    .form-error { font-size: 0.78rem; color: #EF4444; margin-top: 0.3rem; display: none; }
-    .form-error.visible { display: block; }
+    .niche-select-wrap { position:relative; }
+    .niche-select-wrap::after { content:'▾'; position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; }
 
-    /* ── ER DISPLAY ──────────────────────────────────────────── */
-    .er-display {
-      background: var(--elevated);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      margin-top: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .er-value-block { display: flex; align-items: center; gap: 0.6rem; }
-    .er-label  { font-size: 0.8rem; color: var(--text-subtle); }
-    .er-number { font-size: 1.3rem; font-weight: 800; color: var(--text-heading); }
-    .er-tier-pill {
-      padding: 0.2rem 0.6rem;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .er-formula  { font-size: 0.72rem; color: var(--text-subtle); }
-    .er-benchmark{ font-size: 0.75rem; color: var(--text-subtle); margin-top: 0.35rem; }
-
-    /* ── PLATFORM CARD (input card style) ───────────────────── */
+    /* ── PLATFORM CARDS (JS-generated) ── */
     .platform-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      animation: slideUp 0.3s ease both;
+      background:var(--white88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(201,168,76,0.22); border-radius:var(--r-xl);
+      padding:1.4rem; margin-bottom:1.1rem;
+      animation:slideUp 0.3s ease both; box-shadow:var(--shadow-card);
     }
     .platform-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:1.2rem; padding-bottom:1rem;
+      border-bottom:1px solid rgba(201,168,76,0.18);
     }
-    .platform-title  { font-weight: 700; font-size: 1rem; color: var(--text-heading); }
-    .platform-icon   { font-size: 1.4rem; margin-right: 0.4rem; }
+    .platform-title { font-weight:700; font-size:1rem; color:var(--text-h); }
 
-    /* ── NICHE SELECT ────────────────────────────────────────── */
-    .niche-select-wrap { position: relative; }
-    .niche-select-wrap::after {
-      content: '▾';
-      position: absolute;
-      right: 0.9rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-subtle);
-      pointer-events: none;
+    /* ── ER DISPLAY (JS-generated) ── */
+    .er-display {
+      background:var(--gold-bg); border:1px solid var(--gold-border);
+      border-radius:var(--r-md); padding:0.85rem 1rem; margin-top:0.75rem;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;
     }
-
-    /* ── RADIO CARDS (content type) ──────────────────────────── */
-    .radio-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.5rem;
-    }
-    .radio-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
-    }
-    .radio-card:hover { border-color: var(--primary-border); }
-    .radio-card.selected { border-color: var(--primary); background: var(--primary-bg); box-shadow: 0 0 16px rgba(201,168,76,0.18); }
-    .radio-card input[type="radio"] { display: none; }
-    .radio-card-icon  { font-size: 1.5rem; margin-bottom: 0.4rem; }
-    .radio-card-label { font-size: 0.88rem; font-weight: 700; color: var(--text-heading); margin-bottom: 0.25rem; }
-    .radio-card-note  { font-size: 0.72rem; color: var(--text-subtle); line-height: 1.4; }
-    .radio-card-mult  {
-      position: absolute;
-      top: 0.6rem; right: 0.6rem;
-      background: var(--primary-bg);
-      color: var(--primary);
-      border-radius: 6px;
-      padding: 0.15rem 0.4rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-
-    /* ── CHECKBOX CARDS (add-ons) ────────────────────────────── */
-    .checkbox-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.5rem;
-    }
-    .checkbox-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
-    }
-    .checkbox-card:hover { border-color: var(--primary-border); }
-    .checkbox-card.selected { border-color: var(--primary); background: var(--primary-bg); }
-    .checkbox-card input[type="checkbox"] { display: none; }
-    .checkbox-card-label { font-size: 0.88rem; font-weight: 700; color: var(--text-heading); margin-bottom: 0.3rem; }
-    .checkbox-card-desc  { font-size: 0.75rem; color: var(--text-subtle); line-height: 1.4; }
-    .checkbox-card-mult  {
-      position: absolute;
-      top: 0.6rem; right: 0.6rem;
-      background: var(--primary-bg);
-      color: var(--primary);
-      border-radius: 6px;
-      padding: 0.15rem 0.4rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-    .checkbox-tick {
-      position: absolute;
-      bottom: 0.6rem; right: 0.6rem;
-      width: 18px; height: 18px;
-      border: 2px solid var(--border);
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    .checkbox-card.selected .checkbox-tick { background: var(--primary); border-color: var(--primary); }
-    .checkbox-tick-inner { display: none; font-size: 0.65rem; color: white; }
-    .checkbox-card.selected .checkbox-tick-inner { display: block; }
-
-    /* ── ACCORDION ───────────────────────────────────────────── */
-    .accordion { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    .accordion-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      background: var(--surface);
-      user-select: none;
-      transition: background 0.2s;
-    }
-    .accordion-header:hover { background: var(--elevated); }
-    .accordion-title { font-weight: 700; font-size: 0.95rem; color: var(--text-heading); }
-    .accordion-arrow { font-size: 0.8rem; color: var(--text-subtle); transition: transform 0.3s; }
-    .accordion-arrow.open { transform: rotate(180deg); }
-    .accordion-body {
-      display: none;
-      padding: 1.25rem;
-      background: var(--elevated);
-      border-top: 1px solid var(--border);
-      animation: screenIn 0.25s ease both;
-    }
-    .accordion-body.open { display: block; }
-
-    /* ── EDU BANNER ──────────────────────────────────────────── */
-    .edu-banner {
-      background: var(--primary-bg);
-      border: 1px solid var(--primary-border);
-      border-radius: 10px;
-      padding: 0.9rem 1.1rem;
-      font-size: 0.88rem;
-      color: var(--text-body);
-      margin-bottom: 1.5rem;
-      display: flex;
-      gap: 0.7rem;
-      align-items: flex-start;
-    }
-    .edu-banner-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
-
-    /* ── LOADING SCREEN ──────────────────────────────────────── */
-    #s-loading {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1.5rem;
-      min-height: 80vh;
-    }
-    #s-loading.active { display: flex; }
-    .loader-ring {
-      width: 72px; height: 72px;
-      border: 4px solid var(--border);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-    }
-    .loader-text { font-size: 1.1rem; font-weight: 600; color: var(--text-body); text-align: center; }
-    .loader-sub  { font-size: 0.85rem; color: var(--text-subtle); text-align: center; }
-    .progress-bar-wrap {
-      width: 280px;
-      height: 6px;
-      background: var(--border);
-      border-radius: 100px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary-mid), var(--primary));
-      border-radius: 100px;
-      width: 0%;
-      transition: width 1.5s ease;
-    }
-
-    /* ── INTRO SCREEN ────────────────────────────────────────── */
-    #s-intro { text-align: center; padding-top: 4rem; }
-    .intro-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--primary-bg);
-      border: 1px solid var(--primary-border);
-      border-radius: 100px;
-      padding: 0.35rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--primary-deep);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.06em;
-    }
-    .intro-headline { margin-bottom: 1rem; }
-    .intro-headline .line2 { color: var(--primary); }
-    .intro-sub {
-      font-size: 1.05rem;
-      color: var(--text-dim);
-      max-width: 580px;
-      margin: 0 auto 2rem;
-      line-height: 1.7;
-    }
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 2.5rem;
-    }
-    .trust-badge {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.6rem 1.1rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 1px 4px rgba(10,10,10,0.06);
-    }
-    .trust-badge span { color: var(--primary); }
-    .intro-cta { margin-bottom: 3rem; max-width: 360px; margin-left: auto; margin-right: auto; }
-    .intro-visual {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      max-width: 580px;
-      margin: 0 auto 3rem;
-      text-align: left;
-      box-shadow: 0 4px 24px rgba(10,10,10,0.06);
-    }
-    .intro-visual-title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-subtle);
-      margin-bottom: 1rem;
-    }
-    .sample-rate-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .sample-rate-row:last-child { border-bottom: none; }
-    .sample-rate-niche { font-size: 0.88rem; color: var(--text-dim); }
-    .sample-rate-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
-
-    /* ── RESULTS ─────────────────────────────────────────────── */
-    .results-tier-block {
-      text-align: center;
-      padding: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      margin-bottom: 1.5rem;
-    }
-    .tier-badge-big {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 1.1rem;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.75rem;
-    }
-    .tier-range { font-size: 0.85rem; color: var(--text-subtle); }
-
-    .er-result-block {
-      text-align: center;
-      padding: 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      margin-bottom: 1.5rem;
-    }
-    .er-result-number { font-size: 2.8rem; font-weight: 900; }
-    .er-result-label  { font-size: 1rem; color: var(--text-dim); margin: 0.3rem 0; }
-    .er-result-bench  { font-size: 0.85rem; color: var(--text-subtle); }
-
-    .rate-cards-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    @media (max-width: 680px) { .rate-cards-grid { grid-template-columns: 1fr; } }
-
-    .rate-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      text-align: center;
-      animation: slideUp 0.4s ease both;
-    }
-    .rate-card:nth-child(1) { animation-delay: 0ms; }
-    .rate-card:nth-child(2) { animation-delay: 150ms; }
-    .rate-card:nth-child(3) { animation-delay: 300ms; }
-    .rate-card.recommended {
-      border-color: var(--primary);
-      background: var(--primary-bg);
-      position: relative;
-      overflow: hidden;
-      animation: slideUp 0.4s ease 150ms both;
-    }
-    @keyframes emeraldPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.0); }
-      50%       { box-shadow: 0 0 0 10px rgba(5,150,105,0.08); }
-    }
-    .rate-card-tag {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      background: linear-gradient(135deg, var(--primary-mid), var(--primary));
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      padding: 0.3rem;
-      text-transform: uppercase;
-    }
-    .rate-card-body { padding-top: 0.5rem; }
-    .rate-card.recommended .rate-card-body { padding-top: 1.2rem; }
-    .rate-card-type { font-size: 0.8rem; color: var(--text-subtle); margin-bottom: 0.6rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-    .rate-card-zar  { font-size: 2rem; font-weight: 900; color: var(--text-heading); }
-    .rate-card-usd  { font-size: 0.8rem; color: var(--text-subtle); margin-top: 0.2rem; }
-    .rate-card-sub  { font-size: 0.78rem; color: var(--text-subtle); margin-top: 0.6rem; line-height: 1.4; }
-    .recommended .rate-card-zar { color: var(--primary); font-size: 2.3rem; }
-
-    .price-range-block {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-    .price-range-label  { font-size: 0.85rem; color: var(--text-subtle); font-weight: 600; }
-    .price-range-values { font-size: 1rem; font-weight: 700; color: var(--text-heading); }
-    .price-range-hint   { font-size: 0.78rem; color: var(--text-subtle); margin-top: 0.25rem; }
-
-    /* Bar chart */
-    .bar-chart { margin: 1rem 0; }
-    .bar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
-    .bar-label { font-size: 0.8rem; color: var(--text-subtle); width: 110px; flex-shrink: 0; text-align: right; }
-    .bar-track { flex: 1; height: 10px; background: var(--elevated); border-radius: 100px; overflow: hidden; }
-    .bar-fill  { height: 100%; border-radius: 100px; transition: width 1s ease 0.3s; }
-    .bar-value { font-size: 0.8rem; font-weight: 700; width: 80px; flex-shrink: 0; }
-
-    /* Negotiation tips */
-    .tip-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.75rem;
-    }
-    .tip-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
-    .tip-card-icon { font-size: 1.2rem; margin-bottom: 0.4rem; }
-
-    /* Email capture */
-    .email-capture {
-      background: linear-gradient(135deg, var(--primary-bg), rgba(5,150,105,0.04));
-      border: 1px solid var(--primary-border);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-top: 2rem;
-      text-align: center;
-    }
-    .email-capture h3 { margin-bottom: 0.5rem; }
-    .email-capture p  { margin-bottom: 1.5rem; font-size: 0.9rem; }
-    .email-form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 420px; margin: 0 auto; }
-    .email-form-row { display: flex; gap: 0.75rem; }
-    @media (max-width: 500px) { .email-form-row { flex-direction: column; } }
-    .email-success {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .email-success.visible { display: flex; }
-
-    /* Action row */
-    .action-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 2rem;
-    }
-
-    /* Section headers */
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-    .section-title  { font-weight: 800; font-size: 1rem; color: var(--text-heading); }
-    .section-step {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-subtle);
-      background: var(--elevated);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 0.25rem 0.7rem;
-    }
-    .divider { height: 1px; background: var(--border); margin: 2rem 0; }
-
-    /* Multi-platform note */
-    .platform-note-banner {
-      background: rgba(5,150,105,0.06);
-      border: 1px solid var(--primary-border);
-      border-radius: 10px;
-      padding: 0.85rem 1.1rem;
-      font-size: 0.83rem;
-      color: var(--primary-deep);
-      margin-bottom: 1rem;
-      display: flex;
-      gap: 0.6rem;
-    }
-
-    /* Bottom nav */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2rem;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    /* EDU content */
-    .edu-definition { margin-bottom: 1rem; }
-    .edu-definition dt { font-weight: 700; color: var(--text-heading); margin-bottom: 0.3rem; font-size: 0.92rem; }
-    .edu-definition dd { font-size: 0.85rem; color: var(--text-subtle); line-height: 1.6; margin-left: 0; }
-
-    .formula-box {
-      background: var(--elevated);
-      border: 1px solid var(--primary-border);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      font-family: monospace;
-      font-size: 0.82rem;
-      color: var(--primary-deep);
-      margin: 0.75rem 0;
-      line-height: 1.7;
-    }
-
-    /* Warn badge */
-    .warn-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(212,84,31,0.10);
-      border: 1px solid rgba(212,84,31,0.30);
-      border-radius: 6px;
-      padding: 0.3rem 0.6rem;
-      font-size: 0.76rem;
-      color: #9A3A12;
-      margin-top: 0.35rem;
-    }
+    .er-value-block { display:flex; align-items:center; gap:0.5rem; }
+    .er-label   { font-size:0.78rem; color:var(--text-muted); }
+    .er-number  { font-size:1.25rem; font-weight:800; color:var(--text-h); }
+    .er-tier-pill { padding:0.18rem 0.55rem; border-radius:100px; font-size:0.72rem; font-weight:700; }
+    .er-formula { font-size:0.7rem; color:var(--text-muted); }
+    .er-benchmark { font-size:0.72rem; color:var(--text-muted); margin-top:0.2rem; }
 
     .platform-cpm-note {
-      background: var(--elevated);
-      border-radius: 8px;
-      padding: 0.6rem 0.8rem;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      margin-top: 0.75rem;
-      border-left: 2px solid var(--primary);
+      background:rgba(255,255,255,0.6); border-radius:8px;
+      padding:0.55rem 0.8rem; font-size:0.76rem; color:var(--text-dim);
+      margin-top:0.7rem; border-left:3px solid var(--gold);
     }
 
-    /* Results section label */
-    .results-section-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-subtle);
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
+    /* ── RADIO CARDS (JS-generated) ── */
+    .radio-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:0.7rem; margin-top:0.5rem; }
+    .radio-card {
+      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
+      border-radius:var(--r-lg); padding:1rem; cursor:pointer; transition:all 0.2s; position:relative;
+    }
+    .radio-card:hover { border-color:var(--gold-border); background:rgba(255,255,255,0.88); }
+    .radio-card.selected { border-color:var(--gold); background:var(--gold-bg); box-shadow:0 0 0 3px rgba(201,168,76,0.14); }
+    .radio-card input[type="radio"] { display:none; }
+    .radio-card-icon  { font-size:1.5rem; margin-bottom:0.4rem; }
+    .radio-card-label { font-size:0.85rem; font-weight:700; color:var(--text-h); margin-bottom:0.2rem; }
+    .radio-card-note  { font-size:0.7rem; color:var(--text-muted); line-height:1.4; }
+    .radio-card-mult  {
+      position:absolute; top:0.55rem; right:0.55rem;
+      background:var(--gold-bg); color:var(--gold-deep);
+      border-radius:5px; padding:0.12rem 0.35rem; font-size:0.68rem; font-weight:700;
     }
 
-    /* Currency row */
-    .currency-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
+    /* ── CHECKBOX CARDS (JS-generated) ── */
+    .checkbox-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(195px,1fr)); gap:0.7rem; margin-top:0.5rem; }
+    .checkbox-card {
+      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
+      border-radius:var(--r-lg); padding:1rem; cursor:pointer; transition:all 0.2s; position:relative;
     }
-    .currency-select-wrap {
-      flex: 1;
-      min-width: 200px;
+    .checkbox-card:hover { border-color:var(--gold-border); }
+    .checkbox-card.selected { border-color:var(--gold); background:var(--gold-bg); }
+    .checkbox-card input[type="checkbox"] { display:none; }
+    .checkbox-card-label { font-size:0.85rem; font-weight:700; color:var(--text-h); margin-bottom:0.25rem; }
+    .checkbox-card-desc  { font-size:0.72rem; color:var(--text-muted); line-height:1.4; padding-right:1.5rem; }
+    .checkbox-card-mult  {
+      position:absolute; top:0.55rem; right:0.55rem;
+      background:var(--gold-bg); color:var(--gold-deep);
+      border-radius:5px; padding:0.12rem 0.35rem; font-size:0.68rem; font-weight:700;
     }
+    .checkbox-tick {
+      position:absolute; bottom:0.6rem; right:0.6rem;
+      width:17px; height:17px; border:2px solid var(--border-md);
+      border-radius:4px; display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+    }
+    .checkbox-card.selected .checkbox-tick { background:var(--gold); border-color:var(--gold); }
+    .checkbox-tick-inner { display:none; font-size:0.6rem; color:#fff; }
+    .checkbox-card.selected .checkbox-tick-inner { display:block; }
+
+    /* ── ACCORDION ── */
+    .accordion { border:1px solid rgba(201,168,76,0.2); border-radius:var(--r-lg); overflow:hidden; background:rgba(255,255,255,0.5); }
+    .accordion-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1rem 1.25rem; cursor:pointer;
+      background:rgba(255,255,255,0.6); user-select:none; transition:background 0.2s;
+    }
+    .accordion-header:hover { background:rgba(255,255,255,0.85); }
+    .accordion-title { font-weight:700; font-size:0.92rem; color:var(--text-h); }
+    .accordion-arrow { font-size:0.8rem; color:var(--text-muted); transition:transform 0.3s; }
+    .accordion-arrow.open { transform:rotate(180deg); }
+    .accordion-body { display:none; padding:1.25rem; background:rgba(255,255,255,0.4); border-top:1px solid rgba(201,168,76,0.15); animation:slideUp 0.25s ease both; }
+    .accordion-body.open { display:block; }
+
+    /* ── INFO BANNER ── */
+    .info-banner {
+      display:flex; gap:0.7rem; align-items:flex-start;
+      background:rgba(255,255,255,0.70); border:1px solid rgba(201,168,76,0.25);
+      border-radius:var(--r-md); padding:0.85rem 1rem;
+      font-size:0.85rem; color:var(--text-dim); margin-bottom:1.25rem;
+    }
+    .info-banner-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
+
+    /* ── CURRENCY ROW ── */
+    .currency-row { display:flex; align-items:flex-end; gap:12px; margin-bottom:0; flex-wrap:wrap; }
+    .currency-select-wrap { flex:1; min-width:200px; }
     .currency-select-wrap label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-subtle);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      display:block; font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.1em; color:var(--text-muted); margin-bottom:6px;
     }
     .rate-badge {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 13px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-heading);
-      white-space: nowrap;
-      min-width: 200px;
+      background:rgba(255,255,255,0.85); border:1px solid var(--border-lt);
+      border-radius:9px; padding:12px 14px; font-size:13px; font-weight:600; color:var(--text-h);
+      white-space:nowrap; min-width:180px;
+    }
+    @media (max-width:600px) { .currency-row { flex-direction:column; } .rate-badge,.currency-select-wrap { width:100%; min-width:unset; } }
+
+    /* ── PLATFORM NOTE BANNER ── */
+    .platform-note-banner {
+      background:rgba(255,255,255,0.65); border:1px solid var(--gold-border);
+      border-radius:var(--r-md); padding:0.75rem 1rem;
+      font-size:0.82rem; color:var(--gold-deep);
+      margin-bottom:1rem; display:flex; gap:0.5rem;
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(10,10,10,0.12); border-radius: 3px; }
+    /* ── BOTTOM NAV ── */
+    .bottom-nav { display:flex; justify-content:space-between; align-items:center; padding-top:1.75rem; gap:1rem; flex-wrap:wrap; }
+    @media (max-width:500px) { .bottom-nav { flex-direction:column; } .bottom-nav .btn,.bottom-nav button { width:100%; justify-content:center; } }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      .radio-cards { grid-template-columns: 1fr 1fr; }
-      .checkbox-cards { grid-template-columns: 1fr; }
-      .rate-cards-grid { grid-template-columns: 1fr; }
-      .price-range-block { flex-direction: column; align-items: flex-start; }
-      .action-row { flex-direction: column; }
-      .action-row .btn { width: 100%; justify-content: center; }
+    /* ── SECTION HEADER ── */
+    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
+    .section-step { font-size:0.76rem; font-weight:600; color:var(--text-muted); background:rgba(255,255,255,0.7); border:1px solid var(--border-lt); border-radius:100px; padding:0.22rem 0.65rem; }
+
+    /* ── INTRO SCREEN ── */
+    #s-intro { text-align:center; padding-top:4rem; }
+    .intro-visual {
+      background:rgba(255,255,255,0.75); border:1px solid var(--border-lt);
+      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      border-radius:var(--r-xl); padding:1.5rem;
+      max-width:560px; margin:0 auto 3rem; text-align:left;
+      box-shadow:0 4px 24px rgba(0,0,0,0.07);
     }
+    .intro-visual-title { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); margin-bottom:1rem; }
+    .sample-rate-row { display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid var(--border-lt); }
+    .sample-rate-row:last-child { border-bottom:none; }
+    .sample-rate-niche { font-size:0.87rem; color:var(--text-dim); }
+    .sample-rate-value { font-size:0.92rem; font-weight:700; color:var(--gold-deep); }
 
-    @media (max-width: 600px) {
-      /* ── MOBILE-SPECIFIC FIXES ── */
+    /* ── RESULTS ── */
+    .results-tier-block { text-align:center; padding:1.75rem; border:1px solid var(--border-lt); border-radius:var(--r-xl); margin-bottom:1.1rem; }
+    .tier-badge-big { display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1rem; border-radius:100px; font-size:0.88rem; font-weight:800; letter-spacing:0.04em; margin-bottom:0.6rem; }
+    .tier-range { font-size:0.82rem; color:var(--text-muted); }
 
-      /* iOS Safari: prevent auto-zoom on input focus */
-      .nx-input, .form-input, .form-select { font-size: 16px; }
+    .er-result-block { text-align:center; padding:1.5rem; border:1px solid var(--border-lt); border-radius:var(--r-xl); margin-bottom:1.1rem; }
+    .er-result-number { font-size:2.8rem; font-weight:900; }
+    .er-result-label  { font-size:0.95rem; color:var(--text-dim); margin:0.25rem 0; }
+    .er-result-bench  { font-size:0.82rem; color:var(--text-muted); }
 
-      /* input-grid-3 fully collapses on narrow screens */
-      .input-grid-3 { grid-template-columns: 1fr; }
-
-      /* Currency row: stack currency selector and rate badge vertically */
-      .currency-row { flex-direction: column; align-items: stretch; }
-      .currency-select-wrap { min-width: unset; width: 100%; }
-      .rate-badge {
-        min-width: unset;
-        width: 100%;
-        white-space: normal;
-        font-size: 12px;
-      }
-
-      /* Topbar: prevent overflow */
-      .topbar { padding: 0.75rem 1rem; }
-      .topbar-inner { gap: 0.5rem; }
-      .logo { font-size: 0.88rem; }
-      .nx-status-live { padding: 5px 9px; font-size: 10px; letter-spacing: 0.12em; }
-
-      /* Step segments: reduce width so they don't overflow */
-      .step-seg { width: 24px; }
-
-      /* Bar chart: reduce fixed label width */
-      .bar-label { width: 80px; font-size: 0.72rem; }
-      .bar-value { width: 60px; }
-
-      /* Containers */
-      .container { padding: 0 1rem; }
-
-      /* Bottom nav: stack buttons */
-      .bottom-nav { flex-direction: column; }
-      .bottom-nav .btn { width: 100%; justify-content: center; }
-
-      /* Platform card input grid: 1 col */
-      .input-grid-2 { grid-template-columns: 1fr; }
-
-      /* Email capture inputs */
-      .email-form-row { flex-direction: column; }
-
-      /* Rate cards already 1-col at 480px — keep */
-
-      /* Section header: allow wrap */
-      .section-header { flex-wrap: wrap; gap: 0.5rem; }
-
-      /* Touch targets: buttons must be at least 44px */
-      .btn { min-height: 44px; }
-      .radio-card { min-height: 44px; }
-      .checkbox-card { min-height: 44px; }
+    .rate-cards-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.9rem; margin-bottom:1.1rem; }
+    @media (max-width:640px) { .rate-cards-grid { grid-template-columns:1fr; } }
+    .rate-card {
+      background:rgba(255,255,255,0.75); border:1.5px solid var(--border-lt);
+      border-radius:var(--r-lg); padding:1.25rem; text-align:center;
+      animation:slideUp 0.4s ease both;
     }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+    .rate-card:nth-child(1) { animation-delay:0ms; }
+    .rate-card:nth-child(2) { animation-delay:120ms; }
+    .rate-card:nth-child(3) { animation-delay:240ms; }
+    .rate-card.recommended { border-color:var(--gold); background:var(--gold-bg); position:relative; overflow:hidden; }
+    .rate-card-tag {
+      position:absolute; top:0; left:0; right:0;
+      background:linear-gradient(90deg,var(--gold-mid),var(--gold));
+      color:#fff; font-size:0.7rem; font-weight:800; letter-spacing:0.1em;
+      padding:0.28rem; text-transform:uppercase;
     }
+    .rate-card-body { padding-top:0.4rem; }
+    .rate-card.recommended .rate-card-body { padding-top:1.1rem; }
+    .rate-card-type { font-size:0.72rem; color:var(--text-muted); margin-bottom:0.5rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+    .rate-card-zar  { font-size:1.9rem; font-weight:900; color:var(--text-h); }
+    .rate-card-usd  { font-size:0.76rem; color:var(--text-muted); margin-top:0.2rem; }
+    .rate-card-sub  { font-size:0.74rem; color:var(--text-muted); margin-top:0.5rem; line-height:1.4; }
+    .recommended .rate-card-zar { color:var(--gold-deep); font-size:2.2rem; }
 
+    .price-range-block {
+      border:1px solid var(--border-lt); border-radius:var(--r-lg);
+      padding:1.1rem 1.3rem; display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:0.75rem; margin-bottom:1.1rem;
+    }
+    .price-range-label  { font-size:0.82rem; color:var(--text-muted); font-weight:600; }
+    .price-range-values { font-size:1rem; font-weight:700; color:var(--text-h); }
+    .price-range-hint   { font-size:0.74rem; color:var(--text-muted); margin-top:0.2rem; }
+
+    .results-section-label { font-size:0.74rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); margin-bottom:0.8rem; padding-bottom:0.45rem; border-bottom:1px solid var(--border-lt); }
+
+    /* ── BREAKDOWN ── */
+    .breakdown-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13.5px; }
+    .breakdown-row:last-child { border:none; }
+    .breakdown-key { color:var(--text-dim); font-weight:500; }
+    .breakdown-val { font-weight:700; color:var(--text-h); }
+    .breakdown-val.accent { color:var(--gold-deep); }
+
+    /* ── BAR CHART ── */
+    .bar-chart { margin:0.75rem 0; }
+    .bar-row { display:flex; align-items:center; gap:0.7rem; margin-bottom:0.7rem; }
+    .bar-label { font-size:0.78rem; color:var(--text-muted); width:100px; flex-shrink:0; text-align:right; }
+    .bar-track { flex:1; height:9px; background:rgba(0,0,0,0.08); border-radius:100px; overflow:hidden; }
+    .bar-fill  { height:100%; border-radius:100px; transition:width 1s ease 0.3s; }
+    .bar-value { font-size:0.78rem; font-weight:700; width:75px; flex-shrink:0; }
+
+    /* ── TIP CARDS ── */
+    .tip-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:0.75rem; margin-top:0.75rem; }
+    .tip-card { background:rgba(255,255,255,0.75); border:1px solid var(--border-lt); border-radius:var(--r-lg); padding:1rem; font-size:0.83rem; color:var(--text-dim); line-height:1.5; }
+    .tip-card-icon { font-size:1.2rem; margin-bottom:0.4rem; }
+
+    /* ── WARN BADGE ── */
+    .warn-badge { display:inline-flex; align-items:center; gap:0.35rem; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:0.28rem 0.55rem; font-size:0.73rem; color:#B91C1C; margin-top:0.3rem; }
+
+    /* ── EDU CONTENT ── */
+    .formula-box { background:rgba(255,255,255,0.6); border:1px solid var(--gold-border); border-radius:8px; padding:0.75rem 1rem; font-family:monospace; font-size:0.8rem; color:var(--gold-deep); margin:0.75rem 0; line-height:1.8; }
+    .edu-definition { margin-bottom:0.9rem; }
+    .edu-definition dt { font-weight:700; color:var(--text-h); margin-bottom:0.25rem; font-size:0.9rem; }
+    .edu-definition dd { font-size:0.83rem; color:var(--text-muted); line-height:1.6; margin-left:0; }
+
+    /* ── LOADING ── */
+    #s-loading { display:none; align-items:center; justify-content:center; flex-direction:column; gap:1.5rem; min-height:80vh; }
+    #s-loading.active { display:flex; }
+    .loader-ring { width:68px; height:68px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.85s linear infinite; }
+    .loader-text { font-size:1.05rem; font-weight:700; color:var(--text-h); text-align:center; }
+    .loader-sub  { font-size:0.83rem; color:var(--text-muted); text-align:center; }
+    .progress-bar-wrap { width:260px; height:5px; background:rgba(0,0,0,0.10); border-radius:100px; overflow:hidden; }
+    .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--gold-mid),var(--gold)); border-radius:100px; width:0%; transition:width 1.5s ease; }
+
+    /* ── ACTION ROW ── */
+    .action-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-top:1.5rem; }
+    @media (max-width:480px) { .action-row { flex-direction:column; } .action-row .btn { width:100%; justify-content:center; } }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.3); border-radius:3px; }
+
+    /* ── PRINT ── */
     @media print {
-      body * { visibility: hidden; }
-      #s-results, #s-results * { visibility: visible; }
-      #s-results { position: absolute; top: 0; left: 0; width: 100%; padding: 0; }
-      .container { max-width: 100%; padding: 24px 32px; }
-      .topbar, .progress-track, #results-upsell, .action-row { display: none !important; }
-      .accordion-body { display: block !important; }
-      .screen { animation: none !important; }
-      body { background: #fff !important; }
-      .accordion { border: 1px solid #ddd !important; }
-      .rate-cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .topbar,.bg-blob,#results-upsell,.action-row { display:none !important; }
+      body::before { display:none; }
+      .glass,.glass-strong { background:#fff !important; backdrop-filter:none !important; }
+      .accordion-body { display:block !important; }
+    }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
     }
   </style>
 </head>
 <body>
 
+<!-- BACKGROUND BLOBS -->
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+<div class="bg-blob bg-blob-3"></div>
+
 <!-- TOP BAR -->
-<div class="topbar">
+<header class="topbar glass">
   <div class="topbar-inner">
     <div class="logo">NOCHILL <span>/ Rate Calculator</span></div>
-    <div style="display:flex; align-items:center; gap:12px;">
+    <div class="topbar-right">
       <div class="step-indicator" id="step-indicator" style="display:none;">
         <div class="step-seg" id="seg-1"></div>
         <div class="step-seg" id="seg-2"></div>
@@ -1078,67 +557,49 @@
       </div>
     </div>
   </div>
-</div>
+</header>
 
 <!-- ══════════════════════════════════════════════
      SCREEN 1: INTRO
 ══════════════════════════════════════════════ -->
 <div class="screen active" id="s-intro">
   <div class="container">
-    <div style="margin-bottom:2rem;">
-      <div class="intro-eyebrow">
-        <span>🇿🇦</span> South African Creator Tool
-      </div>
 
-      <h1 class="intro-headline">
-        Stop Guessing.<br>
-        <span class="line2">Start Charging.</span>
-      </h1>
-      <p class="intro-sub">
-        Most African creators are undercharging — or getting paid in protein bars. A brand's first offer is almost never their real budget. This tool gives you your floor rate and your negotiation ceiling, backed by real SA data. Not guesses. Not Western rates. <strong style="color:var(--text-heading)">Your number. In Rands.</strong>
-      </p>
+    <div class="eyebrow">🇿🇦 South African Creator Tool</div>
 
-      <div class="trust-badges">
-        <div class="trust-badge"><span>✓</span> 2024 SA CPM Data</div>
-        <div class="trust-badge"><span>✓</span> 7 Platforms</div>
-        <div class="trust-badge"><span>✓</span> Charge by Reach OR Engagement</div>
-        <div class="trust-badge"><span>✓</span> 20 Niches</div>
-      </div>
+    <h1 style="margin-bottom:0.9rem;">
+      Stop Guessing.<br>
+      <span style="color:var(--gold-deep);">Start Charging.</span>
+    </h1>
+    <p style="font-size:1.05rem; max-width:560px; margin:0 auto 1.75rem; line-height:1.7;">
+      Most African creators are undercharging — or getting paid in protein bars.
+      A brand's first offer is almost never their real budget.
+      This tool gives you your floor rate and your ceiling, backed by real SA 2024 data.
+      <strong style="color:var(--text-h);">Your number. In Rands.</strong>
+    </p>
 
-      <div class="intro-cta">
-        <button class="cta-glow" onclick="goTo('s-platforms')">
-          Calculate My Rate →
-        </button>
-      </div>
+    <div class="trust-badges">
+      <div class="trust-badge"><span class="chk">✓</span> 2024 SA CPM Data</div>
+      <div class="trust-badge"><span class="chk">✓</span> 7 Platforms</div>
+      <div class="trust-badge"><span class="chk">✓</span> 20 Niches</div>
+      <div class="trust-badge"><span class="chk">✓</span> Reach + Engagement</div>
+      <div class="trust-badge"><span class="chk">✓</span> Free PDF Rate Card</div>
+    </div>
+
+    <div style="max-width:360px; margin:0 auto 2.5rem;">
+      <button class="cta-glow" onclick="goTo('s-platforms')">Calculate My Rate →</button>
     </div>
 
     <div class="intro-visual">
       <div class="intro-visual-title">Sample SA CPM Rates (2024)</div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Finance &amp; Investing</span>
-        <span class="sample-rate-value">R634 CPM</span>
-      </div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Real Estate</span>
-        <span class="sample-rate-value">R544 CPM</span>
-      </div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Tech Reviews</span>
-        <span class="sample-rate-value">R453 CPM</span>
-      </div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Business &amp; Entrepreneurship</span>
-        <span class="sample-rate-value">R363 CPM</span>
-      </div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Fashion &amp; Beauty</span>
-        <span class="sample-rate-value">R272 CPM</span>
-      </div>
-      <div class="sample-rate-row">
-        <span class="sample-rate-niche">Lifestyle</span>
-        <span class="sample-rate-value">R218 CPM</span>
-      </div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Finance &amp; Investing</span><span class="sample-rate-value">R634 CPM</span></div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Real Estate</span><span class="sample-rate-value">R544 CPM</span></div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Tech Reviews</span><span class="sample-rate-value">R453 CPM</span></div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Business &amp; Entrepreneurship</span><span class="sample-rate-value">R363 CPM</span></div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Fashion &amp; Beauty</span><span class="sample-rate-value">R272 CPM</span></div>
+      <div class="sample-rate-row"><span class="sample-rate-niche">Lifestyle</span><span class="sample-rate-value">R218 CPM</span></div>
     </div>
+
   </div>
 </div>
 
@@ -1147,40 +608,48 @@
 ══════════════════════════════════════════════ -->
 <div class="screen" id="s-platforms">
   <div class="container">
+
     <div class="section-header">
-      <h2>Step 1: Your Platforms &amp; Stats</h2>
+      <h2>Step 1: <span style="color:var(--gold-deep);">Your Platforms &amp; Stats</span></h2>
       <span class="section-step">1 of 3</span>
     </div>
 
-    <!-- CURRENCY SELECTOR + LIVE RATE -->
-    <div class="currency-row">
-      <div class="currency-select-wrap">
-        <label>Your Currency</label>
-        <div class="niche-select-wrap">
-          <select id="currency-select" class="nx-input" onchange="onCurrencyChange(this.value)">
-            <option value="ZAR">🇿🇦 ZAR — South Africa</option>
-            <option value="NGN">🇳🇬 NGN — Nigeria</option>
-            <option value="KES">🇰🇪 KES — Kenya</option>
-            <option value="GHS">🇬🇭 GHS — Ghana</option>
-            <option value="UGX">🇺🇬 UGX — Uganda</option>
-            <option value="TZS">🇹🇿 TZS — Tanzania</option>
-            <option value="EGP">🇪🇬 EGP — Egypt</option>
-            <option value="MAD">🇲🇦 MAD — Morocco</option>
-            <option value="ETB">🇪🇹 ETB — Ethiopia</option>
-            <option value="BWP">🇧🇼 BWP — Botswana</option>
-            <option value="NAD">🇳🇦 NAD — Namibia</option>
-            <option value="ZMW">🇿🇲 ZMW — Zambia</option>
-            <option value="XOF">🌍 XOF — West Africa (CFA)</option>
-          </select>
-        </div>
+    <!-- CURRENCY -->
+    <div class="section-card glass-strong floating">
+      <div class="card-header">
+        <div class="card-dot amber"></div>
+        <span class="card-header-title">Currency &amp; Region</span>
+        <span class="card-header-sub">Live exchange rates</span>
       </div>
-      <div class="rate-badge" id="rate-badge">
-        🔄 Fetching live rate...
+      <div class="card-body">
+        <div class="currency-row">
+          <div class="currency-select-wrap">
+            <label>Your Currency</label>
+            <div class="niche-select-wrap">
+              <select id="currency-select" class="nx-input" onchange="onCurrencyChange(this.value)">
+                <option value="ZAR">🇿🇦 ZAR — South Africa</option>
+                <option value="NGN">🇳🇬 NGN — Nigeria</option>
+                <option value="KES">🇰🇪 KES — Kenya</option>
+                <option value="GHS">🇬🇭 GHS — Ghana</option>
+                <option value="UGX">🇺🇬 UGX — Uganda</option>
+                <option value="TZS">🇹🇿 TZS — Tanzania</option>
+                <option value="EGP">🇪🇬 EGP — Egypt</option>
+                <option value="MAD">🇲🇦 MAD — Morocco</option>
+                <option value="ETB">🇪🇹 ETB — Ethiopia</option>
+                <option value="BWP">🇧🇼 BWP — Botswana</option>
+                <option value="NAD">🇳🇦 NAD — Namibia</option>
+                <option value="ZMW">🇿🇲 ZMW — Zambia</option>
+                <option value="XOF">🌍 XOF — West Africa (CFA)</option>
+              </select>
+            </div>
+          </div>
+          <div class="rate-badge" id="rate-badge">🔄 Fetching live rate...</div>
+        </div>
       </div>
     </div>
 
-    <div class="edu-banner">
-      <span class="edu-banner-icon">💡</span>
+    <div class="info-banner">
+      <span class="info-banner-icon">💡</span>
       <span>Enter your <strong>real stats</strong>. The more accurate your inputs, the more accurate your rate. Brands will verify — do not inflate your numbers. Honest data = credible rates.</span>
     </div>
 
@@ -1188,10 +657,10 @@
 
     <div class="platform-note-banner">
       <span>ℹ️</span>
-      <span>If you're on multiple platforms, add them all. Your <strong>primary platform</strong> (highest follower count) drives the main rate. Others are shown as context.</span>
+      <span>If you're on multiple platforms, add them all. Your <strong>primary platform</strong> (highest follower count) drives the main rate. Others provide context.</span>
     </div>
 
-    <button class="btn btn-outline" id="add-platform-btn" onclick="addPlatformCard()">
+    <button class="btn-outline-sm" id="add-platform-btn" onclick="addPlatformCard()" style="margin-bottom:1.5rem;">
       + Add Another Platform
     </button>
 
@@ -1207,51 +676,57 @@
 ══════════════════════════════════════════════ -->
 <div class="screen" id="s-content">
   <div class="container">
+
     <div class="section-header">
-      <h2>Step 2: Content &amp; Deal Details</h2>
+      <h2>Step 2: <span style="color:var(--gold-deep);">Content &amp; Deal Details</span></h2>
       <span class="section-step">2 of 3</span>
     </div>
 
     <!-- NICHE -->
-    <div style="margin-bottom:2rem;">
-      <div class="form-label">
-        Your Niche
-        <div class="info-icon">i
-          <div class="tooltip">Your content category determines the CPM (Cost Per Mille) brands in that niche typically pay. Finance and business niches command 2-3× higher rates than lifestyle.</div>
+    <div class="section-card glass-strong floating">
+      <div class="card-header">
+        <div class="card-dot"></div>
+        <span class="card-header-title">Your Niche</span>
+        <span class="card-header-sub">Determines your CPM rate</span>
+      </div>
+      <div class="card-body">
+        <div class="niche-select-wrap">
+          <select class="nx-input" id="niche-select">
+            <option value="">— Select your niche —</option>
+          </select>
         </div>
+        <div id="niche-cpm-display" class="platform-cpm-note" style="display:none; margin-top:0.75rem;"></div>
+        <p class="form-hint" style="margin-top:0.5rem;">Finance and business niches command 2–3× higher rates than lifestyle. Pick the one that best describes your content.</p>
       </div>
-      <div class="niche-select-wrap">
-        <select class="nx-input" id="niche-select">
-          <option value="">— Select your niche —</option>
-        </select>
-      </div>
-      <div id="niche-cpm-display" class="platform-cpm-note" style="display:none;"></div>
     </div>
 
     <!-- CONTENT TYPE -->
-    <div style="margin-bottom:2rem;">
-      <div class="form-label">
-        Content Type
-        <div class="info-icon">i
-          <div class="tooltip">The type of content you're creating changes what you should charge. Reels and long video take more time and production effort — that justifies higher rates.</div>
-        </div>
+    <div class="section-card glass-strong floating">
+      <div class="card-header">
+        <div class="card-dot blue"></div>
+        <span class="card-header-title">Content Type</span>
+        <span class="card-header-sub">Applies a rate multiplier</span>
       </div>
-      <div class="radio-cards" id="content-type-cards"></div>
+      <div class="card-body">
+        <div class="radio-cards" id="content-type-cards"></div>
+      </div>
     </div>
 
     <!-- ADD-ONS -->
-    <div style="margin-bottom:2rem;">
-      <div class="form-label">
-        Premium Add-ons
-        <div class="info-icon">i
-          <div class="tooltip">These are extras that add real commercial value. Usage rights means the brand can run paid ads using your content. Exclusivity means you can't work with competitors. Each adds a rate multiplier.</div>
-        </div>
+    <div class="section-card glass-strong floating">
+      <div class="card-header">
+        <div class="card-dot green"></div>
+        <span class="card-header-title">Premium Add-ons</span>
+        <span class="card-header-sub">Optional — each adds a multiplier</span>
       </div>
-      <div class="checkbox-cards" id="addon-cards"></div>
+      <div class="card-body">
+        <div class="checkbox-cards" id="addon-cards"></div>
+        <p class="form-hint" style="margin-top:0.75rem;">Usage rights and exclusivity are standard industry add-ons. If a brand can run ads using your content — charge for it.</p>
+      </div>
     </div>
 
     <!-- EDUCATION ACCORDION -->
-    <div class="accordion" style="margin-bottom:2rem;">
+    <div class="accordion" style="margin-bottom:1.5rem;">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         <span class="accordion-title">📊 How is your rate calculated?</span>
         <span class="accordion-arrow">▾</span>
@@ -1260,15 +735,15 @@
         <dl>
           <div class="edu-definition">
             <dt>CPM — Cost Per Mille (per 1,000 views)</dt>
-            <dd>This is what brands pay for every 1,000 times your content is seen. A higher CPM means brands in your niche value eyeballs more. Finance brands pay R634/1000 views; Lifestyle brands pay R218/1000 views.</dd>
+            <dd>What brands pay for every 1,000 times your content is seen. Finance brands pay R634/1000 views; Lifestyle pays R218/1000 views.</dd>
           </div>
           <div class="edu-definition">
             <dt>CPE — Cost Per Engagement</dt>
-            <dd>This is what a brand effectively pays per like, comment, or share. A high engagement rate means you charge more per interaction. SA creators average 3.39% ER (global average: 1.49%) — this is your competitive edge.</dd>
+            <dd>What a brand pays per like, comment, or share. SA creators average 3.39% ER (global: 1.49%) — this is your competitive edge.</dd>
           </div>
           <div class="edu-definition">
             <dt>Why we use MAX(CPM, CPE)</dt>
-            <dd>Your rate is the <strong style="color:var(--primary)">higher of the two</strong>. This protects you whether a brand values reach (CPM) or engagement (CPE). Never leave money on the table by quoting the lower number.</dd>
+            <dd>Your rate is the <strong style="color:var(--gold-deep);">higher of the two</strong>. This protects your maximum value whether a brand values reach or engagement.</dd>
           </div>
         </dl>
         <div class="formula-box">
@@ -1277,8 +752,8 @@ CPE Rate = cpe_zar × platform_cpe_mult × (avg_likes + avg_comments + avg_share
 Final     = MAX(CPM Rate, CPE Rate) × premium_multiplier<br>
 Range     = Final × 0.85 → Final × 1.15
         </div>
-        <p style="font-size:0.82rem; color:var(--text-subtle); margin-top:0.5rem;">
-          SA ER benchmark: <strong style="color:var(--primary)">3.39%</strong> average (global: 1.49%). Most SA creators fall in the "High" or "Premium" CPE tier.
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">
+          SA ER benchmark: <strong style="color:var(--gold-deep);">3.39%</strong> average (global: 1.49%). Most SA creators fall in the "High" or "Premium" CPE tier.
         </p>
       </div>
     </div>
@@ -1291,7 +766,7 @@ Range     = Final × 0.85 → Final × 1.15
 </div>
 
 <!-- ══════════════════════════════════════════════
-     SCREEN 4: LOADING
+     LOADING
 ══════════════════════════════════════════════ -->
 <div id="s-loading">
   <div class="loader-ring"></div>
@@ -1305,30 +780,31 @@ Range     = Final × 0.85 → Final × 1.15
 </div>
 
 <!-- ══════════════════════════════════════════════
-     SCREEN 5: RESULTS
+     SCREEN 4: RESULTS
 ══════════════════════════════════════════════ -->
 <div class="screen" id="s-results">
   <div class="container">
+
     <div class="section-header">
-      <h2>Your Rate Card <span class="accent">Results</span></h2>
+      <h2>Your Rate Card <span style="color:var(--gold-deep);">Results</span></h2>
       <span class="section-step">Step 3 of 3</span>
     </div>
 
     <!-- TIER -->
-    <div class="results-tier-block" id="r-tier-block"></div>
+    <div class="results-tier-block glass-strong floating" id="r-tier-block"></div>
 
     <!-- ER -->
-    <div class="er-result-block" id="r-er-block"></div>
+    <div class="er-result-block glass-strong floating" id="r-er-block"></div>
 
     <!-- RATE CARDS -->
     <div class="results-section-label">Your Rate</div>
     <div class="rate-cards-grid" id="r-rate-cards"></div>
 
     <!-- PRICE RANGE -->
-    <div class="price-range-block" id="r-price-range"></div>
+    <div class="price-range-block glass-strong" id="r-price-range"></div>
 
-    <!-- BREAKDOWN ACCORDION -->
-    <div class="accordion" style="margin-bottom:1.5rem;">
+    <!-- BREAKDOWN -->
+    <div class="accordion" style="margin-bottom:1.1rem;">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         <span class="accordion-title">🔢 Full Rate Breakdown</span>
         <span class="accordion-arrow">▾</span>
@@ -1337,7 +813,7 @@ Range     = Final × 0.85 → Final × 1.15
     </div>
 
     <!-- BENCHMARK -->
-    <div class="accordion" style="margin-bottom:1.5rem;">
+    <div class="accordion" style="margin-bottom:1.1rem;">
       <div class="accordion-header" onclick="toggleAccordion(this)">
         <span class="accordion-title">📈 SA vs Global Benchmark</span>
         <span class="accordion-arrow">▾</span>
@@ -1346,32 +822,32 @@ Range     = Final × 0.85 → Final × 1.15
     </div>
 
     <!-- NEGOTIATION TIPS -->
-    <div style="margin-bottom:1.5rem;">
+    <div style="margin-bottom:1.25rem;">
       <div class="results-section-label">Negotiation Intelligence</div>
       <div class="tip-cards" id="r-tips"></div>
     </div>
 
     <!-- UPSELL -->
-    <div id="results-upsell" style="background:var(--elevated); border:1px solid var(--primary-border); border-radius:14px; padding:28px; margin-bottom:20px; text-align:center; margin-top:24px;">
-      <div class="nx-label" style="margin-bottom:12px;">Your next move</div>
-      <h3 style="font-size:20px; font-weight:800; color:var(--text-heading); margin-bottom:8px; letter-spacing:-0.5px;">You have your rate. Now get the script that closes the deal.</h3>
-      <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7;">Knowing your number is step one. The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</p>
-      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
+    <div id="results-upsell" style="background:rgba(255,255,255,0.82); border:1px solid var(--gold-border); border-radius:var(--r-xl); padding:2rem; margin-bottom:1.25rem; text-align:center; backdrop-filter:blur(10px); box-shadow:var(--shadow-card);">
+      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:0.75rem;">Your next move</div>
+      <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-h); margin-bottom:0.6rem; letter-spacing:-0.3px;">You have your rate. Now get the script that closes the deal.</h3>
+      <p style="font-size:0.88rem; color:var(--text-dim); margin-bottom:1.25rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</p>
+      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="max-width:420px; display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
     </div>
 
     <!-- EMAIL DELIVERY -->
-    <div style="background:var(--elevated); border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:16px;">
-      <div class="nx-label" style="margin-bottom:8px;">Get your rate card delivered</div>
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px; line-height:1.6;">We'll email you a branded PDF you can attach to any brand pitch — no printing, no saving, just forward it.</p>
+    <div style="background:rgba(255,255,255,0.82); border:1px solid var(--gold-border); border-radius:var(--r-xl); padding:1.75rem; margin-bottom:1.25rem; backdrop-filter:blur(10px); box-shadow:var(--shadow-card);">
+      <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:0.6rem;">Get your rate card delivered</div>
+      <p style="font-size:0.87rem; color:var(--text-dim); margin-bottom:1.25rem; line-height:1.65;">We'll email you a branded PDF you can forward directly to any brand — just attach and send. No saving, no screenshotting.</p>
       <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input class="nx-input" type="text" id="send-name" placeholder="Your name" style="flex:1; min-width:140px;">
-          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com" style="flex:2; min-width:200px;">
+          <input class="nx-input" type="text"  id="send-name"   placeholder="Your name"           style="flex:1; min-width:140px;">
+          <input class="nx-input" type="email" id="send-email"  placeholder="your@email.com"       style="flex:2; min-width:200px;">
         </div>
-        <input class="nx-input" type="text" id="send-brand" placeholder="Brand or campaign name (optional — personalises the PDF)">
+        <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional — personalises the PDF)">
         <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — shown on PDF, e.g. @nochill_god)">
       </div>
-      <button class="cta-glow" onclick="sendRateCard()" id="send-rc-btn" style="width:100%; justify-content:center;">Send My Rate Card PDF →</button>
+      <button class="cta-glow" onclick="sendRateCard()" id="send-rc-btn">Send My Rate Card PDF →</button>
       <div id="send-rc-msg" style="display:none; margin-top:12px; font-size:13px; text-align:center; line-height:1.6;"></div>
     </div>
 
@@ -1379,9 +855,9 @@ Range     = Final × 0.85 → Final × 1.15
     <div class="action-row">
       <button class="btn btn-ghost" onclick="recalculate()">← Recalculate</button>
     </div>
+
   </div>
 </div>
-
 
 <!-- ══════════════════════════════════════════════
      JAVASCRIPT — PRESERVED EXACTLY
@@ -1472,7 +948,7 @@ const AFRICAN_CURRENCIES = {
   XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍' },
 };
 
-let liveRates      = { ZAR: 18.50, USD: 1 }; // fallback until API loads
+let liveRates      = { ZAR: 18.50, USD: 1 };
 let selectedCurrency = 'ZAR';
 let rateLastUpdated  = null;
 let rateIsLive       = false;
@@ -1487,7 +963,7 @@ async function fetchLiveRates() {
       rateIsLive      = true;
       updateRateBadge();
     }
-  } catch(e) { /* use fallback — already shown */ }
+  } catch(e) { /* use fallback */ }
 }
 
 function updateRateBadge() {
@@ -1498,7 +974,7 @@ function updateRateBadge() {
   const ts   = rateIsLive && rateLastUpdated
     ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' })
     : 'Approx. — live rates loading';
-  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-subtle); font-size:0.85em">${ts}</span>`;
+  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--text-muted); font-size:0.85em">${ts}</span>`;
 }
 
 function zarToSelected(zarAmount) {
@@ -1519,19 +995,13 @@ function fmtLocal(n) {
   const converted = zarToSelected(n);
   return cur.symbol + ' ' + Math.round(converted).toLocaleString('en-ZA');
 }
-function fmtZAR(n) {
-  return fmtLocal(n);
-}
+function fmtZAR(n) { return fmtLocal(n); }
 function fmtUSD(n) {
   const zarPerUSD = liveRates.ZAR || 18.50;
   return '≈ $' + Math.round(n / zarPerUSD).toLocaleString('en-US');
 }
-function fmtNum(n) {
-  return Math.round(n).toLocaleString('en-ZA');
-}
-function parseFmt(str) {
-  return parseFloat(String(str).replace(/[,\s ]/g, '')) || 0;
-}
+function fmtNum(n) { return Math.round(n).toLocaleString('en-ZA'); }
+function parseFmt(str) { return parseFloat(String(str).replace(/[,\s ]/g, '')) || 0; }
 function formatInput(el) {
   const raw = parseFmt(el.value);
   if (raw > 0) el.value = raw.toLocaleString('en-US');
@@ -1674,7 +1144,6 @@ function addPlatformCard(prefill) {
   container.appendChild(card);
   platformCards.push(id);
 
-  // Pre-fill if provided
   if (prefill) {
     if (prefill.platform) {
       document.getElementById('pf-platform-' + id).value = prefill.platform;
@@ -1691,7 +1160,6 @@ function addPlatformCard(prefill) {
     updateER(id);
   }
 
-  // Hide add button if 7 platforms
   if (platformCards.length >= 7) {
     document.getElementById('add-platform-btn').style.display = 'none';
   }
@@ -1727,7 +1195,6 @@ function updateER(id) {
   const p = PLATFORM[platformKey];
 
   const display = document.getElementById('er-display-' + id);
-
   if (followers <= 0 || views <= 0) { display.style.display = 'none'; return; }
 
   display.style.display = 'flex';
@@ -1735,10 +1202,10 @@ function updateER(id) {
   const er = calcER(followers, views, likes, comments, shares, platformKey);
   const cpeTier = getCpeTier(er);
 
-  const erNumEl  = document.getElementById('er-num-' + id);
-  const erPillEl = document.getElementById('er-pill-' + id);
-  const erFormEl = document.getElementById('er-formula-' + id);
-  const erBenchEl= document.getElementById('er-bench-' + id);
+  const erNumEl   = document.getElementById('er-num-' + id);
+  const erPillEl  = document.getElementById('er-pill-' + id);
+  const erFormEl  = document.getElementById('er-formula-' + id);
+  const erBenchEl = document.getElementById('er-bench-' + id);
 
   erNumEl.textContent = er.toFixed(2) + '%';
   erNumEl.style.color = cpeTier.color;
@@ -1756,9 +1223,8 @@ function updateER(id) {
   const diffText = diff >= 0
     ? `+${Math.abs(diff).toFixed(2)}% above SA average`
     : `${Math.abs(diff).toFixed(2)}% below SA average`;
-  erBenchEl.innerHTML = `SA average: <strong style="color:var(--primary)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp; <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">${diffText}</span>`;
+  erBenchEl.innerHTML = `SA average: <strong style="color:var(--gold)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp; <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">${diffText}</span>`;
 
-  // Validation warnings
   validateCard(id);
 }
 
@@ -1808,7 +1274,6 @@ function validateCard(id) {
 }
 
 function getPrimaryPlatformData() {
-  // Primary = highest follower count
   let primary = null;
   let maxFollowers = 0;
   for (const id of platformCards) {
@@ -1849,7 +1314,7 @@ function buildNicheSelect() {
     const disp  = document.getElementById('niche-cpm-display');
     if (niche) {
       disp.style.display = 'block';
-      disp.innerHTML = `<strong style="color:var(--primary)">R${niche.cpm.toFixed(2)}/1000 views</strong> (${niche.global_cpm} global) — ${niche.notes}`;
+      disp.innerHTML = `<strong style="color:var(--gold-deep)">R${niche.cpm.toFixed(2)}/1000 views</strong> (${niche.global_cpm} global) — ${niche.notes}`;
     } else {
       disp.style.display = 'none';
     }
@@ -1858,7 +1323,7 @@ function buildNicheSelect() {
 
 function buildContentTypeCards() {
   const wrap = document.getElementById('content-type-cards');
-  Object.entries(CONTENT_TYPE).forEach(([key, ct], i) => {
+  Object.entries(CONTENT_TYPE).forEach(([key, ct]) => {
     const div = document.createElement('label');
     div.className = 'radio-card' + (key === 'static' ? ' selected' : '');
     div.innerHTML = `
@@ -1919,7 +1384,6 @@ function goToCalculate() {
 
 /* ── CALCULATION ─────────────────────────────────────────── */
 function runCalculation() {
-  // Show loading
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const loader = document.getElementById('s-loading');
   loader.classList.add('active');
@@ -1958,22 +1422,16 @@ function computeResults() {
   const ct = CONTENT_TYPE[ctKey];
   const p = PLATFORM[d.platform];
 
-  // Tier
   const tier = getTier(d.followers) || { key: 'nano', ...TIER.nano };
-
-  // ER
   const er = calcER(d.followers, d.views, d.likes, d.comments, d.shares, d.platform);
   const cpeTierData = getCpeTier(er);
 
-  // CPM Rate
   const adjustedCPM = nicheCPM.cpm * tier.mult * p.cpm_mult * ct.mult;
   const price_cpm = (adjustedCPM / 1000) * d.views;
 
-  // CPE Rate
   const adjustedCPE = cpeTierData.cpe_zar * p.cpe_mult;
   const price_cpe = adjustedCPE * (d.likes + d.comments + d.shares);
 
-  // Add-ons multiplier
   const selectedAddons = [];
   document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked').forEach(cb => {
     selectedAddons.push(cb.value);
@@ -1989,9 +1447,8 @@ function computeResults() {
   const range_low   = recommended * 0.85;
   const range_high  = recommended * 1.15;
 
-  // SA global average estimate for niche
-  const saAvgRate = (nicheCPM.cpm / 1000) * d.views;
-  const globalAvgRate = saAvgRate / 1.8; // rough global to SA ratio
+  const saAvgRate    = (nicheCPM.cpm / 1000) * d.views;
+  const globalAvgRate = saAvgRate / 1.8;
 
   return {
     d, niche, nicheCPM, ctKey, ct, p, tier, er, cpeTierData,
@@ -2014,11 +1471,11 @@ function renderResults() {
     <div class="tier-badge-big" style="background:${R.tier.badge}22; color:${R.tier.badge}; border:1.5px solid ${R.tier.badge}55;">
       ★ ${R.tier.label}
     </div>
-    <div class="tier-range">${fmtNum(R.tier.min).replace(/,/g,',')} – ${R.tier.max === Infinity ? '1M+' : fmtNum(R.tier.max)} followers</div>
-    <div style="margin-top:0.75rem; font-size:0.88rem; color:var(--text-subtle)">
-      Platform: <strong style="color:var(--text-heading)">${R.p.icon} ${R.p.name}</strong> &nbsp;|&nbsp;
-      Niche: <strong style="color:var(--primary)">${R.niche}</strong> &nbsp;|&nbsp;
-      Content: <strong style="color:var(--text-heading)">${R.ct.icon} ${R.ct.label}</strong>
+    <div class="tier-range">${fmtNum(R.tier.min)} – ${R.tier.max === Infinity ? '1M+' : fmtNum(R.tier.max)} followers</div>
+    <div style="margin-top:0.75rem; font-size:0.88rem; color:var(--text-muted)">
+      Platform: <strong style="color:var(--text-h)">${R.p.icon} ${R.p.name}</strong> &nbsp;|&nbsp;
+      Niche: <strong style="color:var(--gold-deep)">${R.niche}</strong> &nbsp;|&nbsp;
+      Content: <strong style="color:var(--text-h)">${R.ct.icon} ${R.ct.label}</strong>
     </div>
   `;
 
@@ -2032,7 +1489,7 @@ function renderResults() {
       <span style="background:${R.cpeTierData.color}22; color:${R.cpeTierData.color}; padding:0.2rem 0.6rem; border-radius:100px; font-size:0.85rem; font-weight:700;">${R.cpeTierData.label}</span>
     </div>
     <div class="er-result-bench">
-      SA average: <strong style="color:var(--primary)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp;
+      SA average: <strong style="color:var(--gold-deep)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp;
       <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">
         ${diff >= 0 ? '+' : ''}${diff.toFixed(2)}% vs SA average
       </span>
@@ -2044,7 +1501,7 @@ function renderResults() {
   rcEl.innerHTML = '';
 
   const cpmCard = document.createElement('div');
-  cpmCard.className = 'rate-card';
+  cpmCard.className = 'rate-card glass';
   cpmCard.innerHTML = `
     <div class="rate-card-body">
       <div class="rate-card-type">CPM-Based Rate</div>
@@ -2055,7 +1512,7 @@ function renderResults() {
   `;
 
   const recCard = document.createElement('div');
-  recCard.className = 'rate-card recommended';
+  recCard.className = 'rate-card recommended glass-strong';
   recCard.innerHTML = `
     <div class="rate-card-tag">RECOMMENDED RATE</div>
     <div class="rate-card-body">
@@ -2067,7 +1524,7 @@ function renderResults() {
   `;
 
   const cpeCard = document.createElement('div');
-  cpeCard.className = 'rate-card';
+  cpeCard.className = 'rate-card glass';
   cpeCard.innerHTML = `
     <div class="rate-card-body">
       <div class="rate-card-type">CPE-Based Rate</div>
@@ -2081,7 +1538,6 @@ function renderResults() {
   rcEl.appendChild(recCard);
   rcEl.appendChild(cpeCard);
 
-  // Animate countups
   setTimeout(() => {
     countUpZAR(document.getElementById('rc-cpm'), R.price_cpm_final, 1200);
     countUpZAR(document.getElementById('rc-rec'), R.recommended, 1400);
@@ -2097,7 +1553,7 @@ function renderResults() {
     </div>
     <div style="text-align:right;">
       <div class="price-range-values">${fmtZAR(R.range_low)} – ${fmtZAR(R.range_high)}</div>
-      <div style="font-size:0.78rem; color:var(--text-subtle);">${fmtUSD(R.range_low)} – ${fmtUSD(R.range_high)}</div>
+      <div style="font-size:0.78rem; color:var(--text-muted);">${fmtUSD(R.range_low)} – ${fmtUSD(R.range_high)}</div>
     </div>
   `;
 
@@ -2116,31 +1572,31 @@ function renderResults() {
     <div class="breakdown-row"><span class="breakdown-key">Adjusted CPM</span><span class="breakdown-val">R ${R.adjustedCPM.toFixed(2)} / 1000 views</span></div>
     <div class="breakdown-row"><span class="breakdown-key">Avg views per post</span><span class="breakdown-val">${fmtNum(R.d.views)}</span></div>
     <div class="breakdown-row"><span class="breakdown-key"><strong>CPM Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key" style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed var(--border)">CPE tier (${R.cpeTierData.label} — ER: ${R.er.toFixed(2)}%)</span><span class="breakdown-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} per engagement</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">CPE tier (${R.cpeTierData.label} — ER: ${R.er.toFixed(2)}%)</span><span class="breakdown-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} per engagement</span></div>
     <div class="breakdown-row"><span class="breakdown-key">Platform CPE multiplier (${R.p.name})</span><span class="breakdown-val">×${R.p.cpe_mult.toFixed(2)}</span></div>
     <div class="breakdown-row"><span class="breakdown-key">Adjusted CPE</span><span class="breakdown-val">R ${R.adjustedCPE.toFixed(2)} per engagement</span></div>
     <div class="breakdown-row"><span class="breakdown-key">Total interactions (likes + comments + shares)</span><span class="breakdown-val">${fmtNum(R.d.likes + R.d.comments + R.d.shares)}</span></div>
     <div class="breakdown-row"><span class="breakdown-key"><strong>CPE Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key" style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed var(--border)">Premium add-ons</span><span class="breakdown-val">${addonsText}</span></div>
+    <div class="breakdown-row"><span class="breakdown-key">Premium add-ons</span><span class="breakdown-val">${addonsText}</span></div>
     <div class="breakdown-row"><span class="breakdown-key">Combined add-ons multiplier</span><span class="breakdown-val">×${R.premiumMult.toFixed(2)}</span></div>
     <div class="breakdown-row"><span class="breakdown-key"><strong>Final CPM Rate</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm_final)}</span></div>
     <div class="breakdown-row"><span class="breakdown-key"><strong>Final CPE Rate</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe_final)}</span></div>
-    <div class="breakdown-row"><span class="breakdown-key"><strong style="color:var(--primary)">Recommended = MAX(CPM, CPE)</strong></span><span class="breakdown-val accent"><strong>${fmtZAR(R.recommended)}</strong> ${cpmWinner ? '← CPM wins' : '← CPE wins'}</span></div>
+    <div class="breakdown-row"><span class="breakdown-key"><strong style="color:var(--gold-deep)">Recommended = MAX(CPM, CPE)</strong></span><span class="breakdown-val accent"><strong>${fmtZAR(R.recommended)}</strong> ${cpmWinner ? '← CPM wins' : '← CPE wins'}</span></div>
   `;
 
   // 6. Benchmark
   const bmEl = document.getElementById('r-benchmark-body');
   const maxVal = Math.max(R.recommended, R.saAvgRate, R.globalAvgRate) * 1.1;
-  const yourPct  = (R.recommended / maxVal * 100).toFixed(1);
-  const saPct    = (R.saAvgRate   / maxVal * 100).toFixed(1);
+  const yourPct  = (R.recommended  / maxVal * 100).toFixed(1);
+  const saPct    = (R.saAvgRate    / maxVal * 100).toFixed(1);
   const glbPct   = (R.globalAvgRate/ maxVal * 100).toFixed(1);
 
   bmEl.innerHTML = `
     <div class="bar-chart">
       <div class="bar-row">
         <div class="bar-label">Your Rate</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%; background:var(--primary);" data-target="${yourPct}"></div></div>
-        <div class="bar-value" style="color:var(--primary)">${fmtZAR(R.recommended)}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0%; background:var(--gold);" data-target="${yourPct}"></div></div>
+        <div class="bar-value" style="color:var(--gold-deep)">${fmtZAR(R.recommended)}</div>
       </div>
       <div class="bar-row">
         <div class="bar-label">SA Average</div>
@@ -2148,20 +1604,19 @@ function renderResults() {
         <div class="bar-value" style="color:#10B981">${fmtZAR(R.saAvgRate)}</div>
       </div>
       <div class="bar-row">
-        <div class="bar-label">Global Average</div>
+        <div class="bar-label">Global Avg</div>
         <div class="bar-track"><div class="bar-fill" style="width:0%; background:#3B82F6;" data-target="${glbPct}"></div></div>
         <div class="bar-value" style="color:#60A5FA">${fmtZAR(R.globalAvgRate)}</div>
       </div>
     </div>
-    <p style="font-size:0.85rem; color:var(--text-subtle); margin-top:0.75rem;">
-      SA creators average <strong style="color:var(--primary)">3.39% ER</strong> vs 1.49% globally — this engagement premium is your competitive advantage over international influencers.
+    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.75rem;">
+      SA creators average <strong style="color:var(--gold-deep)">3.39% ER</strong> vs 1.49% globally — this engagement premium is your competitive advantage over international influencers.
     </p>
-    <p style="font-size:0.82rem; color:var(--text-subtle); margin-top:0.5rem;">
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">
       <em>Note: SA Average is the raw CPM-based rate for your niche &amp; views. Global average uses a conservative 55% haircut (reflecting weaker USD purchasing power parity for SA brands).</em>
     </p>
   `;
 
-  // Animate bars
   setTimeout(() => {
     document.querySelectorAll('.bar-fill').forEach(b => {
       b.style.width = b.dataset.target + '%';
@@ -2227,43 +1682,15 @@ function toggleAccordion(header) {
   arrow.classList.toggle('open', !isOpen);
 }
 
-/* ── EMAIL CAPTURE ───────────────────────────────────────── */
-async function submitEmail() {
-  const name  = document.getElementById('cap-name').value.trim();
-  const email = document.getElementById('cap-email').value.trim();
-  if (!name || !email) { alert('Please enter your name and email.'); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
-
-  try {
-    await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, name, tags: ['tool_rate_card'] })
-    });
-  } catch(e) { /* non-blocking */ }
-
-  // Always show success — never block the user
-  document.getElementById('email-form').style.display = 'none';
-  document.getElementById('email-success').classList.add('visible');
-}
-
 /* ── RECALCULATE ─────────────────────────────────────────── */
 function recalculate() {
-  // Pre-fill the platform cards with existing data
-  const savedData = platformCards.map(id => getCardData(id));
-  const savedNiche = document.getElementById('niche-select').value;
-  const savedCT = document.querySelector('input[name="content-type"]:checked')?.value;
-
   goTo('s-platforms');
-
-  // Data is still in the form — no need to reset. Just go back.
 }
 
 /* ── CURRENCY CHANGE ─────────────────────────────────────── */
 function onCurrencyChange(code) {
   selectedCurrency = code;
   updateRateBadge();
-  // If results are showing, re-render them in new currency
   if (calcResults) renderResults();
 }
 
@@ -2273,10 +1700,9 @@ function init() {
   buildContentTypeCards();
   buildAddonCards();
   addPlatformCard();
-  updateRateBadge(); // Show fallback immediately
-  fetchLiveRates();  // Then replace with live rates when available
+  updateRateBadge();
+  fetchLiveRates();
 
-  // Pre-fill send form for email list subscribers (?email=xxx&name=xxx)
   const params = new URLSearchParams(window.location.search);
   const emailParam = params.get('email');
   const nameParam  = params.get('name') || params.get('first_name');
@@ -2288,7 +1714,7 @@ function init() {
   }
 }
 
-/* ── EMAIL DELIVERY ─────────────────────── */
+/* ── EMAIL DELIVERY ─────────────────────────────────────── */
 function showSendMsg(text, color) {
   const el = document.getElementById('send-rc-msg');
   el.innerHTML = text;
@@ -2296,14 +1722,13 @@ function showSendMsg(text, color) {
   el.style.display = 'block';
 }
 
-
 async function sendRateCard() {
-  const name  = (document.getElementById('send-name').value || '').trim();
+  const name  = (document.getElementById('send-name').value  || '').trim();
   const email = (document.getElementById('send-email').value || '').trim();
   const brand = (document.getElementById('send-brand').value || '').trim();
   const btn   = document.getElementById('send-rc-btn');
 
-  if (!name) { showSendMsg('Please enter your name.', '#EF4444'); return; }
+  if (!name)  { showSendMsg('Please enter your name.', '#EF4444'); return; }
   if (!email || !email.includes('@')) { showSendMsg('Please enter a valid email address.', '#EF4444'); return; }
   if (!calcResults) { showSendMsg('Please calculate your rate first.', '#EF4444'); return; }
 
