@@ -3,1536 +3,972 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SA Creator Rate Card Calculator | RateCard Pro</title>
-  <meta name="description" content="Professional influencer pricing backed by real 2024-25 SA CPM data. Know your worth. Charge what you're worth.">
+  <title>RateCard Pro — SA Creator Pricing Calculator</title>
+  <meta name="description" content="Professional influencer rate card calculator backed by real 2024-25 SA CPM data. Know your worth. Charge what you're worth.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --primary:          #1a4c6e;
-      --primary-hover:    #163f5c;
-      --primary-light:    rgba(26,76,110,0.08);
-      --primary-border:   rgba(26,76,110,0.20);
-      --secondary:        #2a6b96;
-      --secondary-light:  rgba(42,107,150,0.08);
-      --secondary-border: rgba(42,107,150,0.25);
-      --accent:           #30a054;
-      --accent-light:     rgba(48,160,84,0.08);
-      --accent-border:    rgba(48,160,84,0.30);
-      --amber-dark:       #92400e;
-      --amber-bg:         #fffbeb;
-      --amber-border:     rgba(245,158,11,0.35);
-      --destructive:      #dc2626;
-      --bg:               #f3f5f7;
-      --card:             #ffffff;
-      --border:           #dde2e8;
-      --muted:            #eaeef2;
-      --fg:               #0d2d45;
-      --fg-dim:           #2d4a5e;
-      --fg-muted:         #6b7a8d;
-      --r-card:           16px;
-      --r-input:          10px;
-      --shadow-card:      0 4px 6px -1px rgba(26,76,110,0.06), 0 2px 4px -2px rgba(26,76,110,0.06);
-      --shadow-elevated:  0 10px 25px -5px rgba(26,76,110,0.10), 0 8px 10px -6px rgba(26,76,110,0.06);
-      --font:             'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-head:        'Space Grotesk', 'Inter', sans-serif;
+      --primary: #1a4c6e; --primary-hover: #163f5c;
+      --primary-light: rgba(26,76,110,0.08); --primary-border: rgba(26,76,110,0.20);
+      --secondary: #2a6b96; --secondary-light: rgba(42,107,150,0.08); --secondary-border: rgba(42,107,150,0.25);
+      --accent: #30a054; --accent-light: rgba(48,160,84,0.08); --accent-border: rgba(48,160,84,0.30);
+      --amber-dark: #92400e; --amber-bg: #fffbeb; --amber-border: rgba(245,158,11,0.35);
+      --bg: #f3f5f7; --card: #ffffff; --border: #dde2e8; --muted: #eaeef2;
+      --fg: #0d2d45; --fg-dim: #2d4a5e; --fg-muted: #6b7a8d;
+      --r-card: 16px; --r-input: 10px;
+      --shadow-card: 0 4px 6px -1px rgba(26,76,110,0.06), 0 2px 4px -2px rgba(26,76,110,0.06);
+      --shadow-elevated: 0 10px 25px -5px rgba(26,76,110,0.10), 0 8px 10px -6px rgba(26,76,110,0.06);
+      --font: 'Inter', sans-serif; --font-head: 'Space Grotesk', sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--fg-dim);
-      min-height: 100vh;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
+    body { font-family: var(--font); background: var(--bg); color: var(--fg-dim); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes spin    { to{transform:rotate(360deg);} }
+    @keyframes pulseDot{ 0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.4);}50%{box-shadow:0 0 0 6px rgba(48,160,84,0);} }
+    @keyframes pulseAccent{0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.3);}50%{box-shadow:0 0 0 8px rgba(48,160,84,0);}}
 
-    @keyframes slideUp  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes spin     { to { transform:rotate(360deg); } }
-    @keyframes pulseDot { 0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.4);} 50%{box-shadow:0 0 0 6px rgba(48,160,84,0);} }
-    @keyframes countUpAnim { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
-    @keyframes pulseAccent { 0%,100%{box-shadow:0 0 0 0 rgba(48,160,84,.3);} 50%{box-shadow:0 0 0 8px rgba(48,160,84,0);} }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 880px; margin: 0 auto; padding: 0 1.25rem; }
-    .screen    { display:none; min-height:100vh; padding:2rem 0 6rem; animation:slideUp 0.3s ease both; }
+    .container { max-width: 760px; margin: 0 auto; padding: 0 1.25rem; }
+    .screen { display:none; padding:2rem 0 5rem; animation:fadeUp .3s ease both; }
     .screen.active { display:block; }
 
-    /* ── TOPBAR ── */
-    .topbar {
-      position:sticky; top:0; z-index:100;
-      background:var(--card); border-bottom:1px solid var(--border);
-      padding:0.75rem 1.25rem; box-shadow:0 1px 4px rgba(0,0,0,0.05);
-    }
-    .topbar-inner { max-width:880px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .logo-group  { display:flex; align-items:center; gap:0.75rem; }
-    .logo-icon   { width:36px; height:36px; flex-shrink:0; background:var(--primary); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem; }
-    .logo-title  { font-family:var(--font-head); font-weight:700; font-size:1.1rem; color:var(--fg); line-height:1.2; }
-    .logo-sub    { font-size:0.72rem; color:var(--fg-muted); display:none; }
-    @media(min-width:480px){ .logo-sub{display:block;} }
-    .topbar-right { display:flex; align-items:center; gap:12px; }
+    /* TOPBAR */
+    .topbar { position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05); }
+    .topbar-inner { max-width:760px;margin:0 auto;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem; }
+    .logo-group { display:flex;align-items:center;gap:.75rem; }
+    .logo-icon  { width:36px;height:36px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;flex-shrink:0; }
+    .logo-title { font-family:var(--font-head);font-weight:700;font-size:1.05rem;color:var(--fg);line-height:1.15; }
+    .logo-sub   { font-size:.7rem;color:var(--fg-muted); }
+    .topbar-right { display:flex;align-items:center;gap:.75rem; }
+    .live-badge { display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:var(--accent-light);border:1px solid var(--accent-border);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap; }
+    .live-dot { width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulseDot 2s ease-out infinite;flex-shrink:0; }
 
-    /* Step indicator */
-    .step-indicator { display:flex; gap:5px; align-items:center; }
-    .step-seg { height:4px; width:28px; border-radius:2px; background:var(--border); transition:background .3s; }
-    .step-seg.done    { background:var(--primary); }
-    .step-seg.current { background:var(--secondary); }
-
-    /* Live badge */
-    .nx-status-live { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px; background:var(--accent-light); border:1px solid var(--accent-border); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
-    .nx-live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0; animation:pulseDot 2s ease-out infinite; }
-
-    /* ── SECTION CARD ── */
-    .section-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); box-shadow:var(--shadow-card); overflow:hidden; margin-bottom:1.25rem; }
-    .card-header  { display:flex; align-items:center; gap:.65rem; padding:1rem 1.5rem; background:var(--muted); border-bottom:1px solid var(--border); }
-    .card-dot     { width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--primary); }
-    .card-dot.blue  { background:var(--secondary); }
+    /* CARDS */
+    .section-card { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden;margin-bottom:1rem; }
+    .card-header  { display:flex;align-items:center;gap:.6rem;padding:.9rem 1.5rem;background:var(--muted);border-bottom:1px solid var(--border); }
+    .card-dot     { width:8px;height:8px;border-radius:50%;background:var(--primary);flex-shrink:0; }
     .card-dot.green { background:var(--accent); }
     .card-dot.amber { background:#f59e0b; }
-    .card-header-title { font-weight:700; font-size:.875rem; color:var(--fg); }
-    .card-header-sub   { font-size:.75rem; color:var(--fg-muted); margin-left:auto; }
+    .card-header-title { font-weight:700;font-size:.875rem;color:var(--fg); }
     .card-body { padding:1.5rem; }
 
-    /* ── TYPOGRAPHY ── */
-    h1 { font-family:var(--font-head); font-size:clamp(1.75rem,5vw,2.75rem); font-weight:700; line-height:1.15; color:var(--fg); }
-    h2 { font-family:var(--font-head); font-size:clamp(1.2rem,3vw,1.6rem); font-weight:700; color:var(--fg); }
-    h3 { font-size:1rem; font-weight:700; color:var(--fg); }
-    p  { color:var(--fg-muted); }
+    /* EYEBROW */
+    .eyebrow { display:inline-flex;align-items:center;gap:.4rem;background:var(--primary-light);border:1px solid var(--primary-border);border-radius:999px;padding:.3rem .9rem;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--primary);margin-bottom:.9rem; }
 
-    /* ── EYEBROW ── */
-    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; background:var(--primary-light); border:1px solid var(--primary-border); border-radius:999px; padding:.3rem .9rem; font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--primary); margin-bottom:1rem; }
+    /* DISCLAIMER */
+    .disclaimer-banner { display:flex;gap:.85rem;align-items:flex-start;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--r-card);padding:1rem 1.25rem;margin-bottom:1.25rem; }
+    .disclaimer-icon { width:36px;height:36px;flex-shrink:0;background:rgba(245,158,11,.15);border:1px solid var(--amber-border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem; }
+    .disclaimer-title { font-size:.875rem;font-weight:700;color:var(--fg);margin-bottom:.2rem; }
+    .disclaimer-text  { font-size:.8rem;color:var(--amber-dark);line-height:1.55; }
 
-    /* ── TRUST BADGES ── */
-    .trust-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:.5rem; margin-bottom:1.75rem; }
-    .trust-badge  { background:var(--card); border:1px solid var(--border); border-radius:999px; padding:.4rem .9rem; font-size:.78rem; font-weight:600; color:var(--fg-dim); display:flex; align-items:center; gap:.4rem; }
-    .trust-badge .chk { color:var(--accent); }
+    /* EXAMPLE BANNER */
+    .example-banner { background:var(--card);border:1px solid var(--primary-border);border-radius:var(--r-card);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:var(--shadow-card); }
+    .example-banner-icon { font-size:1.25rem;flex-shrink:0; }
+    .example-banner-body { flex:1;min-width:0; }
+    .example-banner-title { font-size:.8rem;font-weight:700;color:var(--fg);margin-bottom:.3rem; }
+    .example-data-grid { display:flex;flex-wrap:wrap;gap:.4rem .85rem; }
+    .example-data-item { font-size:.75rem;color:var(--fg-muted); }
+    .example-data-item strong { color:var(--fg); }
+    .example-load-btn { background:none;border:none;color:var(--primary);font-size:.8rem;font-weight:700;cursor:pointer;padding:.35rem .7rem;border-radius:7px;white-space:nowrap;text-decoration:underline;text-underline-offset:2px;font-family:var(--font); }
+    .example-load-btn:hover { background:var(--primary-light);text-decoration:none; }
 
-    /* ── DISCLAIMER ── */
-    .disclaimer-banner { display:flex; gap:.9rem; align-items:flex-start; background:var(--amber-bg); border:1px solid var(--amber-border); border-radius:var(--r-card); padding:1.1rem 1.25rem; margin-bottom:1.5rem; }
-    .disclaimer-icon   { width:38px; height:38px; flex-shrink:0; background:rgba(245,158,11,.12); border:1px solid var(--amber-border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
-    .disclaimer-title  { font-size:.875rem; font-weight:700; color:var(--fg); margin-bottom:.25rem; }
-    .disclaimer-text   { font-size:.82rem; color:var(--amber-dark); line-height:1.55; }
+    /* CURRENCY */
+    .currency-banner { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:var(--shadow-card); }
+    .currency-label { font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-muted);flex-shrink:0; }
+    .currency-select-wrap { flex:1;min-width:180px; }
+    .rate-badge { background:var(--muted);border:1px solid var(--border);border-radius:var(--r-input);padding:.55rem .85rem;font-size:.78rem;font-weight:600;color:var(--fg);white-space:nowrap; }
 
-    /* ── INFO BANNER ── */
-    .info-banner      { display:flex; gap:.7rem; align-items:flex-start; background:var(--secondary-light); border:1px solid var(--secondary-border); border-radius:10px; padding:.85rem 1rem; font-size:.835rem; color:var(--fg-dim); margin-bottom:1.25rem; }
-    .info-banner-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
-
-    /* ── BUTTONS ── */
-    .btn { display:inline-flex; align-items:center; gap:6px; padding:.8rem 1.35rem; border-radius:var(--r-input); font-family:var(--font); font-weight:700; font-size:.875rem; cursor:pointer; transition:all .2s; text-decoration:none; border:none; }
-    .btn-primary { background:var(--primary); color:#fff; box-shadow:0 4px 12px rgba(26,76,110,.22); }
-    .btn-primary:hover { background:var(--primary-hover); box-shadow:0 6px 20px rgba(26,76,110,.30); transform:translateY(-1px); }
-    .btn-ghost  { background:var(--card); color:var(--fg-dim); border:1px solid var(--border) !important; }
-    .btn-ghost:hover { background:var(--muted); color:var(--fg); }
-    .btn-danger-outline { background:transparent; color:#dc2626; border:1.5px solid rgba(220,38,38,.30) !important; padding:.38rem .75rem; font-size:.78rem; border-radius:8px; }
-    .btn-danger-outline:hover { background:rgba(220,38,38,.06); }
-    .btn-outline-sm { display:inline-flex; align-items:center; gap:6px; padding:.65rem 1rem; border-radius:var(--r-input); background:var(--card); border:1px solid var(--border); font-family:var(--font); font-weight:600; font-size:.84rem; color:var(--fg-dim); cursor:pointer; transition:all .2s; width:100%; justify-content:center; }
-    .btn-outline-sm:hover { background:var(--muted); color:var(--fg); }
-    .btn-full { width:100%; justify-content:center; }
-
-    .cta-glow { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:.875rem 1.5rem; border-radius:var(--r-input); background:var(--primary); color:#fff; font-family:var(--font); font-weight:700; font-size:.9375rem; border:none; cursor:pointer; text-decoration:none; box-shadow:0 4px 16px rgba(26,76,110,.28); transition:all .2s; width:100%; letter-spacing:.01em; }
-    .cta-glow:hover    { background:var(--primary-hover); transform:translateY(-1px); box-shadow:0 8px 24px rgba(26,76,110,.35); }
-    .cta-glow:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-
-    /* ── INPUTS ── */
-    .nx-input, .form-input, .form-select { width:100%; background:var(--card); border:1px solid var(--border); border-radius:var(--r-input); padding:.75rem 1rem; font-size:.875rem; color:var(--fg); font-family:var(--font); transition:border-color .2s, box-shadow .2s; outline:none; -webkit-appearance:none; appearance:none; }
-    .nx-input:focus, .form-input:focus, .form-select:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
-    .nx-input:hover:not(:focus), .form-input:hover:not(:focus), .form-select:hover:not(:focus) { border-color:rgba(26,76,110,.4); }
-    .nx-input::placeholder, .form-input::placeholder { color:#a0aab4; }
-    .form-input.error { border-color:var(--destructive); }
-    .form-select { cursor:pointer; }
-    .form-select option { background:#fff; }
-
-    /* ── FORM ELEMENTS ── */
+    /* INPUTS */
     .form-group { margin-bottom:1rem; }
-    .form-label { display:flex; align-items:center; gap:.4rem; font-size:.875rem; font-weight:600; color:var(--fg); margin-bottom:.4rem; }
-    .form-hint  { font-size:.75rem; color:var(--fg-muted); margin-top:.3rem; }
-    .form-error { font-size:.75rem; color:var(--destructive); margin-top:.3rem; display:none; }
-    .form-error.visible { display:block; }
-    .info-icon  { width:14px; height:14px; border-radius:50%; background:var(--muted); border:1px solid var(--border); color:var(--fg-muted); font-size:.6rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; cursor:help; flex-shrink:0; position:relative; }
-    .info-icon:hover .tooltip { display:block; }
-    .tooltip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--fg); color:#fff; font-size:.73rem; font-weight:400; padding:.5rem .7rem; border-radius:8px; width:210px; z-index:999; line-height:1.5; white-space:normal; }
-    .tooltip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--fg); }
+    .form-label { display:flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:700;color:var(--fg);margin-bottom:.35rem; }
+    .form-label-icon { font-size:.95rem; }
+    .form-hint  { font-size:.72rem;color:var(--fg-muted);margin-top:.25rem; }
+    .nx-input, .nx-select { width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--r-input);padding:.75rem 1rem;font-size:.875rem;color:var(--fg);font-family:var(--font);transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none; }
+    .nx-input:focus, .nx-select:focus { border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light); }
+    .nx-input::placeholder { color:#a0aab4; }
+    .nx-select { cursor:pointer; }
+    .select-wrap { position:relative; }
+    .select-wrap::after { content:'▾';position:absolute;right:.9rem;top:50%;transform:translateY(-50%);color:var(--fg-muted);pointer-events:none;font-size:.8rem; }
 
-    .input-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
-    .input-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.75rem; }
-    @media(max-width:600px){ .input-grid-2{grid-template-columns:1fr;} .input-grid-3{grid-template-columns:1fr 1fr;} }
-    @media(max-width:420px){ .input-grid-3{grid-template-columns:1fr;} }
+    /* PLATFORM CHIPS */
+    .platform-chips { display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem; }
+    @media(min-width:480px){ .platform-chips{grid-template-columns:repeat(4,1fr);} }
+    .platform-chip { position:relative; }
+    .platform-chip input { position:absolute;opacity:0;width:0;height:0; }
+    .platform-chip-label { display:flex;align-items:center;gap:.5rem;padding:.65rem .8rem;background:var(--card);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-size:.8rem;font-weight:600;color:var(--fg-dim);user-select:none; }
+    .platform-chip input:checked + .platform-chip-label { border-color:rgba(26,76,110,.55);background:var(--primary-light);color:var(--primary); }
+    .platform-chip-label:hover { border-color:rgba(26,76,110,.4); }
+    .platform-chip-icon { font-size:1rem; }
 
-    .niche-select-wrap { position:relative; }
-    .niche-select-wrap::after { content:'▾'; position:absolute; right:.9rem; top:50%; transform:translateY(-50%); color:var(--fg-muted); pointer-events:none; }
+    /* COLLAPSIBLE */
+    .collapsible-header { display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;cursor:pointer;user-select:none;background:var(--card);transition:background .2s; }
+    .collapsible-header:hover { background:var(--muted); }
+    .collapsible-title { display:flex;align-items:center;gap:.6rem;font-size:.875rem;font-weight:700;color:var(--fg); }
+    .collapsible-arrow { font-size:.75rem;color:var(--fg-muted);transition:transform .3s; }
+    .collapsible-arrow.open { transform:rotate(180deg); }
+    .collapsible-body { display:none;padding:1.25rem 1.5rem;border-top:1px solid var(--border);animation:fadeUp .2s ease both; }
+    .collapsible-body.open { display:block; }
 
-    /* ── CURRENCY ── */
-    .currency-row { display:flex; align-items:flex-end; gap:1rem; flex-wrap:wrap; }
-    .currency-select-wrap { flex:1; min-width:200px; }
-    .currency-select-wrap label { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); margin-bottom:6px; }
-    .rate-badge { background:var(--muted); border:1px solid var(--border); border-radius:var(--r-input); padding:.75rem 1rem; font-size:.8rem; font-weight:600; color:var(--fg); white-space:nowrap; min-width:180px; }
-    @media(max-width:600px){ .currency-row{flex-direction:column;} .rate-badge,.currency-select-wrap{width:100%;min-width:unset;} }
+    /* PRODUCTION */
+    .production-toggle { display:flex;align-items:center;gap:.75rem;padding:1.25rem 1.5rem;cursor:pointer; }
+    .production-toggle input[type="checkbox"] { width:18px;height:18px;border-radius:5px;cursor:pointer;accent-color:var(--primary);flex-shrink:0; }
+    .production-toggle-text { flex:1; }
+    .production-toggle-name { font-size:.875rem;font-weight:700;color:var(--fg);display:flex;align-items:center;gap:.5rem; }
+    .production-toggle-desc { font-size:.75rem;color:var(--fg-muted);margin-top:.1rem; }
+    .production-cost-badge { background:var(--muted);border:1px solid var(--border);border-radius:8px;padding:.35rem .75rem;font-size:.8rem;font-weight:700;color:var(--fg);white-space:nowrap;flex-shrink:0; }
 
-    /* ── PLATFORM CARD ── */
-    .platform-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1rem; animation:slideUp .3s ease both; box-shadow:var(--shadow-card); }
-    .platform-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; padding-bottom:1rem; border-bottom:1px solid var(--border); }
-    .platform-title { font-weight:700; font-size:1rem; color:var(--fg); }
-    .platform-cpm-note { background:var(--secondary-light); border-left:3px solid var(--secondary); border-radius:0 8px 8px 0; padding:.55rem .8rem; font-size:.78rem; color:var(--fg-dim); margin-top:.7rem; }
-    .platform-note-banner { background:var(--secondary-light); border:1px solid var(--secondary-border); border-radius:8px; padding:.65rem .9rem; font-size:.8rem; color:var(--secondary); margin-bottom:1rem; display:flex; gap:.5rem; }
+    /* ADD-ONS LIST */
+    .addon-row { display:flex;align-items:center;gap:.9rem;padding:.9rem 0;border-bottom:1px solid var(--border);cursor:pointer; }
+    .addon-row:last-child { border-bottom:none; }
+    .addon-row input[type="checkbox"] { width:18px;height:18px;border-radius:5px;cursor:pointer;accent-color:var(--primary);flex-shrink:0; }
+    .addon-row-text { flex:1;min-width:0; }
+    .addon-row-name { font-size:.875rem;font-weight:700;color:var(--fg); }
+    .addon-row-desc { font-size:.72rem;color:var(--fg-muted);margin-top:.1rem; }
+    .addon-row-pct  { font-size:.82rem;font-weight:700;color:var(--fg-muted);white-space:nowrap;flex-shrink:0; }
 
-    /* ── ER DISPLAY ── */
-    .er-display { background:var(--primary-light); border:1px solid var(--primary-border); border-radius:var(--r-input); padding:.85rem 1rem; margin-top:.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
-    .er-value-block { display:flex; align-items:center; gap:.5rem; }
-    .er-label   { font-size:.75rem; color:var(--fg-muted); }
-    .er-number  { font-size:1.2rem; font-weight:800; color:var(--fg); }
-    .er-tier-pill { padding:.15rem .5rem; border-radius:100px; font-size:.7rem; font-weight:700; }
-    .er-formula { font-size:.7rem; color:var(--fg-muted); }
-    .er-benchmark { font-size:.7rem; color:var(--fg-muted); margin-top:.15rem; }
-    .warn-badge { display:inline-flex; align-items:center; gap:.35rem; background:rgba(220,38,38,.07); border:1px solid rgba(220,38,38,.22); border-radius:6px; padding:.25rem .5rem; font-size:.72rem; color:#b91c1c; margin-top:.3rem; }
+    /* STRATEGY */
+    .strategy-grid { display:grid;grid-template-columns:1fr 1fr;gap:.75rem; }
+    @media(max-width:500px){ .strategy-grid{grid-template-columns:1fr;} }
 
-    /* ── RADIO CARDS ── */
-    .radio-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.7rem; margin-top:.5rem; }
-    .radio-card  { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:1rem; cursor:pointer; transition:all .2s; position:relative; }
-    .radio-card:hover   { border-color:rgba(26,76,110,.4); background:var(--primary-light); }
-    .radio-card.selected{ border-color:rgba(26,76,110,.55); background:var(--primary-light); box-shadow:0 0 0 3px rgba(26,76,110,.08); }
-    .radio-card input[type="radio"] { display:none; }
-    .radio-card-icon  { font-size:1.4rem; margin-bottom:.4rem; }
-    .radio-card-label { font-size:.83rem; font-weight:700; color:var(--fg); margin-bottom:.2rem; }
-    .radio-card.selected .radio-card-label { color:var(--primary); }
-    .radio-card-note  { font-size:.68rem; color:var(--fg-muted); line-height:1.4; }
-    .radio-card-mult  { position:absolute; top:.5rem; right:.5rem; background:var(--primary-light); color:var(--primary); border-radius:5px; padding:.1rem .3rem; font-size:.67rem; font-weight:700; }
+    /* BUTTONS */
+    .btn-primary { display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:.8rem 1.5rem;border-radius:var(--r-input);background:var(--primary);color:#fff;font-family:var(--font);font-weight:700;font-size:.875rem;border:none;cursor:pointer;transition:all .2s; }
+    .btn-primary:hover { background:var(--primary-hover);transform:translateY(-1px); }
+    .btn-ghost { display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:.8rem 1.5rem;border-radius:var(--r-input);background:var(--card);color:var(--fg-dim);font-family:var(--font);font-weight:700;font-size:.875rem;border:1px solid var(--border);cursor:pointer;transition:all .2s; }
+    .btn-ghost:hover { background:var(--muted); }
+    .btn-back { display:inline-flex;align-items:center;gap:6px;padding:.5rem .9rem;border-radius:8px;background:var(--card);border:1px solid var(--border);font-family:var(--font);font-size:.8rem;font-weight:700;color:var(--fg-dim);cursor:pointer;transition:background .2s; }
+    .btn-back:hover { background:var(--muted); }
+    .cta-full { width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:.9rem 1.5rem;border-radius:var(--r-input);background:var(--primary);color:#fff;font-family:var(--font);font-weight:700;font-size:.9375rem;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(26,76,110,.22);transition:all .2s; }
+    .cta-full:hover { background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,76,110,.30); }
+    .cta-full:disabled { opacity:.6;cursor:not-allowed;transform:none; }
+    .btn-row { display:grid;grid-template-columns:1fr 3fr;gap:.75rem;margin-top:1.5rem; }
+    @media(max-width:420px){ .btn-row{grid-template-columns:1fr;} }
 
-    /* ── CHECKBOX CARDS ── */
-    .checkbox-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:.7rem; margin-top:.5rem; }
-    .checkbox-card  { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:1rem; cursor:pointer; transition:all .2s; position:relative; }
-    .checkbox-card:hover   { border-color:rgba(26,76,110,.4); }
-    .checkbox-card.selected{ border-color:rgba(26,76,110,.55); background:var(--primary-light); }
-    .checkbox-card input[type="checkbox"] { display:none; }
-    .checkbox-card-label { font-size:.83rem; font-weight:700; color:var(--fg); margin-bottom:.25rem; }
-    .checkbox-card-desc  { font-size:.7rem; color:var(--fg-muted); line-height:1.4; padding-right:1.5rem; }
-    .checkbox-card-mult  { position:absolute; top:.5rem; right:.5rem; background:var(--primary-light); color:var(--primary); border-radius:5px; padding:.1rem .3rem; font-size:.67rem; font-weight:700; }
-    .checkbox-tick       { position:absolute; bottom:.6rem; right:.6rem; width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
-    .checkbox-card.selected .checkbox-tick { background:var(--primary); border-color:var(--primary); }
-    .checkbox-tick-inner { display:none; font-size:.58rem; color:#fff; }
-    .checkbox-card.selected .checkbox-tick-inner { display:block; }
+    /* HOW WE CALCULATE */
+    .how-section { margin-top:2.5rem; }
+    .how-grid    { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.1rem; }
+    .how-card    { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.25rem;box-shadow:var(--shadow-card); }
+    .how-card-icon { width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.85rem; }
+    .how-card-title { font-size:.9375rem;font-weight:700;color:var(--fg);margin-bottom:.4rem; }
+    .how-card-desc  { font-size:.78rem;color:var(--fg-muted);line-height:1.6;margin-bottom:.85rem; }
+    .how-card-pill  { display:inline-flex;align-items:center;gap:.35rem;font-size:.7rem;font-weight:700;padding:.3rem .7rem;border-radius:8px; }
+    .how-stat-grid  { display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin-top:1rem; }
+    @media(max-width:520px){ .how-grid{grid-template-columns:1fr;} .how-stat-grid{grid-template-columns:1fr;} }
+    .formula-box { background:var(--muted);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-family:monospace;font-size:.74rem;color:var(--secondary);margin:.75rem 0;line-height:1.9; }
 
-    /* ── ACCORDION ── */
-    .accordion { border:1px solid var(--border); border-radius:var(--r-card); overflow:hidden; background:var(--card); }
-    .accordion-header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; cursor:pointer; background:var(--card); user-select:none; transition:background .2s; }
-    .accordion-header:hover { background:var(--muted); }
-    .accordion-title { font-weight:700; font-size:.875rem; color:var(--fg); }
-    .accordion-arrow { font-size:.8rem; color:var(--fg-muted); transition:transform .3s; }
-    .accordion-arrow.open { transform:rotate(180deg); }
-    .accordion-body { display:none; padding:1.25rem; background:var(--card); border-top:1px solid var(--border); animation:slideUp .2s ease both; }
-    .accordion-body.open { display:block; }
-
-    /* ── SECTION HEADER ── */
-    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
-    .section-step   { font-size:.72rem; font-weight:600; color:var(--fg-muted); background:var(--card); border:1px solid var(--border); border-radius:100px; padding:.22rem .65rem; }
-
-    /* ── BOTTOM NAV ── */
-    .bottom-nav { display:flex; justify-content:space-between; align-items:center; padding-top:1.75rem; gap:1rem; flex-wrap:wrap; }
-    @media(max-width:500px){ .bottom-nav{flex-direction:column;} .bottom-nav .btn,.bottom-nav button{width:100%;justify-content:center;} }
-
-    /* ── EDU ── */
-    .formula-box { background:var(--muted); border:1px solid var(--border); border-radius:8px; padding:.75rem 1rem; font-family:monospace; font-size:.78rem; color:var(--secondary); margin:.75rem 0; line-height:1.8; }
-    .edu-definition { margin-bottom:.9rem; }
-    .edu-definition dt { font-weight:700; color:var(--fg); margin-bottom:.25rem; font-size:.875rem; }
-    .edu-definition dd { font-size:.8rem; color:var(--fg-muted); line-height:1.6; margin-left:0; }
-
-    /* ── LOADING ── */
-    #s-loading { display:none; align-items:center; justify-content:center; flex-direction:column; gap:1.5rem; min-height:80vh; }
+    /* LOADING */
+    #s-loading { display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.25rem;min-height:80vh; }
     #s-loading.active { display:flex; }
-    .loader-ring { width:64px; height:64px; border:3px solid var(--border); border-top-color:var(--primary); border-radius:50%; animation:spin .85s linear infinite; }
-    .loader-text { font-family:var(--font-head); font-size:1rem; font-weight:700; color:var(--fg); text-align:center; }
-    .loader-sub  { font-size:.82rem; color:var(--fg-muted); text-align:center; }
-    .progress-bar-wrap { width:240px; height:4px; background:var(--border); border-radius:100px; overflow:hidden; }
-    .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--secondary),var(--primary)); border-radius:100px; width:0%; transition:width 1.5s ease; }
+    .loader-ring { width:56px;height:56px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite; }
+    .progress-bar-wrap { width:200px;height:3px;background:var(--border);border-radius:100px;overflow:hidden; }
+    .progress-bar-fill { height:100%;background:linear-gradient(90deg,var(--secondary),var(--primary));border-radius:100px;width:0%;transition:width 1.5s ease; }
 
-    /* ── INTRO ── */
-    #s-intro { text-align:center; padding-top:3rem; }
-    .intro-visual { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.5rem; max-width:540px; margin:0 auto 2.5rem; text-align:left; box-shadow:var(--shadow-card); }
-    .intro-visual-title { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:1rem; }
-    .sample-rate-row { display:flex; align-items:center; justify-content:space-between; padding:.55rem 0; border-bottom:1px solid var(--border); }
-    .sample-rate-row:last-child { border-bottom:none; }
-    .sample-rate-niche { font-size:.85rem; color:var(--fg-dim); }
-    .sample-rate-value { font-size:.875rem; font-weight:700; color:var(--primary); }
+    /* RESULTS */
+    .results-hero { border:2px solid var(--accent-border);border-radius:var(--r-card);background:var(--card);padding:1.75rem;margin-bottom:1rem;box-shadow:var(--shadow-elevated); }
+    .result-badge { display:inline-flex;align-items:center;gap:.4rem;background:var(--accent-light);border:1px solid var(--accent-border);border-radius:999px;padding:.25rem .75rem;font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:.85rem; }
+    .result-row   { display:flex;align-items:baseline;justify-content:space-between;padding:.5rem 0; }
+    .result-row-label { font-size:.875rem;font-weight:600;color:var(--fg-muted); }
+    .result-row-val   { font-size:1.15rem;font-weight:800;color:var(--fg); }
+    .result-divider   { border-top:1px solid var(--accent-border);margin:.35rem 0; }
+    .result-total-label { font-size:1rem;font-weight:700;color:var(--fg); }
+    .result-total-val   { font-size:clamp(1.9rem,5vw,2.6rem);font-weight:900;color:var(--accent);animation:pulseAccent 2s ease-in-out infinite; }
+    .result-usd         { font-size:.8rem;color:var(--fg-muted);margin-top:.2rem;text-align:right; }
+    .result-range-panel { margin-top:1rem;padding:.9rem 1rem;background:var(--muted);border-radius:10px;border:1px solid rgba(48,160,84,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem; }
+    .result-range-label { font-size:.78rem;font-weight:600;color:var(--fg-muted); }
+    .result-range-vals  { font-size:.9rem;font-weight:700;color:var(--fg); }
 
-    /* ── RESULTS ── */
-    .results-hero-card { border:2px solid var(--accent-border); border-radius:var(--r-card); background:var(--card); padding:1.75rem; margin-bottom:1.25rem; box-shadow:var(--shadow-elevated); animation:countUpAnim .4s ease both; }
-    .results-hero-badge { display:inline-flex; align-items:center; gap:.4rem; background:var(--accent-light); border:1px solid var(--accent-border); border-radius:999px; padding:.28rem .75rem; font-size:.72rem; font-weight:700; color:var(--accent); margin-bottom:1rem; }
-    .results-hero-heading { font-size:.875rem; font-weight:700; color:var(--fg); margin-bottom:.15rem; }
-    .results-hero-sub     { font-size:.8rem; color:var(--fg-muted); }
-    .results-hero-row     { display:flex; align-items:baseline; justify-content:space-between; padding:.55rem 0; }
-    .results-hero-row-label { font-size:.875rem; font-weight:600; color:var(--fg-muted); display:flex; align-items:center; gap:.4rem; }
-    .results-hero-row-value { font-size:1.3rem; font-weight:800; color:var(--fg); }
-    .results-hero-divider   { border-top:1px solid var(--accent-border); margin:.35rem 0; }
-    .results-hero-total     { font-size:clamp(2rem,5vw,2.75rem); font-weight:900; color:var(--accent); animation:pulseAccent 2s ease-in-out infinite; }
-    .results-hero-usd       { font-size:.82rem; color:var(--fg-muted); margin-top:.3rem; }
-    .results-hero-range     { margin-top:1.1rem; padding:1rem; background:var(--muted); border-radius:10px; border:1px solid rgba(48,160,84,.2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
-    .results-hero-range-label  { font-size:.8rem; font-weight:600; color:var(--fg-muted); }
-    .results-hero-range-values { font-size:.95rem; font-weight:700; color:var(--fg); }
+    .metrics-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem; }
+    .metric-card  { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.25rem;box-shadow:var(--shadow-card); }
+    .metric-label { font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fg-muted);margin-bottom:.65rem;display:flex;align-items:center;gap:.35rem; }
+    .metric-val   { font-size:1.75rem;font-weight:900;color:var(--fg);margin-bottom:.25rem; }
+    .metric-sub   { font-size:.72rem;color:var(--fg-muted);font-weight:600; }
 
-    .results-metrics-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
-    @media(max-width:460px){ .results-metrics-grid{grid-template-columns:1fr;} }
-    .results-metric-card  { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.25rem; box-shadow:var(--shadow-card); }
-    .results-metric-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:.75rem; display:flex; align-items:center; gap:.4rem; }
-    .results-metric-value { font-size:1.85rem; font-weight:900; color:var(--fg); margin-bottom:.3rem; }
-    .results-metric-tier  { font-size:1.1rem; font-weight:900; color:var(--fg); margin-bottom:.3rem; line-height:1.2; }
-    .results-metric-sub   { font-size:.75rem; color:var(--fg-muted); font-weight:600; }
+    .method-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem; }
+    .method-card { background:var(--card);border-radius:var(--r-card);padding:1.25rem;box-shadow:var(--shadow-card); }
+    .method-card.cpm { border:1px solid var(--secondary-border); }
+    .method-card.cpe { border:1px solid var(--primary-border); }
+    .method-label { font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem; }
+    .method-label.cpm { color:var(--secondary); }
+    .method-label.cpe { color:var(--primary); }
+    .method-val   { font-size:1.35rem;font-weight:800;color:var(--fg); }
+    .method-sub   { font-size:.7rem;margin-top:.45rem; }
+    .method-sub.cpm { color:var(--secondary); }
+    .method-sub.cpe { color:var(--primary); }
 
-    .results-method-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
-    @media(max-width:460px){ .results-method-grid{grid-template-columns:1fr;} }
-    .results-method-card { background:var(--card); border-radius:var(--r-card); padding:1.25rem; box-shadow:var(--shadow-card); }
-    .results-method-card.cpm-card { border:1px solid var(--secondary-border); }
-    .results-method-card.cpe-card { border:1px solid var(--primary-border); }
-    .results-method-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.65rem; }
-    .results-method-label.cpm { color:var(--secondary); }
-    .results-method-label.cpe { color:var(--primary); }
-    .results-method-value { font-size:1.4rem; font-weight:800; color:var(--fg); }
-    .results-method-sub   { font-size:.72rem; margin-top:.5rem; }
-    .results-method-sub.cpm { color:var(--secondary); }
-    .results-method-sub.cpe { color:var(--primary); }
+    .negotiation-card { background:var(--card);border:1px solid var(--amber-border);border-radius:var(--r-card);padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow-card); }
+    .neg-header { display:flex;align-items:center;gap:.5rem;margin-bottom:1.1rem; }
+    .neg-title  { font-size:.875rem;font-weight:700;color:var(--fg); }
+    .neg-inner  { border-radius:10px;padding:.9rem 1rem;margin-bottom:.65rem; }
+    .neg-inner:last-child { margin-bottom:0; }
+    .neg-inner.quote { background:var(--amber-bg);border:1px solid rgba(245,158,11,.28); }
+    .neg-inner.floor { background:var(--card);border:1px solid rgba(245,158,11,.2); }
+    .neg-inner-label { font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--amber-dark);margin-bottom:.35rem; }
+    .neg-inner-val   { font-size:1.35rem;font-weight:800;color:#78350f; }
+    .neg-inner-sub   { font-size:.7rem;color:var(--amber-dark);margin-top:.25rem; }
 
-    /* Negotiation */
-    .results-negotiation-card { background:var(--card); border:1px solid var(--amber-border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
-    .results-negotiation-header { display:flex; align-items:center; gap:.6rem; margin-bottom:1.25rem; }
-    .results-negotiation-title  { font-size:.875rem; font-weight:700; color:var(--fg); }
-    .negotiation-inner-card { border-radius:10px; padding:1rem; margin-bottom:.75rem; }
-    .negotiation-inner-card:last-child { margin-bottom:0; }
-    .negotiation-inner-card.quote { background:var(--amber-bg); border:1px solid rgba(245,158,11,.28); }
-    .negotiation-inner-card.floor { background:var(--card); border:1px solid rgba(245,158,11,.2); }
-    .negotiation-inner-label { font-size:.68rem; font-weight:700; color:var(--amber-dark); text-transform:uppercase; letter-spacing:.08em; margin-bottom:.4rem; }
-    .negotiation-inner-value { font-size:1.4rem; font-weight:800; color:#78350f; }
-    .negotiation-inner-sub   { font-size:.72rem; color:var(--amber-dark); margin-top:.3rem; }
-
-    /* Insights */
-    .results-insights-card { background:var(--card); border:1px solid var(--secondary-border); border-radius:var(--r-card); padding:1.5rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
-    .results-insights-header { display:flex; align-items:center; gap:.6rem; margin-bottom:1rem; }
-    .results-insights-title  { font-size:.875rem; font-weight:700; color:var(--fg); }
-    .insight-item { display:flex; align-items:flex-start; gap:.75rem; padding:.55rem 0; font-size:.835rem; color:var(--fg-muted); line-height:1.55; border-bottom:1px solid var(--border); }
+    .insights-card { background:var(--card);border:1px solid var(--secondary-border);border-radius:var(--r-card);padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow-card); }
+    .insights-header { display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem; }
+    .insights-title  { font-size:.875rem;font-weight:700;color:var(--fg); }
+    .insight-item    { display:flex;align-items:flex-start;gap:.65rem;padding:.5rem 0;font-size:.8rem;color:var(--fg-muted);line-height:1.55;border-bottom:1px solid var(--border); }
     .insight-item:last-child { border-bottom:none; }
-    .insight-dot  { width:6px; height:6px; border-radius:50%; background:var(--secondary); flex-shrink:0; margin-top:.5rem; }
+    .insight-dot     { width:6px;height:6px;border-radius:50%;background:var(--secondary);flex-shrink:0;margin-top:.5rem; }
 
-    /* Breakdown toggle */
-    .breakdown-toggle-btn { width:100%; display:flex; align-items:center; justify-content:center; gap:.5rem; padding:1rem; border-radius:var(--r-card); background:var(--card); border:1px solid var(--border); color:var(--fg); font-weight:700; font-size:.875rem; cursor:pointer; transition:background .2s; margin-bottom:1rem; font-family:var(--font); }
-    .breakdown-toggle-btn:hover { background:var(--muted); }
+    .breakdown-btn { width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);font-family:var(--font);font-size:.875rem;font-weight:700;color:var(--fg);cursor:pointer;margin-bottom:1rem;transition:background .2s; }
+    .breakdown-btn:hover { background:var(--muted); }
+    .breakdown-section { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;margin-bottom:.75rem;box-shadow:var(--shadow-card); }
+    .breakdown-hdr  { padding:.85rem 1.25rem;background:var(--muted);border-bottom:1px solid var(--border);font-size:.8rem;font-weight:700;color:var(--fg); }
+    .breakdown-body { padding:1.1rem 1.25rem; }
+    .bd-row { display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid rgba(0,0,0,.04);font-size:.8rem; }
+    .bd-row:last-child { border:none; }
+    .bd-key { color:var(--fg-muted);font-weight:500; }
+    .bd-val { font-weight:700;color:var(--fg); }
+    .bd-val.accent { color:var(--secondary); }
+    .bd-final { background:rgba(48,160,84,.06);border:1px solid rgba(48,160,84,.2);border-radius:10px;padding:.9rem 1rem;margin-top:.75rem;display:flex;justify-content:space-between;align-items:center; }
+    .bd-final-label { font-size:.875rem;font-weight:700;color:var(--fg); }
+    .bd-final-val   { font-size:1.15rem;font-weight:800;color:var(--accent); }
 
-    /* Breakdown content cards */
-    .breakdown-section-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); overflow:hidden; margin-bottom:1rem; box-shadow:var(--shadow-card); }
-    .breakdown-section-hdr  { padding:1rem 1.5rem; background:var(--muted); border-bottom:1px solid var(--border); font-size:.875rem; font-weight:700; color:var(--fg); }
-    .breakdown-section-body { padding:1.25rem 1.5rem; }
-    .breakdown-row { display:flex; justify-content:space-between; align-items:center; padding:.55rem 0; border-bottom:1px solid rgba(0,0,0,.04); font-size:.82rem; }
-    .breakdown-row:last-child { border:none; }
-    .breakdown-key { color:var(--fg-muted); font-weight:500; }
-    .breakdown-val { font-weight:700; color:var(--fg); }
-    .breakdown-val.accent { color:var(--secondary); }
+    .bar-chart { margin:.5rem 0; }
+    .bar-row   { display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem; }
+    .bar-label { font-size:.72rem;color:var(--fg-muted);width:80px;flex-shrink:0;text-align:right; }
+    .bar-track { flex:1;height:7px;background:var(--muted);border-radius:100px;overflow:hidden; }
+    .bar-fill  { height:100%;border-radius:100px;transition:width 1s ease .3s; }
+    .bar-value { font-size:.72rem;font-weight:700;width:80px;flex-shrink:0; }
 
-    /* Bar chart */
-    .bar-chart { margin:.75rem 0; }
-    .bar-row   { display:flex; align-items:center; gap:.7rem; margin-bottom:.7rem; }
-    .bar-label { font-size:.75rem; color:var(--fg-muted); width:90px; flex-shrink:0; text-align:right; }
-    .bar-track { flex:1; height:8px; background:var(--muted); border-radius:100px; overflow:hidden; }
-    .bar-fill  { height:100%; border-radius:100px; transition:width 1s ease .3s; }
-    .bar-value { font-size:.75rem; font-weight:700; width:80px; flex-shrink:0; }
+    .upsell-card  { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;text-align:center;box-shadow:var(--shadow-card); }
+    .upsell-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:.55rem; }
+    .upsell-heading { font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--fg);margin-bottom:.5rem; }
+    .upsell-body    { font-size:.82rem;color:var(--fg-muted);margin-bottom:1.1rem;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7; }
 
-    /* Upsell + email blocks */
-    .results-upsell-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:2rem; margin-bottom:1.25rem; text-align:center; box-shadow:var(--shadow-card); }
-    .results-upsell-eyebrow { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--primary); margin-bottom:.65rem; }
-    .results-upsell-heading { font-family:var(--font-head); font-size:1.1rem; font-weight:700; color:var(--fg); margin-bottom:.6rem; letter-spacing:-.2px; }
-    .results-upsell-body    { font-size:.86rem; color:var(--fg-muted); margin-bottom:1.25rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7; }
-    .results-email-card     { background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:1.75rem; margin-bottom:1.25rem; box-shadow:var(--shadow-card); }
-    .results-email-eyebrow  { font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:.5rem; }
-    .results-email-body     { font-size:.85rem; color:var(--fg-muted); margin-bottom:1.25rem; line-height:1.65; }
+    .email-card { background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);padding:1.75rem;margin-bottom:1rem;box-shadow:var(--shadow-card); }
+    .email-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:.4rem; }
+    .email-body   { font-size:.82rem;color:var(--fg-muted);margin-bottom:1rem;line-height:1.65; }
+    .email-fields { display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem; }
+    .email-row    { display:flex;gap:.65rem;flex-wrap:wrap; }
+    .email-row .nx-input { flex:1;min-width:140px; }
 
-    .action-row { display:flex; gap:1rem; padding-top:.5rem; }
-    @media(max-width:480px){ .action-row{flex-direction:column;} .action-row .btn{width:100%;justify-content:center;} }
-
-    /* Benchmark label */
-    .results-section-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--fg-muted); margin-bottom:.75rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
-
-    ::-webkit-scrollbar { width:4px; }
-    ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
-    @media print { .topbar{display:none!important;} body{background:#fff;} }
-    @media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+    @media(max-width:460px){ .metrics-grid,.method-grid{grid-template-columns:1fr;} }
+    ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
   </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-inner">
     <div class="logo-group">
       <div class="logo-icon">📊</div>
       <div>
         <div class="logo-title">RateCard Pro</div>
-        <div class="logo-sub">SA Influencer Pricing Calculator</div>
+        <div class="logo-sub" id="topbar-sub">SA Influencer Pricing Calculator</div>
       </div>
     </div>
     <div class="topbar-right">
-      <div class="step-indicator" id="step-indicator" style="display:none;">
-        <div class="step-seg" id="seg-1"></div>
-        <div class="step-seg" id="seg-2"></div>
-        <div class="step-seg" id="seg-3"></div>
-      </div>
-      <div class="nx-status-live">
-        <span class="nx-live-dot"></span>
-        2024-25 Data
-      </div>
+      <button class="btn-back" id="back-btn" style="display:none;" onclick="showForm()">← New Calculation</button>
+      <div class="live-badge"><span class="live-dot"></span>2024-25 Data</div>
     </div>
   </div>
 </header>
 
-<!-- ══════════════ SCREEN 1: INTRO ══════════════ -->
-<div class="screen active" id="s-intro">
-  <div class="container" style="text-align:center; padding-top:3rem;">
+<!-- ══════════ FORM SCREEN ══════════ -->
+<div class="screen active" id="s-form">
+  <div class="container">
 
-    <div class="disclaimer-banner" style="text-align:left; max-width:640px; margin:0 auto 1.75rem;">
+    <div class="disclaimer-banner">
       <div class="disclaimer-icon">ℹ️</div>
       <div>
         <div class="disclaimer-title">Professional Estimates</div>
-        <div class="disclaimer-text">Rates are professional estimates based on verified SA market data (2024–25). Use them as your negotiation baseline — not your ceiling.</div>
+        <div class="disclaimer-text">Based on verified SA market data (2024–25). Use these as your negotiation baseline — a brand's first offer is rarely their real budget.</div>
       </div>
     </div>
 
-    <div class="eyebrow">✨ Powered by Market Intelligence</div>
-    <h1 style="margin-bottom:.75rem;">
-      Stop Guessing.<br>
-      <span style="color:var(--primary);">Start Charging.</span>
-    </h1>
-    <p style="font-size:1rem; max-width:560px; margin:0 auto 1.75rem; line-height:1.75;">
-      Most African creators are undercharging — or getting paid in product.
-      A brand's first offer is almost never their real budget.
-      Get your floor rate and ceiling, backed by real SA data.
-      <strong style="color:var(--fg);">Your number. In Rands.</strong>
-    </p>
-
-    <div class="trust-badges">
-      <div class="trust-badge"><span class="chk">✓</span> 2024-25 SA CPM Data</div>
-      <div class="trust-badge"><span class="chk">✓</span> 7 Platforms</div>
-      <div class="trust-badge"><span class="chk">✓</span> 20 Niches</div>
-      <div class="trust-badge"><span class="chk">✓</span> Reach + Engagement</div>
-      <div class="trust-badge"><span class="chk">✓</span> Free PDF Rate Card</div>
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div class="eyebrow">✨ Powered by SA Market Intelligence</div>
+      <h1 style="font-family:var(--font-head);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--fg);">Calculate Your Worth</h1>
+      <p style="font-size:.875rem;color:var(--fg-muted);margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7;">Professional sponsorship pricing based on verified South African CPM data and your real performance metrics.</p>
     </div>
 
-    <div style="max-width:380px; margin:0 auto 2.5rem;">
-      <button class="cta-glow" onclick="goTo('s-platforms')">Calculate My Rate →</button>
-    </div>
-
-    <div class="intro-visual">
-      <div class="intro-visual-title">Sample SA CPM Rates (2024)</div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Finance &amp; Investing</span><span class="sample-rate-value">R634 CPM</span></div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Real Estate</span><span class="sample-rate-value">R544 CPM</span></div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Tech Reviews</span><span class="sample-rate-value">R453 CPM</span></div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Business &amp; Entrepreneurship</span><span class="sample-rate-value">R363 CPM</span></div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Fashion &amp; Beauty</span><span class="sample-rate-value">R272 CPM</span></div>
-      <div class="sample-rate-row"><span class="sample-rate-niche">Lifestyle</span><span class="sample-rate-value">R218 CPM</span></div>
-    </div>
-
-    <!-- How It Works -->
-    <div style="margin-top:1rem; max-width:700px; margin-left:auto; margin-right:auto;">
-      <h2 style="margin-bottom:.75rem;">How We Calculate Your Rates</h2>
-      <p style="margin-bottom:1.5rem; font-size:.875rem;">Industry-standard pricing methods calibrated for the South African influencer market.</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; text-align:left;">
-        <div class="section-card" style="margin-bottom:0;">
-          <div class="card-body">
-            <div style="width:48px; height:48px; border-radius:10px; background:var(--secondary-light); border:1px solid var(--secondary-border); display:flex; align-items:center; justify-content:center; font-size:1.25rem; margin-bottom:1rem;">👁️</div>
-            <h3 style="margin-bottom:.5rem;">CPM Method</h3>
-            <p style="font-size:.82rem; margin-bottom:1rem;">Cost Per Mille — what brands pay per 1,000 views. Best for awareness campaigns.</p>
-            <div style="display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; font-weight:700; color:var(--secondary); background:var(--secondary-light); padding:.3rem .7rem; border-radius:8px;">✓ Reach-based pricing</div>
-          </div>
-        </div>
-        <div class="section-card" style="margin-bottom:0;">
-          <div class="card-body">
-            <div style="width:48px; height:48px; border-radius:10px; background:var(--primary-light); border:1px solid var(--primary-border); display:flex; align-items:center; justify-content:center; font-size:1.25rem; margin-bottom:1rem;">🎯</div>
-            <h3 style="margin-bottom:.5rem;">CPE Method</h3>
-            <p style="font-size:.82rem; margin-bottom:1rem;">Cost Per Engagement — based on likes, comments, shares. Best for conversion campaigns.</p>
-            <div style="display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; font-weight:700; color:var(--primary); background:var(--primary-light); padding:.3rem .7rem; border-radius:8px;">✓ Engagement-based pricing</div>
-          </div>
+    <!-- Currency -->
+    <div class="currency-banner">
+      <span class="currency-label">Currency</span>
+      <div class="currency-select-wrap">
+        <div class="select-wrap">
+          <select id="currency-select" class="nx-select" onchange="onCurrencyChange(this.value)">
+            <option value="ZAR">🇿🇦 ZAR — South Africa</option>
+            <option value="NGN">🇳🇬 NGN — Nigeria</option>
+            <option value="KES">🇰🇪 KES — Kenya</option>
+            <option value="GHS">🇬🇭 GHS — Ghana</option>
+            <option value="UGX">🇺🇬 UGX — Uganda</option>
+            <option value="TZS">🇹🇿 TZS — Tanzania</option>
+            <option value="EGP">🇪🇬 EGP — Egypt</option>
+            <option value="MAD">🇲🇦 MAD — Morocco</option>
+            <option value="BWP">🇧🇼 BWP — Botswana</option>
+            <option value="NAD">🇳🇦 NAD — Namibia</option>
+            <option value="ZMW">🇿🇲 ZMW — Zambia</option>
+          </select>
         </div>
       </div>
+      <div class="rate-badge" id="rate-badge">🔄 Loading...</div>
     </div>
 
-  </div>
-</div>
-
-<!-- ══════════════ SCREEN 2: PLATFORMS ══════════════ -->
-<div class="screen" id="s-platforms">
-  <div class="container">
-
-    <div class="section-header">
-      <h2>Step 1: <span style="color:var(--primary);">Your Platforms &amp; Stats</span></h2>
-      <span class="section-step">1 of 3</span>
-    </div>
-
-    <!-- CURRENCY -->
-    <div class="section-card">
-      <div class="card-header">
-        <div class="card-dot amber"></div>
-        <span class="card-header-title">Currency &amp; Region</span>
-        <span class="card-header-sub">Live exchange rates</span>
-      </div>
-      <div class="card-body">
-        <div class="currency-row">
-          <div class="currency-select-wrap">
-            <label>Your Currency</label>
-            <div class="niche-select-wrap">
-              <select id="currency-select" class="nx-input" onchange="onCurrencyChange(this.value)">
-                <option value="ZAR">🇿🇦 ZAR — South Africa</option>
-                <option value="NGN">🇳🇬 NGN — Nigeria</option>
-                <option value="KES">🇰🇪 KES — Kenya</option>
-                <option value="GHS">🇬🇭 GHS — Ghana</option>
-                <option value="UGX">🇺🇬 UGX — Uganda</option>
-                <option value="TZS">🇹🇿 TZS — Tanzania</option>
-                <option value="EGP">🇪🇬 EGP — Egypt</option>
-                <option value="MAD">🇲🇦 MAD — Morocco</option>
-                <option value="ETB">🇪🇹 ETB — Ethiopia</option>
-                <option value="BWP">🇧🇼 BWP — Botswana</option>
-                <option value="NAD">🇳🇦 NAD — Namibia</option>
-                <option value="ZMW">🇿🇲 ZMW — Zambia</option>
-                <option value="XOF">🌍 XOF — West Africa (CFA)</option>
-              </select>
-            </div>
-          </div>
-          <div class="rate-badge" id="rate-badge">🔄 Fetching live rate...</div>
+    <!-- Example loader -->
+    <div class="example-banner">
+      <div class="example-banner-icon">✨</div>
+      <div class="example-banner-body">
+        <div class="example-banner-title">New here? Try with example data.</div>
+        <div class="example-data-grid">
+          <span class="example-data-item">Followers: <strong>50,000</strong></span>
+          <span class="example-data-item">Views: <strong>120,000</strong></span>
+          <span class="example-data-item">Interactions: <strong>3,500</strong></span>
+          <span class="example-data-item">Platforms: <strong>IG + TikTok</strong></span>
         </div>
       </div>
+      <button class="example-load-btn" onclick="loadExample()">Load This Example →</button>
     </div>
 
-    <div class="info-banner">
-      <span class="info-banner-icon">💡</span>
-      <span>Enter your <strong>real stats</strong>. The more accurate your inputs, the more accurate your rate. Brands will verify — do not inflate your numbers.</span>
-    </div>
-
-    <div id="platforms-container"></div>
-
-    <div class="platform-note-banner">
-      <span>ℹ️</span>
-      <span>On multiple platforms? Add them all. Your <strong>primary platform</strong> (highest follower count) drives the main rate.</span>
-    </div>
-
-    <button class="btn-outline-sm" id="add-platform-btn" onclick="addPlatformCard()" style="margin-bottom:1.5rem;">
-      + Add Another Platform
-    </button>
-
-    <div class="bottom-nav">
-      <button class="btn btn-ghost" onclick="goTo('s-intro')">← Back</button>
-      <button class="btn btn-primary" onclick="goToContent()">Next: Content Details →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ SCREEN 3: CONTENT ══════════════ -->
-<div class="screen" id="s-content">
-  <div class="container">
-
-    <div class="section-header">
-      <h2>Step 2: <span style="color:var(--primary);">Content &amp; Deal Details</span></h2>
-      <span class="section-step">2 of 3</span>
-    </div>
-
-    <!-- NICHE -->
+    <!-- YOUR METRICS -->
     <div class="section-card">
       <div class="card-header">
         <div class="card-dot"></div>
-        <span class="card-header-title">Your Niche</span>
-        <span class="card-header-sub">Determines your CPM rate</span>
+        <span class="card-header-title">Your Metrics</span>
       </div>
       <div class="card-body">
-        <div class="niche-select-wrap">
-          <select class="nx-input" id="niche-select">
-            <option value="">— Select your niche —</option>
-          </select>
+        <div class="form-group">
+          <div class="form-label"><span class="form-label-icon">👥</span> Total Followers</div>
+          <input class="nx-input" type="text" id="metric-followers" placeholder="e.g., 50,000" oninput="fmtInput(this)">
+          <div class="form-hint">Your total follower count on the platform(s) you're pitching</div>
         </div>
-        <div id="niche-cpm-display" class="platform-cpm-note" style="display:none; margin-top:.75rem;"></div>
-        <p class="form-hint" style="margin-top:.5rem;">Finance and business niches command 2–3× higher rates than lifestyle. Pick the one that best describes your content.</p>
+        <div class="form-group">
+          <div class="form-label"><span class="form-label-icon">👁️</span> Total Views (30 days)</div>
+          <input class="nx-input" type="text" id="metric-views" placeholder="e.g., 120,000" oninput="fmtInput(this)">
+          <div class="form-hint">Average views per post × number of posts per month</div>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <div class="form-label"><span class="form-label-icon">❤️</span> Total Interactions</div>
+          <input class="nx-input" type="text" id="metric-interactions" placeholder="e.g., 3,500" oninput="fmtInput(this)">
+          <div class="form-hint">Total likes + comments + shares per post (average)</div>
+        </div>
       </div>
     </div>
 
-    <!-- CONTENT TYPE -->
-    <div class="section-card">
-      <div class="card-header">
-        <div class="card-dot blue"></div>
-        <span class="card-header-title">Content Type</span>
-        <span class="card-header-sub">Applies a rate multiplier</span>
-      </div>
-      <div class="card-body">
-        <div class="radio-cards" id="content-type-cards"></div>
-      </div>
-    </div>
-
-    <!-- ADD-ONS -->
+    <!-- CONTENT DETAILS -->
     <div class="section-card">
       <div class="card-header">
         <div class="card-dot green"></div>
-        <span class="card-header-title">Premium Add-ons</span>
-        <span class="card-header-sub">Optional — each adds a multiplier</span>
+        <span class="card-header-title">Content Details</span>
       </div>
       <div class="card-body">
-        <div class="checkbox-cards" id="addon-cards"></div>
-        <p class="form-hint" style="margin-top:.75rem;">Usage rights and exclusivity are standard industry add-ons. If a brand can run ads using your content — charge for it.</p>
-      </div>
-    </div>
-
-    <!-- EDUCATION -->
-    <div class="accordion" style="margin-bottom:1.5rem;">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span class="accordion-title">📊 How is your rate calculated?</span>
-        <span class="accordion-arrow">▾</span>
-      </div>
-      <div class="accordion-body">
-        <dl>
-          <div class="edu-definition">
-            <dt>CPM — Cost Per Mille (per 1,000 views)</dt>
-            <dd>What brands pay for every 1,000 times your content is seen. Finance brands pay R634/1000 views; Lifestyle pays R218/1000 views.</dd>
+        <div class="form-group">
+          <div class="form-label">Platforms</div>
+          <div class="platform-chips">
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="instagram" checked><span class="platform-chip-label"><span class="platform-chip-icon">📸</span>Instagram</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="tiktok"><span class="platform-chip-label"><span class="platform-chip-icon">🎵</span>TikTok</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="youtube"><span class="platform-chip-label"><span class="platform-chip-icon">▶️</span>YouTube</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="facebook"><span class="platform-chip-label"><span class="platform-chip-icon">👥</span>Facebook</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="linkedin"><span class="platform-chip-label"><span class="platform-chip-icon">💼</span>LinkedIn</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="twitter_x"><span class="platform-chip-label"><span class="platform-chip-icon">🐦</span>X / Twitter</span></label>
+            <label class="platform-chip"><input type="checkbox" class="platform-checkbox" value="pinterest"><span class="platform-chip-label"><span class="platform-chip-icon">📌</span>Pinterest</span></label>
           </div>
-          <div class="edu-definition">
-            <dt>CPE — Cost Per Engagement</dt>
-            <dd>What a brand pays per like, comment, or share. SA creators average 3.39% ER (global: 1.49%) — this is your competitive edge.</dd>
-          </div>
-          <div class="edu-definition">
-            <dt>Why we use MAX(CPM, CPE)</dt>
-            <dd>Your rate is the <strong style="color:var(--primary);">higher of the two</strong>. This protects your maximum value whether a brand values reach or engagement.</dd>
-          </div>
-        </dl>
-        <div class="formula-box">
-CPM Rate = (niche_cpm × tier_mult × platform_mult × content_mult) / 1000 × avg_views<br>
-CPE Rate = cpe_zar × platform_cpe_mult × (avg_likes + avg_comments + avg_shares)<br>
-Final     = MAX(CPM Rate, CPE Rate) × premium_multiplier<br>
-Range     = Final × 0.85 → Final × 1.15
         </div>
-        <p style="font-size:.8rem; color:var(--fg-muted); margin-top:.5rem;">SA ER benchmark: <strong style="color:var(--primary);">3.39%</strong> average (global: 1.49%). Most SA creators fall in the "High" or "Premium" CPE tier.</p>
+        <div class="form-group">
+          <div class="form-label">Niche</div>
+          <div class="select-wrap">
+            <select class="nx-select" id="niche-select" onchange="onNicheChange()">
+              <option value="">— Select your niche —</option>
+            </select>
+          </div>
+          <div id="niche-note" class="form-hint" style="display:none;color:var(--primary);font-weight:600;"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <div class="form-label">Content Type</div>
+          <div class="select-wrap">
+            <select class="nx-select" id="content-type-select" onchange="onContentTypeChange()">
+              <option value="static">🖼️ Static Post (Photo) — 1.0×</option>
+              <option value="carousel">🎴 Carousel (Multi-image) — 1.25×</option>
+              <option value="story">⭕ Stories (24h) — 0.5×</option>
+              <option value="reel_short" selected>🎬 Reel / Short Video — 1.68×</option>
+              <option value="long_video">🎥 Long Video (5min+) — 2.5×</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bottom-nav">
-      <button class="btn btn-ghost" onclick="goTo('s-platforms')">← Back</button>
-      <button class="btn btn-primary" onclick="goToCalculate()">Calculate My Rate →</button>
+    <!-- CAMPAIGN STRATEGY -->
+    <div class="section-card">
+      <div class="collapsible-header" onclick="toggleSection('campaign-body',this)">
+        <div class="collapsible-title"><span>🎯</span> Campaign Strategy <span style="font-size:.72rem;font-weight:400;color:var(--fg-muted);margin-left:4px;">(Optional)</span></div>
+        <span class="collapsible-arrow">▾</span>
+      </div>
+      <div class="collapsible-body" id="campaign-body">
+        <div class="strategy-grid">
+          <div class="form-group">
+            <div class="form-label">Campaign Objective</div>
+            <div class="select-wrap">
+              <select class="nx-select" id="campaign-objective">
+                <option value="">— None —</option>
+                <option value="awareness">Brand Awareness</option>
+                <option value="conversion">Conversion / Sales (+10%)</option>
+                <option value="engagement">Engagement Focus (−5%)</option>
+                <option value="event">Event Promotion (+5%)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Campaign Scope</div>
+            <div class="select-wrap">
+              <select class="nx-select" id="campaign-scope">
+                <option value="">— None —</option>
+                <option value="single">Single Post</option>
+                <option value="series_3">3-Post Series (−5%)</option>
+                <option value="monthly">Monthly Retainer (−10%)</option>
+                <option value="bundle_8">Bundle 8+ Posts (−15%)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <div class="form-label">Brand Budget Tier</div>
+          <div class="select-wrap">
+            <select class="nx-select" id="budget-tier">
+              <option value="">— Unknown —</option>
+              <option value="starter">Starter (&lt;R10K)</option>
+              <option value="standard">Standard (R10K–R50K)</option>
+              <option value="premium">Premium (R50K–R100K) (+10%)</option>
+              <option value="enterprise">Enterprise (R100K+) (+20%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- PRODUCTION COSTS -->
+    <div class="section-card">
+      <label class="production-toggle" for="include-production">
+        <input type="checkbox" id="include-production" onchange="onProductionToggle()">
+        <div class="production-toggle-text">
+          <div class="production-toggle-name">💵 Include Production Costs</div>
+          <div class="production-toggle-desc" id="prod-desc">Filming, editing, music, effects</div>
+        </div>
+        <div class="production-cost-badge" id="prod-cost-badge">R 1,500</div>
+      </label>
+    </div>
+
+    <!-- PREMIUM ADD-ONS -->
+    <div class="section-card">
+      <div class="collapsible-header" onclick="toggleSection('addons-body',this)">
+        <div class="collapsible-title"><span>✨</span> Premium Add-Ons <span style="font-size:.72rem;font-weight:400;color:var(--fg-muted);margin-left:4px;">(Optional)</span></div>
+        <span class="collapsible-arrow">▾</span>
+      </div>
+      <div class="collapsible-body" id="addons-body">
+        <div id="addon-list"></div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="btn-row">
+      <button class="btn-ghost" onclick="clearForm()">↺ Clear</button>
+      <button class="cta-full" onclick="goCalculate()">Calculate My Rate →</button>
+    </div>
+
+    <!-- HOW WE CALCULATE -->
+    <div class="how-section">
+      <div style="text-align:center;margin-bottom:1.25rem;">
+        <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:700;color:var(--fg);margin-bottom:.4rem;">How We Calculate Your Rates</h2>
+        <p style="font-size:.82rem;color:var(--fg-muted);">Industry-standard pricing methods calibrated for the South African influencer market.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-card-icon" style="background:var(--secondary-light);border:1px solid var(--secondary-border);">👁️</div>
+          <div class="how-card-title">CPM Method</div>
+          <div class="how-card-desc">Cost Per Mille — what brands pay per 1,000 views. Finance brands pay R634/1000 views; Lifestyle pays R218. Best for awareness campaigns.</div>
+          <div class="how-card-pill" style="background:var(--secondary-light);color:var(--secondary);">✓ Reach-based pricing</div>
+        </div>
+        <div class="how-card">
+          <div class="how-card-icon" style="background:var(--primary-light);border:1px solid var(--primary-border);">🎯</div>
+          <div class="how-card-title">CPE Method</div>
+          <div class="how-card-desc">Cost Per Engagement — based on likes, comments, shares. SA creators average 3.39% ER (global: 1.49%). Your engagement is your edge.</div>
+          <div class="how-card-pill" style="background:var(--primary-light);color:var(--primary);">✓ Engagement-based pricing</div>
+        </div>
+      </div>
+      <div class="how-card" style="margin-top:1rem;">
+        <div class="how-card-title" style="margin-bottom:.6rem;">📐 The Formula</div>
+        <div class="formula-box">CPM Rate  = (niche_cpm × tier_mult × platform_mult × content_mult) / 1000 × total_views
+CPE Rate  = cpe_zar × platform_cpe_mult × total_interactions
+Base Rate = MAX(CPM Rate, CPE Rate) × premium_multiplier
+Total     = Base Rate × campaign_mult + production_cost
+Range     = Total × 0.85  →  Total × 1.15</div>
+        <p style="font-size:.78rem;color:var(--fg-muted);">Your rate is always the <strong style="color:var(--primary)">higher</strong> of CPM vs CPE — protecting your maximum value. SA ER benchmark: <strong style="color:var(--primary)">3.39%</strong> avg (global: 1.49%).</p>
+      </div>
+      <div class="how-stat-grid">
+        <div class="how-card" style="padding:1rem;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:.4rem;">🎖️</div>
+          <div style="font-size:.78rem;font-weight:700;color:var(--fg);margin-bottom:.3rem;">Influencer Tier</div>
+          <div style="font-size:.68rem;color:var(--fg-muted);line-height:1.6;">Nano 1K–10K<br>Micro 10K–50K<br>Mid 50K–200K<br>Macro 200K–1M<br>Mega 1M+</div>
+        </div>
+        <div class="how-card" style="padding:1rem;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:.4rem;">📊</div>
+          <div style="font-size:.78rem;font-weight:700;color:var(--fg);margin-bottom:.3rem;">CPE Tiers (ZAR)</div>
+          <div style="font-size:.68rem;color:var(--fg-muted);line-height:1.6;">&lt;1% → R3.50/eng<br>1–2% → R7.50/eng<br>2–3.5% → R14/eng<br>3.5–6% → R22/eng<br>6%+ → R30/eng</div>
+        </div>
+        <div class="how-card" style="padding:1rem;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:.4rem;">💰</div>
+          <div style="font-size:.78rem;font-weight:700;color:var(--fg);margin-bottom:.3rem;">Add-On Logic</div>
+          <div style="font-size:.68rem;color:var(--fg-muted);line-height:1.6;">Multipliers stack.<br>Usage Rights +35%<br>Exclusivity 90d +50%<br>Rush Delivery +20%<br>Unlimited Revisions +15%</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ══════════════ LOADING ══════════════ -->
+<!-- ══════════ LOADING ══════════ -->
 <div id="s-loading">
   <div class="loader-ring"></div>
-  <div>
-    <div class="loader-text">Crunching SA 2024-25 CPM data...</div>
-    <div class="loader-sub" id="loader-step-text">Applying niche multipliers</div>
+  <div style="text-align:center;">
+    <div style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--fg);">Crunching SA 2024-25 data...</div>
+    <div style="font-size:.82rem;color:var(--fg-muted);margin-top:.3rem;" id="loader-step-text">Applying niche multipliers</div>
   </div>
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progress-fill"></div>
-  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
 </div>
 
-<!-- ══════════════ SCREEN 4: RESULTS ══════════════ -->
+<!-- ══════════ RESULTS SCREEN ══════════ -->
 <div class="screen" id="s-results">
   <div class="container">
-
-    <div class="section-header">
-      <h2>Your Rate Card <span style="color:var(--primary);">Results</span></h2>
-      <span class="section-step">3 of 3</span>
-    </div>
-
-    <!-- Hero: filled by renderResults -->
-    <div id="r-tier-block"></div>
-
-    <!-- Metrics grid: filled by renderResults -->
-    <div id="r-er-block"></div>
-
-    <!-- CPM vs CPE grid: filled by renderResults -->
-    <div id="r-rate-cards"></div>
-
-    <!-- Price range: hidden (info moved to hero card) -->
-    <div id="r-price-range" style="display:none;"></div>
-
-    <!-- Negotiation: filled by renderResults -->
+    <div class="results-hero" id="r-hero"></div>
+    <div class="metrics-grid" id="r-metrics"></div>
+    <div class="method-grid"  id="r-methods"></div>
     <div id="r-negotiation"></div>
+    <div id="r-insights"></div>
 
-    <!-- Benchmark Accordion -->
-    <div class="accordion" style="margin-bottom:1.25rem;">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span class="accordion-title">📈 SA vs Global Benchmark</span>
-        <span class="accordion-arrow">▾</span>
+    <div class="section-card" style="margin-bottom:1rem;">
+      <div class="collapsible-header" onclick="toggleSection('r-benchmark-body',this)">
+        <div class="collapsible-title"><span>📈</span> SA vs Global Benchmark</div>
+        <span class="collapsible-arrow">▾</span>
       </div>
-      <div class="accordion-body" id="r-benchmark-body"></div>
+      <div class="collapsible-body" id="r-benchmark-body"></div>
     </div>
 
-    <!-- Strategic insights: filled by renderResults -->
-    <div id="r-tips"></div>
-
-    <!-- Breakdown toggle -->
-    <button class="breakdown-toggle-btn" id="breakdown-toggle-btn" onclick="toggleBreakdown()">
-      <span id="breakdown-btn-label">View Calculation Details</span>
-      <span id="breakdown-btn-arrow">▾</span>
+    <button class="breakdown-btn" onclick="toggleBreakdown()">
+      <span id="bd-btn-label">View Calculation Details</span> <span id="bd-btn-arrow">▾</span>
     </button>
+    <div id="r-breakdown" style="display:none;"></div>
 
-    <!-- Breakdown content: filled by renderResults, toggled -->
-    <div id="r-breakdown-wrap" style="display:none;"></div>
-
-    <!-- Upsell -->
-    <div class="results-upsell-card" id="results-upsell">
-      <div class="results-upsell-eyebrow">Your next move</div>
-      <div class="results-upsell-heading">You have your rate. Now get the script that closes the deal.</div>
-      <div class="results-upsell-body">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</div>
-      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-glow" style="max-width:420px; display:inline-flex; margin:0 auto;">Get the Brand Deal Pitch Script — R149 →</a>
+    <div class="upsell-card">
+      <div class="upsell-eyebrow">Your next move</div>
+      <div class="upsell-heading">You have your rate. Now get the script that closes the deal.</div>
+      <div class="upsell-body">The <em>Brand Deal Pitch Script</em> gives you word-for-word scripts for when you reach out AND when a brand contacts you — including exactly what to say when they push back on price. R149.</div>
+      <a href="https://contentcreatorhub.online/products/first-brand-deal-script" target="_blank" class="cta-full" style="max-width:420px;margin:0 auto;display:flex;text-decoration:none;">Get the Brand Deal Pitch Script — R149 →</a>
     </div>
 
-    <!-- Email Delivery -->
-    <div class="results-email-card">
-      <div class="results-email-eyebrow">Get your rate card delivered</div>
-      <div class="results-email-body">We'll email you a branded PDF you can forward directly to any brand — just attach and send. No saving, no screenshotting.</div>
-      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input class="nx-input" type="text"  id="send-name"  placeholder="Your name"        style="flex:1; min-width:140px;">
-          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com"   style="flex:2; min-width:200px;">
+    <div class="email-card">
+      <div class="email-eyebrow">Get your rate card delivered</div>
+      <h3 style="margin-bottom:.5rem;">Send yourself the branded PDF</h3>
+      <div class="email-body">Forward it directly to any brand — a professional PDF with your rates, stats, and terms. No screenshotting needed.</div>
+      <div class="email-fields">
+        <div class="email-row">
+          <input class="nx-input" type="text"  id="send-name"  placeholder="Your name">
+          <input class="nx-input" type="email" id="send-email" placeholder="your@email.com">
         </div>
-        <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional — personalises the PDF)">
-        <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — shown on PDF, e.g. @nochill_god)">
+        <input class="nx-input" type="text" id="send-brand"  placeholder="Brand or campaign name (optional)">
+        <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — e.g. @nochill_god)">
       </div>
-      <button class="cta-glow" onclick="sendRateCard()" id="send-rc-btn">Send My Rate Card PDF →</button>
-      <div id="send-rc-msg" style="display:none; margin-top:12px; font-size:13px; text-align:center; line-height:1.6;"></div>
+      <button class="cta-full" onclick="sendRateCard()" id="send-rc-btn">Send My Rate Card PDF →</button>
+      <div id="send-rc-msg" style="display:none;margin-top:.75rem;font-size:.82rem;text-align:center;line-height:1.65;"></div>
     </div>
-
-    <!-- Actions -->
-    <div class="action-row">
-      <button class="btn btn-ghost" onclick="recalculate()">← Recalculate</button>
-    </div>
-
   </div>
 </div>
 
-<footer style="border-top:1px solid var(--border); background:var(--card); padding:1.5rem; margin-top:0;">
-  <div style="max-width:880px; margin:0 auto; text-align:center; font-size:.78rem; color:var(--fg-muted);">
+<footer style="border-top:1px solid var(--border);background:var(--card);padding:1.5rem;margin-top:0;">
+  <div style="max-width:760px;margin:0 auto;text-align:center;font-size:.75rem;color:var(--fg-muted);">
     <p>Based on Aspire 2024–2025, SA Influencer Benchmark Report &amp; global industry standards.</p>
-    <p style="margin-top:.25rem;">Prices in ZAR (South African Rand) · contentcreatorhub.online · @nochill_god</p>
+    <p style="margin-top:.25rem;">Prices in ZAR · contentcreatorhub.online · @nochill_god</p>
   </div>
 </footer>
 
 <script>
 'use strict';
-
-/* ── DATA ───────────────────────────────────────────────── */
 const NICHE_CPM = {
-  'Fashion & Beauty':              { cpm: 271.95, global_cpm: '$15', notes: 'Strong SA engagement. Brands pay premium for authentic lifestyle creators.' },
-  'Business & Entrepreneurship':   { cpm: 362.60, global_cpm: '$20', notes: 'Decision-maker audiences command premium rates.' },
-  'Finance & Investing':           { cpm: 634.55, global_cpm: '$35', notes: 'Highest-value niche. Financial brands have large budgets.' },
-  'Tech Reviews':                  { cpm: 453.25, global_cpm: '$25', notes: 'Product-review content drives purchase decisions.' },
-  'Lifestyle':                     { cpm: 217.56, global_cpm: '$12', notes: 'Broad reach. Compensate with strong engagement data.' },
-  'Fitness & Health':              { cpm: 326.34, global_cpm: '$18', notes: 'Health brands have significant SA marketing budgets.' },
-  'Parenting & Family':            { cpm: 271.95, global_cpm: '$15', notes: 'Loyal, trust-heavy audience. Brands value authenticity here.' },
-  'Food & Cooking':                { cpm: 217.56, global_cpm: '$12', notes: 'High engagement. Partner with FMCG and restaurant brands.' },
-  'Modelling':                     { cpm: 271.95, global_cpm: '$15', notes: 'Visual-first content. Fashion/beauty brand alignment.' },
-  'Entertainment':                 { cpm: 362.60, global_cpm: '$20', notes: 'Broad demographic appeal. Strong for awareness campaigns.' },
-  'Travel & Adventure':            { cpm: 253.82, global_cpm: '$14', notes: 'Aspirational content. Tourism boards and airlines target this.' },
-  'Gaming':                        { cpm: 326.34, global_cpm: '$18', notes: 'Highly engaged niche audience. Strong for tech and beverage brands.' },
-  'Personal Development':          { cpm: 326.34, global_cpm: '$18', notes: 'Motivated, action-taking audience. Course/coaching brands.' },
-  'Education':                     { cpm: 362.60, global_cpm: '$20', notes: 'Trusted authority positioning. EdTech brands pay well.' },
-  'Real Estate':                   { cpm: 543.91, global_cpm: '$30', notes: 'High-value transactions justify premium influencer rates.' },
-  'Automotive':                    { cpm: 362.60, global_cpm: '$20', notes: 'High-purchase-intent audience. Strong dealership budgets.' },
-  'Music & Arts':                  { cpm: 217.56, global_cpm: '$12', notes: 'Creative audience. Streaming platforms and event brands.' },
-  'Sports & Athletics':            { cpm: 271.95, global_cpm: '$15', notes: 'Passionate community. Sports brands and betting companies.' },
-  'Comedy & Entertainment':        { cpm: 217.56, global_cpm: '$12', notes: 'Huge reach potential. Work with FMCG and fast food brands.' },
-  'Sustainability & Green':        { cpm: 271.95, global_cpm: '$15', notes: 'Growing category. Eco brands actively seeking SA creators.' }
+  'Fashion & Beauty':            {cpm:271.95,global_cpm:'$15',notes:'Strong SA engagement. Brands pay premium for authentic lifestyle creators.'},
+  'Business & Entrepreneurship': {cpm:362.60,global_cpm:'$20',notes:'Decision-maker audiences command premium rates.'},
+  'Finance & Investing':         {cpm:634.55,global_cpm:'$35',notes:'Highest-value niche. Financial brands have large budgets.'},
+  'Tech Reviews':                {cpm:453.25,global_cpm:'$25',notes:'Product-review content drives purchase decisions.'},
+  'Lifestyle':                   {cpm:217.56,global_cpm:'$12',notes:'Broad reach. Compensate with strong engagement data.'},
+  'Fitness & Health':            {cpm:326.34,global_cpm:'$18',notes:'Health brands have significant SA marketing budgets.'},
+  'Parenting & Family':          {cpm:271.95,global_cpm:'$15',notes:'Loyal, trust-heavy audience. Brands value authenticity here.'},
+  'Food & Cooking':              {cpm:217.56,global_cpm:'$12',notes:'High engagement. Partner with FMCG and restaurant brands.'},
+  'Modelling':                   {cpm:271.95,global_cpm:'$15',notes:'Visual-first content. Fashion/beauty brand alignment.'},
+  'Entertainment':               {cpm:362.60,global_cpm:'$20',notes:'Broad demographic appeal. Strong for awareness campaigns.'},
+  'Travel & Adventure':          {cpm:253.82,global_cpm:'$14',notes:'Aspirational content. Tourism boards and airlines target this.'},
+  'Gaming':                      {cpm:326.34,global_cpm:'$18',notes:'Highly engaged niche audience. Strong for tech and beverage brands.'},
+  'Personal Development':        {cpm:326.34,global_cpm:'$18',notes:'Motivated, action-taking audience. Course/coaching brands.'},
+  'Education':                   {cpm:362.60,global_cpm:'$20',notes:'Trusted authority positioning. EdTech brands pay well.'},
+  'Real Estate':                 {cpm:543.91,global_cpm:'$30',notes:'High-value transactions justify premium influencer rates.'},
+  'Automotive':                  {cpm:362.60,global_cpm:'$20',notes:'High-purchase-intent audience. Strong dealership budgets.'},
+  'Music & Arts':                {cpm:217.56,global_cpm:'$12',notes:'Creative audience. Streaming platforms and event brands.'},
+  'Sports & Athletics':          {cpm:271.95,global_cpm:'$15',notes:'Passionate community. Sports brands and betting companies.'},
+  'Comedy & Entertainment':      {cpm:217.56,global_cpm:'$12',notes:'Huge reach potential. Work with FMCG and fast food brands.'},
+  'Sustainability & Green':      {cpm:271.95,global_cpm:'$15',notes:'Growing category. Eco brands actively seeking SA creators.'}
 };
-
 const PLATFORM = {
-  instagram: { cpm_mult: 1.00, cpe_mult: 1.00, er_formula: 'views',       name: 'Instagram',  icon: '📸', note: 'Gold standard for brand partnerships. Highest CPM baseline.' },
-  tiktok:    { cpm_mult: 0.80, cpe_mult: 0.40, er_formula: 'views',       name: 'TikTok',     icon: '🎵', note: 'Lower CPM due to high volume but growing fast. CPE is lower due to volume of interactions.' },
-  youtube:   { cpm_mult: 1.80, cpe_mult: 0.25, er_formula: 'views',       name: 'YouTube',    icon: '▶️', note: 'Highest CPM — long-form content commands premium. Brands pay for intent.' },
-  facebook:  { cpm_mult: 0.90, cpe_mult: 4.70, er_formula: 'reach',       name: 'Facebook',   icon: '👥', note: 'Low CPM but exceptional CPE — Facebook interactions drive high conversions.' },
-  linkedin:  { cpm_mult: 1.50, cpe_mult: 1.20, er_formula: 'impressions', name: 'LinkedIn',   icon: '💼', note: 'Professional audience commands 50% premium. B2B brands pay top rates.' },
-  twitter_x: { cpm_mult: 0.60, cpe_mult: 0.70, er_formula: 'impressions', name: 'X (Twitter)',icon: '🐦', note: 'Lower CPM but high real-time reach. News/finance brands active here.' },
-  pinterest: { cpm_mult: 0.70, cpe_mult: 0.60, er_formula: 'views',       name: 'Pinterest',  icon: '📌', note: 'Strong for lifestyle, food, and DIY niches. Purchase-intent platform.' }
+  instagram:{cpm_mult:1.00,cpe_mult:1.00,name:'Instagram'},
+  tiktok:   {cpm_mult:0.80,cpe_mult:0.40,name:'TikTok'},
+  youtube:  {cpm_mult:1.80,cpe_mult:0.25,name:'YouTube'},
+  facebook: {cpm_mult:0.90,cpe_mult:4.70,name:'Facebook'},
+  linkedin: {cpm_mult:1.50,cpe_mult:1.20,name:'LinkedIn'},
+  twitter_x:{cpm_mult:0.60,cpe_mult:0.70,name:'X (Twitter)'},
+  pinterest:{cpm_mult:0.70,cpe_mult:0.60,name:'Pinterest'}
 };
-
 const TIER = {
-  nano:  { min: 1000,    max: 10000,    mult: 0.70, label: 'Nano Influencer',     badge: '#6B7280' },
-  micro: { min: 10001,   max: 50000,    mult: 0.85, label: 'Micro Influencer',    badge: '#8B5CF6' },
-  mid:   { min: 50001,   max: 200000,   mult: 1.00, label: 'Mid-Tier Influencer', badge: '#3B82F6' },
-  macro: { min: 200001,  max: 1000000,  mult: 1.20, label: 'Macro Influencer',    badge: '#F5C842' },
-  mega:  { min: 1000001, max: Infinity, mult: 1.50, label: 'Mega Influencer',     badge: '#22C55E' }
+  nano: {min:1000,   max:10000,   mult:0.70,label:'Nano Influencer'},
+  micro:{min:10001,  max:50000,   mult:0.85,label:'Micro Influencer'},
+  mid:  {min:50001,  max:200000,  mult:1.00,label:'Mid-Tier Influencer'},
+  macro:{min:200001, max:1000000, mult:1.20,label:'Macro Influencer'},
+  mega: {min:1000001,max:Infinity,mult:1.50,label:'Mega Influencer'}
 };
-
 const CONTENT_TYPE = {
-  static:     { mult: 1.00, label: 'Static Post (Photo)',    icon: '🖼️', note: 'Single image. Baseline rate.' },
-  carousel:   { mult: 1.25, label: 'Carousel (Multi-image)', icon: '🎴', note: '25% premium — higher engagement, more time invested.' },
-  story:      { mult: 0.50, label: 'Stories (24h)',          icon: '⭕', note: '50% of base rate — ephemeral, lower production.' },
-  reel_short: { mult: 1.68, label: 'Reel / Short Video',     icon: '🎬', note: '68% premium — SA data shows reels cost R7,335 vs R4,354 for static.' },
-  long_video: { mult: 2.50, label: 'Long Video (5min+)',     icon: '🎥', note: '2.5× premium — highest production value, longest shelf life.' }
+  static:    {mult:1.00,label:'Static Post',    prod:500,  prod_desc:'Photography, basic editing'},
+  carousel:  {mult:1.25,label:'Carousel',       prod:800,  prod_desc:'Multi-image design, layout'},
+  story:     {mult:0.50,label:'Stories',        prod:300,  prod_desc:'Quick edit, graphics'},
+  reel_short:{mult:1.68,label:'Reel/Short Video',prod:1500,prod_desc:'Filming, editing, music, effects'},
+  long_video:{mult:2.50,label:'Long Video',     prod:3000, prod_desc:'Full production, scripting, editing'}
 };
-
 const CPE_TIER = [
-  { min: 0,    max: 0.99,  cpe_zar: 3.50,  label: 'Low',         color: '#6B7280' },
-  { min: 1.00, max: 1.99,  cpe_zar: 7.50,  label: 'Moderate',    color: '#8B5CF6' },
-  { min: 2.00, max: 3.49,  cpe_zar: 14.00, label: 'High',        color: '#3B82F6' },
-  { min: 3.50, max: 5.99,  cpe_zar: 22.00, label: 'Premium',     color: '#F5C842' },
-  { min: 6.00, max: 100,   cpe_zar: 30.00, label: 'Exceptional', color: '#22C55E' }
+  {min:0,   max:0.99, cpe_zar:3.50, label:'Low',         color:'#6B7280'},
+  {min:1.00,max:1.99, cpe_zar:7.50, label:'Moderate',    color:'#8B5CF6'},
+  {min:2.00,max:3.49, cpe_zar:14.00,label:'High',        color:'#3B82F6'},
+  {min:3.50,max:5.99, cpe_zar:22.00,label:'Premium',     color:'#F59E0B'},
+  {min:6.00,max:100,  cpe_zar:30.00,label:'Exceptional', color:'#22C55E'}
 ];
-
 const ADDONS = {
-  usage_rights:        { mult: 1.35, label: 'Usage Rights',          desc: 'Brand can repurpose your content for paid ads and marketing materials' },
-  exclusivity_30:      { mult: 1.25, label: 'Exclusivity (30 days)', desc: 'You will not promote competing brands for 30 days' },
-  exclusivity_90:      { mult: 1.50, label: 'Exclusivity (90 days)', desc: 'You will not promote competing brands for 90 days' },
-  rush_delivery:       { mult: 1.20, label: 'Rush Delivery (48h)',   desc: 'Content delivered within 48 hours of brief' },
-  unlimited_revisions: { mult: 1.15, label: 'Unlimited Revisions',   desc: 'Standard is 2 rounds of revisions — this covers unlimited' }
+  usage_rights:       {mult:1.35,label:'Usage Rights (Whitelisting)',pct:'+35%',desc:'Brand can repurpose your content for paid ads and marketing'},
+  exclusivity_30:     {mult:1.25,label:'30-Day Exclusivity',         pct:'+25%',desc:'No competing brands for 30 days'},
+  exclusivity_90:     {mult:1.50,label:'90-Day Exclusivity',         pct:'+50%',desc:'No competing brands for 90 days'},
+  rush_delivery:      {mult:1.20,label:'Rush Delivery (48hrs)',      pct:'+20%',desc:'Content delivered within 48 hours of brief'},
+  unlimited_revisions:{mult:1.15,label:'Unlimited Revisions',        pct:'+15%',desc:'Standard is 2 rounds — this covers unlimited'}
+};
+const CURRENCIES = {
+  ZAR:{sym:'R',flag:'🇿🇦'}, NGN:{sym:'₦',flag:'🇳🇬'}, KES:{sym:'KSh',flag:'🇰🇪'},
+  GHS:{sym:'₵',flag:'🇬🇭'}, UGX:{sym:'USh',flag:'🇺🇬'}, TZS:{sym:'TSh',flag:'🇹🇿'},
+  EGP:{sym:'E£',flag:'🇪🇬'}, MAD:{sym:'MAD',flag:'🇲🇦'}, BWP:{sym:'P',flag:'🇧🇼'},
+  NAD:{sym:'N$',flag:'🇳🇦'}, ZMW:{sym:'ZK',flag:'🇿🇲'}
 };
 
-/* ── LIVE EXCHANGE RATES ── */
-const AFRICAN_CURRENCIES = {
-  ZAR: { name: 'South Africa', symbol: 'R',    flag: '🇿🇦' },
-  NGN: { name: 'Nigeria',      symbol: '₦',    flag: '🇳🇬' },
-  KES: { name: 'Kenya',        symbol: 'KSh',  flag: '🇰🇪' },
-  GHS: { name: 'Ghana',        symbol: '₵',    flag: '🇬🇭' },
-  UGX: { name: 'Uganda',       symbol: 'USh',  flag: '🇺🇬' },
-  TZS: { name: 'Tanzania',     symbol: 'TSh',  flag: '🇹🇿' },
-  EGP: { name: 'Egypt',        symbol: 'E£',   flag: '🇪🇬' },
-  MAD: { name: 'Morocco',      symbol: 'MAD',  flag: '🇲🇦' },
-  ETB: { name: 'Ethiopia',     symbol: 'Br',   flag: '🇪🇹' },
-  BWP: { name: 'Botswana',     symbol: 'P',    flag: '🇧🇼' },
-  NAD: { name: 'Namibia',      symbol: 'N$',   flag: '🇳🇦' },
-  ZMW: { name: 'Zambia',       symbol: 'ZK',   flag: '🇿🇲' },
-  XOF: { name: 'West Africa',  symbol: 'CFA',  flag: '🌍'  },
-};
+let liveRates={ZAR:18.50,USD:1}, selCurrency='ZAR', rateIsLive=false, rateUpdated=null;
+let calcResults=null, breakdownOpen=false;
 
-let liveRates       = { ZAR: 18.50, USD: 1 };
-let selectedCurrency = 'ZAR';
-let rateLastUpdated  = null;
-let rateIsLive       = false;
-
-async function fetchLiveRates() {
-  try {
-    const res  = await fetch('https://open.er-api.com/v6/latest/USD');
-    const data = await res.json();
-    if (data && data.rates) {
-      liveRates       = data.rates;
-      rateLastUpdated = new Date(data.time_last_update_utc);
-      rateIsLive      = true;
-      updateRateBadge();
-    }
-  } catch(e) { /* use fallback */ }
+async function fetchLiveRates(){
+  try{
+    const d=await(await fetch('https://open.er-api.com/v6/latest/USD')).json();
+    if(d&&d.rates){liveRates=d.rates;rateIsLive=true;rateUpdated=new Date(d.time_last_update_utc);updateRateBadge();}
+  }catch(e){}
 }
-
-function updateRateBadge() {
-  const el = document.getElementById('rate-badge');
-  if (!el) return;
-  const cur  = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
-  const rate = (liveRates[selectedCurrency] || liveRates.ZAR || 18.50);
-  const ts   = rateIsLive && rateLastUpdated
-    ? rateLastUpdated.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' })
-    : 'Approx. — live rates loading';
-  el.innerHTML = `${cur.flag} 1 USD = ${cur.symbol}${rate.toFixed(2)} &nbsp;·&nbsp; <span style="color:var(--fg-muted); font-size:.85em">${ts}</span>`;
+function updateRateBadge(){
+  const el=document.getElementById('rate-badge');if(!el)return;
+  const c=CURRENCIES[selCurrency]||CURRENCIES.ZAR,r=liveRates[selCurrency]||18.50;
+  const ts=rateIsLive&&rateUpdated?rateUpdated.toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'}):'Approx.';
+  el.innerHTML=`${c.flag} 1 USD = ${c.sym}${r.toFixed(2)} <span style="color:var(--fg-muted);font-size:.85em">· ${ts}</span>`;
 }
+function zarToSelected(n){const z=liveRates.ZAR||18.50,s=liveRates[selCurrency]||z;return n*(s/z);}
+function fmtC(n){const c=CURRENCIES[selCurrency]||CURRENCIES.ZAR;return c.sym+' '+Math.round(zarToSelected(n)).toLocaleString('en-ZA');}
+function fmtUSD(n){return '≈ $'+Math.round(n/(liveRates.ZAR||18.50)).toLocaleString('en-US');}
+function fmtN(n){return Math.round(n).toLocaleString('en-ZA');}
+function parseFmt(s){return parseFloat(String(s).replace(/[,\s ]/g,''))||0;}
+function fmtInput(el){const v=parseFmt(el.value);if(v>0)el.value=v.toLocaleString('en-US');}
+function getTier(f){for(const[k,t]of Object.entries(TIER))if(f>=t.min&&f<=t.max)return{key:k,...t};return null;}
+function getCpeTier(er){return CPE_TIER.find(t=>er>=t.min&&er<=t.max)||CPE_TIER[0];}
 
-function zarToSelected(zarAmount) {
-  const zarPerUSD = liveRates.ZAR || 18.50;
-  const selPerUSD = liveRates[selectedCurrency] || zarPerUSD;
-  return zarAmount * (selPerUSD / zarPerUSD);
-}
-
-/* ── STATE ── */
-let platformCards = [];
-let cardCounter   = 0;
-let calcResults   = null;
-let breakdownOpen = false;
-
-/* ── HELPERS ── */
-function fmtLocal(n) {
-  if (isNaN(n) || n === null) return '0';
-  const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
-  const converted = zarToSelected(n);
-  return cur.symbol + ' ' + Math.round(converted).toLocaleString('en-ZA');
-}
-function fmtZAR(n) { return fmtLocal(n); }
-function fmtUSD(n) {
-  const zarPerUSD = liveRates.ZAR || 18.50;
-  return '≈ $' + Math.round(n / zarPerUSD).toLocaleString('en-US');
-}
-function fmtNum(n) { return Math.round(n).toLocaleString('en-ZA'); }
-function parseFmt(str) { return parseFloat(String(str).replace(/[,\s ]/g, '')) || 0; }
-function formatInput(el) {
-  const raw = parseFmt(el.value);
-  if (raw > 0) el.value = raw.toLocaleString('en-US');
-}
-
-function getTier(followers) {
-  for (const [key, t] of Object.entries(TIER)) {
-    if (followers >= t.min && followers <= t.max) return { key, ...t };
-  }
-  return null;
-}
-function getCpeTier(er) {
-  return CPE_TIER.find(t => er >= t.min && er <= t.max) || CPE_TIER[0];
-}
-function calcER(followers, views, likes, comments, shares, platformKey) {
-  const p = PLATFORM[platformKey] || PLATFORM.instagram;
-  const interactions = likes + comments + shares;
-  const base = (p.er_formula === 'views') ? views : followers;
-  if (base <= 0) return 0;
-  return (interactions / base) * 100;
-}
-
-/* ── SCREEN NAVIGATION ── */
-function goTo(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('s-loading').classList.remove('active');
-  const el = document.getElementById(screenId);
-  if (el) { el.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-  updateStepIndicator(screenId);
-}
-
-function updateStepIndicator(screenId) {
-  const ind = document.getElementById('step-indicator');
-  if (screenId === 's-intro') { ind.style.display = 'none'; return; }
-  ind.style.display = 'flex';
-  const map = { 's-platforms': 1, 's-content': 2, 's-results': 3 };
-  const step = map[screenId] || 1;
-  [1,2,3].forEach(i => {
-    const seg = document.getElementById('seg-' + i);
-    seg.className = 'step-seg' + (i < step ? ' done' : i === step ? ' current' : '');
-  });
-}
-
-/* ── PLATFORM CARDS ── */
-function addPlatformCard(prefill) {
-  const id = ++cardCounter;
-  const container = document.getElementById('platforms-container');
-
-  const platformOptions = Object.entries(PLATFORM).map(([key, p]) =>
-    `<option value="${key}">${p.icon} ${p.name}</option>`
-  ).join('');
-
-  const card = document.createElement('div');
-  card.className = 'platform-card';
-  card.id = 'pcard-' + id;
-  card.innerHTML = `
-    <div class="platform-card-header">
-      <div class="platform-title" id="ptitle-${id}">📸 Instagram</div>
-      ${id > 1 ? `<button class="btn btn-danger-outline" onclick="removePlatformCard(${id})">✕ Remove</button>` : ''}
-    </div>
-
-    <div class="form-group">
-      <div class="form-label">
-        Platform
-        <div class="info-icon">i<div class="tooltip">Different platforms have different CPM values. YouTube has the highest CPM multiplier (1.8×); TikTok is lower (0.8×) due to volume.</div></div>
-      </div>
-      <div class="niche-select-wrap">
-        <select class="nx-input" id="pf-platform-${id}" onchange="onPlatformChange(${id})">
-          ${platformOptions}
-        </select>
-      </div>
-    </div>
-
-    <div class="input-grid-2">
-      <div class="form-group">
-        <div class="form-label">
-          Followers / Subscribers
-          <div class="info-icon">i<div class="tooltip">Your total follower count on this platform. Determines your influencer tier (Nano/Micro/Mid/Macro/Mega).</div></div>
-        </div>
-        <input class="nx-input" type="text" id="pf-followers-${id}" placeholder="e.g. 50,000"
-          oninput="formatInput(this); updateER(${id})" onblur="validateCard(${id})">
-        <div class="form-error" id="err-followers-${id}"></div>
-      </div>
-      <div class="form-group">
-        <div class="form-label">
-          Avg Views Per Post
-          <div class="info-icon">i<div class="tooltip">Your average view count per post over your last 10–20 posts. Use Insights/Analytics to get this number.</div></div>
-        </div>
-        <input class="nx-input" type="text" id="pf-views-${id}" placeholder="e.g. 12,000"
-          oninput="formatInput(this); updateER(${id})" onblur="validateCard(${id})">
-        <div class="form-error" id="err-views-${id}"></div>
-      </div>
-    </div>
-
-    <div class="input-grid-3">
-      <div class="form-group">
-        <div class="form-label">
-          Avg Likes
-          <div class="info-icon">i<div class="tooltip">Average likes per post. Use your last 10 posts to calculate this.</div></div>
-        </div>
-        <input class="nx-input" type="text" id="pf-likes-${id}" placeholder="e.g. 800"
-          oninput="formatInput(this); updateER(${id})">
-      </div>
-      <div class="form-group">
-        <div class="form-label">
-          Avg Comments
-          <div class="info-icon">i<div class="tooltip">Average comments per post. Comments signal high intent — brands love this metric.</div></div>
-        </div>
-        <input class="nx-input" type="text" id="pf-comments-${id}" placeholder="e.g. 45"
-          oninput="formatInput(this); updateER(${id})">
-      </div>
-      <div class="form-group">
-        <div class="form-label">
-          Avg Shares / Saves
-          <div class="info-icon">i<div class="tooltip">Shares and saves indicate your content resonates deeply. On Instagram, saves are a strong algorithm signal.</div></div>
-        </div>
-        <input class="nx-input" type="text" id="pf-shares-${id}" placeholder="e.g. 60"
-          oninput="formatInput(this); updateER(${id})">
-      </div>
-    </div>
-
-    <div id="er-display-${id}" class="er-display" style="display:none;">
-      <div class="er-value-block">
-        <span class="er-label">Engagement Rate:</span>
-        <span class="er-number" id="er-num-${id}">—</span>
-        <span class="er-tier-pill" id="er-pill-${id}"></span>
-      </div>
-      <div>
-        <div class="er-formula" id="er-formula-${id}"></div>
-        <div class="er-benchmark" id="er-bench-${id}"></div>
-      </div>
-    </div>
-
-    <div class="platform-cpm-note" id="pf-note-${id}" style="display:none;"></div>
-  `;
-
-  container.appendChild(card);
-  platformCards.push(id);
-
-  if (prefill) {
-    if (prefill.platform) { document.getElementById('pf-platform-' + id).value = prefill.platform; onPlatformChange(id); }
-    ['followers','views','likes','comments','shares'].forEach(f => {
-      if (prefill[f] !== undefined) {
-        const el = document.getElementById('pf-' + f + '-' + id);
-        if (el) el.value = prefill[f] > 0 ? parseFmt(prefill[f]).toLocaleString('en-ZA') : '';
-      }
-    });
-    updateER(id);
-  }
-
-  if (platformCards.length >= 7) document.getElementById('add-platform-btn').style.display = 'none';
-}
-
-function removePlatformCard(id) {
-  const card = document.getElementById('pcard-' + id);
-  if (card) card.remove();
-  platformCards = platformCards.filter(x => x !== id);
-  document.getElementById('add-platform-btn').style.display = '';
-}
-
-function onPlatformChange(id) {
-  const sel = document.getElementById('pf-platform-' + id);
-  const key = sel.value;
-  const p = PLATFORM[key];
-  if (!p) return;
-  document.getElementById('ptitle-' + id).innerHTML = `${p.icon} ${p.name}`;
-  const note = document.getElementById('pf-note-' + id);
-  note.style.display = 'block';
-  note.textContent = p.note + ` (CPM mult: ${p.cpm_mult}×, CPE mult: ${p.cpe_mult}×)`;
-  updateER(id);
-}
-
-function updateER(id) {
-  const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
-  const followers = get('followers'), views = get('views');
-  const likes = get('likes'), comments = get('comments'), shares = get('shares');
-  const platformKey = document.getElementById('pf-platform-' + id)?.value || 'instagram';
-  const p = PLATFORM[platformKey];
-  const display = document.getElementById('er-display-' + id);
-  if (followers <= 0 || views <= 0) { display.style.display = 'none'; return; }
-  display.style.display = 'flex';
-  const er = calcER(followers, views, likes, comments, shares, platformKey);
-  const cpeTier = getCpeTier(er);
-  const erNumEl   = document.getElementById('er-num-' + id);
-  const erPillEl  = document.getElementById('er-pill-' + id);
-  const erFormEl  = document.getElementById('er-formula-' + id);
-  const erBenchEl = document.getElementById('er-bench-' + id);
-  erNumEl.textContent = er.toFixed(2) + '%';
-  erNumEl.style.color = cpeTier.color;
-  erPillEl.textContent = cpeTier.label;
-  erPillEl.style.background = cpeTier.color + '22';
-  erPillEl.style.color = cpeTier.color;
-  erPillEl.style.border = '1px solid ' + cpeTier.color + '55';
-  const base = (p.er_formula === 'views') ? 'views' : (p.er_formula === 'reach' ? 'reach' : 'impressions');
-  erFormEl.textContent = `(${fmtNum(likes)} likes + ${fmtNum(comments)} comments + ${fmtNum(shares)} shares) ÷ ${fmtNum(p.er_formula === 'views' ? views : followers)} ${base} × 100`;
-  const SA_AVG = 3.39;
-  const diff = er - SA_AVG;
-  const diffText = diff >= 0 ? `+${Math.abs(diff).toFixed(2)}% above SA average` : `${Math.abs(diff).toFixed(2)}% below SA average`;
-  erBenchEl.innerHTML = `SA average: <strong style="color:var(--primary)">3.39%</strong> &nbsp;|&nbsp; Global: 1.49% &nbsp;|&nbsp; <span style="color:${diff >= 0 ? '#059669' : '#EF4444'}">${diffText}</span>`;
-  validateCard(id);
-}
-
-function validateCard(id) {
-  const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
-  const followers = get('followers'), views = get('views');
-  const likes = get('likes'), comments = get('comments'), shares = get('shares');
-  const platformKey = document.getElementById('pf-platform-' + id)?.value || 'instagram';
-  const er = calcER(followers, views, likes, comments, shares, platformKey);
-  const errFollowers = document.getElementById('err-followers-' + id);
-  const errViews     = document.getElementById('err-views-' + id);
-  if (followers > 0 && followers < 1000) {
-    errFollowers.textContent = '⚠️ Below Nano tier (1,000 minimum). Brands typically require at least 1k followers.';
-    errFollowers.classList.add('visible');
-  } else { errFollowers.classList.remove('visible'); }
-  if (views > followers * 2) {
-    errViews.textContent = '⚠️ Views exceed 2× your followers — please double-check this figure.';
-    errViews.classList.add('visible');
-  } else { errViews.classList.remove('visible'); }
-  if (er > 15 && followers > 0) {
-    const erDisplay = document.getElementById('er-display-' + id);
-    if (erDisplay) {
-      let warn = erDisplay.querySelector('.er-warn');
-      if (!warn) { warn = document.createElement('div'); warn.className = 'warn-badge er-warn'; erDisplay.appendChild(warn); }
-      warn.innerHTML = '⚠️ ER above 15% — verify your inputs. This may indicate inflated numbers.';
-    }
-  } else {
-    const warn = document.getElementById('er-display-' + id)?.querySelector('.er-warn');
-    if (warn) warn.remove();
-  }
-}
-
-function getPrimaryPlatformData() {
-  let primary = null, maxFollowers = 0;
-  for (const id of platformCards) {
-    const followers = parseFmt(document.getElementById('pf-followers-' + id)?.value || '0');
-    if (followers > maxFollowers) { maxFollowers = followers; primary = id; }
-  }
-  if (!primary && platformCards.length > 0) primary = platformCards[0];
-  return primary;
-}
-
-function getCardData(id) {
-  const get = field => parseFmt(document.getElementById('pf-' + field + '-' + id)?.value || '0');
-  return {
-    platform:  document.getElementById('pf-platform-' + id)?.value || 'instagram',
-    followers: get('followers'), views: get('views'),
-    likes: get('likes'), comments: get('comments'), shares: get('shares'),
-  };
-}
-
-/* ── CONTENT SCREEN SETUP ── */
-function buildNicheSelect() {
-  const sel = document.getElementById('niche-select');
-  const sorted = Object.entries(NICHE_CPM).sort((a,b) => b[1].cpm - a[1].cpm);
-  sorted.forEach(([name, data]) => {
-    const opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = `${name} — R${Math.round(data.cpm)} CPM`;
-    sel.appendChild(opt);
-  });
-  sel.addEventListener('change', () => {
-    const niche = NICHE_CPM[sel.value];
-    const disp  = document.getElementById('niche-cpm-display');
-    if (niche) {
-      disp.style.display = 'block';
-      disp.innerHTML = `<strong style="color:var(--primary)">R${niche.cpm.toFixed(2)}/1000 views</strong> (${niche.global_cpm} global) — ${niche.notes}`;
-    } else { disp.style.display = 'none'; }
-  });
-}
-
-function buildContentTypeCards() {
-  const wrap = document.getElementById('content-type-cards');
-  Object.entries(CONTENT_TYPE).forEach(([key, ct]) => {
-    const div = document.createElement('label');
-    div.className = 'radio-card' + (key === 'static' ? ' selected' : '');
-    div.innerHTML = `
-      <input type="radio" name="content-type" value="${key}" ${key === 'static' ? 'checked' : ''}>
-      <div class="radio-card-mult">${ct.mult}×</div>
-      <div class="radio-card-icon">${ct.icon}</div>
-      <div class="radio-card-label">${ct.label}</div>
-      <div class="radio-card-note">${ct.note}</div>
-    `;
-    div.addEventListener('click', () => {
-      document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
-      div.classList.add('selected');
-    });
-    wrap.appendChild(div);
-  });
-}
-
-function buildAddonCards() {
-  const wrap = document.getElementById('addon-cards');
-  Object.entries(ADDONS).forEach(([key, addon]) => {
-    const pct = Math.round((addon.mult - 1) * 100);
-    const div = document.createElement('div');
-    div.className = 'checkbox-card';
-    div.innerHTML = `
-      <input type="checkbox" value="${key}" style="display:none;">
-      <div class="checkbox-card-mult">+${pct}%</div>
-      <div class="checkbox-card-label">${addon.label}</div>
-      <div class="checkbox-card-desc">${addon.desc}</div>
-      <div class="checkbox-tick"><span class="checkbox-tick-inner">✓</span></div>
-    `;
-    div.addEventListener('click', () => {
-      div.classList.toggle('selected');
-      div.querySelector('input[type="checkbox"]').checked = div.classList.contains('selected');
-    });
-    wrap.appendChild(div);
-  });
-}
-
-/* ── NAVIGATION GUARDS ── */
-function goToContent() {
-  const primaryId = getPrimaryPlatformData();
-  if (!primaryId) { alert('Please add at least one platform.'); return; }
-  const d = getCardData(primaryId);
-  if (!d.followers || !d.views) { alert('Please enter your followers and average views for at least one platform.'); return; }
-  goTo('s-content');
-}
-
-function goToCalculate() {
-  const niche = document.getElementById('niche-select').value;
-  if (!niche) { alert('Please select your niche.'); return; }
-  const ct = document.querySelector('input[name="content-type"]:checked');
-  if (!ct) { alert('Please select a content type.'); return; }
-  runCalculation();
-}
-
-/* ── CALCULATION ── */
-function runCalculation() {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const loader = document.getElementById('s-loading');
-  loader.classList.add('active');
-  const steps = ['Applying niche multipliers...', 'Calculating CPM rate...', 'Calculating CPE rate...', 'Comparing to SA benchmarks...', 'Generating your rate card...'];
-  let stepIdx = 0;
-  const stepEl = document.getElementById('loader-step-text');
-  const fill   = document.getElementById('progress-fill');
-  const stepInterval = setInterval(() => {
-    if (stepIdx < steps.length) { stepEl.textContent = steps[stepIdx]; fill.style.width = ((stepIdx + 1) / steps.length * 100) + '%'; stepIdx++; }
-    else clearInterval(stepInterval);
-  }, 300);
-  setTimeout(() => {
-    clearInterval(stepInterval);
-    calcResults = computeResults();
-    loader.classList.remove('active');
-    renderResults();
-    goTo('s-results');
-    updateStepIndicator('s-results');
-  }, 1800);
-}
-
-function computeResults() {
-  const primaryId = getPrimaryPlatformData();
-  const d = getCardData(primaryId);
-  const niche = document.getElementById('niche-select').value;
-  const nicheCPM = NICHE_CPM[niche];
-  const ctKey = document.querySelector('input[name="content-type"]:checked').value;
-  const ct = CONTENT_TYPE[ctKey];
-  const p = PLATFORM[d.platform];
-  const tier = getTier(d.followers) || { key: 'nano', ...TIER.nano };
-  const er = calcER(d.followers, d.views, d.likes, d.comments, d.shares, d.platform);
-  const cpeTierData = getCpeTier(er);
-  const adjustedCPM = nicheCPM.cpm * tier.mult * p.cpm_mult * ct.mult;
-  const price_cpm   = (adjustedCPM / 1000) * d.views;
-  const adjustedCPE = cpeTierData.cpe_zar * p.cpe_mult;
-  const price_cpe   = adjustedCPE * (d.likes + d.comments + d.shares);
-  const selectedAddons = [];
-  document.querySelectorAll('.checkbox-card input[type="checkbox"]:checked').forEach(cb => selectedAddons.push(cb.value));
-  let premiumMult = 1;
-  selectedAddons.forEach(key => { if (ADDONS[key]) premiumMult *= ADDONS[key].mult; });
-  const price_cpm_final = price_cpm * premiumMult;
-  const price_cpe_final = price_cpe * premiumMult;
-  const recommended = Math.max(price_cpm_final, price_cpe_final);
-  const range_low   = recommended * 0.85;
-  const range_high  = recommended * 1.15;
-  const saAvgRate    = (nicheCPM.cpm / 1000) * d.views;
-  const globalAvgRate = saAvgRate / 1.8;
-  return { d, niche, nicheCPM, ctKey, ct, p, tier, er, cpeTierData, adjustedCPM, price_cpm, price_cpe, price_cpm_final, price_cpe_final, premiumMult, selectedAddons, recommended, range_low, range_high, saAvgRate, globalAvgRate, adjustedCPE };
-}
-
-/* ── RENDER RESULTS ── */
-function renderResults() {
-  const R = calcResults;
-
-  // 1. Hero card
-  const tierEl = document.getElementById('r-tier-block');
-  tierEl.className = 'results-hero-card';
-  tierEl.innerHTML = `
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;">
-      <div>
-        <div class="results-hero-badge">✓ Your Professional Quote</div>
-        <div class="results-hero-heading">Total Rate Card</div>
-        <div class="results-hero-sub">${R.p.name} · ${R.niche} · ${R.ct.label}</div>
-      </div>
-      <div style="width:52px;height:52px;flex-shrink:0;border-radius:12px;background:var(--accent-light);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">💰</div>
-    </div>
-    <div>
-      <div class="results-hero-row">
-        <span class="results-hero-row-label">Sponsorship Rate</span>
-        <span class="results-hero-row-value">${fmtZAR(R.recommended)}</span>
-      </div>
-      <div class="results-hero-divider"></div>
-      <div style="display:flex;align-items:baseline;justify-content:space-between;padding:.75rem 0 .5rem;">
-        <span style="font-size:1rem;font-weight:700;color:var(--fg);">Your Rate</span>
-        <div style="text-align:right;">
-          <div class="results-hero-total" id="rc-rec">R 0</div>
-          <div class="results-hero-usd">${fmtUSD(R.recommended)}</div>
-        </div>
-      </div>
-    </div>
-    <div class="results-hero-range">
-      <span class="results-hero-range-label">Market Range (±15%)</span>
-      <span class="results-hero-range-values">${fmtZAR(R.range_low)} — ${fmtZAR(R.range_high)}</span>
-    </div>
-  `;
-
-  // 2. Metrics grid
-  const erEl = document.getElementById('r-er-block');
-  erEl.className = 'results-metrics-grid';
-  const diff = R.er - 3.39;
-  erEl.innerHTML = `
-    <div class="results-metric-card">
-      <div class="results-metric-label">📈 Engagement</div>
-      <div class="results-metric-value" style="color:${R.cpeTierData.color}">${R.er.toFixed(2)}%</div>
-      <div class="results-metric-sub">${R.cpeTierData.label} · SA avg 3.39%</div>
-    </div>
-    <div class="results-metric-card">
-      <div class="results-metric-label">👥 Tier</div>
-      <div class="results-metric-tier">${R.tier.label}</div>
-      <div class="results-metric-sub">${fmtNum(R.d.followers)} followers</div>
-    </div>
-  `;
-
-  // 3. CPM vs CPE grid
-  const rcEl = document.getElementById('r-rate-cards');
-  rcEl.className = 'results-method-grid';
-  rcEl.innerHTML = `
-    <div class="results-method-card cpm-card">
-      <div class="results-method-label cpm">CPM Method</div>
-      <div class="results-method-value" id="rc-cpm">${fmtZAR(R.price_cpm_final)}</div>
-      <div class="results-method-sub cpm">${fmtNum(R.d.views)} views</div>
-    </div>
-    <div class="results-method-card cpe-card">
-      <div class="results-method-label cpe">CPE Method</div>
-      <div class="results-method-value" id="rc-cpe">${fmtZAR(R.price_cpe_final)}</div>
-      <div class="results-method-sub cpe">${fmtNum(R.d.likes + R.d.comments + R.d.shares)} interactions</div>
-    </div>
-  `;
-
-  // Animate
-  setTimeout(() => {
-    countUpZAR(document.getElementById('rc-rec'), R.recommended, 1400);
-    countUpZAR(document.getElementById('rc-cpm'), R.price_cpm_final, 1000);
-    countUpZAR(document.getElementById('rc-cpe'), R.price_cpe_final, 1000);
-  }, 100);
-
-  // 4. Negotiation
-  const negEl = document.getElementById('r-negotiation');
-  negEl.innerHTML = `
-    <div class="results-negotiation-card">
-      <div class="results-negotiation-header">
-        <span style="font-size:1.1rem;">✨</span>
-        <span class="results-negotiation-title">Negotiation Strategy</span>
-      </div>
-      <div class="negotiation-inner-card quote">
-        <div class="negotiation-inner-label">Initial Quote</div>
-        <div class="negotiation-inner-value">${fmtZAR(R.recommended * 1.05)}</div>
-        <div class="negotiation-inner-sub">Start here · 5% above your calculated rate</div>
-      </div>
-      <div class="negotiation-inner-card floor">
-        <div class="negotiation-inner-label">Minimum Floor</div>
-        <div class="negotiation-inner-value">${fmtZAR(R.range_low)}</div>
-        <div class="negotiation-inner-sub">Don't go below this</div>
-      </div>
-    </div>
-  `;
-
-  // 5. Benchmark
-  const bmEl = document.getElementById('r-benchmark-body');
-  const maxVal = Math.max(R.recommended, R.saAvgRate, R.globalAvgRate) * 1.1;
-  const yourPct = (R.recommended   / maxVal * 100).toFixed(1);
-  const saPct   = (R.saAvgRate     / maxVal * 100).toFixed(1);
-  const glbPct  = (R.globalAvgRate / maxVal * 100).toFixed(1);
-  bmEl.innerHTML = `
-    <div class="bar-chart">
-      <div class="bar-row"><div class="bar-label">Your Rate</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--accent);" data-target="${yourPct}"></div></div><div class="bar-value" style="color:var(--accent)">${fmtZAR(R.recommended)}</div></div>
-      <div class="bar-row"><div class="bar-label">SA Average</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--secondary);" data-target="${saPct}"></div></div><div class="bar-value" style="color:var(--secondary)">${fmtZAR(R.saAvgRate)}</div></div>
-      <div class="bar-row"><div class="bar-label">Global Avg</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--fg-muted);" data-target="${glbPct}"></div></div><div class="bar-value" style="color:var(--fg-muted)">${fmtZAR(R.globalAvgRate)}</div></div>
-    </div>
-    <p style="font-size:.82rem;color:var(--fg-muted);margin-top:.75rem;">SA creators average <strong style="color:var(--primary)">3.39% ER</strong> vs 1.49% globally — this engagement premium is your competitive advantage.</p>
-  `;
-  setTimeout(() => { document.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.target + '%'; }); }, 300);
-
-  // 6. Strategic insights
-  const tipsEl = document.getElementById('r-tips');
-  const tips = [];
-  if (R.er > 3.39) {
-    tips.push(`Your ER of ${R.er.toFixed(2)}% is above the SA average of 3.39%. Lead with this in negotiations — it's your strongest card. Say: "My audience engages ${((R.er/3.39)*100-100).toFixed(0)}% more than the SA average."`);
-  } else {
-    tips.push(`Your ER of ${R.er.toFixed(2)}% is below the SA average. Strengthen it by posting consistently and engaging with comments within the first hour.`);
-  }
-  if (R.price_cpm_final > R.price_cpe_final * 1.2) {
-    tips.push(`Your CPM rate (${fmtZAR(R.price_cpm_final)}) significantly outperforms your CPE rate. Quote CPM to brands running awareness campaigns.`);
-  } else if (R.price_cpe_final > R.price_cpm_final * 1.2) {
-    tips.push(`Your CPE rate (${fmtZAR(R.price_cpe_final)}) significantly outperforms your CPM rate. Quote CPE to performance-focused brands.`);
-  } else {
-    tips.push(`Your CPM and CPE rates are well-balanced. You offer both reach and engagement value — a strong position for brand negotiations.`);
-  }
-  if (R.premiumMult > 1) {
-    const pct = Math.round((R.premiumMult - 1) * 100);
-    tips.push(`You've included premium add-ons adding +${pct}% to your base rate. Always justify these in your rate card deck.`);
-  } else {
-    tips.push(`You haven't added any premium add-ons. If the brand will use your content in paid ads (usage rights) or needs exclusivity, charge an additional 25–50%.`);
-  }
-  tipsEl.innerHTML = `
-    <div class="results-insights-card">
-      <div class="results-insights-header">
-        <span style="font-size:1.1rem;">✨</span>
-        <span class="results-insights-title">Strategic Insights</span>
-      </div>
-      ${tips.map(t => `<div class="insight-item"><div class="insight-dot"></div><span>${t}</span></div>`).join('')}
-    </div>
-  `;
-
-  // 7. Breakdown content
-  const cpmWinner = R.price_cpm_final >= R.price_cpe_final;
-  const addonsText = R.selectedAddons.length > 0
-    ? R.selectedAddons.map(k => `${ADDONS[k].label} (+${Math.round((ADDONS[k].mult-1)*100)}%)`).join(', ')
-    : 'None selected';
-  const bdWrap = document.getElementById('r-breakdown-wrap');
-  bdWrap.innerHTML = `
-    <div class="breakdown-section-card">
-      <div class="breakdown-section-hdr">CPM Calculation</div>
-      <div class="breakdown-section-body">
-        <div class="breakdown-row"><span class="breakdown-key">Base niche CPM (${R.niche})</span><span class="breakdown-val">R ${R.nicheCPM.cpm.toFixed(2)} / 1000 views</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Tier multiplier (${R.tier.label})</span><span class="breakdown-val">×${R.tier.mult.toFixed(2)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Platform multiplier (${R.p.name})</span><span class="breakdown-val">×${R.p.cpm_mult.toFixed(2)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Content multiplier (${R.ct.label})</span><span class="breakdown-val">×${R.ct.mult.toFixed(2)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Adjusted CPM</span><span class="breakdown-val">R ${R.adjustedCPM.toFixed(2)} / 1000 views</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Avg views per post</span><span class="breakdown-val">${fmtNum(R.d.views)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key"><strong>CPM Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpm)}</span></div>
-      </div>
-    </div>
-    <div class="breakdown-section-card">
-      <div class="breakdown-section-hdr">CPE Calculation</div>
-      <div class="breakdown-section-body">
-        <div class="breakdown-row"><span class="breakdown-key">Engagement Rate</span><span class="breakdown-val">${R.er.toFixed(2)}%</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">CPE tier (${R.cpeTierData.label})</span><span class="breakdown-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} per engagement</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Platform CPE multiplier</span><span class="breakdown-val">×${R.p.cpe_mult.toFixed(2)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Adjusted CPE</span><span class="breakdown-val">R ${R.adjustedCPE.toFixed(2)} per engagement</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Total interactions</span><span class="breakdown-val">${fmtNum(R.d.likes + R.d.comments + R.d.shares)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key"><strong>CPE Rate (before add-ons)</strong></span><span class="breakdown-val accent">${fmtZAR(R.price_cpe)}</span></div>
-      </div>
-    </div>
-    <div class="breakdown-section-card">
-      <div class="breakdown-section-hdr">Final Price</div>
-      <div class="breakdown-section-body">
-        <div class="breakdown-row"><span class="breakdown-key">Premium add-ons</span><span class="breakdown-val">${addonsText}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Combined add-ons multiplier</span><span class="breakdown-val">×${R.premiumMult.toFixed(2)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Final CPM Rate</span><span class="breakdown-val accent">${fmtZAR(R.price_cpm_final)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key">Final CPE Rate</span><span class="breakdown-val accent">${fmtZAR(R.price_cpe_final)}</span></div>
-        <div class="breakdown-row"><span class="breakdown-key"><strong>Recommended = MAX(CPM, CPE)</strong></span><span class="breakdown-val accent"><strong>${fmtZAR(R.recommended)}</strong> ${cpmWinner ? '← CPM wins' : '← CPE wins'}</span></div>
-      </div>
-    </div>
-  `;
-}
-
-/* ── BREAKDOWN TOGGLE ── */
-function toggleBreakdown() {
-  breakdownOpen = !breakdownOpen;
-  const wrap  = document.getElementById('r-breakdown-wrap');
-  const label = document.getElementById('breakdown-btn-label');
-  const arrow = document.getElementById('breakdown-btn-arrow');
-  wrap.style.display  = breakdownOpen ? 'block' : 'none';
-  label.textContent   = breakdownOpen ? 'Hide Calculation Details' : 'View Calculation Details';
-  arrow.textContent   = breakdownOpen ? '▴' : '▾';
-}
-
-/* ── ANIMATIONS ── */
-function countUpZAR(el, zarTarget, duration) {
-  if (!el) return;
-  const cur = AFRICAN_CURRENCIES[selectedCurrency] || AFRICAN_CURRENCIES.ZAR;
-  const localTarget = zarToSelected(zarTarget);
-  const start = Date.now();
-  function tick() {
-    const progress = Math.min((Date.now() - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const current = Math.round(localTarget * eased);
-    el.textContent = cur.symbol + ' ' + current.toLocaleString('en-ZA');
-    if (progress < 1) requestAnimationFrame(tick);
-    else el.textContent = fmtZAR(zarTarget);
-  }
-  requestAnimationFrame(tick);
-}
-
-/* ── ACCORDION ── */
-function toggleAccordion(header) {
-  const body  = header.nextElementSibling;
-  const arrow = header.querySelector('.accordion-arrow');
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  arrow.classList.toggle('open', !isOpen);
-}
-
-/* ── RECALCULATE ── */
-function recalculate() { goTo('s-platforms'); }
-
-/* ── CURRENCY CHANGE ── */
-function onCurrencyChange(code) {
-  selectedCurrency = code;
-  updateRateBadge();
-  if (calcResults) renderResults();
-}
-
-/* ── INIT ── */
-function init() {
+function init(){
   buildNicheSelect();
-  buildContentTypeCards();
-  buildAddonCards();
-  addPlatformCard();
+  buildAddonList();
+  onContentTypeChange();
   updateRateBadge();
   fetchLiveRates();
-  const params    = new URLSearchParams(window.location.search);
-  const emailParam = params.get('email');
-  const nameParam  = params.get('name') || params.get('first_name');
-  if (emailParam && emailParam.includes('@')) {
-    const emailEl = document.getElementById('send-email');
-    const nameEl  = document.getElementById('send-name');
-    if (emailEl) emailEl.value = emailParam;
-    if (nameEl && nameParam) nameEl.value = nameParam;
-  }
+  const p=new URLSearchParams(window.location.search);
+  const em=p.get('email'),nm=p.get('name')||p.get('first_name');
+  if(em&&em.includes('@')){const el=document.getElementById('send-email');if(el)el.value=em;}
+  if(nm){const el=document.getElementById('send-name');if(el)el.value=nm;}
 }
-
-/* ── EMAIL DELIVERY ── */
-function showSendMsg(text, color) {
-  const el = document.getElementById('send-rc-msg');
-  el.innerHTML = text; el.style.color = color; el.style.display = 'block';
+function buildNicheSelect(){
+  const sel=document.getElementById('niche-select');
+  Object.entries(NICHE_CPM).sort((a,b)=>b[1].cpm-a[1].cpm).forEach(([name,d])=>{
+    const o=document.createElement('option');o.value=name;o.textContent=`${name} — R${Math.round(d.cpm)} CPM`;sel.appendChild(o);
+  });
 }
-
-async function sendRateCard() {
-  const name  = (document.getElementById('send-name').value  || '').trim();
-  const email = (document.getElementById('send-email').value || '').trim();
-  const brand = (document.getElementById('send-brand').value || '').trim();
-  const btn   = document.getElementById('send-rc-btn');
-  if (!name)  { showSendMsg('Please enter your name.', '#EF4444'); return; }
-  if (!email || !email.includes('@')) { showSendMsg('Please enter a valid email address.', '#EF4444'); return; }
-  if (!calcResults) { showSendMsg('Please calculate your rate first.', '#EF4444'); return; }
-  btn.disabled = true;
-  btn.textContent = 'Sending your rate card…';
-  showSendMsg('Building and sending your PDF…', '#888');
-  try {
-    const R = calcResults;
-    const zar = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
-    const handle = (document.getElementById('send-handle').value || '').trim();
-    const rateData = {
-      creatorName: name,
-      platform: `${R.p.name} · ${R.niche} · ${R.ct.label}`,
-      tier: R.tier.label,
-      er: R.er.toFixed(2),
-      erLabel: R.cpeTierData.label,
-      floor: zar(R.range_low),
-      standard: zar(R.recommended),
-      ceiling: zar(R.range_high),
-      followers: fmtNum(R.d.followers),
-      date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
-      brand: brand || '',
-      handle: handle
+function buildAddonList(){
+  const list=document.getElementById('addon-list');
+  Object.entries(ADDONS).forEach(([key,a])=>{
+    const lbl=document.createElement('label');
+    lbl.className='addon-row';
+    lbl.innerHTML=`<input type="checkbox" class="addon-checkbox" value="${key}"><div class="addon-row-text"><div class="addon-row-name">${a.label}</div><div class="addon-row-desc">${a.desc}</div></div><span class="addon-row-pct">${a.pct}</span>`;
+    list.appendChild(lbl);
+  });
+}
+function onNicheChange(){
+  const n=document.getElementById('niche-select').value,note=document.getElementById('niche-note');
+  if(n&&NICHE_CPM[n]){const d=NICHE_CPM[n];note.style.display='block';note.textContent=`R${d.cpm.toFixed(2)} CPM (${d.global_cpm} global) — ${d.notes}`;}
+  else note.style.display='none';
+}
+function onContentTypeChange(){
+  const key=document.getElementById('content-type-select').value;
+  const ct=CONTENT_TYPE[key]||CONTENT_TYPE.reel_short;
+  document.getElementById('prod-desc').textContent=ct.prod_desc;
+  document.getElementById('prod-cost-badge').textContent='R '+ct.prod.toLocaleString('en-ZA');
+}
+function onProductionToggle(){}
+function onCurrencyChange(code){selCurrency=code;updateRateBadge();if(calcResults)renderResults();}
+function toggleSection(bodyId,header){
+  const body=document.getElementById(bodyId),arrow=header?header.querySelector('.collapsible-arrow'):null;
+  const open=body.classList.toggle('open');if(arrow)arrow.classList.toggle('open',open);
+}
+function loadExample(){
+  document.getElementById('metric-followers').value='50,000';
+  document.getElementById('metric-views').value='120,000';
+  document.getElementById('metric-interactions').value='3,500';
+  document.querySelectorAll('.platform-checkbox').forEach(cb=>{cb.checked=(cb.value==='instagram'||cb.value==='tiktok');});
+  document.getElementById('niche-select').value='Fashion & Beauty';onNicheChange();
+  document.getElementById('content-type-select').value='reel_short';onContentTypeChange();
+}
+function clearForm(){
+  ['metric-followers','metric-views','metric-interactions'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('.platform-checkbox').forEach((cb,i)=>{cb.checked=i===0;});
+  document.getElementById('niche-select').value='';
+  document.getElementById('content-type-select').value='reel_short';onContentTypeChange();
+  document.querySelectorAll('.addon-checkbox').forEach(cb=>cb.checked=false);
+  document.getElementById('include-production').checked=false;
+  ['campaign-objective','campaign-scope','budget-tier'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('niche-note').style.display='none';
+}
+function showForm(){
+  document.getElementById('s-form').classList.add('active');
+  document.getElementById('s-results').classList.remove('active');
+  document.getElementById('s-loading').classList.remove('active');
+  document.getElementById('back-btn').style.display='none';
+  document.getElementById('topbar-sub').textContent='SA Influencer Pricing Calculator';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showResultsScreen(){
+  document.getElementById('s-form').classList.remove('active');
+  document.getElementById('s-loading').classList.remove('active');
+  document.getElementById('s-results').classList.add('active');
+  document.getElementById('back-btn').style.display='flex';
+  document.getElementById('topbar-sub').textContent='Your Pricing Results';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goCalculate(){
+  const followers=parseFmt(document.getElementById('metric-followers').value);
+  const views=parseFmt(document.getElementById('metric-views').value);
+  const niche=document.getElementById('niche-select').value;
+  if(!followers||!views){alert('Please enter your followers and total views.');return;}
+  if(!niche){alert('Please select your niche.');return;}
+  document.getElementById('s-form').classList.remove('active');
+  document.getElementById('s-loading').classList.add('active');
+  const steps=['Applying niche multipliers...','Calculating CPM rate...','Calculating CPE rate...','Comparing SA benchmarks...','Building your rate card...'];
+  let i=0;
+  const stepEl=document.getElementById('loader-step-text'),fill=document.getElementById('progress-fill');
+  const iv=setInterval(()=>{if(i<steps.length){stepEl.textContent=steps[i];fill.style.width=((i+1)/steps.length*100)+'%';i++;}else clearInterval(iv);},280);
+  setTimeout(()=>{clearInterval(iv);calcResults=computeResults();renderResults();showResultsScreen();},1700);
+}
+function computeResults(){
+  const followers=parseFmt(document.getElementById('metric-followers').value);
+  const views=parseFmt(document.getElementById('metric-views').value);
+  const interactions=parseFmt(document.getElementById('metric-interactions').value);
+  const niche=document.getElementById('niche-select').value;
+  const ctKey=document.getElementById('content-type-select').value;
+  const nicheCPM=NICHE_CPM[niche],ct=CONTENT_TYPE[ctKey];
+  const selPlats=Array.from(document.querySelectorAll('.platform-checkbox:checked')).map(cb=>cb.value);
+  const platData=selPlats.length>0?selPlats.map(p=>PLATFORM[p]||PLATFORM.instagram):[PLATFORM.instagram];
+  const cpm_mult=platData.reduce((a,p)=>a+p.cpm_mult,0)/platData.length;
+  const cpe_mult=platData.reduce((a,p)=>a+p.cpe_mult,0)/platData.length;
+  const multiDiscount=selPlats.length>1?0.9:1.0;
+  const tier=getTier(followers)||{key:'nano',...TIER.nano};
+  const er=followers>0?(interactions/followers)*100:0;
+  const cpeTierData=getCpeTier(er);
+  const adjustedCPM=nicheCPM.cpm*tier.mult*cpm_mult*ct.mult;
+  const price_cpm=(adjustedCPM/1000)*views;
+  const adjustedCPE=cpeTierData.cpe_zar*cpe_mult;
+  const price_cpe=adjustedCPE*interactions;
+  const selAddons=Array.from(document.querySelectorAll('.addon-checkbox:checked')).map(cb=>cb.value);
+  let premiumMult=1;selAddons.forEach(k=>{if(ADDONS[k])premiumMult*=ADDONS[k].mult;});
+  const objKey=document.getElementById('campaign-objective').value;
+  const scopeKey=document.getElementById('campaign-scope').value;
+  const budgetKey=document.getElementById('budget-tier').value;
+  const objMult={awareness:1.0,conversion:1.1,engagement:0.95,event:1.05}[objKey]||1.0;
+  const scopeMult={single:1.0,series_3:0.95,monthly:0.90,bundle_8:0.85}[scopeKey]||1.0;
+  const budgetMult={starter:0.9,standard:1.0,premium:1.1,enterprise:1.2}[budgetKey]||1.0;
+  const campaignMult=objMult*scopeMult*budgetMult;
+  const price_cpm_final=price_cpm*premiumMult*multiDiscount;
+  const price_cpe_final=price_cpe*premiumMult*multiDiscount;
+  const sponsorship=Math.max(price_cpm_final,price_cpe_final)*campaignMult;
+  const includeProduction=document.getElementById('include-production').checked;
+  const productionCost=includeProduction?(ct.prod||500):0;
+  const total=sponsorship+productionCost;
+  const range_low=total*0.85,range_high=total*1.15;
+  const saAvgRate=(nicheCPM.cpm/1000)*views,globalAvgRate=saAvgRate/1.8;
+  return{followers,views,interactions,selPlats,platData,cpm_mult,cpe_mult,multiDiscount,niche,nicheCPM,ctKey,ct,tier,er,cpeTierData,adjustedCPM,adjustedCPE,price_cpm,price_cpe,price_cpm_final,price_cpe_final,premiumMult,selAddons,objKey,scopeKey,budgetKey,objMult,scopeMult,budgetMult,campaignMult,sponsorship,includeProduction,productionCost,total,range_low,range_high,saAvgRate,globalAvgRate};
+}
+function renderResults(){
+  const R=calcResults;
+  // Hero
+  document.getElementById('r-hero').innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;">
+      <div>
+        <div class="result-badge">✓ Your Professional Quote</div>
+        <div style="font-size:.875rem;font-weight:700;color:var(--fg);margin-bottom:.1rem;">Total Rate Card</div>
+        <div style="font-size:.78rem;color:var(--fg-muted);">${R.selPlats.map(p=>PLATFORM[p]?.name||p).join(' + ')} · ${R.niche} · ${R.ct.label}</div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:11px;background:var(--accent-light);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">💰</div>
+    </div>
+    ${R.includeProduction?`<div class="result-row"><span class="result-row-label">Sponsorship Fee</span><span class="result-row-val">${fmtC(R.sponsorship)}</span></div><div class="result-row"><span class="result-row-label">🎬 Production</span><span class="result-row-val">${fmtC(R.productionCost)}</span></div><div class="result-divider"></div>`:''}
+    <div style="display:flex;align-items:baseline;justify-content:space-between;padding:.65rem 0 .35rem;">
+      <span class="result-total-label">Total Price</span>
+      <div style="text-align:right;">
+        <div class="result-total-val" id="rc-rec">${fmtC(R.total)}</div>
+        <div class="result-usd">${fmtUSD(R.total)}</div>
+      </div>
+    </div>
+    <div class="result-range-panel">
+      <span class="result-range-label">Market Range (±15%)</span>
+      <span class="result-range-vals">${fmtC(R.range_low)} — ${fmtC(R.range_high)}</span>
+    </div>`;
+  // Metrics
+  document.getElementById('r-metrics').innerHTML=`
+    <div class="metric-card">
+      <div class="metric-label">📈 Engagement</div>
+      <div class="metric-val" style="color:${R.cpeTierData.color}">${R.er.toFixed(2)}%</div>
+      <div class="metric-sub">${R.cpeTierData.label} · SA avg 3.39%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">👥 Tier</div>
+      <div class="metric-val" style="font-size:1.2rem;">${R.tier.label}</div>
+      <div class="metric-sub">${fmtN(R.followers)} followers</div>
+    </div>`;
+  // Methods
+  document.getElementById('r-methods').innerHTML=`
+    <div class="method-card cpm">
+      <div class="method-label cpm">CPM Method</div>
+      <div class="method-val" id="rc-cpm">${fmtC(R.price_cpm_final)}</div>
+      <div class="method-sub cpm">${fmtN(R.views)} views</div>
+    </div>
+    <div class="method-card cpe">
+      <div class="method-label cpe">CPE Method</div>
+      <div class="method-val" id="rc-cpe">${fmtC(R.price_cpe_final)}</div>
+      <div class="method-sub cpe">${fmtN(R.interactions)} interactions</div>
+    </div>`;
+  setTimeout(()=>{
+    countUp(document.getElementById('rc-rec'),R.total,1300);
+    countUp(document.getElementById('rc-cpm'),R.price_cpm_final,900);
+    countUp(document.getElementById('rc-cpe'),R.price_cpe_final,900);
+  },100);
+  // Negotiation
+  document.getElementById('r-negotiation').innerHTML=`
+    <div class="negotiation-card">
+      <div class="neg-header"><span>✨</span><span class="neg-title">Negotiation Strategy</span></div>
+      <div class="neg-inner quote"><div class="neg-inner-label">Initial Quote</div><div class="neg-inner-val">${fmtC(R.total*1.05)}</div><div class="neg-inner-sub">Start here · 5% above calculated rate</div></div>
+      <div class="neg-inner floor"><div class="neg-inner-label">Minimum Floor</div><div class="neg-inner-val">${fmtC(R.range_low)}</div><div class="neg-inner-sub">Don't go below this</div></div>
+    </div>`;
+  // Insights
+  const tips=[];
+  if(R.er>3.39)tips.push(`Your ER of ${R.er.toFixed(2)}% beats the SA average of 3.39%. Lead with this — say: "My audience engages ${((R.er/3.39)*100-100).toFixed(0)}% more than the SA average."`);
+  else if(R.er>0)tips.push(`Your ER of ${R.er.toFixed(2)}% is below the 3.39% SA average. Engage your comments within the first hour — it's the fastest way to lift your ER.`);
+  if(R.price_cpm_final>R.price_cpe_final*1.2)tips.push(`CPM dominates your rate — pitch to brand awareness campaigns. Your reach is your strongest asset.`);
+  else if(R.price_cpe_final>R.price_cpm_final*1.2)tips.push(`CPE dominates (${fmtC(R.price_cpe_final)} vs ${fmtC(R.price_cpm_final)} CPM). Quote CPE to conversion-focused brands — they'll see the ROI.`);
+  else tips.push(`Your CPM and CPE rates are balanced — you have both reach and engagement value. Mention both methods when negotiating.`);
+  if(R.multiDiscount<1)tips.push(`Multi-platform detected — a 10% volume discount was applied. Counter this by providing cross-platform analytics that show combined reach.`);
+  if(R.premiumMult>1)tips.push(`Premium add-ons add ${Math.round((R.premiumMult-1)*100)}% to your base. Call each one out line-by-line in your rate card — brands often don't know to ask for these.`);
+  else tips.push(`No add-ons selected. Usage rights alone adds 35%. If the brand runs ads using your content — that's a usage rights conversation.`);
+  document.getElementById('r-insights').innerHTML=`
+    <div class="insights-card">
+      <div class="insights-header"><span>💡</span><span class="insights-title">Strategic Insights</span></div>
+      ${tips.map(t=>`<div class="insight-item"><div class="insight-dot"></div><span>${t}</span></div>`).join('')}
+    </div>`;
+  // Benchmark
+  const bmEl=document.getElementById('r-benchmark-body');
+  const maxV=Math.max(R.total,R.saAvgRate,R.globalAvgRate)*1.1;
+  bmEl.innerHTML=`
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Your Rate</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--accent);" data-w="${(R.total/maxV*100).toFixed(1)}"></div></div><div class="bar-value" style="color:var(--accent)">${fmtC(R.total)}</div></div>
+      <div class="bar-row"><div class="bar-label">SA Average</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--secondary);" data-w="${(R.saAvgRate/maxV*100).toFixed(1)}"></div></div><div class="bar-value" style="color:var(--secondary)">${fmtC(R.saAvgRate)}</div></div>
+      <div class="bar-row"><div class="bar-label">Global Avg</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--fg-muted);" data-w="${(R.globalAvgRate/maxV*100).toFixed(1)}"></div></div><div class="bar-value" style="color:var(--fg-muted)">${fmtC(R.globalAvgRate)}</div></div>
+    </div>
+    <p style="font-size:.78rem;color:var(--fg-muted);margin-top:.75rem;">SA creators average <strong style="color:var(--primary)">3.39% ER</strong> vs 1.49% globally — use this in every brand conversation.</p>`;
+  setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w+'%'),300);
+  // Breakdown
+  const cpmWin=R.price_cpm_final>=R.price_cpe_final;
+  const addonsText=R.selAddons.length>0?R.selAddons.map(k=>`${ADDONS[k].label} (${ADDONS[k].pct})`).join(', '):'None';
+  document.getElementById('r-breakdown').innerHTML=`
+    <div class="breakdown-section"><div class="breakdown-hdr">CPM Calculation</div><div class="breakdown-body">
+      <div class="bd-row"><span class="bd-key">Base niche CPM (${R.niche})</span><span class="bd-val">R ${R.nicheCPM.cpm.toFixed(2)} / 1000 views</span></div>
+      <div class="bd-row"><span class="bd-key">× Tier (${R.tier.label})</span><span class="bd-val">${R.tier.mult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">× Platform avg (${R.selPlats.join('+')||'instagram'})</span><span class="bd-val">${R.cpm_mult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">× Content (${R.ct.label})</span><span class="bd-val">${R.ct.mult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">= Adjusted CPM</span><span class="bd-val accent">R ${R.adjustedCPM.toFixed(2)} / 1000</span></div>
+      <div class="bd-row"><span class="bd-key">× Views</span><span class="bd-val">${fmtN(R.views)}</span></div>
+      <div class="bd-final"><span class="bd-final-label">CPM Rate</span><span class="bd-final-val">${fmtC(R.price_cpm)}</span></div>
+    </div></div>
+    <div class="breakdown-section"><div class="breakdown-hdr">CPE Calculation</div><div class="breakdown-body">
+      <div class="bd-row"><span class="bd-key">Engagement rate</span><span class="bd-val">${R.er.toFixed(2)}%</span></div>
+      <div class="bd-row"><span class="bd-key">CPE tier (${R.cpeTierData.label})</span><span class="bd-val">R ${R.cpeTierData.cpe_zar.toFixed(2)} / interaction</span></div>
+      <div class="bd-row"><span class="bd-key">× Platform CPE avg</span><span class="bd-val">${R.cpe_mult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">× Total interactions</span><span class="bd-val">${fmtN(R.interactions)}</span></div>
+      <div class="bd-final"><span class="bd-final-label">CPE Rate</span><span class="bd-final-val">${fmtC(R.price_cpe)}</span></div>
+    </div></div>
+    <div class="breakdown-section"><div class="breakdown-hdr">Final Price Breakdown</div><div class="breakdown-body">
+      <div class="bd-row"><span class="bd-key">Higher of CPM/CPE</span><span class="bd-val accent">${fmtC(Math.max(R.price_cpm,R.price_cpe))} ${cpmWin?'(CPM)':'(CPE)'}</span></div>
+      <div class="bd-row"><span class="bd-key">Add-ons</span><span class="bd-val">${addonsText}</span></div>
+      <div class="bd-row"><span class="bd-key">Premium multiplier</span><span class="bd-val">×${R.premiumMult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">Multi-platform discount</span><span class="bd-val">×${R.multiDiscount.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">Campaign multiplier</span><span class="bd-val">×${R.campaignMult.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-key">Sponsorship fee</span><span class="bd-val accent">${fmtC(R.sponsorship)}</span></div>
+      ${R.includeProduction?`<div class="bd-row"><span class="bd-key">+ Production (${R.ct.label})</span><span class="bd-val">+${fmtC(R.productionCost)}</span></div>`:''}
+      <div class="bd-final"><span class="bd-final-label">Total Quote</span><span class="bd-final-val">${fmtC(R.total)}</span></div>
+    </div></div>`;
+}
+function toggleBreakdown(){
+  breakdownOpen=!breakdownOpen;
+  document.getElementById('r-breakdown').style.display=breakdownOpen?'block':'none';
+  document.getElementById('bd-btn-label').textContent=breakdownOpen?'Hide Calculation Details':'View Calculation Details';
+  document.getElementById('bd-btn-arrow').textContent=breakdownOpen?'▴':'▾';
+}
+function countUp(el,zarTarget,dur){
+  if(!el)return;
+  const c=CURRENCIES[selCurrency]||CURRENCIES.ZAR,lt=zarToSelected(zarTarget),start=Date.now();
+  (function tick(){
+    const p=Math.min((Date.now()-start)/dur,1),e=1-Math.pow(1-p,3);
+    el.textContent=c.sym+' '+Math.round(lt*e).toLocaleString('en-ZA');
+    if(p<1)requestAnimationFrame(tick);else el.textContent=fmtC(zarTarget);
+  })();
+}
+function showMsg(text,color){const el=document.getElementById('send-rc-msg');el.innerHTML=text;el.style.color=color;el.style.display='block';}
+async function sendRateCard(){
+  const name=(document.getElementById('send-name').value||'').trim();
+  const email=(document.getElementById('send-email').value||'').trim();
+  const brand=(document.getElementById('send-brand').value||'').trim();
+  const handle=(document.getElementById('send-handle').value||'').trim();
+  const btn=document.getElementById('send-rc-btn');
+  if(!name){showMsg('Please enter your name.','#EF4444');return;}
+  if(!email||!email.includes('@')){showMsg('Please enter a valid email address.','#EF4444');return;}
+  if(!calcResults){showMsg('Please calculate your rate first.','#EF4444');return;}
+  btn.disabled=true;btn.textContent='Sending…';showMsg('Building and sending your PDF…','#888');
+  try{
+    const R=calcResults,zar=n=>'R '+Math.round(n).toLocaleString('en-ZA');
+    const rateData={
+      creatorName:name,handle,
+      platform:`${R.selPlats.map(p=>PLATFORM[p]?.name||p).join(' + ')} · ${R.niche} · ${R.ct.label}`,
+      tier:R.tier.label,er:R.er.toFixed(2),erLabel:R.cpeTierData.label,
+      floor:zar(R.range_low),standard:zar(R.total),ceiling:zar(R.range_high),
+      followers:fmtN(R.followers),date:new Date().toLocaleDateString('en-ZA',{year:'numeric',month:'long',day:'numeric'})
     };
-    showSendMsg('Sending to your inbox…', '#888');
-    const res = await fetch('/api/send-rate-card', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, brand, rateData }) });
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Send failed');
-    btn.textContent = '✓ Rate Card Sent!';
-    showSendMsg(`✅ Check <strong>${email}</strong> — your rate card is on its way. Forward the PDF directly to any brand pitch email.`, '#059669');
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = 'Send My Rate Card PDF →';
-    showSendMsg(`❌ ${err.message || 'Send failed — try again.'}`, '#EF4444');
+    const res=await fetch('/api/send-rate-card',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,brand,rateData})});
+    const data=await res.json();
+    if(!data.ok)throw new Error(data.error||'Send failed');
+    btn.textContent='✓ Rate Card Sent!';
+    showMsg(`✅ Check <strong>${email}</strong> — your rate card is on its way. Forward the PDF directly to the brand.`,'#059669');
+  }catch(err){
+    btn.disabled=false;btn.textContent='Send My Rate Card PDF →';
+    showMsg(`❌ ${err.message||'Send failed — try again.'}`,'#EF4444');
   }
 }
-
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
