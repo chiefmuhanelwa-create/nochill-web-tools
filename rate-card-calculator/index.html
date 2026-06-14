@@ -1369,6 +1369,7 @@ Range     = Final × 0.85 → Final × 1.15
           <input class="nx-input" type="email" id="send-email" placeholder="your@email.com" style="flex:2; min-width:200px;">
         </div>
         <input class="nx-input" type="text" id="send-brand" placeholder="Brand or campaign name (optional — personalises the PDF)">
+        <input class="nx-input" type="text" id="send-handle" placeholder="Your social handle (optional — shown on PDF, e.g. @nochill_god)">
       </div>
       <button class="cta-glow" onclick="sendRateCard()" id="send-rc-btn" style="width:100%; justify-content:center;">Send My Rate Card PDF →</button>
       <div id="send-rc-msg" style="display:none; margin-top:12px; font-size:13px; text-align:center; line-height:1.6;"></div>
@@ -2313,6 +2314,7 @@ async function sendRateCard() {
   try {
     const R = calcResults;
     const zar = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+    const handle = (document.getElementById('send-handle').value || '').trim();
     const rateData = {
       creatorName: name,
       platform: `${R.p.name} · ${R.niche} · ${R.ct.label}`,
@@ -2322,12 +2324,10 @@ async function sendRateCard() {
       floor: zar(R.range_low),
       standard: zar(R.recommended),
       ceiling: zar(R.range_high),
-      cpmRate: zar(R.price_cpm_final),
-      cpeRate: zar(R.price_cpe_final),
       followers: fmtNum(R.d.followers),
-      addonsMult: `×${R.premiumMult.toFixed(2)}`,
       date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
-      brand: brand || ''
+      brand: brand || '',
+      handle: handle
     };
 
     showSendMsg('Sending to your inbox…', '#888');
