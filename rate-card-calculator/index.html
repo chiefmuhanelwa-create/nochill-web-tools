@@ -498,6 +498,7 @@ Base Rate = MAX(CPM Rate, CPE Rate) × premium_multiplier
 Total     = Base Rate × campaign_mult + production_cost
 Range     = Total × 0.85  →  Total × 1.15</div>
         <p style="font-size:.78rem;color:var(--fg-muted);">Your rate is always the <strong style="color:var(--primary)">higher</strong> of CPM vs CPE — protecting your maximum value. SA ER benchmark: <strong style="color:var(--primary)">3.39%</strong> avg (global: 1.49%).</p>
+        <p style="font-size:.75rem;color:var(--fg-muted);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border);">CPM benchmarks reflect 2024–2025 South African market rates. Creators in other African markets (Nigeria, Kenya, Ghana) should treat these as upper-range references and adjust based on local brand budgets.</p>
       </div>
       <div class="how-stat-grid">
         <div class="how-card" style="padding:1rem;text-align:center;">
@@ -508,7 +509,7 @@ Range     = Total × 0.85  →  Total × 1.15</div>
         <div class="how-card" style="padding:1rem;text-align:center;">
           <div style="font-size:1.4rem;margin-bottom:.4rem;">📊</div>
           <div style="font-size:.78rem;font-weight:700;color:var(--fg);margin-bottom:.3rem;">CPE Tiers (ZAR)</div>
-          <div style="font-size:.68rem;color:var(--fg-muted);line-height:1.6;">&lt;1% → R3.50/eng<br>1–2% → R7.50/eng<br>2–3.5% → R14/eng<br>3.5–6% → R22/eng<br>6%+ → R30/eng</div>
+          <div style="font-size:.68rem;color:var(--fg-muted);line-height:1.6;">&lt;1% → R1/eng<br>1–2% → R2.50/eng<br>2–3.5% → R4.50/eng<br>3.5–6% → R7/eng<br>6%+ → R11/eng</div>
         </div>
         <div class="how-card" style="padding:1rem;text-align:center;">
           <div style="font-size:1.4rem;margin-bottom:.4rem;">💰</div>
@@ -588,26 +589,26 @@ Range     = Total × 0.85  →  Total × 1.15</div>
 <script>
 'use strict';
 const NICHE_CPM = {
-  'Fashion & Beauty':            {cpm:271.95,global_cpm:'$15',notes:'Strong SA engagement. Brands pay premium for authentic lifestyle creators.'},
-  'Business & Entrepreneurship': {cpm:362.60,global_cpm:'$20',notes:'Decision-maker audiences command premium rates.'},
-  'Finance & Investing':         {cpm:634.55,global_cpm:'$35',notes:'Highest-value niche. Financial brands have large budgets.'},
-  'Tech Reviews':                {cpm:453.25,global_cpm:'$25',notes:'Product-review content drives purchase decisions.'},
-  'Lifestyle':                   {cpm:217.56,global_cpm:'$12',notes:'Broad reach. Compensate with strong engagement data.'},
-  'Fitness & Health':            {cpm:326.34,global_cpm:'$18',notes:'Health brands have significant SA marketing budgets.'},
-  'Parenting & Family':          {cpm:271.95,global_cpm:'$15',notes:'Loyal, trust-heavy audience. Brands value authenticity here.'},
-  'Food & Cooking':              {cpm:217.56,global_cpm:'$12',notes:'High engagement. Partner with FMCG and restaurant brands.'},
-  'Modelling':                   {cpm:271.95,global_cpm:'$15',notes:'Visual-first content. Fashion/beauty brand alignment.'},
-  'Entertainment':               {cpm:362.60,global_cpm:'$20',notes:'Broad demographic appeal. Strong for awareness campaigns.'},
-  'Travel & Adventure':          {cpm:253.82,global_cpm:'$14',notes:'Aspirational content. Tourism boards and airlines target this.'},
-  'Gaming':                      {cpm:326.34,global_cpm:'$18',notes:'Highly engaged niche audience. Strong for tech and beverage brands.'},
-  'Personal Development':        {cpm:326.34,global_cpm:'$18',notes:'Motivated, action-taking audience. Course/coaching brands.'},
-  'Education':                   {cpm:362.60,global_cpm:'$20',notes:'Trusted authority positioning. EdTech brands pay well.'},
-  'Real Estate':                 {cpm:543.91,global_cpm:'$30',notes:'High-value transactions justify premium influencer rates.'},
-  'Automotive':                  {cpm:362.60,global_cpm:'$20',notes:'High-purchase-intent audience. Strong dealership budgets.'},
-  'Music & Arts':                {cpm:217.56,global_cpm:'$12',notes:'Creative audience. Streaming platforms and event brands.'},
-  'Sports & Athletics':          {cpm:271.95,global_cpm:'$15',notes:'Passionate community. Sports brands and betting companies.'},
-  'Comedy & Entertainment':      {cpm:217.56,global_cpm:'$12',notes:'Huge reach potential. Work with FMCG and fast food brands.'},
-  'Sustainability & Green':      {cpm:271.95,global_cpm:'$15',notes:'Growing category. Eco brands actively seeking SA creators.'}
+  'Fashion & Beauty':            {cpm:271.95,global_cpm:'$15',notes:'Strong SA engagement. Brands like Bash, Cotton On and Woolworths pay premium for authentic creators. Style content converts.'},
+  'Business & Entrepreneurship': {cpm:362.60,global_cpm:'$20',notes:'Decision-maker audiences command premium rates. SA coaching and business tool brands have growing creator budgets.'},
+  'Finance & Investing':         {cpm:634.55,global_cpm:'$35',notes:'Highest-value niche in SA. Capitec, FNB, Nedbank, Absa and Standard Bank have the largest creator budgets in ZA.'},
+  'Tech Reviews':                {cpm:453.25,global_cpm:'$25',notes:'Purchase-decision content. Samsung, Takealot and telcos (MTN, Vodacom) actively buy tech review placements.'},
+  'Lifestyle':                   {cpm:217.56,global_cpm:'$12',notes:'Broad reach across all SA demographics. Compensate with strong engagement data — volume is your leverage here.'},
+  'Fitness & Health':            {cpm:326.34,global_cpm:'$18',notes:'Dis-Chem, supplement brands and gym chains have significant SA creator budgets. Health content drives repeat purchases.'},
+  'Parenting & Family':          {cpm:271.95,global_cpm:'$15',notes:'Loyal, trust-heavy SA audience. Baby and education brands value authenticity here over raw follower count.'},
+  'Food & Cooking':              {cpm:217.56,global_cpm:'$12',notes:'FMCG brands (Tiger Brands, Unilever SA, Pick n Pay, SPAR) are very active in SA creator deals. Use volume to negotiate.'},
+  'Modelling':                   {cpm:271.95,global_cpm:'$15',notes:'Visual-first content. Fashion and beauty brand alignment. Strong for seasonal campaigns with local and international brands.'},
+  'Entertainment':               {cpm:362.60,global_cpm:'$20',notes:'Netflix SA, Showmax, DSTV and streaming brands drive strong deal activity. Broad demographic appeal for awareness campaigns.'},
+  'Travel & Adventure':          {cpm:253.82,global_cpm:'$14',notes:'SA Tourism board is an active creator partner. Safari lodges, airlines and hotel brands regularly fund travel content.'},
+  'Gaming':                      {cpm:326.34,global_cpm:'$18',notes:'SA esports growing fast. Telcos (MTN, Vodacom), peripheral brands and energy drinks actively target gaming audiences.'},
+  'Personal Development':        {cpm:326.34,global_cpm:'$18',notes:'Motivated, action-taking SA audience. Coaching platforms, online courses and business tools pay well for qualified leads.'},
+  'Education':                   {cpm:362.60,global_cpm:'$20',notes:'Trusted authority positioning. EdTech and online learning brands pay premium for creators with an engaged learning community.'},
+  'Real Estate':                 {cpm:543.91,global_cpm:'$30',notes:'High-value transactions justify premium influencer rates. Property portals and bond originators have active creator budgets.'},
+  'Automotive':                  {cpm:362.60,global_cpm:'$20',notes:'High-purchase-intent SA audience. Dealerships, car rental brands and auto accessories have consistent creator spend.'},
+  'Music & Arts':                {cpm:217.56,global_cpm:'$12',notes:'Streaming platforms (Spotify, Apple Music) and SA event brands. Creative niche — negotiate with audience loyalty data.'},
+  'Sports & Athletics':          {cpm:271.95,global_cpm:'$15',notes:'SA betting brands (Hollywoodbets, Betway, Playa Bets) fund creators heavily. Check your platform policy before accepting.'},
+  'Comedy & Entertainment':      {cpm:217.56,global_cpm:'$12',notes:'SA comedy creators consistently undercharge. FMCG and fast food brands pay for viral reach. Use CPM data confidently.'},
+  'Sustainability & Green':      {cpm:271.95,global_cpm:'$15',notes:'Woolworths Clean Earth and Pick n Pay organic ranges are active. Growing SA category — early movers will command higher rates.'}
 };
 const PLATFORM = {
   instagram:{cpm_mult:1.00,cpe_mult:1.00,name:'Instagram'},
@@ -633,11 +634,11 @@ const CONTENT_TYPE = {
   long_video:{mult:2.50,label:'Long Video',     prod:3000, prod_desc:'Full production, scripting, editing'}
 };
 const CPE_TIER = [
-  {min:0,   max:0.99, cpe_zar:3.50, label:'Low',         color:'#6B7280'},
-  {min:1.00,max:1.99, cpe_zar:7.50, label:'Moderate',    color:'#8B5CF6'},
-  {min:2.00,max:3.49, cpe_zar:14.00,label:'High',        color:'#3B82F6'},
-  {min:3.50,max:5.99, cpe_zar:22.00,label:'Premium',     color:'#F59E0B'},
-  {min:6.00,max:100,  cpe_zar:30.00,label:'Exceptional', color:'#22C55E'}
+  {min:0,   max:0.99, cpe_zar:1.00, label:'Low',         color:'#6B7280'},
+  {min:1.00,max:1.99, cpe_zar:2.50, label:'Moderate',    color:'#8B5CF6'},
+  {min:2.00,max:3.49, cpe_zar:4.50, label:'High',        color:'#3B82F6'},
+  {min:3.50,max:5.99, cpe_zar:7.00, label:'Premium',     color:'#F59E0B'},
+  {min:6.00,max:100,  cpe_zar:11.00,label:'Exceptional', color:'#22C55E'}
 ];
 const ADDONS = {
   usage_rights:       {mult:1.35,label:'Usage Rights (Whitelisting)',pct:'+35%',desc:'Brand can repurpose your content for paid ads and marketing'},
