@@ -1,0 +1,9 @@
+{
+  "name": "nochill-media-kit-builder",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.0",
+    "pdfkit": "^0.15.0"
+  }
+}
