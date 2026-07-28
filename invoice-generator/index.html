@@ -753,6 +753,12 @@
       <button class="reset-btn" onclick="resetForm()">Start New Invoice</button>
     </div>
 
+    <div class="preview-actions" style="margin-top:8px;">
+      <input class="nx-input" type="email" id="invoice-email" placeholder="your@email.com" style="flex:1;">
+      <button class="print-btn" id="email-invoice-btn" onclick="emailInvoice()">✉ Email me a copy</button>
+    </div>
+    <div class="email-success" id="invoice-email-success">✓ Invoice sent — check your inbox.</div>
+
     <!-- LIVE INVOICE PREVIEW -->
     <div class="invoice-preview" id="invoice-preview">
 
@@ -1214,6 +1220,54 @@
     } catch(e) {}
     document.getElementById('email-form').style.display = 'none';
     document.getElementById('email-success').classList.add('show');
+  }
+
+  // ── EMAIL THE ACTUAL INVOICE (PDF attachment) ─────────────
+  async function emailInvoice() {
+    const email = document.getElementById('invoice-email').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    const btn = document.getElementById('email-invoice-btn');
+    const sub = lineItems.reduce((s, l) => s + parseAmount(l.amount), 0);
+    const vat = vatOn ? sub * 0.15 : 0;
+    const total = sub + vat;
+    const invoice = {
+      creatorName: document.getElementById('creator-name').value.trim(),
+      invoiceNumber: document.getElementById('invoice-number').value.trim(),
+      invoiceDate: document.getElementById('invoice-date').value,
+      dueDate: document.getElementById('due-date').value,
+      agencyName: document.getElementById('agency-name').value.trim(),
+      billingContact: document.getElementById('billing-contact').value.trim(),
+      campaignName: document.getElementById('campaign-name').value.trim(),
+      accountName: document.getElementById('account-name').value.trim(),
+      bankName: document.getElementById('bank-name').value,
+      accountNumber: document.getElementById('account-number').value.trim(),
+      branchCode: document.getElementById('branch-code').value.trim(),
+      lineItems: lineItems.filter(l => l.desc || l.amount),
+      vatEnabled: vatOn,
+      subtotal: sub,
+      vat: vat,
+      total: total,
+    };
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch('/api/send-invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, invoice }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Failed to send');
+      document.getElementById('invoice-email-success').classList.add('show');
+    } catch (e) {
+      alert('Could not send the invoice: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✉ Email me a copy';
+    }
   }
 
   // ── HELPERS ──────────────────────────────────────────────
