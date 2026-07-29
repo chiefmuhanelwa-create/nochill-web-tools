@@ -134,6 +134,15 @@ INSTRUCTIONS: Analyse the topic and niche first. Select the 4+ hook types that w
       })
     });
     const data = await response.json();
+    // Was previously `data.content[0].text` unconditionally — if Anthropic
+    // itself returned an error body (bad/expired key, rate limit, invalid
+    // model), `data.content` is undefined and this threw the opaque
+    // "Cannot read properties of undefined (reading '0')", which the outer
+    // catch swallowed into a generic failure. Surfacing the real upstream
+    // error here is what let us diagnose (and fix) the actual root cause.
+    if (!response.ok || !data.content?.[0]?.text) {
+      throw new Error(data?.error?.message || `Anthropic API error (status ${response.status})`);
+    }
     const raw = data.content[0].text;
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON found in AI response');
